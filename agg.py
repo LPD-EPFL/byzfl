@@ -3,6 +3,7 @@ import itertools
 import torch
 import utils.types as types
 import utils.torch_tools as torch_tools
+import math
 
 def average(vectors: list or np.ndarray) -> np.ndarray:
     """Computes the average vector in vectors.
@@ -11,8 +12,8 @@ def average(vectors: list or np.ndarray) -> np.ndarray:
         - vectors   : list or np.ndarray or torch.Tensor
     """
 
-    tools = types.check_vectors(vectors)
-    
+    tools, vectors = types.check_vectors(vectors)
+
     return tools.mean(vectors, axis = 0)
 
 def median(vectors: list or np.ndarray) -> np.ndarray:
@@ -22,10 +23,9 @@ def median(vectors: list or np.ndarray) -> np.ndarray:
         - vectors: list or np.ndarray 
     """
 
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
+    tools, vectors = types.check_vectors(vectors)
 
-    return np.median(vectors, axis=0)
+    return tools.median(vectors, axis=0)
 
 
 
@@ -45,22 +45,21 @@ def trmean(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
           Bartlett. Byzantine-robust distributed learning: Towards
           optimal statistical rates. In Jennifer Dy and Andreas Krause,
           editors, Proceedings of the 35th International Conference on
-          Machine Learning, volume 80 of Pro- ceedings of Machine 
+          Machine Learning, volume 80 of Proceedings of Machine 
           Learning Research, pages 5650–5659. PMLR, 10–15 Jul 2018. 
           URL https://proceedings.mlr.press/v80/yin18a.html.
 
     """
-
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
     if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
+        raise TypeError("'nb_byz' should be an 'int'")
+
+    tools, vectors = types.check_vectors(vectors)
 
     if nb_byz == 0:
         return average(vectors)
-    
-    selected_vectors = np.sort(vectors, axis = 0)[nb_byz:-nb_byz]
-    return average(selected_vectors)
+
+    selected_vectors = tools.sort(vectors, axis = 0)[nb_byz:-nb_byz]
+    return tools.mean(selected_vectors, axis = 0)
 
 
 
@@ -75,21 +74,21 @@ def geometric_median(vectors, nu=0.1, T=3):
         - T         : int
     """
 
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
     if not isinstance(nu, float):
         raise TypeError("'nu' should be a 'float'")
-    if not isinstance(T, float):
+    if not isinstance(T, int):
         raise TypeError("'T' should be a 'int'")
 
-    z = np.zeros_like(vectors[0])
-    filtered_vectors = vectors[~np.any(np.isinf(tab), axis = 1)]
+    tools, vectors = types.check_vectors(vectors)
+
+    z = tools.zeros_like(vectors[0])
+    filtered_vectors = vectors[~tools.any(tools.isinf(vectors), axis = 1)]
     alpha = 1/len(vectors)
     for _ in range(T):
-        betas = np.linalg.norm(filtered_vectors - z, axis = 1)
+        betas = tools.linalg.norm(filtered_vectors - z, axis = 1)
         betas[betas<nu] = nu
         betas = (alpha/betas)[:, None]
-        z = (filtered_vectors*betas).sum(axis = 0) / np.sum(betas)
+        z = tools.sum((filtered_vectors*betas), axis = 0) / tools.sum(betas)
     return z
 
 
@@ -115,15 +114,16 @@ def krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
         f68f89b29639786cb62ef-Paper.pdf
     """
 
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
+    tools, vectors = types.check_vectors(vectors)
+
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
     
-    dist = [[np.linalg.norm(a-b) for a in vectors] for b in vectors]
-    dist = np.sort(dist)[:,1:len(vectors)-nb_byz]
-    dist = np.mean(dist, axis = 1)
-    index = np.argmin(dist)
+    dist = [tools.linalg.norm(vectors-a, axis=1) for a in vectors]
+    dist = tools.array(dist)
+    dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
+    dist = tools.mean(dist, axis = 1)
+    index = tools.argmin(dist)
     return vectors[index]
 
 
@@ -151,17 +151,18 @@ def multi_krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
         f68f89b29639786cb62ef-Paper.pdf
     """
 
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
 
-    dist = [[np.linalg.norm(a - b) for a in vectors] for b in vectors]
-    dist = np.sort(dist)[:,1:len(vectors)-nb_byz]
-    dist = np.mean(dist, axis = 1)
+    tools, vectors = types.check_vectors(vectors)
+    
+    dist = [tools.linalg.norm(vectors-a, axis=1) for a in vectors]
+    dist = tools.array(dist)
+    dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
+    dist = tools.mean(dist, axis = 1)
     k = len(vectors) - nb_byz
-    indices = np.argpartition(dist, k)[:k]
-    return average(np.array(vectors)[indices])
+    indices = tools.argpartition(dist, k)[:k]
+    return tools.mean(vectors[indices], axis = 0)
 
 
 
@@ -184,17 +185,16 @@ def nnm(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
           Statistics, pages 1232–1300. PMLR, 2023. URL 
           https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf
     """
-
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
 
-    dist = [[np.linalg.norm(a-b) for a in vectors] for b in vectors]
+    tools, vectors = types.check_vectors(vectors)
+
+    dist = [tools.linalg.norm(vectors-a, axis=1) for a in vectors]
+    dist = tools.array(dist)
     k = len(vectors) - nb_byz
-    indices = np.argpartition(dist, k , axis = 1)[:,:k]
-    selected_vectors = np.array(vectors)[indices]
-    return np.mean(selected_vectors, axis = 1)
+    indices = tools.argpartition(dist, k , axis = 1)[:,:k]
+    return tools.mean(vectors[indices], axis = 1)
 
 
 
@@ -216,23 +216,25 @@ def bucketing(vectors: list or np.ndarray, bucket_size: int) -> np.ndarray:
           International Conference on Learning Repre- sentations. 
           URL https://openreview.net/pdf?id=jXKKDEi5vJt
     """
-
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
+    
     if not isinstance(bucket_size, int):
         raise TypeError("'bucket_size' should be a 'int'")
 
-    np.random.shuffle(vectors)
-    nb_buckets = int(np.floor(len(vectors) / bucket_size))
-    complete_buckets = vectors[:nb_buckets * bucket_size]
-    complete_buckets.resize(nb_buckets, bucket_size, len(vectors[0]))
-    output = np.mean(complete_buckets, axis = 1)
+    tools, vectors = types.check_vectors(vectors)
+    random = types.random_tool(vectors)
+
+    random.shuffle(vectors)
+    nb_buckets = int(math.floor(len(vectors) / bucket_size))
+    buckets = vectors[:nb_buckets * bucket_size]
+    buckets = tools.reshape(buckets, (nb_buckets, bucket_size, len(vectors[0])))
+    output = tools.mean(buckets, axis = 1)
     
     # Adding the last incomplete bucket if it exists
     if nb_buckets != len(vectors) / bucket_size :
-        last_mean = np.mean(vectors[nb_buckets * bucket_size:], axis = 0)
-        output = np.concatenate((output, last_mean.resize(1,-1)), axis = 0)
-    return returned_vector
+        last_mean = tools.mean(vectors[nb_buckets * bucket_size:], axis = 0)
+        last_mean = last_mean.reshape(1,-1)
+        output = tools.concatenate((output, last_mean), axis = 0)
+    return output
 
 
 
