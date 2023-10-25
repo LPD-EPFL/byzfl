@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-import robust_aggregators_numpy as agg
+import agg
 
 
 tab_list_np = [np.array([1,2,3, 4]), np.array([3.5,2.5,7.5, 8.2]), np.array([4,5,6,7])]
