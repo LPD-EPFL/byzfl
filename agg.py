@@ -1,19 +1,8 @@
 import numpy as np
 import itertools
-import tools.torch as torch_tool
 import torch
-
-def check_vectors(vectors):
-    if ((isinstance(vectors, list) and isinstance(vectors[0], np.ndarray)) or
-        isinstance(vectors, np.ndarray)) :
-        tool = np
-    elif ((isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor))
-        or isinstance(vectors, torch.Tensor)) :
-        tool = torch_tool
-    else :
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'"
-                        " or 'torch.Tensor")
-    return tool
+import utils.types as types
+import utils.torch_tools as torch_tools
 
 def average(vectors: list or np.ndarray) -> np.ndarray:
     """Computes the average vector in vectors.
@@ -22,9 +11,9 @@ def average(vectors: list or np.ndarray) -> np.ndarray:
         - vectors   : list or np.ndarray or torch.Tensor
     """
 
-    tool = check_vectors(vectors)
+    tools = types.check_vectors(vectors)
     
-    return tool.mean(vectors, axis = 0)
+    return tools.mean(vectors, axis = 0)
 
 def median(vectors: list or np.ndarray) -> np.ndarray:
     """Computes the coordinate-wise median vector in vectors.
