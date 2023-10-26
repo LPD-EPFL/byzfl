@@ -119,8 +119,7 @@ def krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
     
-    dist = [tools.linalg.norm(vectors-a, axis=1) for a in vectors]
-    dist = tools.array(dist)
+    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
     index = tools.argmin(dist)
@@ -156,8 +155,7 @@ def multi_krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
 
     tools, vectors = types.check_vectors(vectors)
     
-    dist = [tools.linalg.norm(vectors-a, axis=1) for a in vectors]
-    dist = tools.array(dist)
+    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
     k = len(vectors) - nb_byz
@@ -189,9 +187,8 @@ def nnm(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
         raise TypeError("'nb_byz' should be a 'int'")
 
     tools, vectors = types.check_vectors(vectors)
-
-    dist = [tools.linalg.norm(vectors-a, axis=1) for a in vectors]
-    dist = tools.array(dist)
+    
+    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     k = len(vectors) - nb_byz
     indices = tools.argpartition(dist, k , axis = 1)[:,:k]
     return tools.mean(vectors[indices], axis = 1)
@@ -223,7 +220,7 @@ def bucketing(vectors: list or np.ndarray, bucket_size: int) -> np.ndarray:
     tools, vectors = types.check_vectors(vectors)
     random = types.random_tool(vectors)
 
-    random.shuffle(vectors)
+    vectors = random.permutation(vectors)
     nb_buckets = int(math.floor(len(vectors) / bucket_size))
     buckets = vectors[:nb_buckets * bucket_size]
     buckets = tools.reshape(buckets, (nb_buckets, bucket_size, len(vectors[0])))
@@ -264,29 +261,30 @@ def centered_clipping(vectors: list or np.ndarray,
         eddy21a.pdf
     """
 
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
-    if not isinstance(prev_momentum, np.ndarray):
-        raise TypeError("'prev_momentum' should be an 'np.ndarray'")
+    
+
+    # if not isinstance(prev_momentum, np.ndarray):
+    #     raise TypeError("'prev_momentum' should be an 'np.ndarray'")
     if not isinstance(L_iter, int):
         raise TypeError("'L_iter' should be a 'int'")
     if not isinstance(clip_thresh, int):
         raise TypeError("'clip_thresh' should be a 'int'")
 
+    tools, vectors = types.check_vectors(vectors)
+
     v = prev_momentum
-    vectors = np.array(vectors)
     for i in range(L_iter):
         differences = vectors - v
-        clip_factor = clip_thresh / np.linealg.norm(differences, axis = 1)
-        clip_factor = np.minimum(np.ones_like(clip_factor), clip_factor)
-        differences = np.multiply(differences, clip_factor.reshape(-1,1))
-        v = v + np.mean(differences, axis = 0)
+        clip_factor = clip_thresh / tools.linalg.norm(differences, axis = 1)
+        clip_factor = tools.minimum(tools.ones_like(clip_factor), clip_factor)
+        differences = tools.multiply(differences, clip_factor.reshape(-1,1))
+        v = v + tools.mean(differences, axis = 0)
     return v
 
 
 
 
-def minimum_diameter_averaging(vectors: list[np.array] or np.array,
+def minimum_diameter_averaging(vectors,
                                nb_byz: int) -> np.array:
 
     """Finds the subset of vectors of size 'len(vectors) - nb_byz' that
@@ -298,13 +296,11 @@ def minimum_diameter_averaging(vectors: list[np.array] or np.array,
         - vectors       : list or np.ndarray 
         - nb_byz        : int
     """
-
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
+    tools, vectors = types.check_vectors(vectors)
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
             
-    dist = np.array([[np.linalg.norm(a-b) for a in vectors] for b in vectors])
+    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     
     n = len(vectors)
     k = n - nb_byz
@@ -314,12 +310,15 @@ def minimum_diameter_averaging(vectors: list[np.array] or np.array,
 
     all_subsets = list(itertools.combinations(range(n), k))
     for subset in all_subsets:
-        vector_indeces = list(itertools.combinations(subset, 2))
-        diameter = np.max(dist[tuple(zip(*vector_indeces))])
+        vector_indices = list(itertools.combinations(subset, 2))
+        # print(tuple(zip(*vector_indices)))
+        # print(dist)
+        # print(dist[tuple(zip(*vector_indices))])
+        diameter = tools.max(dist[tuple(zip(*vector_indices))])
         if diameter < min_diameter:
             min_subset = subset
-            
-    return vectors[np.array(min_subset)].mean(axis = 0)
+        # print(min_subset)
+    return vectors[tools.asarray(min_subset)].mean(axis = 0)
 
 
 
@@ -338,13 +337,13 @@ def minimum_variance_averaging(vectors: list[np.array] or np.array,
         - vectors       : list or np.ndarray 
         - nb_byz        : int
     """
-
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
+    
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
             
-    dist = np.array([[np.linalg.norm(a-b) for a in vectors] for b in vectors])
+    tools, vectors = types.check_vectors(vectors)
+
+    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     
     n = len(vectors)
     k = n - nb_byz
@@ -354,12 +353,12 @@ def minimum_variance_averaging(vectors: list[np.array] or np.array,
 
     all_subsets = list(itertools.combinations(range(n), k))
     for subset in all_subsets:
-        vector_indeces = list(itertools.combinations(subset, 2))
-        diameter = np.sum(dist[tuple(zip(*vector_indeces))])
+        vector_indices = list(itertools.combinations(subset, 2))
+        diameter = tools.sum(dist[tuple(zip(*vector_indices))])
         if diameter < min_diameter:
             min_subset = subset
             
-    return vectors[np.array(min_subset)].mean(axis = 0)
+    return vectors[tools.asarray(min_subset)].mean(axis = 0)
 
 
 
@@ -376,15 +375,17 @@ def monna(vectors: list[np.array] or np.array,
         - pivot_index   : int
     """
 
-    if not (isinstance(vectors, list) or isinstance(vectors, np.ndarray)):
-        raise TypeError("'vectors' should be a 'list' or 'np.ndarray'")
     if not isinstance(nb_byz, int):
         raise TypeError("'nb_byz' should be a 'int'")
 
-    dist = [np.linalg.norm(vectors[pivot_index]-v) for v in vectors]
+    tools, vectors = types.check_vectors(vectors)
+
+
+    dist = tools.linalg.norm(vectors[pivot_index]-vectors, axis = 1)
     k = len(vectors) - nb_byz
     indices = np.argpartition(dist, k)[:k]
-    return average(np.array(vectors)[indices])
+    print(indices)
+    return average(vectors[indices])
 
 
 

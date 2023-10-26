@@ -135,4 +135,63 @@ print(test3.numpy())
 print(test4.numpy())
 
 
+print('-----------------------------------------------------------------------')
+print('Center Clipping')
+print('-----------------------------------------------------------------------')
+test1 = agg.centered_clipping(tab_list_np,np.mean(tab_list_np, axis = 0))
+test2 = agg.centered_clipping(tab_np,np.mean(tab_np, axis = 0))
+test3 = agg.centered_clipping(tab_list_torch,torch.mean(torch.stack(tab_list_torch), dim = 0))
+test4 = agg.centered_clipping(tab_torch,torch.mean(tab_torch, dim = 0))
+
+print(type(test1), type(test2), type(test3), type(test4))
+print(test1)
+print(test2)
+print(test3.numpy())
+print(test4.numpy())
+
+print('-----------------------------------------------------------------------')
+print('Minimum Diameter Averaging')
+print('-----------------------------------------------------------------------')
+
+test1 = agg.minimum_diameter_averaging(tab_list_np,1) 
+test2 = agg.minimum_diameter_averaging(tab_np,1)
+test3 = agg.minimum_diameter_averaging(tab_list_torch,1)
+test4 = agg.minimum_diameter_averaging(tab_torch,1)
+
+print(type(test1), type(test2), type(test3), type(test4))
+print(test1)
+print(test2)
+print(test3.numpy())
+print(test4.numpy())
+
+print('-----------------------------------------------------------------------')
+print('Minimum Variance Averaging')
+print('-----------------------------------------------------------------------')
+
+test1 = agg.minimum_variance_averaging(tab_list_np,1) 
+test2 = agg.minimum_variance_averaging(tab_np,1)
+test3 = agg.minimum_variance_averaging(tab_list_torch,1)
+test4 = agg.minimum_variance_averaging(tab_torch,1)
+
+print(type(test1), type(test2), type(test3), type(test4))
+print(test1)
+print(test2)
+print(test3.numpy())
+print(test4.numpy())
+
+print('-----------------------------------------------------------------------')
+print('Monna')
+print('-----------------------------------------------------------------------')
+
+test1 = agg.monna(tab_list_np,1) 
+test2 = agg.monna(tab_np,1)
+test3 = agg.monna(tab_list_torch,1)
+test4 = agg.monna(tab_torch,1)
+
+print(type(test1), type(test2), type(test3), type(test4))
+print(test1)
+print(test2)
+print(test3.numpy())
+print(test4.numpy())
+
 
