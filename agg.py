@@ -16,6 +16,9 @@ def average(vectors: list or np.ndarray) -> np.ndarray:
 
     return tools.mean(vectors, axis = 0)
 
+
+
+
 def median(vectors: list or np.ndarray) -> np.ndarray:
     """Computes the coordinate-wise median vector in vectors.
 
@@ -50,10 +53,9 @@ def trmean(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
           URL https://proceedings.mlr.press/v80/yin18a.html.
 
     """
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be an 'int'")
 
     tools, vectors = types.check_vectors(vectors)
+    check_type(nb_byz, int)
 
     if nb_byz == 0:
         return average(vectors)
@@ -80,6 +82,8 @@ def geometric_median(vectors, nu=0.1, T=3):
         raise TypeError("'T' should be a 'int'")
 
     tools, vectors = types.check_vectors(vectors)
+    check_type(nu, float)
+    check_type(T, int)
 
     z = tools.zeros_like(vectors[0])
     filtered_vectors = vectors[~tools.any(tools.isinf(vectors), axis = 1)]
@@ -115,9 +119,8 @@ def krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
     """
 
     tools, vectors = types.check_vectors(vectors)
+    check_type(nb_byz, int)
 
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
     
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
@@ -150,11 +153,9 @@ def multi_krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
         f68f89b29639786cb62ef-Paper.pdf
     """
 
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
-
     tools, vectors = types.check_vectors(vectors)
-    
+    check_type(nb_byz, int)
+
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
@@ -183,11 +184,10 @@ def nnm(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
           Statistics, pages 1232–1300. PMLR, 2023. URL 
           https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf
     """
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
 
     tools, vectors = types.check_vectors(vectors)
-    
+    check_type(nb_byz, int)
+
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     k = len(vectors) - nb_byz
     indices = tools.argpartition(dist, k , axis = 1)[:,:k]
@@ -214,10 +214,9 @@ def bucketing(vectors: list or np.ndarray, bucket_size: int) -> np.ndarray:
           URL https://openreview.net/pdf?id=jXKKDEi5vJt
     """
     
-    if not isinstance(bucket_size, int):
-        raise TypeError("'bucket_size' should be a 'int'")
-
     tools, vectors = types.check_vectors(vectors)
+    check_type(bucket_size, int)
+
     random = types.random_tool(vectors)
 
     vectors = random.permutation(vectors)
@@ -261,16 +260,10 @@ def centered_clipping(vectors: list or np.ndarray,
         eddy21a.pdf
     """
 
-    
-
-    # if not isinstance(prev_momentum, np.ndarray):
-    #     raise TypeError("'prev_momentum' should be an 'np.ndarray'")
-    if not isinstance(L_iter, int):
-        raise TypeError("'L_iter' should be a 'int'")
-    if not isinstance(clip_thresh, int):
-        raise TypeError("'clip_thresh' should be a 'int'")
-
     tools, vectors = types.check_vectors(vectors)
+    check_type(prev_momentum, (list, np.ndarray, torch.Tensor))
+    check_type(L_iter, int)
+    check_type(clip_thresh, int)
 
     v = prev_momentum
     for i in range(L_iter):
@@ -297,9 +290,8 @@ def minimum_diameter_averaging(vectors,
         - nb_byz        : int
     """
     tools, vectors = types.check_vectors(vectors)
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
-            
+    check_type(nb_byz, int)
+
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     
     n = len(vectors)
@@ -337,11 +329,9 @@ def minimum_variance_averaging(vectors: list[np.array] or np.array,
         - vectors       : list or np.ndarray 
         - nb_byz        : int
     """
-    
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
-            
+
     tools, vectors = types.check_vectors(vectors)
+    check_type(nb_byz, int)
 
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     
@@ -375,16 +365,13 @@ def monna(vectors: list[np.array] or np.array,
         - pivot_index   : int
     """
 
-    if not isinstance(nb_byz, int):
-        raise TypeError("'nb_byz' should be a 'int'")
-
     tools, vectors = types.check_vectors(vectors)
+    check_type(nb_byz, int)
 
 
     dist = tools.linalg.norm(vectors[pivot_index]-vectors, axis = 1)
     k = len(vectors) - nb_byz
     indices = np.argpartition(dist, k)[:k]
-    print(indices)
     return average(vectors[indices])
 
 

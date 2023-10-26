@@ -1,8 +1,10 @@
 import numpy as np
 import torch
 import utils.torch_tools as torch_tools
+from typing import Union
 
-def check_vectors(vectors):
+
+def check_vectors_type(vectors):
     if isinstance(vectors, list) and isinstance(vectors[0], np.ndarray):
         tools = np
         vectors = np.array(vectors)
@@ -30,3 +32,14 @@ def random_tool(vectors):
     return tools
 
 
+def check_type(element, t):
+       if isinstance(t, tuple):
+        s = "" 
+        for i in range(len(t)):
+            s = s + "'"+ t[i].__name__+"'"
+            if i < len(t)-1:
+                s = s + " or "
+    else:
+        s = "'"+t.__name__+"'"
+    if not isinstance(element, t):
+        raise TypeError("Expected "+s+" but got '"+type(element).__name__+"'")
