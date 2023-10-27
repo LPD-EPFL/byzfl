@@ -33,7 +33,7 @@ def random_tool(vectors):
 
 
 def check_type(element, t):
-       if isinstance(t, tuple):
+    if isinstance(t, tuple):
         s = "" 
         for i in range(len(t)):
             s = s + "'"+ t[i].__name__+"'"

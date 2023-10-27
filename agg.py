@@ -1,39 +1,45 @@
 import numpy as np
 import itertools
 import torch
-import utils.types as types
-import utils.torch_tools as torch_tools
+import utils.misc as misc
 import math
+from typing import Union
 
-def average(vectors: list or np.ndarray) -> np.ndarray:
+def average(vectors: Union[list, np.ndarray, torch.Tensor]
+    ) -> Union[np.ndarray, torch.Tensor]:
+
     """Computes the average vector in vectors.
 
     Argument(s):
         - vectors   : list or np.ndarray or torch.Tensor
     """
 
-    tools, vectors = types.check_vectors(vectors)
+    tools, vectors = misc.check_vectors_type(vectors)
 
     return tools.mean(vectors, axis = 0)
 
 
 
 
-def median(vectors: list or np.ndarray) -> np.ndarray:
+def median(vectors: Union[list, np.ndarray, torch.Tensor]
+    ) -> Union[np.ndarray, torch.Tensor]:
+
     """Computes the coordinate-wise median vector in vectors.
 
     Argument(s):
         - vectors: list or np.ndarray 
     """
 
-    tools, vectors = types.check_vectors(vectors)
+    tools, vectors = misc.check_vectors_type(vectors)
 
     return tools.median(vectors, axis=0)
 
 
 
 
-def trmean(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
+def trmean(vectors: Union[list, np.ndarray, torch.Tensor], 
+           nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+
     """Applies the Trimmed Mean aggregation rule (Yin et al. (2021)):
     Sorts the vector values by coordinates, removes the first lowest
     'nb_byz' values and the highest 'nb_byz' values by coordinates and
@@ -54,8 +60,8 @@ def trmean(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
 
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
     if nb_byz == 0:
         return average(vectors)
@@ -66,7 +72,10 @@ def trmean(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
 
 
 
-def geometric_median(vectors, nu=0.1, T=3):
+def geometric_median(vectors: Union[list, np.ndarray, torch.Tensor],
+                     nu: float = 0.1,
+                     T: int = 3) -> Union[np.ndarray, torch.Tensor]:
+
     """Applies the smoothed Weiszfeld algorithm [XXX] to return the
     approximate geometric median vector of 'vectors'.
 
@@ -81,9 +90,9 @@ def geometric_median(vectors, nu=0.1, T=3):
     if not isinstance(T, int):
         raise TypeError("'T' should be a 'int'")
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nu, float)
-    check_type(T, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nu, float)
+    misc.check_type(T, int)
 
     z = tools.zeros_like(vectors[0])
     filtered_vectors = vectors[~tools.any(tools.isinf(vectors), axis = 1)]
@@ -98,7 +107,9 @@ def geometric_median(vectors, nu=0.1, T=3):
 
 
 
-def krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
+def krum(vectors: Union[list, np.ndarray, torch.Tensor],
+         nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+
     """Applies the Krum aggregation rule (Blanchard et al. (2017)):
     Returns the vector closest in average to 'len(vectors) - nb_byz - 1'
     other vectors.
@@ -118,8 +129,8 @@ def krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
         f68f89b29639786cb62ef-Paper.pdf
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
     
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
@@ -131,7 +142,9 @@ def krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
 
 
 
-def multi_krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
+def multi_krum(vectors: Union[list, np.ndarray, torch.Tensor],
+               nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+
     """Applies the Multi-Krum function (Blanchard et al. (2017)):
     Selects the k vectors closest in average to 
     'len(vectors) - nb_byz - 1' other vectors (each vector can be the
@@ -153,8 +166,8 @@ def multi_krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
         f68f89b29639786cb62ef-Paper.pdf
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
@@ -166,7 +179,9 @@ def multi_krum(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
 
 
 
-def nnm(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
+def nnm(vectors: Union[list, np.ndarray, torch.Tensor],
+        nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+
     """Applies the Nearest Neighbor Mixing (NNM) pre-aggregation rule 
     (Allouah et al. (2023)): returns a 2 dimensionnal array of type
     'np.ndarray' containing the average of the 'len(vectors) - nb_byz'
@@ -185,8 +200,8 @@ def nnm(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
           https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     k = len(vectors) - nb_byz
@@ -196,7 +211,9 @@ def nnm(vectors: list or np.ndarray, nb_byz: int) -> np.ndarray:
 
 
 
-def bucketing(vectors: list or np.ndarray, bucket_size: int) -> np.ndarray:
+def bucketing(vectors: Union[list, np.ndarray, torch.Tensor],
+              bucket_size: int) -> Union[np.ndarray, torch.Tensor]:
+
     """Applies the Bucketing aggregation rule (Karimireddy et al., 2022)
     Returns a 2 dimensionnal array of type 'np.ndarray' containing
     averages of 'bucket_size' vectors. Each average is computed on a
@@ -214,10 +231,10 @@ def bucketing(vectors: list or np.ndarray, bucket_size: int) -> np.ndarray:
           URL https://openreview.net/pdf?id=jXKKDEi5vJt
     """
     
-    tools, vectors = types.check_vectors(vectors)
-    check_type(bucket_size, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(bucket_size, int)
 
-    random = types.random_tool(vectors)
+    random = misc.random_tool(vectors)
 
     vectors = random.permutation(vectors)
     nb_buckets = int(math.floor(len(vectors) / bucket_size))
@@ -235,10 +252,10 @@ def bucketing(vectors: list or np.ndarray, bucket_size: int) -> np.ndarray:
 
 
 
-def centered_clipping(vectors: list or np.ndarray, 
-                      prev_momentum: np.array,
+def centered_clipping(vectors: Union[list, np.ndarray, torch.Tensor], 
+                      prev_momentum: Union[np.ndarray, torch.Tensor],
                       L_iter: int = 3, 
-                      clip_thresh: int = 1) -> np.array:
+                      clip_thresh: int = 1) -> Union[np.ndarray, torch.Tensor]:
 
     """Applies the Centered Clipping Algorithm presented in
     (Karimireddy et al.(2021)): It adds to 'prev_momentum' the average
@@ -260,10 +277,10 @@ def centered_clipping(vectors: list or np.ndarray,
         eddy21a.pdf
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(prev_momentum, (list, np.ndarray, torch.Tensor))
-    check_type(L_iter, int)
-    check_type(clip_thresh, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(prev_momentum, (list, np.ndarray, torch.Tensor))
+    misc.check_type(L_iter, int)
+    misc.check_type(clip_thresh, int)
 
     v = prev_momentum
     for i in range(L_iter):
@@ -277,8 +294,8 @@ def centered_clipping(vectors: list or np.ndarray,
 
 
 
-def minimum_diameter_averaging(vectors,
-                               nb_byz: int) -> np.array:
+def mda(vectors: Union[list, np.ndarray, torch.Tensor],
+        nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
 
     """Finds the subset of vectors of size 'len(vectors) - nb_byz' that
     has the smallest diameter and returns the average of the vectors in
@@ -289,8 +306,8 @@ def minimum_diameter_averaging(vectors,
         - vectors       : list or np.ndarray 
         - nb_byz        : int
     """
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     
@@ -315,8 +332,9 @@ def minimum_diameter_averaging(vectors,
 
 
 
-def minimum_variance_averaging(vectors: list[np.array] or np.array,
-                               nb_byz: int) -> np.array:
+def mva(vectors: Union[list, np.ndarray, torch.Tensor],
+        nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+
     """Finds the subset of vectors of size 'len(vectors) - nb_byz' that
     has the smallest variance and returns the average of the vectors in
     the selected subset. The variance of a subset is equal to the sum
@@ -330,8 +348,8 @@ def minimum_variance_averaging(vectors: list[np.array] or np.array,
         - nb_byz        : int
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
     dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     
@@ -353,9 +371,10 @@ def minimum_variance_averaging(vectors: list[np.array] or np.array,
 
 
 
-def monna(vectors: list[np.array] or np.array, 
+def monna(vectors: Union[list, np.ndarray, torch.Tensor], 
           nb_byz: int,
-          pivot_index: int = -1) -> np.array:
+          pivot_index: int = -1) -> Union[np.ndarray, torch.Tensor]:
+
     """Returns the average of the 'len(vectors)-nb_byz' closest vectors
     to 'vectors[pivot_index]'.
     
@@ -365,8 +384,8 @@ def monna(vectors: list[np.array] or np.array,
         - pivot_index   : int
     """
 
-    tools, vectors = types.check_vectors(vectors)
-    check_type(nb_byz, int)
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
 
 
     dist = tools.linalg.norm(vectors[pivot_index]-vectors, axis = 1)
