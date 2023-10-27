@@ -85,10 +85,8 @@ def geometric_median(vectors: Union[list, np.ndarray, torch.Tensor],
         - T         : int
     """
 
-    if not isinstance(nu, float):
-        raise TypeError("'nu' should be a 'float'")
-    if not isinstance(T, int):
-        raise TypeError("'T' should be a 'int'")
+    misc.check_type(nu, float)
+    misc.check_type(T, int)
 
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nu, float)
