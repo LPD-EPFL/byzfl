@@ -5,13 +5,13 @@ import utils.misc as misc
 import math
 from typing import Union
 
-def average(vectors: Union[list, np.ndarray, torch.Tensor]
-    ) -> Union[np.ndarray, torch.Tensor]:
+def average(vectors):
 
     """Computes the average vector in vectors.
 
     Argument(s):
-        - vectors   : list or np.ndarray or torch.Tensor
+    ------------
+    vectors   : list or np.ndarray or torch.Tensor
     """
 
     tools, vectors = misc.check_vectors_type(vectors)
@@ -21,8 +21,7 @@ def average(vectors: Union[list, np.ndarray, torch.Tensor]
 
 
 
-def median(vectors: Union[list, np.ndarray, torch.Tensor]
-    ) -> Union[np.ndarray, torch.Tensor]:
+def median(vectors):
 
     """Computes the coordinate-wise median vector in vectors.
 
@@ -37,8 +36,7 @@ def median(vectors: Union[list, np.ndarray, torch.Tensor]
 
 
 
-def trmean(vectors: Union[list, np.ndarray, torch.Tensor], 
-           nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+def trmean(vectors, nb_byz) -> Union[np.ndarray, torch.Tensor]:
 
     """Applies the Trimmed Mean aggregation rule (Yin et al. (2021)):
     Sorts the vector values by coordinates, removes the first lowest
@@ -72,9 +70,7 @@ def trmean(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def geometric_median(vectors: Union[list, np.ndarray, torch.Tensor],
-                     nu: float = 0.1,
-                     T: int = 3) -> Union[np.ndarray, torch.Tensor]:
+def geometric_median(vectors, nu=0.1, T=3):
 
     """Applies the smoothed Weiszfeld algorithm [XXX] to return the
     approximate geometric median vector of 'vectors'.
@@ -84,10 +80,7 @@ def geometric_median(vectors: Union[list, np.ndarray, torch.Tensor],
         - nu        : float
         - T         : int
     """
-
-    misc.check_type(nu, float)
-    misc.check_type(T, int)
-
+    
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nu, float)
     misc.check_type(T, int)
@@ -105,8 +98,7 @@ def geometric_median(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def krum(vectors: Union[list, np.ndarray, torch.Tensor],
-         nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+def krum(vectors, nb_byz):
 
     """Applies the Krum aggregation rule (Blanchard et al. (2017)):
     Returns the vector closest in average to 'len(vectors) - nb_byz - 1'
@@ -140,8 +132,7 @@ def krum(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def multi_krum(vectors: Union[list, np.ndarray, torch.Tensor],
-               nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+def multi_krum(vectors, nb_byz) -> Union[np.ndarray, torch.Tensor]:
 
     """Applies the Multi-Krum function (Blanchard et al. (2017)):
     Selects the k vectors closest in average to 
@@ -177,8 +168,7 @@ def multi_krum(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def nnm(vectors: Union[list, np.ndarray, torch.Tensor],
-        nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+def nnm(vectors, nb_byz):
 
     """Applies the Nearest Neighbor Mixing (NNM) pre-aggregation rule 
     (Allouah et al. (2023)): returns a 2 dimensionnal array of type
@@ -209,8 +199,7 @@ def nnm(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def bucketing(vectors: Union[list, np.ndarray, torch.Tensor],
-              bucket_size: int) -> Union[np.ndarray, torch.Tensor]:
+def bucketing(vectors, bucket_size):
 
     """Applies the Bucketing aggregation rule (Karimireddy et al., 2022)
     Returns a 2 dimensionnal array of type 'np.ndarray' containing
@@ -250,10 +239,7 @@ def bucketing(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def centered_clipping(vectors: Union[list, np.ndarray, torch.Tensor], 
-                      prev_momentum: Union[np.ndarray, torch.Tensor],
-                      L_iter: int = 3, 
-                      clip_thresh: int = 1) -> Union[np.ndarray, torch.Tensor]:
+def centered_clipping(vectors, prev_momentum, L_iter=3, clip_thresh=1):
 
     """Applies the Centered Clipping Algorithm presented in
     (Karimireddy et al.(2021)): It adds to 'prev_momentum' the average
@@ -292,8 +278,7 @@ def centered_clipping(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def mda(vectors: Union[list, np.ndarray, torch.Tensor],
-        nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+def mda(vectors, nb_byz):
 
     """Finds the subset of vectors of size 'len(vectors) - nb_byz' that
     has the smallest diameter and returns the average of the vectors in
@@ -330,8 +315,7 @@ def mda(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def mva(vectors: Union[list, np.ndarray, torch.Tensor],
-        nb_byz: int) -> Union[np.ndarray, torch.Tensor]:
+def mva(vectors, nb_byz):
 
     """Finds the subset of vectors of size 'len(vectors) - nb_byz' that
     has the smallest variance and returns the average of the vectors in
@@ -369,9 +353,7 @@ def mva(vectors: Union[list, np.ndarray, torch.Tensor],
 
 
 
-def monna(vectors: Union[list, np.ndarray, torch.Tensor], 
-          nb_byz: int,
-          pivot_index: int = -1) -> Union[np.ndarray, torch.Tensor]:
+def monna(vectors, nb_byz, pivot_index=-1):
 
     """Returns the average of the 'len(vectors)-nb_byz' closest vectors
     to 'vectors[pivot_index]'.
