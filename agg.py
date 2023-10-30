@@ -3,7 +3,7 @@ import itertools
 import torch
 import utils.misc as misc
 import math
-from typing import Union
+
 
 def average(vectors):
 
@@ -36,7 +36,7 @@ def median(vectors):
 
 
 
-def trmean(vectors, nb_byz) -> Union[np.ndarray, torch.Tensor]:
+def trmean(vectors, nb_byz):
 
     """Applies the Trimmed Mean aggregation rule (Yin et al. (2021)):
     Sorts the vector values by coordinates, removes the first lowest
@@ -80,7 +80,7 @@ def geometric_median(vectors, nu=0.1, T=3):
         - nu        : float
         - T         : int
     """
-    
+
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nu, float)
     misc.check_type(T, int)
@@ -132,7 +132,7 @@ def krum(vectors, nb_byz):
 
 
 
-def multi_krum(vectors, nb_byz) -> Union[np.ndarray, torch.Tensor]:
+def multi_krum(vectors, nb_byz):
 
     """Applies the Multi-Krum function (Blanchard et al. (2017)):
     Selects the k vectors closest in average to 
