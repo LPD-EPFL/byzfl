@@ -6,7 +6,8 @@ def mean(vectors, axis = 0):
 	return torch.mean(vectors, axis=axis)
 
 def median(vectors, axis = 0):
-	return torch.median(vectors, axis=axis)[0]
+	return torch.quantile(vectors, dim = axis, q = 0.5)
+	# return torch.median(vectors, axis=axis)[0]
 
 def sort(vectors, axis = 0):
 	return torch.sort(vectors, axis=axis)[0]
@@ -57,9 +58,11 @@ def max(vectors):
 	return torch.max(vectors)
 
 def asarray(l):
-	print(l)
 	dtype = type(l[0])
 	return torch.as_tensor(l, dtype = dtype)
+
+def cdist(vector1, vector2):
+	return torch.cdist(vector1, vector2)
 
 
 

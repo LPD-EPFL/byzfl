@@ -3,6 +3,7 @@ import itertools
 import torch
 import utils.misc as misc
 import math
+import utils.torch_tools as torch_tools
 
 
 def average(vectors):
@@ -123,7 +124,9 @@ def krum(vectors, nb_byz):
     misc.check_type(nb_byz, int)
 
     
-    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
+    distance = misc.distance_tool(vectors)
+
+    dist = distance.cdist(vectors, vectors)
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
     index = tools.argmin(dist)
@@ -158,7 +161,10 @@ def multi_krum(vectors, nb_byz):
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nb_byz, int)
 
-    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
+    distance = misc.distance_tool(vectors)
+
+    dist = distance.cdist(vectors, vectors)
+    # tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
     k = len(vectors) - nb_byz
@@ -191,7 +197,9 @@ def nnm(vectors, nb_byz):
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nb_byz, int)
 
-    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
+    distance = misc.distance_tool(vectors)
+
+    dist = distance.cdist(vectors, vectors)
     k = len(vectors) - nb_byz
     indices = tools.argpartition(dist, k , axis = 1)[:,:k]
     return tools.mean(vectors[indices], axis = 1)
@@ -292,7 +300,9 @@ def mda(vectors, nb_byz):
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nb_byz, int)
 
-    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
+    distance = misc.distance_tool(vectors)
+
+    dist = distance.cdist(vectors, vectors)
     
     n = len(vectors)
     k = n - nb_byz
@@ -333,7 +343,9 @@ def mva(vectors, nb_byz):
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nb_byz, int)
 
-    dist = tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
+    distance = misc.distance_tool(vectors)
+
+    dist = distance.cdist(vectors, vectors)
     
     n = len(vectors)
     k = n - nb_byz
@@ -367,11 +379,12 @@ def monna(vectors, nb_byz, pivot_index=-1):
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nb_byz, int)
 
+    distance = misc.distance_tool(vectors)
 
-    dist = tools.linalg.norm(vectors[pivot_index]-vectors, axis = 1)
+    dist = distance.cdist(vectors, vectors[pivot_index].reshape(1,-1))
     k = len(vectors) - nb_byz
-    indices = np.argpartition(dist, k)[:k]
-    return average(vectors[indices])
+    indices = np.argpartition(dist.reshape(-1), k)[:k]
+    return tools.mean(vectors[indices], axis = 0)
 
 
 

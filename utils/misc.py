@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import utils.torch_tools as torch_tools
 from typing import Union
+from scipy.spatial import distance
 
 
 def check_vectors_type(vectors):
@@ -25,6 +26,16 @@ def random_tool(vectors):
     if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or
         isinstance(vectors, np.ndarray)):
         tools = np.random
+    elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
+          isinstance(vectors, torch.Tensor) ):
+        tools = torch_tools
+
+    return tools
+
+def distance_tool(vectors):
+    if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or
+        isinstance(vectors, np.ndarray)):
+        tools = distance
     elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
           isinstance(vectors, torch.Tensor) ):
         tools = torch_tools
