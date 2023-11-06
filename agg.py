@@ -126,7 +126,7 @@ def krum(vectors, nb_byz):
     
     distance = misc.distance_tool(vectors)
 
-    dist = distance.cdist(vectors, vectors)
+    dist = distance.cdist(vectors, vectors)**2
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
     index = tools.argmin(dist)
@@ -163,7 +163,7 @@ def multi_krum(vectors, nb_byz):
 
     distance = misc.distance_tool(vectors)
 
-    dist = distance.cdist(vectors, vectors)
+    dist = distance.cdist(vectors, vectors)**2
     # tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
@@ -303,6 +303,7 @@ def mda(vectors, nb_byz):
     distance = misc.distance_tool(vectors)
 
     dist = distance.cdist(vectors, vectors)
+    print("distance agg", dist)
     
     n = len(vectors)
     k = n - nb_byz
