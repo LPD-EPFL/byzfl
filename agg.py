@@ -123,7 +123,6 @@ def krum(vectors, nb_byz):
     tools, vectors = misc.check_vectors_type(vectors)
     misc.check_type(nb_byz, int)
 
-    
     distance = misc.distance_tool(vectors)
 
     dist = distance.cdist(vectors, vectors)**2
@@ -164,7 +163,6 @@ def multi_krum(vectors, nb_byz):
     distance = misc.distance_tool(vectors)
 
     dist = distance.cdist(vectors, vectors)**2
-    # tools.array([tools.linalg.norm(vectors-a, axis=1) for a in vectors])
     dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-nb_byz]
     dist = tools.mean(dist, axis = 1)
     k = len(vectors) - nb_byz
@@ -247,7 +245,7 @@ def bucketing(vectors, bucket_size):
 
 
 
-def centered_clipping(vectors, prev_momentum, L_iter=3, clip_thresh=1):
+def centered_clipping(vectors, prev_momentum=None, L_iter=3, clip_thresh=1):
 
     """Applies the Centered Clipping Algorithm presented in
     (Karimireddy et al.(2021)): It adds to 'prev_momentum' the average
@@ -269,8 +267,9 @@ def centered_clipping(vectors, prev_momentum, L_iter=3, clip_thresh=1):
         eddy21a.pdf
     """
 
+
     tools, vectors = misc.check_vectors_type(vectors)
-    misc.check_type(prev_momentum, (list, np.ndarray, torch.Tensor))
+    misc.check_type(prev_momentum, (list, np.ndarray, torch.Tensor, int))
     misc.check_type(L_iter, int)
     misc.check_type(clip_thresh, int)
 
@@ -303,7 +302,6 @@ def mda(vectors, nb_byz):
     distance = misc.distance_tool(vectors)
 
     dist = distance.cdist(vectors, vectors)
-    print("distance agg", dist)
     
     n = len(vectors)
     k = n - nb_byz
@@ -314,12 +312,10 @@ def mda(vectors, nb_byz):
     all_subsets = list(itertools.combinations(range(n), k))
     for subset in all_subsets:
         vector_indices = list(itertools.combinations(subset, 2))
-        # print(tuple(zip(*vector_indices)))
-        # print(dist)
-        # print(dist[tuple(zip(*vector_indices))])
         diameter = tools.max(dist[tuple(zip(*vector_indices))])
         if diameter < min_diameter:
             min_subset = subset
+            min_diameter = diameter
         # print(min_subset)
     return vectors[tools.asarray(min_subset)].mean(axis = 0)
 
@@ -346,7 +342,7 @@ def mva(vectors, nb_byz):
 
     distance = misc.distance_tool(vectors)
 
-    dist = distance.cdist(vectors, vectors)
+    dist = distance.cdist(vectors, vectors)**2
     
     n = len(vectors)
     k = n - nb_byz
@@ -360,6 +356,7 @@ def mva(vectors, nb_byz):
         diameter = tools.sum(dist[tuple(zip(*vector_indices))])
         if diameter < min_diameter:
             min_subset = subset
+            min_diameter = diameter
             
     return vectors[tools.asarray(min_subset)].mean(axis = 0)
 
@@ -372,7 +369,7 @@ def monna(vectors, nb_byz, pivot_index=-1):
     to 'vectors[pivot_index]'.
     
     Argument(s):
-        - vectors       : list or np.ndarray 
+        - vectors       : list or np.ndarray
         - nb_byz        : int
         - pivot_index   : int
     """
@@ -384,10 +381,27 @@ def monna(vectors, nb_byz, pivot_index=-1):
 
     dist = distance.cdist(vectors, vectors[pivot_index].reshape(1,-1))
     k = len(vectors) - nb_byz
-    indices = np.argpartition(dist.reshape(-1), k)[:k]
+    indices = tools.argpartition(dist.reshape(-1), k)[:k]
     return tools.mean(vectors[indices], axis = 0)
 
+def meamed(vectors, nb_byz):
 
+    tools, vectors = misc.check_vectors_type(vectors)
+    misc.check_type(nb_byz, int)
+
+    d = len(vectors[0])
+    k = len(vectors) - nb_byz
+
+    median = tools.median(vectors, axis = 0)
+    abs_diff = tools.abs((vectors - median))
+
+    indices = tools.argpartition(abs_diff, k, axis = 0)[:k]
+    indices = tools.multiply(indices, d)
+    a = tools.arange(d)
+    if not tools == np:
+        a = a.to(indices.device)
+    indices = tools.add(indices, a)
+    return tools.mean(vectors.take(indices), axis = 0)
 
 
 

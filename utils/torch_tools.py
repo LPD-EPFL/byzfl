@@ -1,6 +1,6 @@
+import numpy as np
 import torch
 import torch.linalg as linalg
-import numpy as np
 
 def mean(vectors, axis = 0):
 	return torch.mean(vectors, axis=axis)
@@ -64,6 +64,12 @@ def asarray(l):
 def cdist(vector1, vector2):
 	return torch.cdist(vector1, vector2)
 
+def abs(vector):
+	return torch.abs(vector)
 
+def add(vector1, vector2):
+	return torch.add(vector1, vector2)
 
+def arange(d):
+	return torch.arange(d)
 
