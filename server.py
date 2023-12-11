@@ -61,6 +61,9 @@ class Server(object):
     def aggregate(self, vectors):
         return self.robust_aggregator.aggregate(vectors)
 
+    def get_parameters(self):
+        return self.model.state_dict()
+
     def set_parameters(self, flat_vector):
         new_dict = unflatten_parameters(flat_vector)
         self.model.load_state_dict(new_dict)
@@ -69,9 +72,6 @@ class Server(object):
         new_dict = unflatten_parameters(flat_vector)
         for key, value in self.model.named_parameters():
             value.grad = new_dict[key].detach().clone()
-
-    def get_parameters(self):
-        return self.model.state_dict()
 
     def step(step):
         self.optimizer.step()

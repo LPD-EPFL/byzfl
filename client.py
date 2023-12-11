@@ -29,7 +29,7 @@ class Client(object):
                                          lr = lr, 
                                          weight_decay = weight_decay, 
                                          momentum = momentum, 
-                                         dampening = 1 - momentum)
+                                         dampening = momentum)
 
         self.scheduler = torch.optim.scheduler.MuliStepLR(self.optimizer, 
                                           milestones = milestones, 
@@ -37,7 +37,6 @@ class Client(object):
 
         self.gradient_LF = 0
         self.labelflipping = labelflipping
-
 
 
     def flatten(state_dict):
@@ -54,11 +53,18 @@ class Client(object):
             new_dict[key] = flat_vector[c:c+nb_elements].view(value.shape)
             c = c + nb_element
         return new_dict
-
+    
+    def unflatten_gradients(flat_vector):
+        new_dict = collections.OrderedDict()
+        c = 0
+        for key, value in self.model.named_parameters():
+            nb_elements = torch.numel(value) 
+            new_dict[key] = flat_vector[c:c+nb_elements].view(value.shape)
+            c = c + nb_element
+        return new_dict
 
     def compute_gradients(self):
 
-        #JS: compute gradient on flipped labels
         if self.labelflipping:
             self.model.eval()
             self.model.zero_grad()
@@ -76,10 +82,6 @@ class Client(object):
         loss = self.criterion(outputs, targets)
         loss.backward()
 
-    def set_parameters(self, flat_vector):
-        new_dict = unflatten_parameters(flat_vector)
-        self.model.load_state_dict(new_dict)
-
     def get_gradients(self):
         new_dict = collections.OrderedDict()
         for key, value in self.model.named_parameters():
@@ -88,6 +90,15 @@ class Client(object):
 
     def get_parameters(self):
         return self.model.state_dict()
+
+    def set_parameters(self, flat_vector):
+        new_dict = unflatten_parameters(flat_vector)
+        self.model.load_state_dict(new_dict)
+
+    def set_gradients(self, flat_vector):
+        new_dict = unflatten_parameters(flat_vector)
+        for key, value in self.model.named_parameters():
+            value.grad = new_dict[key].detach().clone()
 
     def step(step):
         self.optimizer.step()
