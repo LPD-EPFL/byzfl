@@ -114,7 +114,7 @@ def iid_idx(idx, nb_honest):
 
 def extreme_niid_idx(targets, idx, nb_honest):
     sorted_idx = np.array(sorted(zip(targets[idx],idx)))[:,1]
-    split_idx = np.array_split(sorted_niid_idx, nb_honest)
+    split_idx = np.array_split(sorted_idx, nb_honest)
     return split_idx
 
 def gamma_niid_idx(targets, idx, nb_honest, gamma):

@@ -23,13 +23,11 @@ class Client(object):
 
         self.model = getattr(models, model)().to(device)
 
-        self.lr = lr        
+        self.lr = lr
         self.criterion = getattr(torch.nn, loss)()
         self.optimizer = torch.optim.SGD(self.model.parameters(), 
                                          lr = lr, 
-                                         weight_decay = weight_decay, 
-                                         momentum = momentum, 
-                                         dampening = momentum)
+                                         weight_decay = weight_decay)
 
         self.scheduler = torch.optim.scheduler.MuliStepLR(self.optimizer, 
                                           milestones = milestones, 
@@ -37,9 +35,18 @@ class Client(object):
 
         self.gradient_LF = 0
         self.labelflipping = labelflipping
+        
+        self.mom = momentum
+        self.last_mom = 0
 
 
-    def flatten(state_dict):
+    def flatten_dict(state_dict):
+        flatten_vector = []
+        for key, value in state_dict.items():
+            flatten_vector.append(value.view(-1))
+        return torch.cat(flatten_vector).view(-1)
+
+    def flatten_generator(state_dict):
         flatten_vector = []
         for key, value in state_dict.items():
             flatten_vector.append(value.view(-1))
@@ -82,13 +89,26 @@ class Client(object):
         loss = self.criterion(outputs, targets)
         loss.backward()
 
-    def get_gradients(self):
+    def get_flat_gradients_with_momentum(self):
+        flat_gradient = self.flatten(self.get_gradients())
+        new_momentum = self.mom * self.last_mom + (1-self.mom) * flat_gradient
+        self.last_momentum = new_momentum
+        return new_momentum
+
+    def get_gradients(self, flat = False):
+        if flat == True:
+            return self.flatten(self.model.named_parameters())
+        return self.get_dict_gradients()
+
+    def get_dict_gradients(self):
         new_dict = collections.OrderedDict()
         for key, value in self.model.named_parameters():
             new_dict[key] = value.grad
         return new_dict
 
-    def get_parameters(self):
+    def get_parameters(self, flat = False):
+        if flat == True:
+            return self.flatten(self.model.state_dict())
         return self.model.state_dict()
 
     def set_parameters(self, flat_vector):
