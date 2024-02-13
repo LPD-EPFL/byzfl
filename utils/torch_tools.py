@@ -72,4 +72,3 @@ def add(vector1, vector2):
 
 def arange(d):
 	return torch.arange(d)
-

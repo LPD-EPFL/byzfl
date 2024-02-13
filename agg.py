@@ -3,7 +3,6 @@ import itertools
 import torch
 import utils.misc as misc
 import math
-import utils.torch_tools as torch_tools
 
 
 def average(vectors):
@@ -201,6 +200,28 @@ def nnm(vectors, nb_byz):
     k = len(vectors) - nb_byz
     indices = tools.argpartition(dist, k , axis = 1)[:,:k]
     return tools.mean(vectors[indices], axis = 1)
+
+
+def arc(vectors, nb_workers, nb_byz):
+    #JS: implementation of ARC - pre aggregation rule
+
+    #JS: Clip the vector if its L2 norm is greater than clip_threshold
+    def clip_vector(vector, clip_threshold):
+        vector_norm = vector.norm().item()
+        if vector_norm > clip_threshold:
+            vector.mul_(clip_threshold / vector_norm)
+        return vector
+    
+    magnitudes = [(vector.norm().item(), vector_id) for vector_id, vector in enumerate(vectors)]
+    magnitudes.sort(key=lambda x:x[0])
+    nb_clipped = int(2 * nb_byz / nb_workers * (nb_workers - nb_byz))
+    cut_off_value = nb_workers - nb_clipped
+
+    f_largest = magnitudes[cut_off_value:]
+    clipping_threshold = magnitudes[cut_off_value - 1][0]
+    for _, vector_id in f_largest:
+        vectors[vector_id] = clip_vector(vectors[vector_id], clipping_threshold)
+    return vectors
 
 
 
