@@ -31,8 +31,8 @@ class RobustAggregator(object):
 
     def aggregate(self, vectors):
         if self.pre_aggregator is not None:
-            mixed_vectors = self.robust_aggregators[self.aggregator](vectors)
-            aggregate_vector = self.robust_aggregators[self.pre_aggregator](mixed_vectors)
+            mixed_vectors = self.robust_aggregators[self.pre_aggregator](vectors)
+            aggregate_vector = self.robust_aggregators[self.aggregator](mixed_vectors)
         else:
             aggregate_vector = self.robust_aggregators[self.aggregator](vectors)
         #JS: Update the value of the previous momentum (e.g., for Centered Clipping aggregator)
@@ -79,4 +79,4 @@ class RobustAggregator(object):
         return agg.bucketing(vectors, self.bucket_size)
 
     def identity(self, vectors):
-        return vectors
+        return agg.identity(vectors)

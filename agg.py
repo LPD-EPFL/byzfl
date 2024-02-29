@@ -424,9 +424,9 @@ def meamed(vectors, nb_byz):
     indices = tools.add(indices, a)
     return tools.mean(vectors.take(indices), axis = 0)
 
-
-
-
+def identity(vectors):
+    tools, vectors = misc.check_vectors_type(vectors)
+    return tools.copy(vectors)
 
 
 

@@ -9,12 +9,12 @@ def check_vectors_type(vectors):
     if isinstance(vectors, list) and isinstance(vectors[0], np.ndarray):
         tools = np
         vectors = np.array(vectors)
-    elif isinstance(vectors, np.ndarray) :
+    elif isinstance(vectors, np.ndarray):
         tools = np
     elif isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor):
         tools = torch_tools
         vectors = torch.stack(vectors)
-    elif isinstance(vectors, torch.Tensor) :
+    elif isinstance(vectors, torch.Tensor):
         tools = torch_tools
     else :
         raise TypeError("'vectors' should be a 'list' of"
@@ -27,7 +27,7 @@ def random_tool(vectors):
         isinstance(vectors, np.ndarray)):
         tools = np.random
     elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
-          isinstance(vectors, torch.Tensor) ):
+          isinstance(vectors, torch.Tensor)):
         tools = torch_tools
 
     return tools
@@ -37,7 +37,7 @@ def distance_tool(vectors):
         isinstance(vectors, np.ndarray)):
         tools = distance
     elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
-          isinstance(vectors, torch.Tensor) ):
+          isinstance(vectors, torch.Tensor)):
         tools = torch_tools
 
     return tools
