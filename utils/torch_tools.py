@@ -25,6 +25,7 @@ def sum(vectors, axis=0):
 	return torch.sum(vectors, axis=axis)
 
 def array(vectors):
+	#return vectors.clone().detach()
 	return torch.stack(vectors)
 
 def argmin(vectors, axis=0):
@@ -55,7 +56,10 @@ def ones_like(tensor):
 	return torch.ones_like(tensor)
 
 def multiply(tensor1, tensor2):
-	return torch.multiply(tensor1, tensor2)
+	return torch.mul(tensor1, tensor2)
+
+def divide(tensor1, tensor2):
+	return torch.div(tensor1, tensor2)
 
 def max(vectors):
 	return torch.max(vectors)
@@ -88,8 +92,8 @@ def var(vector, axis=0, ddof=1):
 def sqrt(vector):
 	return torch.sqrt(vector)
 
-def full_like(vector, value):
-	return torch.full_like(vector, value)
+def full_like(vector, value, dtype):
+	return torch.full_like(vector, value, dtype=torch.float64)
 
 def dot(vector1, vector2):
 	vector1 = vector1.double()
@@ -103,9 +107,6 @@ def rand(vector):
     	layout=vector.layout,
     	device=vector.device
 	)
-
-def array(vector):
-	return torch.stack(vector, axis=0)
 
 def subtract(vector1, vector2):
 	return torch.subtract(vector1, vector2)

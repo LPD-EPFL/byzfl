@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 import utils.torch_tools as torch_tools
-from typing import Union
 from scipy.spatial import distance
 
 

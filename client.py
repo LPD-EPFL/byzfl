@@ -1,125 +1,152 @@
-import torch, random
-from robust_aggregators import RobustAggregator
-import models, misc
-import sys
-import collections
+import torch
+import numpy as np
 
-class Client(object):
-    def __init__(self, 
-                 training_dataloader,
-                 test_dataloader,
-                 model,
-                 weight_decay = 1e-4, 
-                 loss,
-                 lr = 0.1, 
-                 lr_decay = None, 
-                 momentum = None,
-                 milestones = None,
-                 labelflipping = False, 
-                 device = 'cpu'):
+from model_base_interface import ModelBaseInterface
+from utils.conversion import flatten_dict
 
-        self.training_dataloader = training_dataloader
-        self.test_dataloader = test_dataloader
+class Client(ModelBaseInterface):
+    """
+    Description
+    -----------
+    This class simulates one honest node which is able to train 
+    his local model to send the gradients and get the global model every round.
 
-        self.model = getattr(models, model)().to(device)
+    Parameters
+    ----------
+        All this parameters should be passed in a dictionary that contains the following keys.
+    model-name : str 
+        Name of the model to be used
+    device : str 
+        Name of the device to be used
+    learning-rate : float 
+        Learning rate
+    loss-name : str
+        Name of the loss to be used
+    weight-decay : float 
+        Regularization used
+    milestones : list 
+        List of the milestones, where the learning rate
+        decay should be applied
+    learning-rate-decay : float
+        Rate decreases over time during training
+    attack-name : str 
+        Name of the attack to be used
+    momentum : float 
+        Momentum
+    training-dataloader : Dataloader
+        Traning dataloader
+    nb-labels : int 
+        Number of labels in the dataset
 
-        self.lr = lr
-        self.criterion = getattr(torch.nn, loss)()
-        self.optimizer = torch.optim.SGD(self.model.parameters(), 
-                                         lr = lr, 
-                                         weight_decay = weight_decay)
+    Methods
+    --------
+    """
+    def __init__(self, params):
+        super().__init__({
+            "model_name": params["model_name"],
+            "device": params["device"],
+            "learning_rate": params["learning_rate"],
+            "weight_decay": params["weight_decay"],
+            "milestones": params["milestones"],
+            "learning_rate_decay": params["learning_rate_decay"]
+        })
 
-        self.scheduler = torch.optim.scheduler.MuliStepLR(self.optimizer, 
-                                          milestones = milestones, 
-                                          gamma = lr_decay)
+        self.criterion = getattr(torch.nn, params["loss_name"])()
 
         self.gradient_LF = 0
-        self.labelflipping = labelflipping
+        self.labelflipping = params["attack_name"] == "LabelFlipping"
+        self.nb_labels = params["nb_labels"]
         
-        self.mom = momentum
-        self.last_mom = 0
+        self.momentum = params["momentum"]
+        self.momentum_gradient = torch.zeros_like(
+            torch.cat(tuple(
+                tensor.view(-1) 
+                for tensor in self.model.parameters()
+            )),
+            device=params["device"]
+        )
+        self.training_dataloader = params["training_dataloader"]
 
+        self.loss_list = np.array([])
 
-    def flatten_dict(state_dict):
-        flatten_vector = []
-        for key, value in state_dict.items():
-            flatten_vector.append(value.view(-1))
-        return torch.cat(flatten_vector).view(-1)
-
-    def flatten_generator(state_dict):
-        flatten_vector = []
-        for key, value in state_dict.items():
-            flatten_vector.append(value.view(-1))
-        return torch.cat(flatten_vector).view(-1)
- 
-    def unflatten_parameters(flat_vector):
-        new_dict = collections.OrderedDict()
-        c = 0
-        for key, value in self.model.state_dict():
-            nb_elements = torch.numel(value) 
-            new_dict[key] = flat_vector[c:c+nb_elements].view(value.shape)
-            c = c + nb_element
-        return new_dict
-    
-    def unflatten_gradients(flat_vector):
-        new_dict = collections.OrderedDict()
-        c = 0
-        for key, value in self.model.named_parameters():
-            nb_elements = torch.numel(value) 
-            new_dict[key] = flat_vector[c:c+nb_elements].view(value.shape)
-            c = c + nb_element
-        return new_dict
+    def _sample_train_batch(self):
+        """
+        Description
+        -----------
+        Private function to get the next data from the dataloader
+        """
+        try:
+            return next(self.training_dataloader)
+        except:
+            self.train_iterator = iter(self.training_dataloader)
+            return next(self.train_iterator)
 
     def compute_gradients(self):
-
+        """
+        Description
+        -----------
+        Function where the client compute their gradients 
+        of their model loss function.
+        """
+        inputs, targets = self._sample_train_batch()
+        inputs, targets = inputs.to(self.device), targets.to(self.device)
+        
         if self.labelflipping:
             self.model.eval()
             self.model.zero_grad()
-            targets_flipped = targets.sub(self.numb_labels - 1).mul(-1)
-            outputs = sel.model(inputs)
-            loss = self.criterion(outputs, targets)
+            targets_flipped = targets.sub(self.nb_labels - 1).mul(-1)
+            outputs = self.model(inputs)
+            loss = self.criterion(outputs, targets_flipped)
             loss.backward()
-            self.gradient_LF = self.get_gradients()
-
-        self.model.train()
+            self.gradient_LF = self.get_dict_gradients()
+            self.model.train()
+        
         self.model.zero_grad()
-        inputs, targets = self.sample_train_batch()
-        inputs, targets = inputs.to(self.device), targets.to(self.device)
-        outputs = sel.model(inputs)
+        outputs = self.model(inputs)
         loss = self.criterion(outputs, targets)
+        self.loss_list = np.append(self.loss_list, loss.item())
         loss.backward()
+    
+    def get_flat_flipped_gradients(self):
+        """
+        Description
+        -----------
+        Get the gradients of the model with their targets
+        flipped in a flat array.
+
+        Returns
+        -------
+        List of the gradients.
+        """
+        return flatten_dict(self.gradient_LF)
 
     def get_flat_gradients_with_momentum(self):
-        flat_gradient = self.flatten(self.get_gradients())
-        new_momentum = self.mom * self.last_mom + (1-self.mom) * flat_gradient
-        self.last_momentum = new_momentum
-        return new_momentum
+        """
+        Description
+        ------------
+        Get the gradients of the model applying the momentum 
+        in a flat array.
 
-    def get_gradients(self, flat = False):
-        if flat == True:
-            return self.flatten(self.model.named_parameters())
-        return self.get_dict_gradients()
+        Returns
+        -------
+        List with the gradiends with momentum applied.
+        """
+        self.momentum_gradient.mul_(self.momentum)
+        self.momentum_gradient.add_(
+            self.get_flat_gradients(),
+            alpha=1-self.momentum
+        )
 
-    def get_dict_gradients(self):
-        new_dict = collections.OrderedDict()
-        for key, value in self.model.named_parameters():
-            new_dict[key] = value.grad
-        return new_dict
+        return self.momentum_gradient
+    
+    def get_loss_list(self):
+        """
+        Description
+        ------------
+        Get the loss list of the client
 
-    def get_parameters(self, flat = False):
-        if flat == True:
-            return self.flatten(self.model.state_dict())
-        return self.model.state_dict()
-
-    def set_parameters(self, flat_vector):
-        new_dict = unflatten_parameters(flat_vector)
-        self.model.load_state_dict(new_dict)
-
-    def set_gradients(self, flat_vector):
-        new_dict = unflatten_parameters(flat_vector)
-        for key, value in self.model.named_parameters():
-            value.grad = new_dict[key].detach().clone()
-
-    def step(step):
-        self.optimizer.step()
-        self.scheduler.step()
+        Returns
+        -------
+        List with the losses that have been computed over the training.
+        """
+        return self.loss_list
