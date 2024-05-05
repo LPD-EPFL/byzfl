@@ -167,14 +167,17 @@ if __name__ == '__main__':
     restriction_list = ["pre_aggregators", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
     optimized_dict_list = []
-    #<---------------------------------------------------->
+    
+    #Best setting found before
     for setting in dict_list:
         optimized_setting = train_best_setting(setting, "./best_hyperparameters")
         optimized_dict_list.append(optimized_setting)
     
     dict_list = remove_duplicates(optimized_dict_list)
-    #<---------------------------------------------------->
+    
+    #Do only experiments that haven't been done
     dict_list = eliminate_experiments_done(dict_list)
+
     total_batches = str(math.ceil(len(dict_list)/nb_jobs))
     print("Total experiments: " + str(len(dict_list)))
     print("Total batches: " + total_batches)
