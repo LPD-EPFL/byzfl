@@ -132,6 +132,7 @@ class ParamsManager(object):
     def get_data(self):
         return {   
             "general": {
+                "original_seed": self.get_original_seed(),
                 "seed": self.get_seed(),
                 "nb_seeds": self.get_nb_seeds(),
                 "device": self.get_device(),
@@ -192,6 +193,12 @@ class ParamsManager(object):
             }
         }
     
+    def get_original_seed(self):
+        default = 0
+        path = ["general", "original_seed"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+
     def get_seed(self):
         default = 0
         path = ["general", "seed"]

@@ -165,7 +165,19 @@ class ComputeCluster(object):
         --------
         Lists of bath-norm stats of all honest clients
         """
-        return [client.get_flat_batch_norm_stats() for client in self.client_list]
+        batch_norm_stats = [client.get_flat_batch_norm_stats() for client in self.client_list]
+
+        if self.labelflipping:
+            flipped_batch_norm_stats = [
+                c.get_flat_flipped_batch_norm_stats() 
+                for c in self.client_list
+            ]
+            byzantine_batch_norms = self.byz_worker.apply_attack(flipped_batch_norm_stats)
+        else:
+            byzantine_batch_norms = self.byz_worker.apply_attack(batch_norm_stats)
+        
+        return batch_norm_stats + byzantine_batch_norms
+
     
     def set_model_state(self, state_dict):
         """
@@ -211,3 +223,6 @@ class ComputeCluster(object):
         for every client.
         """
         return [client.get_loss_list() for client in self.client_list]
+    
+    def compute_batch_norm_keys(self):
+        [client.compute_batch_norm_keys() for client in self.client_list]

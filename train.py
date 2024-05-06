@@ -1,8 +1,13 @@
+import random
+import time
+
 import numpy as np
+import torch
 
 from server import Server
 from compute_cluster import ComputeCluster
 from dataset import get_dataloaders
+from managers import FileManager
 
 class Train(object):
     """
@@ -76,11 +81,41 @@ class Train(object):
         Dictionary with the parameters of the optimizer where every 
         key is the name of the paramater and their value is the value 
         of the parameter
+    save_models : (bool)
+        If true every delta steps the model will be saved
 
     Methods
     -------
     """
-    def __init__(self, params):
+    def __init__(self, params, dict_params):
+
+        if params["nb_honest"] is not None:
+            params["nb_workers"] = params["nb_honest"] + params["nb_byz"]
+
+        file_manager_params = {
+            "result_path": params["results_directory"],
+            "dataset_name": params["dataset_name"],
+            "model_name": params["model_name"],
+            "nb_workers": params["nb_workers"],
+            "nb_byz": params["nb_byz"],
+            "data_distribution_name": params["data_distribution_name"],
+            "data_distribution_params": params["data_distribution_parameters"],
+            "aggregation_name": params["aggregator_info"]["name"],
+            "pre_aggregation_names":  [
+                dict['name']
+                for dict in params["pre_agg_list"]
+            ],
+            "attack_name": params["attack_name"],
+            "learning_rate": params["learning_rate"],
+            "momentum": params["momentum"],
+            "weight_decay": params["weight_decay"],
+            "learning_rate_decay": params["learning_rate_decay"]
+        }
+
+        self.file_manager = FileManager(file_manager_params)
+        self.file_manager.save_config_dict(dict_params)
+
+        # Forcing nb_declared = nb_real
         params["aggregator_info"]["parameters"]["nb_byz"] = params["nb_byz"]
         if len(params["pre_agg_list"]) > 0:
             for pre_agg in params["pre_agg_list"]:
@@ -150,63 +185,24 @@ class Train(object):
 
         self.compute_cluster.set_model_state(self.server.get_dict_parameters())
 
+        self.seed = params["seed"]
         self.steps = params["nb_steps"]
         self.evaluation_delta = params["evaluation_delta"]
         self.evaluate_on_test = params["evaluate_on_test"]
+        self.save_models = params["save_models"]
+        self.display = params["display_results"]
+
+        #Stored for display results only
+        self.agg_name = params["aggregator_info"]["name"]
+        self.data_dist_name = params["data_distribution_name"]
+        self.attack_name = params["attack_name"]
+        self.nb_byz = params["nb_byz"]
+
         self.accuracy_list = np.array([])
         self.test_accuracy_list = np.array([])
-        self.model_list = np.array([])
-        self.loss_list = -1
-    
-    def get_accuracy_list(self):
-        """
-        Description
-        -----------
-        Get accuracy list
+        self.loss_list = np.array([])
 
-        Returns
-        -------
-        List of accuracies
-        """
-        return self.accuracy_list
-
-    def get_test_accuracy_list(self):
-        """
-        Description
-        -----------
-        Get test accuracy list
-
-        Returns
-        -------
-        List of accuracies
-        """
-        return self.test_accuracy_list
-    
-    def get_model_list(self):
-        """
-        Description
-        -----------
-        Get a list with the parameters of the models
-        that have been evaluated
-
-        Returns
-        -------
-        List of state_dicts
-        """
-        return self.model_list
-    
-    def get_loss_list(self):
-        """
-        Description
-        -----------
-        Get a list with the loss of the clients
-        computed every step
-
-        Returns
-        -------
-        Matrix of losses
-        """
-        return self.loss_list
+        self.use_batch_norm_stats = False
     
     def run_SGD(self):
         """
@@ -214,15 +210,22 @@ class Train(object):
         -----------
         Trains the model running SGD for n steps (setting.json)
         """
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
+        torch.use_deterministic_algorithms(True)
+        random.seed(self.seed)
+        start_time = time.time()
+
+        self.server.compute_batch_norm_keys()
+        if len(self.server.get_batch_norm_keys()) > 0:
+            self.use_batch_norm_stats = True
+            self.compute_cluster.compute_batch_norm_keys()
+        
         for step in range(0, self.steps):
 
             if step % self.evaluation_delta == 0:
                 accuracy = self.server.compute_validation_accuracy()
                 self.accuracy_list = np.append(self.accuracy_list, accuracy)
-                self.model_list = np.append(
-                    self.model_list, 
-                    self.server.get_dict_parameters()
-                )
 
                 if self.evaluate_on_test:
                     test_accuracy = self.server.compute_test_accuracy()
@@ -230,25 +233,77 @@ class Train(object):
                         self.test_accuracy_list, 
                         test_accuracy
                     )
+                    self.file_manager.write_array_in_file(
+                        self.test_accuracy_list, 
+                        "test_accuracy_seed_" + str(self.seed) + ".txt"
+                    )
+                
+                if self.save_models:
+                    self.file_manager.save_state_dict(
+                        self.server.get_dict_parameters(),
+                        self.seed,
+                        step
+                    )
             
             #Training
             new_gradients = self.compute_cluster.get_momentum()
-            new_batch_norm_stats = self.compute_cluster.get_batch_norm_stats()
+
+            if self.use_batch_norm_stats:
+                new_batch_norm_stats = self.compute_cluster.get_batch_norm_stats()
 
             #Aggregation and update of the global model
             self.server.update_model(new_gradients)
-            if new_batch_norm_stats[0].numel() != 0:
+
+            if self.use_batch_norm_stats:
                 self.server.update_batch_norm_stats(new_batch_norm_stats)
 
             #Broadcasting
-            new_parameters = self.server.get_flat_parameters()
-            self.compute_cluster.transmit_parameters_to_clients(new_parameters)
-        
+            new_parameters = self.server.get_dict_parameters()
+            self.compute_cluster.set_model_state(new_parameters)
+
         accuracy = self.server.compute_validation_accuracy()
         self.accuracy_list = np.append(self.accuracy_list, accuracy)
-        self.model_list = np.append(self.model_list, self.server.get_dict_parameters())
         self.loss_list = self.compute_cluster.get_loss_list_of_clients()
+
+        self.file_manager.write_array_in_file(
+            self.accuracy_list, 
+            "train_accuracy_seed_" + str(self.seed) + ".txt"
+        )
+
+        for i, loss in enumerate(self.loss_list):
+            self.file_manager.save_loss(loss, self.seed, i)
 
         if self.evaluate_on_test:
             test_accuracy = self.server.compute_test_accuracy()
             self.test_accuracy_list = np.append(self.test_accuracy_list, test_accuracy)
+            self.file_manager.write_array_in_file(
+                self.test_accuracy_list, 
+                "test_accuracy_seed_" + str(self.seed) + ".txt"
+            )
+        
+        if self.save_models:
+            self.file_manager.save_state_dict(
+                self.server.get_dict_parameters(),
+                self.seed,
+                self.steps
+            )
+        
+        end_time = time.time()
+        execution_time = end_time - start_time
+
+        self.file_manager.write_array_in_file(
+            np.array(execution_time),
+            "train_time_seed_" + str(self.seed) + ".txt"
+        )
+
+        if self.display:
+            print("\n")
+            print("Agg: "+ self.agg_name)
+            print("DataDist: "+ 
+                    self.data_dist_name)
+            print("Attack: " + self.attack_name)
+            print("Nb_byz: " + str(self.nb_byz))
+            print("Seed: " + str(self.seed))
+            accuracy_str = ", ".join(str(accuracy) for accuracy in self.accuracy_list)
+            print("Accuracy list: " + accuracy_str)
+            print("\n")

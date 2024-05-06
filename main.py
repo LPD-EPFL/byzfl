@@ -1,26 +1,26 @@
 import argparse
 import json
-import multiprocessing
+from multiprocessing import Pool, Value
 import os
-import math
 import copy
 
 import numpy as np
 
 from combinations import generate_all_combinations
-from experiment import Experiment
+from train import Train
+from managers import ParamsManager
 
-def run_experiment(params):
-    exp = Experiment(params=params)
-    exp.run()
+def init_pool_processes(shared_value):
+    global counter
+    counter = shared_value
 
-def generate_batches(data, batch_size):
-    for i in range(0, len(data), batch_size):
-        yield data[i:i + batch_size]
-
-def process_batch(batch):
-    with multiprocessing.Pool() as pool:
-        pool.map(run_experiment, batch)
+def run_training(params):
+    param_manager = ParamsManager(params=params)
+    train = Train(param_manager.get_flatten_info(), param_manager.get_data())
+    train.run_SGD()
+    with counter.get_lock():
+        print("Training " + str(counter.value) + " done")
+        counter.value += 1
 
 def process_args():
     parser = argparse.ArgumentParser()
@@ -87,7 +87,7 @@ def eliminate_experiments_done(dict_list):
 
 def train_best_setting(setting, path_best_hyperparameters):
     if setting["general"]["nb_workers"] is None:
-        nb_workers = setting["general"]["nb_honest"] + setting["general"]["nb_byz"]
+        setting["general"]["nb_workers"] = setting["general"]["nb_honest"] + setting["general"]["nb_byz"]
     if len(setting["model"]["data_distribution"]["parameters"]) > 0:
         parameters = setting["model"]["data_distribution"]["parameters"]
         factor = str(parameters[list(parameters.keys())[0]])
@@ -97,7 +97,7 @@ def train_best_setting(setting, path_best_hyperparameters):
     file_name = str(
         setting["model"]["dataset_name"] + "_"
         + setting["model"]["name"] + "_n_"
-        + str(nb_workers) + "_f_"
+        + str(setting["general"]["nb_workers"]) + "_f_"
         + str(setting["general"]["nb_byz"]) + "_"
         + setting["model"]["data_distribution"]["name"]
         + factor + "_"
@@ -108,7 +108,7 @@ def train_best_setting(setting, path_best_hyperparameters):
     steps_file_name = str(
         setting["model"]["dataset_name"] + "_"
         + setting["model"]["name"] + "_n_"
-        + str(nb_workers) + "_f_"
+        + str(setting["general"]["nb_workers"]) + "_f_"
         + str(setting["general"]["nb_byz"]) + "_"
         + setting["model"]["data_distribution"]["name"]
         + factor + "_"
@@ -142,6 +142,18 @@ def train_best_setting(setting, path_best_hyperparameters):
 def remove_duplicates(dict_list):
     set = {json.dumps(setting, sort_keys=True) for setting in dict_list}
     return [json.loads(unique_setting) for unique_setting in set]
+
+def delegate_seeds(dict_list):
+    real_dict_list = []
+    for setting in dict_list:
+        original_seed = setting["general"]["seed"]
+        nb_seeds = setting["general"]["nb_seeds"]
+        for i in range(nb_seeds):
+            new_setting = copy.deepcopy(setting)
+            new_setting["general"]["original_seed"] = original_seed
+            new_setting["general"]["seed"] = original_seed + i
+            real_dict_list.append(new_setting)
+    return real_dict_list
 
 if __name__ == '__main__':
     nb_jobs = process_args()
@@ -178,12 +190,11 @@ if __name__ == '__main__':
     #Do only experiments that haven't been done
     dict_list = eliminate_experiments_done(dict_list)
 
-    total_batches = str(math.ceil(len(dict_list)/nb_jobs))
-    print("Total experiments: " + str(len(dict_list)))
-    print("Total batches: " + total_batches)
-    batches = generate_batches(dict_list, nb_jobs)
-    i = 0
-    for batch in batches:
-        process_batch(batch)
-        print("Batch "+ str(i)+ " done")
-        i += 1
+    #Do a setting for every seed
+    dict_list = delegate_seeds(dict_list)
+
+    print("Total trainings to do: " + str(len(dict_list)))
+
+    counter = Value('i', 0)
+    with Pool(initializer=init_pool_processes, initargs=(counter,), processes=nb_jobs) as pool:
+        pool.map(run_training, dict_list)
