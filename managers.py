@@ -112,7 +112,6 @@ class ParamsManager(object):
             "data_distribution_name": self.get_name_data_distribution(),
             "data_distribution_parameters": self.get_parameters_data_distribution(),
             "loss_name": self.get_loss(),
-            "batch_norm": self.get_batch_norm(),
             "aggregator_info": self.get_aggregator_info(),
             "pre_agg_list": self.get_preaggregators(),
             "server_subsampling": self.get_server_subsampling(),
@@ -159,7 +158,6 @@ class ParamsManager(object):
                         "parameters": self.get_parameters_data_distribution()
                 },
                 "loss": self.get_loss(),
-                "batch_norm": self.get_batch_norm()
             },
 
             "aggregator": {
@@ -320,12 +318,6 @@ class ParamsManager(object):
     def get_loss(self):
         default = "NLLLoss"
         path = ["model", "loss"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-    
-    def get_batch_norm(self):
-        default = False
-        path = ["model", "batch_norm"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     

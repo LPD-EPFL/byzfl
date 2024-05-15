@@ -120,9 +120,6 @@ class Train(object):
         if len(params["pre_agg_list"]) > 0:
             for pre_agg in params["pre_agg_list"]:
                 pre_agg["parameters"]["nb_byz"] = params["nb_byz"]
-        
-        if params["nb_honest"] is not None:
-            params["nb_workers"] = params["nb_honest"] + params["nb_byz"]
 
         params_dataloaders = {
             "dataset_name": params["dataset_name"],
@@ -138,7 +135,17 @@ class Train(object):
             "nb_byz": params["nb_byz"]
         }
 
+        np.random.seed(0)
+        torch.manual_seed(0)
+        torch.use_deterministic_algorithms(True)
+        random.seed(0)
+
         train_dataloaders, validation_dataloader, test_dataloader = get_dataloaders(params_dataloaders)
+
+        self.seed = params["seed"]
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
+        random.seed(self.seed)
 
         server_params = {
             "model_name": params["model_name"],
@@ -185,7 +192,6 @@ class Train(object):
 
         self.compute_cluster.set_model_state(self.server.get_dict_parameters())
 
-        self.seed = params["seed"]
         self.steps = params["nb_steps"]
         self.evaluation_delta = params["evaluation_delta"]
         self.evaluate_on_test = params["evaluate_on_test"]
@@ -210,13 +216,10 @@ class Train(object):
         -----------
         Trains the model running SGD for n steps (setting.json)
         """
-        np.random.seed(self.seed)
-        torch.manual_seed(self.seed)
-        torch.use_deterministic_algorithms(True)
-        random.seed(self.seed)
         start_time = time.time()
 
         self.server.compute_batch_norm_keys()
+
         if len(self.server.get_batch_norm_keys()) > 0:
             self.use_batch_norm_stats = True
             self.compute_cluster.compute_batch_norm_keys()

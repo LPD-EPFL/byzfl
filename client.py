@@ -54,7 +54,6 @@ class Client(ModelBaseInterface):
         self.criterion = getattr(torch.nn, params["loss_name"])()
 
         self.gradient_LF = 0
-        self.batch_norm_stats_LF = 0
         self.labelflipping = params["attack_name"] == "LabelFlipping"
         self.nb_labels = params["nb_labels"]
         
@@ -100,7 +99,6 @@ class Client(ModelBaseInterface):
             loss = self.criterion(outputs, targets_flipped)
             loss.backward()
             self.gradient_LF = self.get_dict_gradients()
-            self.batch_norm_stats_LF = self.get_batch_norm_stats()
             self.model.train()
         
         self.model.zero_grad()
@@ -121,19 +119,6 @@ class Client(ModelBaseInterface):
         List of the gradients.
         """
         return flatten_dict(self.gradient_LF)
-    
-    def get_flat_flipped_batch_norm_stats(self):
-        """
-        Description
-        -----------
-        Get the batch norm stats of the model with their targets
-        flipped in a flat array.
-
-        Returns
-        -------
-        List of the batch norm stats flattened.
-        """
-        return flatten_dict(self.batch_norm_stats_LF)
 
     def get_flat_gradients_with_momentum(self):
         """

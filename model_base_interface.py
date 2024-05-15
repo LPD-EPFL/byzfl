@@ -233,7 +233,7 @@ class ModelBaseInterface(object):
         batch_norm_stats : list
             Flat list with the bath norm statistics
         """
-        agg_stats = self.robust_aggregator.aggregate(batch_norm_stats)
+        agg_stats = self.robust_aggregator.aggregate_batch_norm(batch_norm_stats)
         self.set_batch_norm_stats(agg_stats)
 
     def compute_batch_norm_keys(self):

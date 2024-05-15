@@ -70,15 +70,10 @@ def eliminate_experiments_done(dict_list):
             if folder_name in folders:
                 #Now we check the seeds
                 seed = setting["general"]["seed"]
-                nb_seeds = setting["general"]["nb_seeds"]
                 files = os.listdir(directory+"/"+folder_name)
-                for i in range(nb_seeds):
-                    name = "train_accuracy_seed_" + str(seed+i) + ".txt"
-                    if not name in files:
-                        setting["general"]["seed"] = seed+i
-                        setting["general"]["nb_seeds"] = nb_seeds-i
-                        real_dict_list.append(setting)
-                        break
+                name = "train_accuracy_seed_" + str(seed) + ".txt"
+                if not name in files:
+                    real_dict_list.append(setting)
             else:
                 real_dict_list.append(setting)
         return real_dict_list
@@ -104,7 +99,8 @@ def train_best_setting(setting, path_best_hyperparameters):
         + "_".join(pre_agg["name"] for pre_agg in setting["pre_aggregators"]) + "_"
         + setting["aggregator"]["name"] + ".txt"
     )
-
+    
+    """
     steps_file_name = str(
         setting["model"]["dataset_name"] + "_"
         + setting["model"]["name"] + "_n_"
@@ -117,12 +113,12 @@ def train_best_setting(setting, path_best_hyperparameters):
         + setting["attack"]["name"]
         + ".txt"
     )
+    """
 
-    if os.path.exists(path_best_hyperparameters +"/hyperparameters/"+ file_name) and \
-        os.path.exists(path_best_hyperparameters +"/better_step/"+ steps_file_name):
+    if os.path.exists(path_best_hyperparameters +"/hyperparameters/"+ file_name):
 
         best_hyperparameters = np.loadtxt(path_best_hyperparameters +"/hyperparameters/"+ file_name)
-        steps = int(np.loadtxt(path_best_hyperparameters +"/better_step/"+ steps_file_name))
+        #steps = int(np.loadtxt(path_best_hyperparameters +"/better_step/"+ steps_file_name))
 
         lr = best_hyperparameters[0]
         momentum = best_hyperparameters[1]
@@ -133,7 +129,7 @@ def train_best_setting(setting, path_best_hyperparameters):
         new_setting["honest_nodes"]["learning_rate"] = lr
         new_setting["honest_nodes"]["momentum"] = momentum
         new_setting["honest_nodes"]["weight_decay"] = wd
-        new_setting["general"]["nb_steps"] = steps
+        #new_setting["general"]["nb_steps"] = steps
 
         return new_setting
     else:
@@ -186,12 +182,12 @@ if __name__ == '__main__':
         optimized_dict_list.append(optimized_setting)
     
     dict_list = remove_duplicates(optimized_dict_list)
-    
-    #Do only experiments that haven't been done
-    dict_list = eliminate_experiments_done(dict_list)
 
     #Do a setting for every seed
     dict_list = delegate_seeds(dict_list)
+
+    #Do only experiments that haven't been done
+    dict_list = eliminate_experiments_done(dict_list)
 
     print("Total trainings to do: " + str(len(dict_list)))
 

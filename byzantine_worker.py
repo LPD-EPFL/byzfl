@@ -40,9 +40,10 @@ class ByzantineWorker():
             params["attack_name"]
         )(**params["attack_parameters"])
 
-        self.optimizer = params["attack_optimizer_name"]
+        self.optimizer = None
+        self.optimizer_batch_norm = None
         
-        if self.optimizer is not None:
+        if params["attack_optimizer_name"] is not None:
             optimizer_params = {
                 "agg_info": params["aggregator_info"],
                 "pre_agg_list": params["pre_agg_list"],
@@ -51,7 +52,12 @@ class ByzantineWorker():
             }
             self.optimizer = getattr(
                 attack_optimizers, 
-                self.optimizer
+                params["attack_optimizer_name"]
+            )(**optimizer_params)
+
+            self.optimizer_batch_norm = getattr(
+                attack_optimizers, 
+                params["attack_optimizer_name"]
             )(**optimizer_params)
     
     def apply_attack(self, honest_vectors):
@@ -74,6 +80,31 @@ class ByzantineWorker():
             return list()
         if self.optimizer is not None:
             self.optimizer.optimize(self.attack, honest_vectors)
+        byz_vector = self.attack.get_malicious_vector(honest_vectors)
+        
+        return [byz_vector] * self.nb_real_byz
+    
+    def apply_batch_norm_attack(self, honest_vectors):
+        """
+        Computes the byzantine vector of the batch norms 
+        and (optimized or not depending if the optimizer is configured) 
+        and then it returns a list with this vector n times, where n = number 
+        of byzantine nodes
+
+        Parameters
+        ----------
+        vectors : list or np.ndarray or torch.Tensor
+            A list of vectors or a matrix (2D array/tensor) where each row represents a vector.
+        
+        Returns
+        -------
+        Returns a list with the byzantine vector n times, 
+        where n = number of byzantine nodes
+        """
+        if self.nb_real_byz == 0:
+            return list()
+        if self.optimizer_batch_norm is not None:
+            self.optimizer_batch_norm.optimize(self.attack, honest_vectors)
         byz_vector = self.attack.get_malicious_vector(honest_vectors)
         
         return [byz_vector] * self.nb_real_byz
