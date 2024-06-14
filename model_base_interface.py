@@ -37,9 +37,9 @@ class ModelBaseInterface(object):
         self.device = params["device"]
 
         if "fbn" in model_name:
-            self.model = getattr(models, model_name)(params["nb_workers"]).to(self.device)
+            self.model = torch.nn.DataParallel(getattr(models, model_name)(params["nb_workers"])).to(self.device)
         else:
-            self.model = getattr(models, model_name)().to(self.device)
+            self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
 
         self.optimizer = torch.optim.SGD(
             self.model.parameters(), 

@@ -355,7 +355,7 @@ class ParamsManager(object):
         default = None
         path = ["model", "data_distribution", "distribution_parameter"]
         read = self._read_object(path)
-        return float(self._parameter_to_use(default, read))
+        return self._parameter_to_use(default, read)
     
     def get_loss(self):
         default = "NLLLoss"
@@ -405,7 +405,7 @@ class ParamsManager(object):
         default = 0.99
         path = ["honest_nodes", "momentum"]
         read = self._read_object(path)
-        return float(self._parameter_to_use(default, read))
+        return self._parameter_to_use(default, read)
     
     def get_batch_size(self):
         default = 25

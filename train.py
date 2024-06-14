@@ -210,7 +210,6 @@ class Train(object):
         self.store_training_accuracy = params["store_training_accuracy"]
         self.store_training_loss = params["store_training_loss"]
         self.store_models = params["store_models"]
-        self.display = params["display_results"]
 
         #Stored for display results only
         self.agg_name = params["aggregator_info"]["name"]
