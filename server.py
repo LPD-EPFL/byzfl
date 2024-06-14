@@ -78,8 +78,6 @@ class Server(ModelBaseInterface):
             batch_norm_preagg_list
         )
 
-        self.validation_loader = params["dataloader"]
-        self.test_loader = params["test_dataloader"]
         self.model.eval()
 
         #Needed for batch norm
@@ -130,26 +128,8 @@ class Server(ModelBaseInterface):
         self.optimizer.step()
         self.scheduler.step()
     
-    @torch.no_grad()
-    def _compute_accuracy(self, dataloader):
-        """
-        Description
-        -----------
-        Compute the accuracy using the test set of the model
-
-        Returns
-        -------
-        A float with the accuracy value
-        """
-        total = 0
-        correct = 0
-        for inputs, targets in dataloader:
-            inputs, targets = inputs.to(self.device), targets.to(self.device)
-            outputs = self.model(inputs)
-            _, predicted = torch.max(outputs.data, 1)
-            total += targets.size(0)
-            correct += (predicted == targets).sum().item()
-        return correct/total
+    def get_model(self):
+        return self.model
     
     def compute_validation_accuracy(self):
         return self._compute_accuracy(self.validation_loader)

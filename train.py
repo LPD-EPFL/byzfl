@@ -147,9 +147,9 @@ class Train(object):
         torch.use_deterministic_algorithms(True)
         random.seed(self.data_distribution_seed)
 
-        train_dataloaders, validation_dataloader, test_dataloader = get_dataloaders(params_dataloaders)
+        train_dataloaders, self.validation_dataloader, self.test_dataloader = get_dataloaders(params_dataloaders)
 
-        self.use_validation = validation_dataloader != None
+        self.use_validation = self.validation_dataloader != None
 
         self.training_seed = params["training_seed"]
         np.random.seed(self.training_seed)
@@ -159,8 +159,6 @@ class Train(object):
         server_params = {
             "model_name": params["model_name"],
             "nb_workers": params["nb_workers"],
-            "dataloader": validation_dataloader,
-            "test_dataloader": test_dataloader,
             "evaluate_on_test": params["evaluate_on_test"],
             "device": params["device"],
             "learning_rate": params["learning_rate"],
@@ -204,6 +202,7 @@ class Train(object):
 
         self.compute_cluster.set_model_state(self.server.get_dict_parameters())
 
+        self.device = params["device"]
         self.steps = params["nb_steps"]
         self.evaluation_delta = params["evaluation_delta"]
         self.evaluate_on_test = params["evaluate_on_test"]
@@ -223,6 +222,27 @@ class Train(object):
 
         self.use_batch_norm_stats = False
     
+    @torch.no_grad()
+    def _compute_accuracy(self, model, dataloader):
+        """
+        Description
+        -----------
+        Compute the accuracy using the test set of the model
+
+        Returns
+        -------
+        A float with the accuracy value
+        """
+        total = 0
+        correct = 0
+        for inputs, targets in dataloader:
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
+            outputs = model(inputs)
+            _, predicted = torch.max(outputs.data, 1)
+            total += targets.size(0)
+            correct += (predicted == targets).sum().item()
+        return correct/total
+
     def run_SGD(self):
         """
         Description
@@ -240,13 +260,13 @@ class Train(object):
         for step in range(0, self.steps):
 
             if step % self.evaluation_delta == 0:
-
+                model = self.server.get_model()
                 if self.use_validation:
-                    accuracy = self.server.compute_validation_accuracy()
+                    accuracy = self._compute_accuracy(model, self.validation_dataloader)
                     self.accuracy_list = np.append(self.accuracy_list, accuracy)
 
                 if self.evaluate_on_test:
-                    test_accuracy = self.server.compute_test_accuracy()
+                    test_accuracy = self._compute_accuracy(model, self.test_dataloader)
                     self.test_accuracy_list = np.append(
                         self.test_accuracy_list, 
                         test_accuracy
@@ -280,17 +300,25 @@ class Train(object):
             new_parameters = self.server.get_dict_parameters()
             self.compute_cluster.set_model_state(new_parameters)
         
-        if self.use_validation:
-            accuracy = self.server.compute_validation_accuracy()
-            self.accuracy_list = np.append(self.accuracy_list, accuracy)
-            
+
         self.loss_list = self.compute_cluster.get_loss_list_of_clients()
         self.train_accuracy_list = self.compute_cluster.get_train_acc_of_clients()
 
         if self.use_validation:
+            accuracy = self._compute_accuracy(model, self.validation_dataloader)
+            self.accuracy_list = np.append(self.accuracy_list, accuracy)
             self.file_manager.write_array_in_file(
                 self.accuracy_list, 
                 "validation_accuracy_tr_seed_" + str(self.training_seed) 
+                + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
+            )
+        
+        if self.evaluate_on_test:
+            test_accuracy = self._compute_accuracy(model, self.test_dataloader)
+            self.test_accuracy_list = np.append(self.test_accuracy_list, test_accuracy)
+            self.file_manager.write_array_in_file(
+                self.test_accuracy_list, 
+                "test_accuracy_tr_seed_" + str(self.training_seed) 
                 + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
             )
 
@@ -311,15 +339,6 @@ class Train(object):
                     self.data_distribution_seed,
                     i
                 )
-
-        if self.evaluate_on_test:
-            test_accuracy = self.server.compute_test_accuracy()
-            self.test_accuracy_list = np.append(self.test_accuracy_list, test_accuracy)
-            self.file_manager.write_array_in_file(
-                self.test_accuracy_list, 
-                "test_accuracy_tr_seed_" + str(self.training_seed) 
-                + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
-            )
         
         if self.store_models:
             self.file_manager.save_state_dict(
