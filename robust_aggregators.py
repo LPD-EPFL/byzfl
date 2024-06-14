@@ -54,35 +54,10 @@ class RobustAggregator(object):
         Returns
         -------
         ndarray or torch.Tensor
-            Returns a vector with the Meamed applied to the input vectors
+            Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors
         """
         for pre_agg in self.pre_agg_list:
             vectors = pre_agg.pre_aggregate_vectors(vectors)
-
-        aggregate_vector = self.aggregator.aggregate_vectors(vectors)  
-
-        return aggregate_vector
-    
-    def aggregate_batch_norm(self, vectors):
-        """
-        Description
-        -----------
-        Apply pre-aggregations and aggregations for batch norm vectors
-
-        Parameters
-        ----------
-        vectors : (list or np.ndarray or torch.Tensor)
-            A list of vectors or a matrix (2D array/tensor) where each
-            row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Returns a vector with the Meamed applied to the input vectors
-        """
-        for pre_agg in self.pre_agg_list:
-            if not isinstance(pre_agg, preaggregators.Clipping):
-                vectors = pre_agg.pre_aggregate_vectors(vectors)
 
         aggregate_vector = self.aggregator.aggregate_vectors(vectors)  
 

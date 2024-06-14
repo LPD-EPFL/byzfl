@@ -48,7 +48,8 @@ class Client(ModelBaseInterface):
             "learning_rate": params["learning_rate"],
             "weight_decay": params["weight_decay"],
             "milestones": params["milestones"],
-            "learning_rate_decay": params["learning_rate_decay"]
+            "learning_rate_decay": params["learning_rate_decay"],
+            "nb_workers": params["nb_workers"]
         })
 
         self.criterion = getattr(torch.nn, params["loss_name"])()
@@ -66,8 +67,10 @@ class Client(ModelBaseInterface):
             device=params["device"]
         )
         self.training_dataloader = params["training_dataloader"]
+        self.loss_list = np.array([0.0]*params["nb_steps"])
+        self.train_acc_list = np.array([0.0]*params["nb_steps"])
 
-        self.loss_list = np.array([])
+        self.SDG_step = 0
 
     def _sample_train_batch(self):
         """
@@ -104,8 +107,16 @@ class Client(ModelBaseInterface):
         self.model.zero_grad()
         outputs = self.model(inputs)
         loss = self.criterion(outputs, targets)
-        self.loss_list = np.append(self.loss_list, loss.item())
+        self.loss_list[self.SDG_step] = loss.item()
         loss.backward()
+
+        _, predicted = torch.max(outputs.data, 1)
+        total = targets.size(0)
+        correct = (predicted == targets).sum().item()
+        acc = correct/total
+        self.train_acc_list[self.SDG_step] = acc
+
+        self.SDG_step += 1
     
     def get_flat_flipped_gradients(self):
         """
@@ -150,3 +161,38 @@ class Client(ModelBaseInterface):
         List with the losses that have been computed over the training.
         """
         return self.loss_list
+    
+    def get_train_accuracy(self):
+        """
+        Description
+        ------------
+        Get the batch train accuracy list of the client
+
+        Returns
+        -------
+        List with the accuracies that have been computed over the training.
+        """
+        return self.train_acc_list
+    
+    def set_model_state(self, state_dict):
+        """
+        Description
+        -----------
+        Sets the state_dict of the model for the state_dict given by parameter.
+
+        Parameters
+        ----------
+        state_dict : dict 
+            State_dict from a model
+        """
+
+        if self.use_batch_norm():
+            before_state_dict = self.model.state_dict()
+
+            for key in self.global_running_mean_key_list:
+                state_dict[key] = before_state_dict[key].clone()
+
+            for key in self.global_running_var_key_list:
+                state_dict[key] = before_state_dict[key].clone()
+        
+        self.model.load_state_dict(state_dict)

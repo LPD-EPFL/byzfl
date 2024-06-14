@@ -41,16 +41,23 @@ def get_dataloaders(params):
 
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    validation_dataloader = DataLoader(val_dataset, 
-                                       batch_size=params["batch_size_validation"], 
-                                       shuffle=True)
+    validation_dataloader = None
+
+    if len(val_dataset) > 0:
+
+        validation_dataloader = DataLoader(val_dataset, 
+                                        batch_size=params["batch_size_validation"], 
+                                        shuffle=True)
+        
+    else:
+        print("WARNING: NO VALIDATION DATASET")
 
     nb_honest = params["nb_workers"] - params["nb_byz"]
-
+    
     params_split_datasets = {
         "nb_honest": nb_honest,
         "data_distribution_name": params["data_distribution_name"],
-        "data_distribution_parameters": params["data_distribution_parameters"],
+        "distribution_parameter": params["distribution_parameter"],
         "batch_size": params["batch_size"],
         "dataset": train_dataset
     }
@@ -70,7 +77,7 @@ def get_dataloaders(params):
 
 def split_datasets(params):
     data_dist = params["data_distribution_name"]
-    params_data_dist = params["data_distribution_parameters"]
+    distribution_parameter = params["distribution_parameter"]
     nb_honest = params["nb_honest"] 
     dataset = params["dataset"]
     #targets = dataset.dataset.targets[dataset.indices]
@@ -81,9 +88,9 @@ def split_datasets(params):
         case 'iid':
             split_idx = iid_idx(idx, nb_honest)
         case 'gamma_similarity_niid':
-            split_idx = gamma_niid_idx(targets, idx, nb_honest, params_data_dist["gamma"])
+            split_idx = gamma_niid_idx(targets, idx, nb_honest, distribution_parameter)
         case 'dirichlet_niid':
-            split_idx = dirichlet_niid_idx(targets, idx, nb_honest, params_data_dist["alpha"])
+            split_idx = dirichlet_niid_idx(targets, idx, nb_honest, distribution_parameter)
         case 'extreme_niid':
             split_idx = extreme_niid_idx(targets, idx, nb_honest)
         case _:

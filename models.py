@@ -199,53 +199,81 @@ class FedBatchNorm1d(nn.Module):
 class FedBatchNorm2d(nn.Module):
     def __init__(self, 
                  num_features, 
-                 num_workers,
+                 num_workers=10,
                  eps=1e-05, 
                  momentum=0.1, 
                  affine=True, 
                  track_running_stats=True, 
-                 device=None, 
-                 dtype=None):
+                 device="cuda", 
+                 dtype=torch.float32):
         super(FedBatchNorm2d, self).__init__()
+        
         self.momentum = momentum
         self.eps = eps
         self.affine = affine
         self.track_running_stats = track_running_stats
         self.device = device
         self.dtype = dtype
-        self.register_buffer('previous_batch_var', torch.zeros(num_features).to(device))
-        self.register_buffer('previous_batch_mean', torch.zeros(num_features).to(device))
+        self.register_buffer('running_mean', torch.zeros(num_features, dtype = self.dtype).to(self.device))
+        self.register_buffer('running_var', torch.zeros(num_features, dtype = self.dtype).to(self.device))
+        self.register_buffer('global_running_mean', torch.zeros(num_features, dtype = self.dtype).to(self.device))
+        self.register_buffer('global_running_var', torch.ones(num_features, dtype = self.dtype).to(self.device))
         if self.affine == True:
-            self.weight = nn.Parameter(torch.ones(num_features).to(device))
-            self.bias = nn.Parameter(torch.zeros(num_features).to(device))
-        self.running_mean = torch.zeros(num_features).to(device)
-        self.running_var = torch.ones(num_features).to(device)
-        self.num_batches_tracked = torch.zeros(1).to(device)
+            self.register_buffer('weight', nn.Parameter(torch.ones(num_features, requires_grad=True, dtype = self.dtype)).to(self.device))
+            self.register_buffer('bias', nn.Parameter(torch.zeros(num_features, requires_grad=True, dtype = self.dtype)).to(self.device))
+            # self.weight = nn.Parameter(torch.ones(num_features, requires_grad=True, dtype = self.dtype)).to(self.device)
+            # self.bias = nn.Parameter(torch.zeros(num_features, requires_grad=True, dtype = self.dtype)).to(self.device)
+        # self.global_running_mean = torch.zeros(num_features).to(self.device)
+        # self.global_running_var = torch.ones(num_features).to(self.device)
+        
+        self.register_buffer('num_batches_tracked', torch.tensor(0).to(self.device))
+        # self.num_batches_tracked = torch.zeros(1).to(self.device)
         self.num_workers = num_workers
         self.num_features = num_features
-        
-        self.test_var = torch.ones(num_features).to(device)
-        self.test_var2 = torch.ones(num_features).to(device)
-        self.test_var3 = torch.ones(num_features).to(device)
 
     def forward(self, input):
-        if self.num_batches_tracked > 0:
-            self.running_mean  = (1-self.momentum) * self.running_mean + self.momentum * self.previous_batch_mean
-            nb_data = self.num_workers*(input.numel()/self.num_features) - 1
-            constructed_var = (self.num_workers/nb_data) * self.previous_batch_var - ((nb_data+1)/nb_data) * (self.previous_batch_mean**2) 
-            self.running_var = (1-self.momentum) * self.running_var + self.momentum * constructed_var
-        
-        for i in range(len(self.previous_batch_var)):
-            self.previous_batch_mean[i] = input[:,i].mean()
-            self.previous_batch_var[i] = (input[:,i]**2).sum()
-            
-        output = torch.zeros(input.shape).to(self.device)
-        for i in range(len(self.previous_batch_mean)):
-            output[:,i] = ((input[:,i] - self.running_mean[i])/torch.sqrt(self.running_var[i] + self.eps))
+        # print(input.norm())
+        with torch.autocast(device_type="cuda"):
+            with torch.no_grad():
+                if self.training == True:
+                    if self.num_batches_tracked > 0:
+                        self.global_running_mean  = self.global_running_mean.mul(1-self.momentum).add(self.running_mean, alpha = self.momentum)
+                        nb_data = self.num_workers*(input.numel()/self.num_features) - 1
+                        coef_mult = (nb_data+1)/nb_data
+                        # tmp_1 = self.running_var*coef_mult
+                        # tmp_2 = coef_mult*((self.global_running_mean - self.running_mean)**2)
+                        # tmp_3 = 2*self.running_diff_sum*(self.global_running_mean - self.running_mean)*coef_mult
+                        # constructed_var = tmp_1 + tmp_2 + tmp_3
+                        # self.global_running_var = (1-self.momentum) * self.global_running_var + self.momentum * constructed_var
+                        self.global_running_var = (1-self.momentum) * self.global_running_var + self.momentum * coef_mult * self.running_var
+
+
+                    tmp = input.movedim(1,-1).reshape(-1, self.num_features)
+                    # tmp2 = input.movedim(1,0).reshape(self.num_features,-1).var(dim=1)
+                    self.running_mean = tmp.mean(dim = 0)
+                    self.running_var = tmp.var(dim = 0, correction = 0)
+                    # self.running_diff_sum = (tmp - self.global_running_mean).mean(dim = 0)
+#                     if self.num_batches_tracked % 50 == 0:
+#                         print(self.global_running_mean.max())
+#                         print(self.running_mean.max())
+#                         print(self.global_running_var.max())
+#                         print(self.running_var.max())
+                    #     print(((tmp - self.global_running_mean)**2).mean(dim = 0).norm())
+                    #     print(((tmp - self.running_mean)**2).mean(dim = 0).norm())
+                        # print(self.running_mean.norm())
+                        # print(self.running_var.norm())
+                        # print(tmp2.norm())
+                        # print(self.running_diff_sum.norm())
+            # print(input.norm())
+            input = (input.movedim(1,-1) - self.global_running_mean)/torch.sqrt(self.global_running_var + self.eps)
+            # print(input.norm())
             if self.affine == True:
-                output[:,i]  = output[:,i] * self.weight[i] + self.bias[i]
-        self.num_batches_tracked = self.num_batches_tracked + 1
-        return output
+                input  = input * self.weight + self.bias
+            # print(input.norm())
+            input = input.movedim(-1,1)
+            # print(input.norm())
+            self.num_batches_tracked = self.num_batches_tracked + 1
+        return input
 
 
 class cnn_cifar_old_with_fbn(nn.Module):
@@ -256,15 +284,15 @@ class cnn_cifar_old_with_fbn(nn.Module):
     super().__init__()
     # Build parameters
     self._c1 = nn.Conv2d(3, 64, kernel_size=3, padding=1)
-    self._b1 = nn.FedBatchNorm2d(self._c1.out_channels, num_clients)
+    self._b1 = FedBatchNorm2d(self._c1.out_channels, num_clients)
     self._c2 = nn.Conv2d(self._c1.out_channels, 64, kernel_size=3, padding=1)
-    self._b2 = nn.FedBatchNorm2d(self._c2.out_channels, num_clients)
+    self._b2 = FedBatchNorm2d(self._c2.out_channels, num_clients)
     self._m1 = nn.MaxPool2d(2)
     self._d1 = nn.Dropout(p=0.25)
     self._c3 = nn.Conv2d(self._c2.out_channels, 128, kernel_size=3, padding=1)
-    self._b3 = nn.FedBatchNorm2d(self._c3.out_channels, num_clients)
+    self._b3 = FedBatchNorm2d(self._c3.out_channels, num_clients)
     self._c4 = nn.Conv2d(self._c3.out_channels, 128, kernel_size=3, padding=1)
-    self._b4 = nn.FedBatchNorm2d(self._c4.out_channels, num_clients)
+    self._b4 = FedBatchNorm2d(self._c4.out_channels, num_clients)
     self._m2 = nn.MaxPool2d(2)
     self._d2 = nn.Dropout(p=0.25)
     self._d3 = nn.Dropout(p=0.25)

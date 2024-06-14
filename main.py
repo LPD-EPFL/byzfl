@@ -4,19 +4,15 @@ from multiprocessing import Pool, Value
 import os
 import copy
 
-import numpy as np
-
 from combinations import generate_all_combinations
 from train import Train
-from managers import ParamsManager
 
 def init_pool_processes(shared_value):
     global counter
     counter = shared_value
 
 def run_training(params):
-    param_manager = ParamsManager(params=params)
-    train = Train(param_manager.get_flatten_info(), param_manager.get_data())
+    train = Train(params)
     train.run_SGD()
     with counter.get_lock():
         print("Training " + str(counter.value) + " done")
@@ -53,11 +49,9 @@ def eliminate_experiments_done(dict_list):
                 + setting["model"]["name"] + "_" 
                 +"n_" + str(setting["general"]["nb_workers"]) + "_" 
                 + "f_" + str(setting["general"]["nb_byz"]) + "_" 
+                + "d_" + str(setting["general"]["declared_nb_byz"]) + "_"
                 + setting["model"]["data_distribution"]["name"] + "_"
-                "_".join([
-                    str(valor) 
-                    for valor in setting["model"]["data_distribution"]["parameters"].values()
-                ]) + "_" 
+                + str(setting["model"]["data_distribution"]["distribution_parameter"]) + "_" 
                 + setting["aggregator"]["name"] + "_"
                 + "_".join(pre_aggregation_names) + "_"
                 + setting["attack"]["name"] + "_" 
@@ -69,9 +63,10 @@ def eliminate_experiments_done(dict_list):
 
             if folder_name in folders:
                 #Now we check the seeds
-                seed = setting["general"]["seed"]
+                training_seed = setting["general"]["training_seed"]
+                data_distribution_seed = setting["model"]["data_distribution_seed"]
                 files = os.listdir(directory+"/"+folder_name)
-                name = "train_accuracy_seed_" + str(seed) + ".txt"
+                name = "train_time_tr_seed_" + str(training_seed) + "_dd_seed_" + str(data_distribution_seed) + ".txt"
                 if not name in files:
                     real_dict_list.append(setting)
             else:
@@ -80,75 +75,40 @@ def eliminate_experiments_done(dict_list):
     else:
         return dict_list
 
-def train_best_setting(setting, path_best_hyperparameters):
-    if setting["general"]["nb_workers"] is None:
-        setting["general"]["nb_workers"] = setting["general"]["nb_honest"] + setting["general"]["nb_byz"]
-    if len(setting["model"]["data_distribution"]["parameters"]) > 0:
-        parameters = setting["model"]["data_distribution"]["parameters"]
-        factor = str(parameters[list(parameters.keys())[0]])
-    else:
-        factor = ""
-
-    file_name = str(
-        setting["model"]["dataset_name"] + "_"
-        + setting["model"]["name"] + "_n_"
-        + str(setting["general"]["nb_workers"]) + "_f_"
-        + str(setting["general"]["nb_byz"]) + "_"
-        + setting["model"]["data_distribution"]["name"]
-        + factor + "_"
-        + "_".join(pre_agg["name"] for pre_agg in setting["pre_aggregators"]) + "_"
-        + setting["aggregator"]["name"] + ".txt"
-    )
-    
-    """
-    steps_file_name = str(
-        setting["model"]["dataset_name"] + "_"
-        + setting["model"]["name"] + "_n_"
-        + str(setting["general"]["nb_workers"]) + "_f_"
-        + str(setting["general"]["nb_byz"]) + "_"
-        + setting["model"]["data_distribution"]["name"]
-        + factor + "_"
-        + "_".join(pre_agg["name"] for pre_agg in setting["pre_aggregators"]) + "_"
-        + setting["aggregator"]["name"] + "_"
-        + setting["attack"]["name"]
-        + ".txt"
-    )
-    """
-
-    if os.path.exists(path_best_hyperparameters +"/hyperparameters/"+ file_name):
-
-        best_hyperparameters = np.loadtxt(path_best_hyperparameters +"/hyperparameters/"+ file_name)
-        #steps = int(np.loadtxt(path_best_hyperparameters +"/better_step/"+ steps_file_name))
-
-        lr = best_hyperparameters[0]
-        momentum = best_hyperparameters[1]
-        wd = best_hyperparameters[2]
-
-        new_setting = copy.deepcopy(setting)
-
-        new_setting["honest_nodes"]["learning_rate"] = lr
-        new_setting["honest_nodes"]["momentum"] = momentum
-        new_setting["honest_nodes"]["weight_decay"] = wd
-        #new_setting["general"]["nb_steps"] = steps
-
-        return new_setting
-    else:
-        return setting
-
-def remove_duplicates(dict_list):
-    set = {json.dumps(setting, sort_keys=True) for setting in dict_list}
-    return [json.loads(unique_setting) for unique_setting in set]
-
-def delegate_seeds(dict_list):
+def delegate_training_seeds(dict_list):
     real_dict_list = []
     for setting in dict_list:
-        original_seed = setting["general"]["seed"]
-        nb_seeds = setting["general"]["nb_seeds"]
+        original_seed = setting["general"]["training_seed"]
+        nb_seeds = setting["general"]["nb_training_seeds"]
         for i in range(nb_seeds):
             new_setting = copy.deepcopy(setting)
-            new_setting["general"]["original_seed"] = original_seed
-            new_setting["general"]["seed"] = original_seed + i
+            new_setting["general"]["training_seed"] = original_seed + i
             real_dict_list.append(new_setting)
+    return real_dict_list
+
+def delegate_data_distribution_seeds(dict_list):
+    real_dict_list = []
+    for setting in dict_list:
+        original_seed = setting["model"]["data_distribution_seed"]
+        nb_seeds = setting["model"]["nb_data_distribution_seeds"]
+        for i in range(nb_seeds):
+            new_setting = copy.deepcopy(setting)
+            new_setting["model"]["data_distribution_seed"] = original_seed + i
+            real_dict_list.append(new_setting)
+    return real_dict_list
+
+def remove_real_greater_declared(dict_list):
+    real_dict_list = []
+    for setting in dict_list:
+        if setting["general"]["declared_nb_byz"] >= setting["general"]["nb_byz"]:
+            real_dict_list.append(setting)
+    return real_dict_list
+
+def remove_real_not_equal_declared(dict_list):
+    real_dict_list = []
+    for setting in dict_list:
+        if setting["general"]["declared_nb_byz"] == setting["general"]["nb_byz"]:
+            real_dict_list.append(setting)
     return real_dict_list
 
 if __name__ == '__main__':
@@ -174,17 +134,15 @@ if __name__ == '__main__':
 
     restriction_list = ["pre_aggregators", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
-    optimized_dict_list = []
-    
-    #Best setting found before
-    for setting in dict_list:
-        optimized_setting = train_best_setting(setting, "./best_hyperparameters")
-        optimized_dict_list.append(optimized_setting)
-    
-    dict_list = remove_duplicates(optimized_dict_list)
+
+    if data["general"]["declared_equal_real"]:
+        dict_list = remove_real_not_equal_declared(dict_list)
+    else:
+        dict_list = remove_real_greater_declared(dict_list)
 
     #Do a setting for every seed
-    dict_list = delegate_seeds(dict_list)
+    dict_list = delegate_training_seeds(dict_list)
+    dict_list = delegate_data_distribution_seeds(dict_list)
 
     #Do only experiments that haven't been done
     dict_list = eliminate_experiments_done(dict_list)

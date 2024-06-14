@@ -502,7 +502,7 @@ class CenteredClipping(object):
     ---------
     """
 
-    def __init__(self, previous_momentum=None, L_iter=3, clip_thresh=1, **kwargs):
+    def __init__(self, previous_momentum=None, L_iter=1, clip_thresh=100, **kwargs):
         self.prev_momentum = previous_momentum
         self.L_iter = L_iter
         self.clip_thresh = clip_thresh

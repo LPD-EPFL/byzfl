@@ -36,7 +36,10 @@ class ModelBaseInterface(object):
 
         self.device = params["device"]
 
-        self.model = getattr(models, model_name)().to(self.device)
+        if "fbn" in model_name:
+            self.model = getattr(models, model_name)(params["nb_workers"]).to(self.device)
+        else:
+            self.model = getattr(models, model_name)().to(self.device)
 
         self.optimizer = torch.optim.SGD(
             self.model.parameters(), 
@@ -50,7 +53,11 @@ class ModelBaseInterface(object):
             gamma = params["learning_rate_decay"]
         )
 
-        self.batch_norm_key_list = []
+        self.batch_norm_keys = []
+        self.running_mean_key_list = []
+        self.running_var_key_list = []
+        self.global_running_mean_key_list = []
+        self.global_running_var_key_list = []
     
     def get_flat_parameters(self):
         """
@@ -116,11 +123,15 @@ class ModelBaseInterface(object):
         Dicctionary where the keys are the name of the parameters
         of batch norm stats and their values.
         """
-        batch_norm_stats = collections.OrderedDict()
+        running_mean_stats = collections.OrderedDict()
         state_dict = self.model.state_dict()
-        for key in self.batch_norm_key_list:
-            batch_norm_stats[key] = state_dict[key]
-        return batch_norm_stats
+        for key in self.running_mean_key_list:
+            running_mean_stats[key] = state_dict[key].clone()
+
+        running_var_stats = collections.OrderedDict()
+        for key in self.running_var_key_list:
+            running_var_stats[key] = state_dict[key].clone()
+        return running_mean_stats, running_var_stats
 
     def get_flat_batch_norm_stats(self):
         """
@@ -132,20 +143,8 @@ class ModelBaseInterface(object):
         -------
         Array with the values of the batch norm stats.
         """
-        batch_norm_stats = self.get_batch_norm_stats()
-        return flatten_dict(batch_norm_stats)
-    
-    def get_batch_norm_keys(self):
-        """
-        Description
-        ------------
-        Getter with the list of the keys of the batch norm stats
-
-        Returns
-        -------
-        List with the keys of the batch norm stats
-        """
-        return self.batch_norm_key_list
+        running_mean_stats, running_var_stats = self.get_batch_norm_stats()
+        return flatten_dict(running_mean_stats), flatten_dict(running_var_stats)
     
     def set_parameters(self, flat_vector):
         """
@@ -176,23 +175,6 @@ class ModelBaseInterface(object):
         for key, value in self.model.named_parameters():
             value.grad = new_dict[key].clone().detach()
     
-    def set_batch_norm_stats(self, flat_vector):
-        """
-        Description
-        -----------
-        Sets the model batch norm stats given a flat vector.
-
-        Parameters
-        ----------
-        flat_vector : list
-            Flat list with the parameters
-        """
-        batch_norm_stats = unflatten_dict(self.get_batch_norm_stats(), flat_vector)
-        state_dict = self.model.state_dict()
-        for key, item in batch_norm_stats.items():
-            state_dict[key] = item
-        self.set_model_state(state_dict)
-    
     def set_model_state(self, state_dict):
         """
         Description
@@ -206,46 +188,20 @@ class ModelBaseInterface(object):
         """
         self.model.load_state_dict(state_dict)
 
-
-    def update_model(self, gradients):
-        """
-        Description
-        -----------
-        Update the model aggregating the gradients given and do an step.
-
-        Parameters
-        ----------
-        gradients : list
-            Flat list with the gradients
-        """
-        agg_gradients = self.aggregate(gradients)
-        self.set_gradients(agg_gradients)
-        self.step()
-    
-    def update_batch_norm_stats(self, batch_norm_stats):
-        """
-        Description
-        -----------
-        Update the model aggregating the bath norm statistics given.
-
-        Parameters
-        ----------
-        batch_norm_stats : list
-            Flat list with the bath norm statistics
-        """
-        agg_stats = self.robust_aggregator.aggregate_batch_norm(batch_norm_stats)
-        self.set_batch_norm_stats(agg_stats)
-
     def compute_batch_norm_keys(self):
         for key in self.model.state_dict().keys():
-            if "running_mean" in key or "running_var" in key:
-                self.batch_norm_key_list.append(key)
+            if "global_running_mean" in key:
+                self.global_running_mean_key_list.append(key)
+            elif "global_running_var" in key:
+                self.global_running_var_key_list.append(key)
+            elif "running_mean" in key:
+                self.running_mean_key_list.append(key)
+                self.batch_norm_keys.append(key.split(".")[0])
+            elif "running_var" in key:
+                self.running_var_key_list.append(key)            
     
-    def step(self):
-        """
-        Description
-        -----------
-        Do a step of the optimizer and the scheduler.
-        """
-        self.optimizer.step()
-        self.scheduler.step()
+    def use_batch_norm(self):
+        return len(self.batch_norm_keys) > 0
+    
+    def use_federated_batch_norm(self):
+        return len(self.global_running_mean_key_list) > 0

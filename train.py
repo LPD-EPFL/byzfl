@@ -7,7 +7,7 @@ import torch
 from server import Server
 from compute_cluster import ComputeCluster
 from dataset import get_dataloaders
-from managers import FileManager
+from managers import FileManager, ParamsManager
 
 class Train(object):
     """
@@ -81,16 +81,19 @@ class Train(object):
         Dictionary with the parameters of the optimizer where every 
         key is the name of the paramater and their value is the value 
         of the parameter
-    save_models : (bool)
+    store_models : (bool)
         If true every delta steps the model will be saved
 
     Methods
     -------
     """
-    def __init__(self, params, dict_params):
+    def __init__(self, raw_params):
+
+        params_manager = ParamsManager(params=raw_params)
+        params = params_manager.get_flatten_info()
 
         if params["nb_honest"] is not None:
-            params["nb_workers"] = params["nb_honest"] + params["nb_byz"]
+            params["nb_workers"] = params["nb_honest"] + params["declared_nb_byz"]
 
         file_manager_params = {
             "result_path": params["results_directory"],
@@ -98,8 +101,9 @@ class Train(object):
             "model_name": params["model_name"],
             "nb_workers": params["nb_workers"],
             "nb_byz": params["nb_byz"],
+            "declared_nb_byz": params["declared_nb_byz"],
             "data_distribution_name": params["data_distribution_name"],
-            "data_distribution_params": params["data_distribution_parameters"],
+            "distribution_parameter": params["distribution_parameter"],
             "aggregation_name": params["aggregator_info"]["name"],
             "pre_aggregation_names":  [
                 dict['name']
@@ -113,13 +117,12 @@ class Train(object):
         }
 
         self.file_manager = FileManager(file_manager_params)
-        self.file_manager.save_config_dict(dict_params)
+        self.file_manager.save_config_dict(params_manager.get_data())
 
-        # Forcing nb_declared = nb_real
-        params["aggregator_info"]["parameters"]["nb_byz"] = params["nb_byz"]
+        params["aggregator_info"]["parameters"]["nb_byz"] = params["declared_nb_byz"]
         if len(params["pre_agg_list"]) > 0:
             for pre_agg in params["pre_agg_list"]:
-                pre_agg["parameters"]["nb_byz"] = params["nb_byz"]
+                pre_agg["parameters"]["nb_byz"] = params["declared_nb_byz"]
 
         params_dataloaders = {
             "dataset_name": params["dataset_name"],
@@ -130,25 +133,32 @@ class Train(object):
             "nb_labels": params["nb_labels"],
             "data_folder": params["data_folder"],
             "data_distribution_name": params["data_distribution_name"],
-            "data_distribution_parameters": params["data_distribution_parameters"],
+            "distribution_parameter": params["distribution_parameter"],
             "nb_workers": params["nb_workers"],
-            "nb_byz": params["nb_byz"]
+            "nb_byz": params["nb_byz"],
         }
 
-        np.random.seed(0)
-        torch.manual_seed(0)
+        self.data_distribution_seed = params["data_distribution_seed"]
+        
+        # Deterministic
+        # https://pytorch.org/docs/stable/notes/randomness.html
+        np.random.seed(self.data_distribution_seed)
+        torch.manual_seed(self.data_distribution_seed)
         torch.use_deterministic_algorithms(True)
-        random.seed(0)
+        random.seed(self.data_distribution_seed)
 
         train_dataloaders, validation_dataloader, test_dataloader = get_dataloaders(params_dataloaders)
 
-        self.seed = params["seed"]
-        np.random.seed(self.seed)
-        torch.manual_seed(self.seed)
-        random.seed(self.seed)
+        self.use_validation = validation_dataloader != None
+
+        self.training_seed = params["training_seed"]
+        np.random.seed(self.training_seed)
+        torch.manual_seed(self.training_seed)
+        random.seed(self.training_seed)
 
         server_params = {
             "model_name": params["model_name"],
+            "nb_workers": params["nb_workers"],
             "dataloader": validation_dataloader,
             "test_dataloader": test_dataloader,
             "evaluate_on_test": params["evaluate_on_test"],
@@ -159,7 +169,8 @@ class Train(object):
             "learning_rate_decay": params["learning_rate_decay"],
             "aggregator_info": params["aggregator_info"],
             "pre_agg_list": params["pre_agg_list"],
-            "bit_precision": params["bit_precision"]
+            "batch_size": params["batch_size"],
+            "batch_norm_momentum": params["batch_norm_momentum"]
         }
 
         self.server = Server(server_params)
@@ -185,7 +196,8 @@ class Train(object):
             "aggregator_info": params["aggregator_info"],
             "pre_agg_list": params["pre_agg_list"],
             "dataloaders": train_dataloaders,
-            "nb_labels": params["nb_labels"]
+            "nb_labels": params["nb_labels"],
+            "nb_steps": params["nb_steps"]
         }
 
         self.compute_cluster = ComputeCluster(compute_cluster_params)
@@ -195,7 +207,9 @@ class Train(object):
         self.steps = params["nb_steps"]
         self.evaluation_delta = params["evaluation_delta"]
         self.evaluate_on_test = params["evaluate_on_test"]
-        self.save_models = params["save_models"]
+        self.store_training_accuracy = params["store_training_accuracy"]
+        self.store_training_loss = params["store_training_loss"]
+        self.store_models = params["store_models"]
         self.display = params["display_results"]
 
         #Stored for display results only
@@ -220,15 +234,17 @@ class Train(object):
 
         self.server.compute_batch_norm_keys()
 
-        if len(self.server.get_batch_norm_keys()) > 0:
+        if self.server.use_batch_norm():
             self.use_batch_norm_stats = True
             self.compute_cluster.compute_batch_norm_keys()
         
         for step in range(0, self.steps):
 
             if step % self.evaluation_delta == 0:
-                accuracy = self.server.compute_validation_accuracy()
-                self.accuracy_list = np.append(self.accuracy_list, accuracy)
+
+                if self.use_validation:
+                    accuracy = self.server.compute_validation_accuracy()
+                    self.accuracy_list = np.append(self.accuracy_list, accuracy)
 
                 if self.evaluate_on_test:
                     test_accuracy = self.server.compute_test_accuracy()
@@ -238,13 +254,14 @@ class Train(object):
                     )
                     self.file_manager.write_array_in_file(
                         self.test_accuracy_list, 
-                        "test_accuracy_seed_" + str(self.seed) + ".txt"
+                        "test_accuracy_tr_seed_" + str(self.training_seed) 
+                        + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
                     )
                 
-                if self.save_models:
+                if self.store_models:
                     self.file_manager.save_state_dict(
                         self.server.get_dict_parameters(),
-                        self.seed,
+                        self.training_seed,
                         step
                     )
             
@@ -252,42 +269,63 @@ class Train(object):
             new_gradients = self.compute_cluster.get_momentum()
 
             if self.use_batch_norm_stats:
-                new_batch_norm_stats = self.compute_cluster.get_batch_norm_stats()
+                new_running_mean, new_running_var = self.compute_cluster.get_batch_norm_stats()
 
             #Aggregation and update of the global model
             self.server.update_model(new_gradients)
 
             if self.use_batch_norm_stats:
-                self.server.update_batch_norm_stats(new_batch_norm_stats)
+                self.server.update_batch_norm_stats(new_running_mean, new_running_var)
 
             #Broadcasting
             new_parameters = self.server.get_dict_parameters()
             self.compute_cluster.set_model_state(new_parameters)
-
-        accuracy = self.server.compute_validation_accuracy()
-        self.accuracy_list = np.append(self.accuracy_list, accuracy)
+        
+        if self.use_validation:
+            accuracy = self.server.compute_validation_accuracy()
+            self.accuracy_list = np.append(self.accuracy_list, accuracy)
+            
         self.loss_list = self.compute_cluster.get_loss_list_of_clients()
+        self.train_accuracy_list = self.compute_cluster.get_train_acc_of_clients()
 
-        self.file_manager.write_array_in_file(
-            self.accuracy_list, 
-            "train_accuracy_seed_" + str(self.seed) + ".txt"
-        )
+        if self.use_validation:
+            self.file_manager.write_array_in_file(
+                self.accuracy_list, 
+                "validation_accuracy_tr_seed_" + str(self.training_seed) 
+                + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
+            )
 
-        for i, loss in enumerate(self.loss_list):
-            self.file_manager.save_loss(loss, self.seed, i)
+        if self.store_training_loss:
+            for i, loss in enumerate(self.loss_list):
+                self.file_manager.save_loss(
+                    loss, 
+                    self.training_seed, 
+                    self.data_distribution_seed, 
+                    i
+                )
+        
+        if self.store_training_accuracy:
+            for i, acc in enumerate(self.train_accuracy_list):
+                self.file_manager.save_accuracy(
+                    acc, 
+                    self.training_seed, 
+                    self.data_distribution_seed,
+                    i
+                )
 
         if self.evaluate_on_test:
             test_accuracy = self.server.compute_test_accuracy()
             self.test_accuracy_list = np.append(self.test_accuracy_list, test_accuracy)
             self.file_manager.write_array_in_file(
                 self.test_accuracy_list, 
-                "test_accuracy_seed_" + str(self.seed) + ".txt"
+                "test_accuracy_tr_seed_" + str(self.training_seed) 
+                + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
             )
         
-        if self.save_models:
+        if self.store_models:
             self.file_manager.save_state_dict(
                 self.server.get_dict_parameters(),
-                self.seed,
+                self.training_seed,
                 self.steps
             )
         
@@ -296,17 +334,6 @@ class Train(object):
 
         self.file_manager.write_array_in_file(
             np.array(execution_time),
-            "train_time_seed_" + str(self.seed) + ".txt"
+            "train_time_tr_seed_" + str(self.training_seed) 
+            + "_dd_seed_" + str(self.data_distribution_seed) +".txt"
         )
-
-        if self.display:
-            print("\n")
-            print("Agg: "+ self.agg_name)
-            print("DataDist: "+ 
-                    self.data_dist_name)
-            print("Attack: " + self.attack_name)
-            print("Nb_byz: " + str(self.nb_byz))
-            print("Seed: " + str(self.seed))
-            accuracy_str = ", ".join(str(accuracy) for accuracy in self.accuracy_list)
-            print("Accuracy list: " + accuracy_str)
-            print("\n")

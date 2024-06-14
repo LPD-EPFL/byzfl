@@ -116,7 +116,7 @@ class Arc(object):
     Methods
     ---------
     """
-    def __init__(self, nb_workers=10, nb_byz=2, **kwargs):
+    def __init__(self, nb_workers, nb_byz, **kwargs):
         self.nb_workers = nb_workers
         self.nb_byz = nb_byz
     

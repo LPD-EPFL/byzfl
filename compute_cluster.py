@@ -68,7 +68,9 @@ class ComputeCluster(object):
             "learning_rate_decay": params["learning_rate_decay"],
             "attack_name": params["attack_name"],
             "momentum": params["momentum"],
-            "nb_labels": params["nb_labels"]
+            "nb_labels": params["nb_labels"],
+            "nb_workers": params["nb_workers"],
+            "nb_steps": params["nb_steps"],
         }
 
         training_dataloader = params["dataloaders"]
@@ -166,9 +168,11 @@ class ComputeCluster(object):
         Lists of bath-norm stats of all honest clients
         """
         batch_norm_stats = [client.get_flat_batch_norm_stats() for client in self.client_list]
-        byzantine_batch_norms = self.byz_worker.apply_batch_norm_attack(batch_norm_stats)
-        
-        return batch_norm_stats + byzantine_batch_norms
+        running_mean_stats = [batch_norm_stats_client[0] for batch_norm_stats_client in batch_norm_stats]
+        running_var_stats = [batch_norm_stats_client[1] for batch_norm_stats_client in batch_norm_stats]
+        byzantine_running_mean = self.byz_worker.apply_batch_norm_attack(running_mean_stats)
+        byzantine_running_var = self.byz_worker.apply_batch_norm_attack(running_var_stats)
+        return running_mean_stats + byzantine_running_mean, running_var_stats + byzantine_running_var
 
     
     def set_model_state(self, state_dict):
@@ -218,3 +222,6 @@ class ComputeCluster(object):
     
     def compute_batch_norm_keys(self):
         [client.compute_batch_norm_keys() for client in self.client_list]
+    
+    def get_train_acc_of_clients(self):
+        return [client.get_train_accuracy() for client in self.client_list]

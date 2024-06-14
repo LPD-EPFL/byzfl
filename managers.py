@@ -20,11 +20,9 @@ class FileManager(object):
             + params["model_name"] + "_" 
             "n_" + str(params["nb_workers"]) + "_" 
             + "f_" + str(params["nb_byz"]) + "_" 
+            + "d_" + str(params["declared_nb_byz"]) + "_" 
             + params["data_distribution_name"] + "_"
-            "_".join([
-                str(valor) 
-                for valor in params["data_distribution_params"].values()
-            ]) + "_" 
+            + str(params["distribution_parameter"]) + "_" 
             + params["aggregation_name"] + "_"
             + "_".join(params["pre_aggregation_names"]) + "_"
             + params["attack_name"] + "_" 
@@ -35,7 +33,10 @@ class FileManager(object):
         )
         
         if not os.path.exists(self.files_path):
-            os.makedirs(self.files_path)
+            try:
+                os.makedirs(self.files_path)
+            except Exception as e:
+                print(e)
 
         with open(self.files_path+"day.txt", "w") as file:
             file.write(str(datetime.date.today().strftime("%d_%m_%y")))
@@ -53,16 +54,44 @@ class FileManager(object):
     def write_array_in_file(self, array, file_name):
         np.savetxt(self.files_path+file_name, [array], fmt='%.4f', delimiter=",")
     
-    def save_state_dict(self, state_dict, seed, step):
-        if not os.path.exists(self.files_path+"models_seed_"+str(seed)):
-            os.makedirs(self.files_path+"models_seed_"+str(seed))
-        torch.save(state_dict, self.files_path+"models_seed_"+str(seed)+"/model_step_"+ str(step) +".pth")
+    def save_state_dict(self, state_dict, training_seed, data_dist_seed, step):
+        if not os.path.exists(
+            self.files_path+"models_tr_seed_" + str(training_seed)
+            +"_dd_seed_"+str(data_dist_seed)
+        ):
+            os.makedirs(self.files_path+"models_tr_seed_" + str(training_seed) 
+                        + "_dd_seed_"+str(data_dist_seed))
+            
+        torch.save(state_dict, self.files_path+"models_tr_seed_" + str(training_seed) 
+                   + "_dd_seed_"+str(data_dist_seed)+"/model_step_"+ str(step) +".pth")
     
-    def save_loss(self, loss_array, seed, client_id):
-        if not os.path.exists(self.files_path+"loss_seed_"+str(seed)):
-            os.makedirs(self.files_path+"loss_seed_"+str(seed))
-        file_name = self.files_path+"loss_seed_"+str(seed) + "/loss_client_" + str(client_id) + ".txt"
-        np.savetxt(file_name, loss_array, fmt='%.10f', delimiter=",")
+    def save_loss(self, loss_array, training_seed, data_dist_seed, client_id):
+        if not os.path.exists(
+            self.files_path+"loss_tr_seed_" + str(training_seed) 
+            + "_dd_seed_"+str(data_dist_seed)
+        ):
+            os.makedirs(self.files_path + "loss_tr_seed_" + str(training_seed) 
+                        + "_dd_seed_" + str(data_dist_seed))
+            
+        file_name = self.files_path + "loss_tr_seed_" + str(training_seed) \
+                    + "_dd_seed_" + str(data_dist_seed) \
+                    + "/loss_client_" + str(client_id) + ".txt"
+        
+        np.savetxt(file_name, loss_array, fmt='%.6f', delimiter=",")
+    
+    def save_accuracy(self, acc_array, training_seed, data_dist_seed, client_id):
+        if not os.path.exists(
+            self.files_path+"accuracy_tr_seed_" + str(training_seed) 
+            + "_dd_seed_"+str(data_dist_seed)
+        ):
+            os.makedirs(self.files_path+"accuracy_tr_seed_" + str(training_seed) 
+                        + "_dd_seed_"+str(data_dist_seed))
+            
+        file_name = self.files_path+"accuracy_tr_seed_" + str(training_seed) \
+                    + "_dd_seed_"+str(data_dist_seed) \
+                    + "/accuracy_client_" + str(client_id) + ".txt"
+        
+        np.savetxt(file_name, acc_array, fmt='%.4f', delimiter=",")
 
 
 
@@ -87,34 +116,40 @@ class ParamsManager(object):
     def _read_object(self, path):
         obj = self.data
         for idx in path:
-            obj = obj[idx]
+            if idx in obj.keys():
+                obj = obj[idx]
+            else:
+                return None
         return obj
     
     def get_flatten_info(self):
         return {
-            "seed": self.get_seed(),
+            "training_seed": self.get_training_seed(),
             "device": self.get_device(),
             "nb_workers": self.get_nb_workers(),
             "nb_honest": self.get_nb_honest(),
             "nb_byz": self.get_nb_byz(),
+            "declared_nb_byz": self.get_declared_nb_byz(),
+            "declared_equal_real": self.get_declared_equal_real(),
             "size_train_set": self.get_size_train_set(),
             "nb_steps": self.get_nb_steps(),
             "evaluation_delta": self.get_evaluation_delta(),
             "evaluate_on_test": self.get_evaluate_on_test(),
-            "save_models": self.get_save_models(),
+            "store_training_accuracy": self.get_store_training_accuracy(),
+            "store_training_loss": self.get_store_training_loss(),
+            "store_models": self.get_store_models(),
             "data_folder": self.get_data_folder(),
             "results_directory": self.get_results_directory(),
-            "bit_precision": self.get_bit_precision(),
-            "display_results": self.get_display_results(),
             "model_name": self.get_model_name(),
             "dataset_name": self.get_dataset_name(),
             "nb_labels": self.get_nb_labels(),
+            "data_distribution_seed": self.get_data_distribution_seed(),
             "data_distribution_name": self.get_name_data_distribution(),
-            "data_distribution_parameters": self.get_parameters_data_distribution(),
+            "distribution_parameter": self.get_parameter_data_distribution(),
             "loss_name": self.get_loss(),
             "aggregator_info": self.get_aggregator_info(),
             "pre_agg_list": self.get_preaggregators(),
-            "server_subsampling": self.get_server_subsampling(),
+            "batch_norm_momentum": self.get_batch_norm_momentum(),
             "batch_size_validation": self.get_batch_size_validation(),
             "momentum": self.get_momentum(),
             "batch_size": self.get_batch_size(),
@@ -131,31 +166,32 @@ class ParamsManager(object):
     def get_data(self):
         return {   
             "general": {
-                "original_seed": self.get_original_seed(),
-                "seed": self.get_seed(),
-                "nb_seeds": self.get_nb_seeds(),
+                "training_seed": self.get_training_seed(),
                 "device": self.get_device(),
                 "nb_workers": self.get_nb_workers(),
                 "nb_honest": self.get_nb_honest(),
                 "nb_byz": self.get_nb_byz(),
+                "declared_nb_byz": self.get_declared_nb_byz(),
+                "declared_equal_real": self.get_declared_equal_real(),
                 "size_train_set": self.get_size_train_set(),
                 "nb_steps": self.get_nb_steps(),
                 "evaluation_delta": self.get_evaluation_delta(),
                 "evaluate_on_test": self.get_evaluate_on_test(),
-                "save_models": self.get_save_models(),
+                "store_training_accuracy": self.get_store_training_accuracy(),
+                "store_training_loss": self.get_store_training_loss(),
+                "store_models": self.get_store_models(),
                 "data_folder": self.get_data_folder(),
                 "results_directory": self.get_results_directory(),
-                "bit_precision": self.get_bit_precision(),
-                "display_results": self.get_display_results()
             },
 
             "model": {
                 "name": self.get_model_name(),
                 "dataset_name": self.get_dataset_name(),
                 "nb_labels": self.get_nb_labels(),
+                "data_distribution_seed": self.get_data_distribution_seed(),
                 "data_distribution": {
                         "name": self.get_name_data_distribution(),
-                        "parameters": self.get_parameters_data_distribution()
+                        "distribution_parameter": self.get_parameter_data_distribution()
                 },
                 "loss": self.get_loss(),
             },
@@ -168,7 +204,7 @@ class ParamsManager(object):
             "pre_aggregators" : self.get_preaggregators(),
 
             "server": {
-                "server_subsampling": self.get_server_subsampling(),
+                "batch_norm_momentum": self.get_batch_norm_momentum(),
                 "batch_size_validation": self.get_batch_size_validation(),
                 "learning_rate_decay": self.get_learning_rate_decay(),
                 "milestones": self.get_milestones()
@@ -190,22 +226,10 @@ class ParamsManager(object):
                 }
             }
         }
-    
-    def get_original_seed(self):
-        default = 0
-        path = ["general", "original_seed"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
 
-    def get_seed(self):
+    def get_training_seed(self):
         default = 0
-        path = ["general", "seed"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-    
-    def get_nb_seeds(self):
-        default = 1
-        path = ["general", "nb_seeds"]
+        path = ["general", "training_seed"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
@@ -233,6 +257,18 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
+    def get_declared_nb_byz(self):
+        default = 0
+        path = ["general", "declared_nb_byz"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_declared_equal_real(self):
+        default = False
+        path = ["general", "declared_equal_real"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
     def get_size_train_set(self):
         default = 0.8
         path = ["general", "size_train_set"]
@@ -256,10 +292,22 @@ class ParamsManager(object):
         path = ["general", "evaluate_on_test"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
-    
-    def get_save_models(self):
+
+    def get_store_training_accuracy(self):
         default = True
-        path = ["general", "save_models"]
+        path = ["general", "store_training_accuracy"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_store_training_loss(self):
+        default = True
+        path = ["general", "store_training_loss"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_store_models(self):
+        default = True
+        path = ["general", "store_models"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
@@ -272,18 +320,6 @@ class ParamsManager(object):
     def get_results_directory(self):
         default = "./results"
         path = ["general", "results_directory"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-    
-    def get_bit_precision(self):
-        default = 6
-        path = ["general", "bit_precision"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-    
-    def get_display_results(self):
-        default = True
-        path = ["general", "display_results"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
@@ -302,6 +338,12 @@ class ParamsManager(object):
     def get_nb_labels(self):
         path = ["model", "nb_labels"]
         return self._read_object(path)
+
+    def get_data_distribution_seed(self):
+        default = 0
+        path = ["model", "data_distribution_seed"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
     
     def get_name_data_distribution(self):
         default = "iid"
@@ -309,11 +351,11 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
-    def get_parameters_data_distribution(self):
-        default = "iid"
-        path = ["model", "data_distribution", "parameters"]
+    def get_parameter_data_distribution(self):
+        default = None
+        path = ["model", "data_distribution", "distribution_parameter"]
         read = self._read_object(path)
-        return self._parameter_to_use(default, read)
+        return float(self._parameter_to_use(default, read))
     
     def get_loss(self):
         default = "NLLLoss"
@@ -340,10 +382,12 @@ class ParamsManager(object):
     def get_preaggregators(self):
         path = ["pre_aggregators"]
         return self._read_object(path)
-    
-    def get_server_subsampling(self):
-        path = ["server", "server_subsampling"]
-        return self._read_object(path)
+
+    def get_batch_norm_momentum(self):
+        default = 0.1
+        path = ["server", "batch_norm_momentum"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
     
     def get_batch_size_validation(self):
         default = 100
@@ -361,7 +405,7 @@ class ParamsManager(object):
         default = 0.99
         path = ["honest_nodes", "momentum"]
         read = self._read_object(path)
-        return self._parameter_to_use(default, read)
+        return float(self._parameter_to_use(default, read))
     
     def get_batch_size(self):
         default = 25

@@ -2,6 +2,7 @@ import torch
 
 from robust_aggregators import RobustAggregator
 from model_base_interface import ModelBaseInterface
+from utils.conversion import unflatten_dict
 
 class Server(ModelBaseInterface):
     """
@@ -49,16 +50,42 @@ class Server(ModelBaseInterface):
             "learning_rate": params["learning_rate"],
             "weight_decay": params["weight_decay"],
             "milestones": params["milestones"],
-            "learning_rate_decay": params["learning_rate_decay"]
+            "learning_rate_decay": params["learning_rate_decay"],
+            "nb_workers": params["nb_workers"]
         })
         self.robust_aggregator = RobustAggregator(
             params["aggregator_info"],
             params["pre_agg_list"]
         )
+
+        # Clipping should not be applied to batch norm stats
+        batch_norm_preagg_list = []
+        for pre_agg in params["pre_agg_list"]:
+            if pre_agg["name"] != "Clipping":
+                batch_norm_preagg_list.append(pre_agg)
+
+        # Bath Norm Robust Aggregators
+        self.robust_aggregator_mean = RobustAggregator(
+            params["aggregator_info"],
+            batch_norm_preagg_list
+        )
+        self.robust_aggregator_var = RobustAggregator(
+            params["aggregator_info"],
+            batch_norm_preagg_list
+        )
+        self.robust_aggregator_bias = RobustAggregator(
+            params["aggregator_info"],
+            batch_norm_preagg_list
+        )
+
         self.validation_loader = params["dataloader"]
         self.test_loader = params["test_dataloader"]
-        self.bit_precision = params["bit_precision"]
         self.model.eval()
+
+        #Needed for batch norm
+        self.batch_size = params["batch_size"]
+        self.nb_workers = params["nb_workers"]
+        self.batch_norm_momentum = params["batch_norm_momentum"]
 
     def aggregate(self, vectors):
         """
@@ -79,6 +106,30 @@ class Server(ModelBaseInterface):
         """
         return self.robust_aggregator.aggregate(vectors)
     
+    def update_model(self, gradients):
+        """
+        Description
+        -----------
+        Update the model aggregating the gradients given and do an step.
+
+        Parameters
+        ----------
+        gradients : list
+            Flat list with the gradients
+        """
+        agg_gradients = self.aggregate(gradients)
+        self.set_gradients(agg_gradients)
+        self.step()
+    
+    def step(self):
+        """
+        Description
+        -----------
+        Do a step of the optimizer and the scheduler.
+        """
+        self.optimizer.step()
+        self.scheduler.step()
+    
     @torch.no_grad()
     def _compute_accuracy(self, dataloader):
         """
@@ -98,10 +149,61 @@ class Server(ModelBaseInterface):
             _, predicted = torch.max(outputs.data, 1)
             total += targets.size(0)
             correct += (predicted == targets).sum().item()
-        return round(correct/total, self.bit_precision)
+        return correct/total
     
     def compute_validation_accuracy(self):
         return self._compute_accuracy(self.validation_loader)
     
     def compute_test_accuracy(self):
         return self._compute_accuracy(self.test_loader)
+    
+    def update_batch_norm_stats(self, new_running_mean, new_running_var):
+        """
+        Description
+        -----------
+        Update the model aggregating the bath norm statistics given.
+
+        Parameters
+        ----------
+        batch_norm_stats : list
+            Flat list with the bath norm statistics
+        """
+        agg_mean = self.robust_aggregator_mean.aggregate(new_running_mean)
+        agg_var = self.robust_aggregator_var.aggregate(new_running_var)
+
+        if self.use_federated_batch_norm():
+            list_of_bias = [(param - agg_mean)**2 for param in new_running_mean]
+            agg_bias = self.robust_aggregator_bias.aggregate(list_of_bias)
+            agg_var = torch.add(agg_var, agg_bias)
+        
+        self.set_batch_norm_stats(agg_mean, agg_var)
+
+    def set_batch_norm_stats(self, agg_running_mean, agg_running_var):
+        """
+        Description
+        -----------
+        Sets the model batch norm stats given a flat vector.
+
+        Parameters
+        ----------
+        flat_vector : list
+            Flat list with the parameters
+        """
+        dictionary_mean, dictionary_var = self.get_batch_norm_stats()
+        state_dict = self.model.state_dict()
+        agg_mean_stats = unflatten_dict(dictionary_mean, agg_running_mean)
+        for key, item in agg_mean_stats.items():
+            state_dict[key] = item
+
+        agg_var_stats = unflatten_dict(dictionary_var, agg_running_var)
+        for key, item in agg_var_stats.items():
+            state_dict[key] = item
+
+        if self.use_federated_batch_norm():
+            for key in self.batch_norm_keys:
+                state_dict[key+".global_running_mean"] = state_dict[key+".global_running_mean"].mul(1-self.batch_norm_momentum).add(state_dict[key+".running_mean"], alpha = self.batch_norm_momentum)
+                nb_data = self.nb_workers*(self.batch_size) - 1
+                coef_mult = (nb_data+1)/nb_data
+                state_dict[key+".global_running_var"] = (1-self.batch_norm_momentum) * state_dict[key+".global_running_var"] + self.batch_norm_momentum * coef_mult * state_dict[key+".running_var"]
+        
+        self.set_model_state(state_dict)
