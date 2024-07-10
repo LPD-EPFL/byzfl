@@ -40,7 +40,7 @@ class Train(object):
     batch_size : int
         Batch size used in the train dataloaders
     batch_size_validation: int
-        Batch size used in the validation dataloader
+        Batch size used in the validation and test dataloader
     size_train_set: float
         Proportion of data from the train that will be used to train
     dataset_name : str 
@@ -51,8 +51,8 @@ class Train(object):
         Path of the folder that contains the data
     data_distribution_name : str
         Name of the data distribution
-    data_distribution_parameters : dict
-        Parameters of the data distribution
+    distribution_parameter : float
+        Parameter for the data distribution
     aggregator_info : dict
         Dictionary with the keys "name" and "parameters" defined.
     pre_agg_list : list
@@ -62,6 +62,8 @@ class Train(object):
         Number of workers
     nb_byz : int
         Number of byzantine nodes
+    declared_nb_byz : int
+        Number of byzantine nodes that the server will try to defend against
     loss_name : str 
         Loss name to be used
     milestones : list 
@@ -70,6 +72,8 @@ class Train(object):
         Rate decreases over time during training
     momentum : float
         Momentum
+    batch_norm_momentum : float
+        Momentum used in the federated batch norm
     attack_name : str 
         Attack name
     attack_parameters : dict 
@@ -147,7 +151,8 @@ class Train(object):
         torch.use_deterministic_algorithms(True)
         random.seed(self.data_distribution_seed)
 
-        train_dataloaders, self.validation_dataloader, self.test_dataloader = get_dataloaders(params_dataloaders)
+        train_dataloaders, self.validation_dataloader, \
+        self.test_dataloader = get_dataloaders(params_dataloaders)
 
         self.use_validation = self.validation_dataloader != None
 

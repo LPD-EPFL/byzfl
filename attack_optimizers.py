@@ -11,7 +11,7 @@ class LineMaximize():
     ----------
     agg_info : dict 
         Dictionary with the keys "name" and "parameters" defined.
-    pre-agg-info : list
+    pre_agg_info : list
         List of dictionaries (one for every pre_agg function)
         where every dictionary have the keys "name" and "parameters" defined.
     nb_byz : int
@@ -181,10 +181,10 @@ class WorkerWithMaxVariance():
 
     How to use it in experiments
     ----------------------------
-    >>> "attack-optimizer": {
+    >>> "attack_optimizer": {
     >>>     "name": "WorkerWithMaxVariance",
     >>>     "parameters": {
-    >>>         "steps-to-learn": 20
+    >>>         "steps_to_learn": 20
     >>>     }
     >>> }
 

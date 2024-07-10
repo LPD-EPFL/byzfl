@@ -28,8 +28,7 @@ class FileManager(object):
             + params["attack_name"] + "_" 
             + "lr_" + str(params["learning_rate"]) + "_" 
             + "mom_" + str(params["momentum"]) + "_" 
-            + "wd_" + str(params["weight_decay"]) + "_" 
-            + "lr_decay_" + str(params["learning_rate_decay"]) + "/"
+            + "wd_" + str(params["weight_decay"]) + "/"
         )
         
         if not os.path.exists(self.files_path):
@@ -138,6 +137,7 @@ class ParamsManager(object):
             "store_training_accuracy": self.get_store_training_accuracy(),
             "store_training_loss": self.get_store_training_loss(),
             "store_models": self.get_store_models(),
+            "batch_size_validation": self.get_batch_size_validation(),
             "data_folder": self.get_data_folder(),
             "results_directory": self.get_results_directory(),
             "model_name": self.get_model_name(),
@@ -150,7 +150,6 @@ class ParamsManager(object):
             "aggregator_info": self.get_aggregator_info(),
             "pre_agg_list": self.get_preaggregators(),
             "batch_norm_momentum": self.get_batch_norm_momentum(),
-            "batch_size_validation": self.get_batch_size_validation(),
             "momentum": self.get_momentum(),
             "batch_size": self.get_batch_size(),
             "learning_rate": self.get_learning_rate(),
@@ -180,6 +179,7 @@ class ParamsManager(object):
                 "store_training_accuracy": self.get_store_training_accuracy(),
                 "store_training_loss": self.get_store_training_loss(),
                 "store_models": self.get_store_models(),
+                "batch_size_validation": self.get_batch_size_validation(),
                 "data_folder": self.get_data_folder(),
                 "results_directory": self.get_results_directory(),
             },
@@ -205,7 +205,6 @@ class ParamsManager(object):
 
             "server": {
                 "batch_norm_momentum": self.get_batch_norm_momentum(),
-                "batch_size_validation": self.get_batch_size_validation(),
                 "learning_rate_decay": self.get_learning_rate_decay(),
                 "milestones": self.get_milestones()
             },
@@ -310,6 +309,12 @@ class ParamsManager(object):
         path = ["general", "store_models"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
+
+    def get_batch_size_validation(self):
+        default = 100
+        path = ["general", "batch_size_validation"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
     
     def get_data_folder(self):
         default = "./data"
@@ -386,12 +391,6 @@ class ParamsManager(object):
     def get_batch_norm_momentum(self):
         default = 0.1
         path = ["server", "batch_norm_momentum"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-    
-    def get_batch_size_validation(self):
-        default = 100
-        path = ["server", "batch_size_validation"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 

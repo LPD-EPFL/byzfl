@@ -197,7 +197,8 @@ class LittleIsEnough():
     """
     Description
     -----------
-    Class representing an attack that perturbs the mean vector of honest vectors by adding a scaled version of the standard deviation vector.
+    Class representing an attack that perturbs the mean vector of honest 
+        vectors by adding a scaled version of the standard deviation vector.
     
     Parameters
     ----------
@@ -233,12 +234,13 @@ class LittleIsEnough():
 
     def get_malicious_vector(self, honest_vectors):
         """
-        Perturb the mean vector of honest vectors by adding a scaled version of the standard deviation vector.
+        Perturb the mean vector of honest vectors by adding a scaled version 
+            of the standard deviation vector.
 
         Parameters
         ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype
-            Matrix containing arrays of honest vectors.
+        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or 
+            complex dtype
 
         Returns
         -------
@@ -281,7 +283,7 @@ class Mimic():
     Parameters
     ----------
     worker_to_mimic : int
-            ID of the worker whose behavior is to be mimicked.
+        ID of the worker whose behavior is to be mimicked.
 
     How to use it in experiments
     ----------------------------
@@ -354,7 +356,8 @@ class Inf():
     """
     Description
     -----------
-    Class representing an attack that generates a vector with positive infinity values.
+    Class representing an attack that generates a vector 
+        with positive infinity values.
 
     How to use it in experiments
     ---------------------------

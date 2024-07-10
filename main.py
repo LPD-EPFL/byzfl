@@ -57,8 +57,7 @@ def eliminate_experiments_done(dict_list):
                 + setting["attack"]["name"] + "_" 
                 + "lr_" + str(setting["honest_nodes"]["learning_rate"]) + "_" 
                 + "mom_" + str(setting["honest_nodes"]["momentum"]) + "_" 
-                + "wd_" + str(setting["honest_nodes"]["weight_decay"]) + "_"
-                + "lr_decay_" + str(setting["server"]["learning_rate_decay"])
+                + "wd_" + str(setting["honest_nodes"]["weight_decay"])
             )
 
             if folder_name in folders:

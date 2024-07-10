@@ -14,29 +14,31 @@ class Client(ModelBaseInterface):
     Parameters
     ----------
         All this parameters should be passed in a dictionary that contains the following keys.
-    model-name : str 
+    model_name : str 
         Name of the model to be used
     device : str 
         Name of the device to be used
-    learning-rate : float 
+    learning_rate : float 
         Learning rate
-    loss-name : str
+    loss_name : str
         Name of the loss to be used
-    weight-decay : float 
+    weight_decay : float 
         Regularization used
     milestones : list 
         List of the milestones, where the learning rate
         decay should be applied
-    learning-rate-decay : float
+    learning_rate_decay : float
         Rate decreases over time during training
-    attack-name : str 
+    attack_name : str 
         Name of the attack to be used
     momentum : float 
         Momentum
-    training-dataloader : Dataloader
+    training_dataloader : Dataloader
         Traning dataloader
-    nb-labels : int 
+    nb_labels : int 
         Number of labels in the dataset
+    nb_steps : int
+        Number of steps in the training
 
     Methods
     --------

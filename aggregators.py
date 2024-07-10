@@ -144,9 +144,7 @@ class TrMean(object):
     ----------------------------
     >>> "aggregator": {
     >>>     "name": "TrMean",
-    >>>     "parameters": {
-    >>>         "nb_byz": 5
-    >>>     }
+    >>>     "parameters": {}
     >>> }
 
     Methods
@@ -312,9 +310,7 @@ class Krum(object):
     ----------------------------
     >>> "aggregator": {
     >>>     "name": "Krum",
-    >>>     "parameters": {
-    >>>         "nb_byz": 5
-    >>>     }
+    >>>     "parameters": {}
     >>> }
 
     Methods
@@ -399,9 +395,7 @@ class MultiKrum(object):
     ----------------------------
     >>> "aggregator": {
     >>>     "name": "MultiKrum",
-    >>>     "parameters": {
-    >>>         "nb_byz": 5
-    >>>     }
+    >>>     "parameters": {}
     >>> }
 
     Methods
@@ -596,9 +590,7 @@ class MDA(object):
     ----------------------------
     >>> "aggregator": {
     >>>     "name": "MDA",
-    >>>     "parameters": {
-    >>>         "nb_byz": 2
-    >>>     }
+    >>>     "parameters": {}
     >>> }
 
     Methods
@@ -693,9 +685,7 @@ class MVA(object):
     ----------------------------
     >>> "aggregator": {
     >>>     "name": "MVA",
-    >>>     "parameters": {
-    >>>         "nb_byz": 2
-    >>>     }
+    >>>     "parameters": {}
     >>> }
 
     Methods
@@ -795,7 +785,6 @@ class Monna(object):
     >>> "aggregator": {
     >>>     "name": "Monna",
     >>>     "parameters": {
-    >>>         "nb_byz": 4,
     >>>         "pivot_index": 2
     >>>     }
     >>> }
@@ -880,9 +869,7 @@ class Meamed(object):
     ----------------------------
     >>> "aggregator": {
     >>>     "name": "Meamed",
-    >>>     "parameters": {
-    >>>         "nb_byz": 2
-    >>>     }
+    >>>     "parameters": {}
     >>> }
 
     Methods
