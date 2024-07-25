@@ -95,7 +95,7 @@ class Client(ModelBaseInterface):
         """
         inputs, targets = self._sample_train_batch()
         inputs, targets = inputs.to(self.device), targets.to(self.device)
-        
+
         if self.labelflipping:
             self.model.eval()
             self.model.zero_grad()
@@ -187,14 +187,4 @@ class Client(ModelBaseInterface):
         state_dict : dict 
             State_dict from a model
         """
-
-        if self.use_batch_norm():
-            before_state_dict = self.model.state_dict()
-
-            for key in self.global_running_mean_key_list:
-                state_dict[key] = before_state_dict[key].clone()
-
-            for key in self.global_running_var_key_list:
-                state_dict[key] = before_state_dict[key].clone()
-        
         self.model.load_state_dict(state_dict)

@@ -154,7 +154,7 @@ class Server(ModelBaseInterface):
         if self.use_federated_batch_norm():
             list_of_bias = [(param - agg_mean)**2 for param in new_running_mean]
             agg_bias = self.robust_aggregator_bias.aggregate(list_of_bias)
-            agg_var = torch.add(agg_var, agg_bias)
+            agg_var = agg_var + (self.nb_workers*self.batch_size / (self.batch_norm_momentum * (self.nb_workers*self.batch_size - 1))) * agg_bias
         
         self.set_batch_norm_stats(agg_mean, agg_var)
 
@@ -179,11 +179,4 @@ class Server(ModelBaseInterface):
         for key, item in agg_var_stats.items():
             state_dict[key] = item
 
-        if self.use_federated_batch_norm():
-            for key in self.batch_norm_keys:
-                state_dict[key+".global_running_mean"] = state_dict[key+".global_running_mean"].mul(1-self.batch_norm_momentum).add(state_dict[key+".running_mean"], alpha = self.batch_norm_momentum)
-                nb_data = self.nb_workers*(self.batch_size) - 1
-                coef_mult = (nb_data+1)/nb_data
-                state_dict[key+".global_running_var"] = (1-self.batch_norm_momentum) * state_dict[key+".global_running_var"] + self.batch_norm_momentum * coef_mult * state_dict[key+".running_var"]
-        
         self.set_model_state(state_dict)

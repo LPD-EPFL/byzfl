@@ -230,8 +230,10 @@ class Bucketing(object):
     ---------
     """
 
-    def __init__(self, bucket_size, **kwargs):
+    def __init__(self, nb_workers, nb_byz, bucket_size=None, **kwargs):
         self.bucket_size = bucket_size
+        if self.bucket_size is None:
+            self.bucket_size = math.floor(nb_workers/(2*nb_byz))
     
     def pre_aggregate_vectors(self, vectors):
         """

@@ -32,45 +32,48 @@ def process_args():
     return nb_jobs
 
 def eliminate_experiments_done(dict_list):
-    directory = dict_list[0]["general"]["results_directory"]
-    folders = [name for name in os.listdir(directory) if os.path.isdir(os.path.join(directory, name))]
-    if len(folders) != 0:
-        real_dict_list = []
-        for setting in dict_list:
-            if setting["general"]["nb_workers"] == None:
-                setting["general"]["nb_workers"] = setting["general"]["nb_honest"] + setting["general"]["nb_byz"]
-            # First check folder
-            pre_aggregation_names =  [
-                dict['name']
-                for dict in setting["pre_aggregators"]
-            ]
-            folder_name = str(
-                setting["model"]["dataset_name"] + "_" 
-                + setting["model"]["name"] + "_" 
-                +"n_" + str(setting["general"]["nb_workers"]) + "_" 
-                + "f_" + str(setting["general"]["nb_byz"]) + "_" 
-                + "d_" + str(setting["general"]["declared_nb_byz"]) + "_"
-                + setting["model"]["data_distribution"]["name"] + "_"
-                + str(setting["model"]["data_distribution"]["distribution_parameter"]) + "_" 
-                + setting["aggregator"]["name"] + "_"
-                + "_".join(pre_aggregation_names) + "_"
-                + setting["attack"]["name"] + "_" 
-                + "lr_" + str(setting["honest_nodes"]["learning_rate"]) + "_" 
-                + "mom_" + str(setting["honest_nodes"]["momentum"]) + "_" 
-                + "wd_" + str(setting["honest_nodes"]["weight_decay"])
-            )
+    if len(dict_list) != 0:
+        directory = dict_list[0]["general"]["results_directory"]
+        folders = [name for name in os.listdir(directory) if os.path.isdir(os.path.join(directory, name))]
+        if len(folders) != 0:
+            real_dict_list = []
+            for setting in dict_list:
+                if setting["general"]["nb_workers"] == None:
+                    setting["general"]["nb_workers"] = setting["general"]["nb_honest"] + setting["general"]["nb_byz"]
+                # First check folder
+                pre_aggregation_names =  [
+                    dict['name']
+                    for dict in setting["pre_aggregators"]
+                ]
+                folder_name = str(
+                    setting["model"]["dataset_name"] + "_" 
+                    + setting["model"]["name"] + "_" 
+                    +"n_" + str(setting["general"]["nb_workers"]) + "_" 
+                    + "f_" + str(setting["general"]["nb_byz"]) + "_" 
+                    + "d_" + str(setting["general"]["declared_nb_byz"]) + "_"
+                    + setting["model"]["data_distribution"]["name"] + "_"
+                    + str(setting["model"]["data_distribution"]["distribution_parameter"]) + "_" 
+                    + setting["aggregator"]["name"] + "_"
+                    + "_".join(pre_aggregation_names) + "_"
+                    + setting["attack"]["name"] + "_" 
+                    + "lr_" + str(setting["honest_nodes"]["learning_rate"]) + "_" 
+                    + "mom_" + str(setting["honest_nodes"]["momentum"]) + "_" 
+                    + "wd_" + str(setting["honest_nodes"]["weight_decay"])
+                )
 
-            if folder_name in folders:
-                #Now we check the seeds
-                training_seed = setting["general"]["training_seed"]
-                data_distribution_seed = setting["model"]["data_distribution_seed"]
-                files = os.listdir(directory+"/"+folder_name)
-                name = "train_time_tr_seed_" + str(training_seed) + "_dd_seed_" + str(data_distribution_seed) + ".txt"
-                if not name in files:
+                if folder_name in folders:
+                    #Now we check the seeds
+                    training_seed = setting["general"]["training_seed"]
+                    data_distribution_seed = setting["model"]["data_distribution_seed"]
+                    files = os.listdir(directory+"/"+folder_name)
+                    name = "train_time_tr_seed_" + str(training_seed) + "_dd_seed_" + str(data_distribution_seed) + ".txt"
+                    if not name in files:
+                        real_dict_list.append(setting)
+                else:
                     real_dict_list.append(setting)
-            else:
-                real_dict_list.append(setting)
-        return real_dict_list
+            return real_dict_list
+        else:
+            return dict_list
     else:
         return dict_list
 

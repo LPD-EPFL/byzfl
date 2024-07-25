@@ -38,6 +38,7 @@ class ModelBaseInterface(object):
 
         if "fbn" in model_name:
             self.model = torch.nn.DataParallel(getattr(models, model_name)(params["nb_workers"])).to(self.device)
+            self.use_fbn = True
         else:
             self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
 
@@ -56,8 +57,6 @@ class ModelBaseInterface(object):
         self.batch_norm_keys = []
         self.running_mean_key_list = []
         self.running_var_key_list = []
-        self.global_running_mean_key_list = []
-        self.global_running_var_key_list = []
     
     def get_flat_parameters(self):
         """
@@ -190,11 +189,7 @@ class ModelBaseInterface(object):
 
     def compute_batch_norm_keys(self):
         for key in self.model.state_dict().keys():
-            if "global_running_mean" in key:
-                self.global_running_mean_key_list.append(key)
-            elif "global_running_var" in key:
-                self.global_running_var_key_list.append(key)
-            elif "running_mean" in key:
+            if "running_mean" in key:
                 self.running_mean_key_list.append(key)
                 self.batch_norm_keys.append(key.split(".")[0])
             elif "running_var" in key:
@@ -204,4 +199,4 @@ class ModelBaseInterface(object):
         return len(self.batch_norm_keys) > 0
     
     def use_federated_batch_norm(self):
-        return len(self.global_running_mean_key_list) > 0
+        return self.use_fbn

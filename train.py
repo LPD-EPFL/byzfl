@@ -127,6 +127,7 @@ class Train(object):
         if len(params["pre_agg_list"]) > 0:
             for pre_agg in params["pre_agg_list"]:
                 pre_agg["parameters"]["nb_byz"] = params["declared_nb_byz"]
+                pre_agg["parameters"]["nb_workers"] = params["nb_workers"]
 
         params_dataloaders = {
             "dataset_name": params["dataset_name"],

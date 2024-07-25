@@ -196,83 +196,35 @@ class FedBatchNorm1d(nn.Module):
             return output
         return output * self.weight + self.bias
 
-class FedBatchNorm2d(nn.Module):
-    def __init__(self, 
-                 num_features, 
-                 num_workers=10,
-                 eps=1e-05, 
-                 momentum=0.1, 
-                 affine=True, 
-                 track_running_stats=True, 
-                 device="cuda", 
-                 dtype=torch.float32):
-        super(FedBatchNorm2d, self).__init__()
-        
-        self.momentum = momentum
-        self.eps = eps
-        self.affine = affine
-        self.track_running_stats = track_running_stats
-        self.device = device
-        self.dtype = dtype
-        self.register_buffer('running_mean', torch.zeros(num_features, dtype = self.dtype).to(self.device))
-        self.register_buffer('running_var', torch.zeros(num_features, dtype = self.dtype).to(self.device))
-        self.register_buffer('global_running_mean', torch.zeros(num_features, dtype = self.dtype).to(self.device))
-        self.register_buffer('global_running_var', torch.ones(num_features, dtype = self.dtype).to(self.device))
-        if self.affine == True:
-            self.register_buffer('weight', nn.Parameter(torch.ones(num_features, requires_grad=True, dtype = self.dtype)).to(self.device))
-            self.register_buffer('bias', nn.Parameter(torch.zeros(num_features, requires_grad=True, dtype = self.dtype)).to(self.device))
-            # self.weight = nn.Parameter(torch.ones(num_features, requires_grad=True, dtype = self.dtype)).to(self.device)
-            # self.bias = nn.Parameter(torch.zeros(num_features, requires_grad=True, dtype = self.dtype)).to(self.device)
-        # self.global_running_mean = torch.zeros(num_features).to(self.device)
-        # self.global_running_var = torch.ones(num_features).to(self.device)
-        
-        self.register_buffer('num_batches_tracked', torch.tensor(0).to(self.device))
-        # self.num_batches_tracked = torch.zeros(1).to(self.device)
-        self.num_workers = num_workers
-        self.num_features = num_features
+
+class FedBatchNorm(nn.BatchNorm2d):
+    def __init__(self, num_features, nb_clients, eps=1e-5, momentum=0.1,
+                 affine=True, track_running_stats=True):
+        super(FedBatchNorm, self).__init__(
+            num_features, eps, momentum, affine, track_running_stats)
+        self.n = nb_clients
 
     def forward(self, input):
-        # print(input.norm())
-        with torch.autocast(device_type="cuda"):
+        self._check_input_dim(input)
+
+        mean = self.running_mean.clone()
+        var = self.running_var.clone()
+        
+        if self.training:
+            
+            current_mean = input.mean([0, 2, 3])
+            current_var = input.var([0, 2, 3], correction=0)
+      
+            K = input.numel() / self.num_features
+            Kn = K * self.n
             with torch.no_grad():
-                if self.training == True:
-                    if self.num_batches_tracked > 0:
-                        self.global_running_mean  = self.global_running_mean.mul(1-self.momentum).add(self.running_mean, alpha = self.momentum)
-                        nb_data = self.num_workers*(input.numel()/self.num_features) - 1
-                        coef_mult = (nb_data+1)/nb_data
-                        # tmp_1 = self.running_var*coef_mult
-                        # tmp_2 = coef_mult*((self.global_running_mean - self.running_mean)**2)
-                        # tmp_3 = 2*self.running_diff_sum*(self.global_running_mean - self.running_mean)*coef_mult
-                        # constructed_var = tmp_1 + tmp_2 + tmp_3
-                        # self.global_running_var = (1-self.momentum) * self.global_running_var + self.momentum * constructed_var
-                        self.global_running_var = (1-self.momentum) * self.global_running_var + self.momentum * coef_mult * self.running_var
+                self.running_mean = self.momentum * current_mean + (1 - self.momentum) * self.running_mean
+                self.running_var = self.momentum * current_var * (Kn / (Kn - 1)) + (1 - self.momentum) * self.running_var
 
+        input = (input - mean[None, :, None, None]) / (torch.sqrt(var[None, :, None, None] + self.eps))
+        if self.affine:
+            input = input * self.weight[None, :, None, None] + self.bias[None, :, None, None]
 
-                    tmp = input.movedim(1,-1).reshape(-1, self.num_features)
-                    # tmp2 = input.movedim(1,0).reshape(self.num_features,-1).var(dim=1)
-                    self.running_mean = tmp.mean(dim = 0)
-                    self.running_var = tmp.var(dim = 0, correction = 0)
-                    # self.running_diff_sum = (tmp - self.global_running_mean).mean(dim = 0)
-#                     if self.num_batches_tracked % 50 == 0:
-#                         print(self.global_running_mean.max())
-#                         print(self.running_mean.max())
-#                         print(self.global_running_var.max())
-#                         print(self.running_var.max())
-                    #     print(((tmp - self.global_running_mean)**2).mean(dim = 0).norm())
-                    #     print(((tmp - self.running_mean)**2).mean(dim = 0).norm())
-                        # print(self.running_mean.norm())
-                        # print(self.running_var.norm())
-                        # print(tmp2.norm())
-                        # print(self.running_diff_sum.norm())
-            # print(input.norm())
-            input = (input.movedim(1,-1) - self.global_running_mean)/torch.sqrt(self.global_running_var + self.eps)
-            # print(input.norm())
-            if self.affine == True:
-                input  = input * self.weight + self.bias
-            # print(input.norm())
-            input = input.movedim(-1,1)
-            # print(input.norm())
-            self.num_batches_tracked = self.num_batches_tracked + 1
         return input
 
 
@@ -284,15 +236,15 @@ class cnn_cifar_old_with_fbn(nn.Module):
     super().__init__()
     # Build parameters
     self._c1 = nn.Conv2d(3, 64, kernel_size=3, padding=1)
-    self._b1 = FedBatchNorm2d(self._c1.out_channels, num_clients)
+    self._b1 = FedBatchNorm(self._c1.out_channels, num_clients)
     self._c2 = nn.Conv2d(self._c1.out_channels, 64, kernel_size=3, padding=1)
-    self._b2 = FedBatchNorm2d(self._c2.out_channels, num_clients)
+    self._b2 = FedBatchNorm(self._c2.out_channels, num_clients)
     self._m1 = nn.MaxPool2d(2)
     self._d1 = nn.Dropout(p=0.25)
     self._c3 = nn.Conv2d(self._c2.out_channels, 128, kernel_size=3, padding=1)
-    self._b3 = FedBatchNorm2d(self._c3.out_channels, num_clients)
+    self._b3 = FedBatchNorm(self._c3.out_channels, num_clients)
     self._c4 = nn.Conv2d(self._c3.out_channels, 128, kernel_size=3, padding=1)
-    self._b4 = FedBatchNorm2d(self._c4.out_channels, num_clients)
+    self._b4 = FedBatchNorm(self._c4.out_channels, num_clients)
     self._m2 = nn.MaxPool2d(2)
     self._d2 = nn.Dropout(p=0.25)
     self._d3 = nn.Dropout(p=0.25)
