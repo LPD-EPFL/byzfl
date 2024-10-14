@@ -1,0 +1,25 @@
+Library
+==========
+
+.. toctree::
+   :maxdepth: 4
+
+   aggregators
+   attack_optimizers
+   attacks
+   byzantine_worker
+   client
+   compute_cluster
+   dataset
+   experiment
+   main
+   managers
+   model_base_interface
+   models
+   plot
+   preaggregators
+   robust_aggregators
+   server
+   test
+   train
+   utils

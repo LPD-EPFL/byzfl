@@ -1,0 +1,830 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Library &#8212; Byzantine ML Library 0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=837179f8"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'modules';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="aggregators module" href="aggregators.html" />
+    <link rel="prev" title="Welcome to Byzantine Machine Learning Library Documentation’s!" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Byzantine ML Library 0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Library
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Library
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="aggregators.html">aggregators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attack_optimizers.html">attack_optimizers module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attacks.html">attacks module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="byzantine_worker.html">byzantine_worker module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">client module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compute_cluster.html">compute_cluster module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">dataset module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">experiment module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managers.html">managers module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_base_interface.html">model_base_interface module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot.html">plot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preaggregators.html">preaggregators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robust_aggregators.html">robust_aggregators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">test module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train.html">train module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Library</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="library">
+<h1>Library<a class="headerlink" href="#library" title="Link to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="aggregators.html">aggregators module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.Average"><code class="docutils literal notranslate"><span class="pre">Average</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.Average.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Average.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.CenteredClipping"><code class="docutils literal notranslate"><span class="pre">CenteredClipping</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.CenteredClipping.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">CenteredClipping.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.GeometricMedian"><code class="docutils literal notranslate"><span class="pre">GeometricMedian</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.GeometricMedian.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">GeometricMedian.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.Krum"><code class="docutils literal notranslate"><span class="pre">Krum</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.Krum.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Krum.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.MDA"><code class="docutils literal notranslate"><span class="pre">MDA</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.MDA.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">MDA.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.MVA"><code class="docutils literal notranslate"><span class="pre">MVA</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.MVA.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">MVA.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.Meamed"><code class="docutils literal notranslate"><span class="pre">Meamed</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.Meamed.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Meamed.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.Median"><code class="docutils literal notranslate"><span class="pre">Median</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.Median.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Median.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.Monna"><code class="docutils literal notranslate"><span class="pre">Monna</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.Monna.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Monna.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.MultiKrum"><code class="docutils literal notranslate"><span class="pre">MultiKrum</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.MultiKrum.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">MultiKrum.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aggregators.html#aggregators.TrMean"><code class="docutils literal notranslate"><span class="pre">TrMean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aggregators.html#aggregators.TrMean.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">TrMean.aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="attack_optimizers.html">attack_optimizers module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="attack_optimizers.html#attack_optimizers.LineMaximize"><code class="docutils literal notranslate"><span class="pre">LineMaximize</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attack_optimizers.html#attack_optimizers.LineMaximize.optimize"><code class="docutils literal notranslate"><span class="pre">LineMaximize.optimize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attack_optimizers.html#attack_optimizers.WorkerWithMaxVariance"><code class="docutils literal notranslate"><span class="pre">WorkerWithMaxVariance</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attack_optimizers.html#attack_optimizers.WorkerWithMaxVariance.optimize"><code class="docutils literal notranslate"><span class="pre">WorkerWithMaxVariance.optimize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="attacks.html">attacks module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="attacks.html#attacks.FallOfEmpires"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.FallOfEmpires.get_malicious_vector"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires.get_malicious_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.FallOfEmpires.set_attack_parameters"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires.set_attack_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attacks.html#attacks.Inf"><code class="docutils literal notranslate"><span class="pre">Inf</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.Inf.get_malicious_vector"><code class="docutils literal notranslate"><span class="pre">Inf.get_malicious_vector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attacks.html#attacks.LittleIsEnough"><code class="docutils literal notranslate"><span class="pre">LittleIsEnough</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.LittleIsEnough.get_malicious_vector"><code class="docutils literal notranslate"><span class="pre">LittleIsEnough.get_malicious_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.LittleIsEnough.set_attack_parameters"><code class="docutils literal notranslate"><span class="pre">LittleIsEnough.set_attack_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attacks.html#attacks.Mimic"><code class="docutils literal notranslate"><span class="pre">Mimic</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.Mimic.get_malicious_vector"><code class="docutils literal notranslate"><span class="pre">Mimic.get_malicious_vector()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.Mimic.set_attack_parameters"><code class="docutils literal notranslate"><span class="pre">Mimic.set_attack_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attacks.html#attacks.NoAttack"><code class="docutils literal notranslate"><span class="pre">NoAttack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.NoAttack.get_malicious_vector"><code class="docutils literal notranslate"><span class="pre">NoAttack.get_malicious_vector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="attacks.html#attacks.SignFlipping"><code class="docutils literal notranslate"><span class="pre">SignFlipping</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="attacks.html#attacks.SignFlipping.get_malicious_vector"><code class="docutils literal notranslate"><span class="pre">SignFlipping.get_malicious_vector()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="byzantine_worker.html">byzantine_worker module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="byzantine_worker.html#byzantine_worker.ByzantineWorker"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="byzantine_worker.html#byzantine_worker.ByzantineWorker.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_attack()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="byzantine_worker.html#byzantine_worker.ByzantineWorker.apply_batch_norm_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_batch_norm_attack()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">client module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client.html#client.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="client.html#client.Client.compute_gradients"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="client.html#client.Client.get_flat_flipped_gradients"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="client.html#client.Client.get_flat_gradients_with_momentum"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="client.html#client.Client.get_loss_list"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="client.html#client.Client.get_train_accuracy"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="client.html#client.Client.set_model_state"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compute_cluster.html">compute_cluster module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster"><code class="docutils literal notranslate"><span class="pre">ComputeCluster</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.compute_batch_norm_keys"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.compute_batch_norm_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.get_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.get_batch_norm_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.get_gradients"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.get_gradients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.get_loss_list_of_clients"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.get_loss_list_of_clients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.get_momentum"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.get_momentum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.get_train_acc_of_clients"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.get_train_acc_of_clients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.set_model_state"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.set_model_state()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="compute_cluster.html#compute_cluster.ComputeCluster.transmit_parameters_to_clients"><code class="docutils literal notranslate"><span class="pre">ComputeCluster.transmit_parameters_to_clients()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">dataset module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.dirichlet_niid_idx"><code class="docutils literal notranslate"><span class="pre">dirichlet_niid_idx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.extreme_niid_idx"><code class="docutils literal notranslate"><span class="pre">extreme_niid_idx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.gamma_niid_idx"><code class="docutils literal notranslate"><span class="pre">gamma_niid_idx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.get_dataloaders"><code class="docutils literal notranslate"><span class="pre">get_dataloaders()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.idx_to_dataloaders"><code class="docutils literal notranslate"><span class="pre">idx_to_dataloaders()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.iid_idx"><code class="docutils literal notranslate"><span class="pre">iid_idx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dataset.split_datasets"><code class="docutils literal notranslate"><span class="pre">split_datasets()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">experiment module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.delegate_data_distribution_seeds"><code class="docutils literal notranslate"><span class="pre">delegate_data_distribution_seeds()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.delegate_training_seeds"><code class="docutils literal notranslate"><span class="pre">delegate_training_seeds()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.eliminate_experiments_done"><code class="docutils literal notranslate"><span class="pre">eliminate_experiments_done()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.init_pool_processes"><code class="docutils literal notranslate"><span class="pre">init_pool_processes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.process_args"><code class="docutils literal notranslate"><span class="pre">process_args()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.remove_real_greater_declared"><code class="docutils literal notranslate"><span class="pre">remove_real_greater_declared()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.remove_real_not_equal_declared"><code class="docutils literal notranslate"><span class="pre">remove_real_not_equal_declared()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.run_training"><code class="docutils literal notranslate"><span class="pre">run_training()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="managers.html">managers module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="managers.html#managers.FileManager"><code class="docutils literal notranslate"><span class="pre">FileManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.get_experiment_path"><code class="docutils literal notranslate"><span class="pre">FileManager.get_experiment_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.save_accuracy"><code class="docutils literal notranslate"><span class="pre">FileManager.save_accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.save_config_dict"><code class="docutils literal notranslate"><span class="pre">FileManager.save_config_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.save_loss"><code class="docutils literal notranslate"><span class="pre">FileManager.save_loss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.save_state_dict"><code class="docutils literal notranslate"><span class="pre">FileManager.save_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.set_experiment_path"><code class="docutils literal notranslate"><span class="pre">FileManager.set_experiment_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.FileManager.write_array_in_file"><code class="docutils literal notranslate"><span class="pre">FileManager.write_array_in_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers.html#managers.ParamsManager"><code class="docutils literal notranslate"><span class="pre">ParamsManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_aggregator_info"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_aggregator_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_aggregator_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_aggregator_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_aggregator_parameters"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_aggregator_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_attack_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_attack_optimizer_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_optimizer_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_attack_optimizer_parameters"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_optimizer_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_attack_parameters"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_batch_norm_momentum"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_batch_norm_momentum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_batch_size"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_batch_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_batch_size_validation"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_batch_size_validation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_data"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_data_distribution_seed"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_data_distribution_seed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_data_folder"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_data_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_dataset_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_dataset_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_declared_equal_real"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_declared_equal_real()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_declared_nb_byz"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_declared_nb_byz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_device"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_device()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_evaluate_on_test"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_evaluate_on_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_evaluation_delta"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_evaluation_delta()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_flatten_info"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_flatten_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_learning_rate"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_learning_rate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_learning_rate_decay"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_learning_rate_decay()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_loss"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_loss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_milestones"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_milestones()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_model_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_model_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_momentum"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_momentum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_name_data_distribution"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_name_data_distribution()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_nb_byz"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_byz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_nb_honest"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_honest()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_nb_labels"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_labels()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_nb_steps"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_steps()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_nb_workers"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_workers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_parameter_data_distribution"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_parameter_data_distribution()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_preaggregators"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_preaggregators()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_results_directory"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_results_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_size_train_set"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_size_train_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_store_models"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_store_models()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_store_training_accuracy"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_store_training_accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_store_training_loss"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_store_training_loss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_training_seed"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_training_seed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers.html#managers.ParamsManager.get_weight_decay"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_weight_decay()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model_base_interface.html">model_base_interface module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.compute_batch_norm_keys"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.compute_batch_norm_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.get_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_batch_norm_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.get_dict_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_dict_gradients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.get_dict_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_dict_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_flat_batch_norm_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_flat_gradients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_flat_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.set_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.set_gradients()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.set_model_state"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.set_model_state()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.set_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.set_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.use_batch_norm"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.use_batch_norm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface.use_federated_batch_norm"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.use_federated_batch_norm()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.BasicBlock"><code class="docutils literal notranslate"><span class="pre">BasicBlock</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.BasicBlock.expansion"><code class="docutils literal notranslate"><span class="pre">BasicBlock.expansion</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.BasicBlock.forward"><code class="docutils literal notranslate"><span class="pre">BasicBlock.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.Bottleneck"><code class="docutils literal notranslate"><span class="pre">Bottleneck</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.Bottleneck.expansion"><code class="docutils literal notranslate"><span class="pre">Bottleneck.expansion</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.Bottleneck.forward"><code class="docutils literal notranslate"><span class="pre">Bottleneck.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.FedBatchNorm1d"><code class="docutils literal notranslate"><span class="pre">FedBatchNorm1d</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.FedBatchNorm1d.forward"><code class="docutils literal notranslate"><span class="pre">FedBatchNorm1d.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.FedBatchNorm2d"><code class="docutils literal notranslate"><span class="pre">FedBatchNorm2d</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.FedBatchNorm2d.forward"><code class="docutils literal notranslate"><span class="pre">FedBatchNorm2d.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.ResNet"><code class="docutils literal notranslate"><span class="pre">ResNet</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.ResNet.forward"><code class="docutils literal notranslate"><span class="pre">ResNet.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.ResNet101"><code class="docutils literal notranslate"><span class="pre">ResNet101()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.ResNet152"><code class="docutils literal notranslate"><span class="pre">ResNet152()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.ResNet18"><code class="docutils literal notranslate"><span class="pre">ResNet18()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.ResNet34"><code class="docutils literal notranslate"><span class="pre">ResNet34()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.ResNet50"><code class="docutils literal notranslate"><span class="pre">ResNet50()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.cifar_Net"><code class="docutils literal notranslate"><span class="pre">cifar_Net</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.cifar_Net.forward"><code class="docutils literal notranslate"><span class="pre">cifar_Net.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.cnn_cifar"><code class="docutils literal notranslate"><span class="pre">cnn_cifar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.cnn_cifar.forward"><code class="docutils literal notranslate"><span class="pre">cnn_cifar.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.cnn_cifar_old"><code class="docutils literal notranslate"><span class="pre">cnn_cifar_old</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.cnn_cifar_old.forward"><code class="docutils literal notranslate"><span class="pre">cnn_cifar_old.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.cnn_cifar_old_with_fbn"><code class="docutils literal notranslate"><span class="pre">cnn_cifar_old_with_fbn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.cnn_cifar_old_with_fbn.forward"><code class="docutils literal notranslate"><span class="pre">cnn_cifar_old_with_fbn.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.cnn_mnist"><code class="docutils literal notranslate"><span class="pre">cnn_mnist</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.cnn_mnist.forward"><code class="docutils literal notranslate"><span class="pre">cnn_mnist.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.fc_mnist"><code class="docutils literal notranslate"><span class="pre">fc_mnist</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.fc_mnist.forward"><code class="docutils literal notranslate"><span class="pre">fc_mnist.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.logreg_mnist"><code class="docutils literal notranslate"><span class="pre">logreg_mnist</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.logreg_mnist.forward"><code class="docutils literal notranslate"><span class="pre">logreg_mnist.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#models.logreg_phishing"><code class="docutils literal notranslate"><span class="pre">logreg_phishing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.logreg_phishing.forward"><code class="docutils literal notranslate"><span class="pre">logreg_phishing.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plot.html">plot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preaggregators.html">preaggregators module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preaggregators.html#preaggregators.Arc"><code class="docutils literal notranslate"><span class="pre">Arc</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preaggregators.html#preaggregators.Arc.pre_aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Arc.pre_aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preaggregators.html#preaggregators.Bucketing"><code class="docutils literal notranslate"><span class="pre">Bucketing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preaggregators.html#preaggregators.Bucketing.pre_aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Bucketing.pre_aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preaggregators.html#preaggregators.Clipping"><code class="docutils literal notranslate"><span class="pre">Clipping</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preaggregators.html#preaggregators.Clipping.pre_aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Clipping.pre_aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preaggregators.html#preaggregators.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preaggregators.html#preaggregators.Identity.pre_aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">Identity.pre_aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preaggregators.html#preaggregators.NNM"><code class="docutils literal notranslate"><span class="pre">NNM</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preaggregators.html#preaggregators.NNM.pre_aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">NNM.pre_aggregate_vectors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="robust_aggregators.html">robust_aggregators module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="robust_aggregators.html#robust_aggregators.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robust_aggregators.html#robust_aggregators.RobustAggregator.aggregate"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">server module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="server.html#server.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.aggregate"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.compute_test_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.get_model"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.set_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">Server.set_batch_norm_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.step"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.update_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">Server.update_batch_norm_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="server.html#server.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">test module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train.html">train module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="train.html#train.Train"><code class="docutils literal notranslate"><span class="pre">Train</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="train.html#train.Train.run_SGD"><code class="docutils literal notranslate"><span class="pre">Train.run_SGD()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils.conversion">utils.conversion module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.conversion.flatten_dict"><code class="docutils literal notranslate"><span class="pre">flatten_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.conversion.flatten_generator"><code class="docutils literal notranslate"><span class="pre">flatten_generator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.conversion.unflatten_dict"><code class="docutils literal notranslate"><span class="pre">unflatten_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.conversion.unflatten_generator"><code class="docutils literal notranslate"><span class="pre">unflatten_generator()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils.misc">utils.misc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.misc.check_type"><code class="docutils literal notranslate"><span class="pre">check_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.misc.check_vectors_type"><code class="docutils literal notranslate"><span class="pre">check_vectors_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.misc.distance_tool"><code class="docutils literal notranslate"><span class="pre">distance_tool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.misc.random_tool"><code class="docutils literal notranslate"><span class="pre">random_tool()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils.torch_tools">utils.torch_tools module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.abs"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.add"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.any"><code class="docutils literal notranslate"><span class="pre">any()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.arange"><code class="docutils literal notranslate"><span class="pre">arange()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.argmax"><code class="docutils literal notranslate"><span class="pre">argmax()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.argmin"><code class="docutils literal notranslate"><span class="pre">argmin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.argpartition"><code class="docutils literal notranslate"><span class="pre">argpartition()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.array"><code class="docutils literal notranslate"><span class="pre">array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.asarray"><code class="docutils literal notranslate"><span class="pre">asarray()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.cdist"><code class="docutils literal notranslate"><span class="pre">cdist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.concatenate"><code class="docutils literal notranslate"><span class="pre">concatenate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.divide"><code class="docutils literal notranslate"><span class="pre">divide()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.dot"><code class="docutils literal notranslate"><span class="pre">dot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.full_like"><code class="docutils literal notranslate"><span class="pre">full_like()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.isinf"><code class="docutils literal notranslate"><span class="pre">isinf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.max"><code class="docutils literal notranslate"><span class="pre">max()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.mean"><code class="docutils literal notranslate"><span class="pre">mean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.median"><code class="docutils literal notranslate"><span class="pre">median()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.minimum"><code class="docutils literal notranslate"><span class="pre">minimum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.multiply"><code class="docutils literal notranslate"><span class="pre">multiply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.ones_like"><code class="docutils literal notranslate"><span class="pre">ones_like()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.permutation"><code class="docutils literal notranslate"><span class="pre">permutation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.rand"><code class="docutils literal notranslate"><span class="pre">rand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.reshape"><code class="docutils literal notranslate"><span class="pre">reshape()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.shuffle"><code class="docutils literal notranslate"><span class="pre">shuffle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.sort"><code class="docutils literal notranslate"><span class="pre">sort()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.sqrt"><code class="docutils literal notranslate"><span class="pre">sqrt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.stack"><code class="docutils literal notranslate"><span class="pre">stack()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.subtract"><code class="docutils literal notranslate"><span class="pre">subtract()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.sum"><code class="docutils literal notranslate"><span class="pre">sum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.var"><code class="docutils literal notranslate"><span class="pre">var()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.torch_tools.zeros_like"><code class="docutils literal notranslate"><span class="pre">zeros_like()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to Byzantine Machine Learning Library Documentation’s!</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="aggregators.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">aggregators module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/modules.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
