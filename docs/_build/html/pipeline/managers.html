@@ -1,0 +1,785 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>managers module &#8212; Byzantine ML Library 0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=837179f8"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/managers';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="models module" href="models.html" />
+    <link rel="prev" title="main module" href="main.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Byzantine ML Library 0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pipeline
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pipeline
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="robust_aggregators.html">robust_aggregators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="byzantine_worker.html">byzantine_worker module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">client module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compute_cluster.html">compute_cluster module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">dataset module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">managers module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="train.html">train module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Pipeline</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">managers module</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-managers">
+<span id="managers-module"></span><h1>managers module<a class="headerlink" href="#module-managers" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="managers.FileManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">managers.</span></span><span class="sig-name descname"><span class="pre">FileManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>Object whose responsability is deal with the methods and procedures to
+manage the files and store results.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.get_experiment_path">
+<span class="sig-name descname"><span class="pre">get_experiment_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.get_experiment_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.get_experiment_path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.save_accuracy">
+<span class="sig-name descname"><span class="pre">save_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">acc_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dist_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.save_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.save_accuracy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.save_config_dict">
+<span class="sig-name descname"><span class="pre">save_config_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_to_save</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.save_config_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.save_config_dict" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.save_loss">
+<span class="sig-name descname"><span class="pre">save_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dist_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.save_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.save_loss" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.save_state_dict">
+<span class="sig-name descname"><span class="pre">save_state_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dist_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.save_state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.save_state_dict" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.set_experiment_path">
+<span class="sig-name descname"><span class="pre">set_experiment_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.set_experiment_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.set_experiment_path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.FileManager.write_array_in_file">
+<span class="sig-name descname"><span class="pre">write_array_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#FileManager.write_array_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.FileManager.write_array_in_file" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="managers.ParamsManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">managers.</span></span><span class="sig-name descname"><span class="pre">ParamsManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="id1">
+<h2>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Object whose responsability is manage and store all the parameters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_aggregator_info">
+<span class="sig-name descname"><span class="pre">get_aggregator_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_aggregator_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_aggregator_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_aggregator_name">
+<span class="sig-name descname"><span class="pre">get_aggregator_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_aggregator_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_aggregator_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_aggregator_parameters">
+<span class="sig-name descname"><span class="pre">get_aggregator_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_aggregator_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_aggregator_parameters" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_attack_name">
+<span class="sig-name descname"><span class="pre">get_attack_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_attack_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_attack_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_attack_optimizer_name">
+<span class="sig-name descname"><span class="pre">get_attack_optimizer_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_attack_optimizer_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_attack_optimizer_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_attack_optimizer_parameters">
+<span class="sig-name descname"><span class="pre">get_attack_optimizer_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_attack_optimizer_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_attack_optimizer_parameters" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_attack_parameters">
+<span class="sig-name descname"><span class="pre">get_attack_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_attack_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_attack_parameters" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_batch_norm_momentum">
+<span class="sig-name descname"><span class="pre">get_batch_norm_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_batch_norm_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_batch_norm_momentum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_batch_size">
+<span class="sig-name descname"><span class="pre">get_batch_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_batch_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_batch_size" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_batch_size_validation">
+<span class="sig-name descname"><span class="pre">get_batch_size_validation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_batch_size_validation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_batch_size_validation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_data_distribution_seed">
+<span class="sig-name descname"><span class="pre">get_data_distribution_seed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_data_distribution_seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_data_distribution_seed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_data_folder">
+<span class="sig-name descname"><span class="pre">get_data_folder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_data_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_data_folder" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_dataset_name">
+<span class="sig-name descname"><span class="pre">get_dataset_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_dataset_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_dataset_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_declared_equal_real">
+<span class="sig-name descname"><span class="pre">get_declared_equal_real</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_declared_equal_real"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_declared_equal_real" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_declared_nb_byz">
+<span class="sig-name descname"><span class="pre">get_declared_nb_byz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_declared_nb_byz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_declared_nb_byz" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_device">
+<span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_device" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_evaluate_on_test">
+<span class="sig-name descname"><span class="pre">get_evaluate_on_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_evaluate_on_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_evaluate_on_test" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_evaluation_delta">
+<span class="sig-name descname"><span class="pre">get_evaluation_delta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_evaluation_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_evaluation_delta" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_flatten_info">
+<span class="sig-name descname"><span class="pre">get_flatten_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_flatten_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_flatten_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_learning_rate">
+<span class="sig-name descname"><span class="pre">get_learning_rate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_learning_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_learning_rate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_learning_rate_decay">
+<span class="sig-name descname"><span class="pre">get_learning_rate_decay</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_learning_rate_decay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_learning_rate_decay" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_loss">
+<span class="sig-name descname"><span class="pre">get_loss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_loss" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_milestones">
+<span class="sig-name descname"><span class="pre">get_milestones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_milestones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_milestones" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_model_name">
+<span class="sig-name descname"><span class="pre">get_model_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_model_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_model_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_momentum">
+<span class="sig-name descname"><span class="pre">get_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_momentum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_name_data_distribution">
+<span class="sig-name descname"><span class="pre">get_name_data_distribution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_name_data_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_name_data_distribution" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_nb_byz">
+<span class="sig-name descname"><span class="pre">get_nb_byz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_nb_byz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_nb_byz" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_nb_honest">
+<span class="sig-name descname"><span class="pre">get_nb_honest</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_nb_honest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_nb_honest" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_nb_labels">
+<span class="sig-name descname"><span class="pre">get_nb_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_nb_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_nb_labels" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_nb_steps">
+<span class="sig-name descname"><span class="pre">get_nb_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_nb_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_nb_steps" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_nb_workers">
+<span class="sig-name descname"><span class="pre">get_nb_workers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_nb_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_nb_workers" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_parameter_data_distribution">
+<span class="sig-name descname"><span class="pre">get_parameter_data_distribution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_parameter_data_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_parameter_data_distribution" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_preaggregators">
+<span class="sig-name descname"><span class="pre">get_preaggregators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_preaggregators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_preaggregators" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_results_directory">
+<span class="sig-name descname"><span class="pre">get_results_directory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_results_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_results_directory" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_size_train_set">
+<span class="sig-name descname"><span class="pre">get_size_train_set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_size_train_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_size_train_set" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_store_models">
+<span class="sig-name descname"><span class="pre">get_store_models</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_store_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_store_models" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_store_training_accuracy">
+<span class="sig-name descname"><span class="pre">get_store_training_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_store_training_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_store_training_accuracy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_store_training_loss">
+<span class="sig-name descname"><span class="pre">get_store_training_loss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_store_training_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_store_training_loss" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_training_seed">
+<span class="sig-name descname"><span class="pre">get_training_seed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_training_seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_training_seed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="managers.ParamsManager.get_weight_decay">
+<span class="sig-name descname"><span class="pre">get_weight_decay</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/managers.html#ParamsManager.get_weight_decay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#managers.ParamsManager.get_weight_decay" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="main.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">main module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">models module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager"><code class="docutils literal notranslate"><span class="pre">FileManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.get_experiment_path"><code class="docutils literal notranslate"><span class="pre">FileManager.get_experiment_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.save_accuracy"><code class="docutils literal notranslate"><span class="pre">FileManager.save_accuracy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.save_config_dict"><code class="docutils literal notranslate"><span class="pre">FileManager.save_config_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.save_loss"><code class="docutils literal notranslate"><span class="pre">FileManager.save_loss()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.save_state_dict"><code class="docutils literal notranslate"><span class="pre">FileManager.save_state_dict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.set_experiment_path"><code class="docutils literal notranslate"><span class="pre">FileManager.set_experiment_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.FileManager.write_array_in_file"><code class="docutils literal notranslate"><span class="pre">FileManager.write_array_in_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager"><code class="docutils literal notranslate"><span class="pre">ParamsManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_aggregator_info"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_aggregator_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_aggregator_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_aggregator_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_aggregator_parameters"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_aggregator_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_attack_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_attack_optimizer_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_optimizer_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_attack_optimizer_parameters"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_optimizer_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_attack_parameters"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_attack_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_batch_norm_momentum"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_batch_norm_momentum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_batch_size"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_batch_size()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_batch_size_validation"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_batch_size_validation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_data"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_data_distribution_seed"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_data_distribution_seed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_data_folder"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_data_folder()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_dataset_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_dataset_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_declared_equal_real"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_declared_equal_real()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_declared_nb_byz"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_declared_nb_byz()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_device"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_device()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_evaluate_on_test"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_evaluate_on_test()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_evaluation_delta"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_evaluation_delta()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_flatten_info"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_flatten_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_learning_rate"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_learning_rate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_learning_rate_decay"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_learning_rate_decay()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_loss"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_loss()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_milestones"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_milestones()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_model_name"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_model_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_momentum"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_momentum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_name_data_distribution"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_name_data_distribution()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_nb_byz"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_byz()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_nb_honest"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_honest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_nb_labels"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_labels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_nb_steps"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_steps()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_nb_workers"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_nb_workers()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_parameter_data_distribution"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_parameter_data_distribution()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_preaggregators"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_preaggregators()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_results_directory"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_results_directory()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_size_train_set"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_size_train_set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_store_models"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_store_models()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_store_training_accuracy"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_store_training_accuracy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_store_training_loss"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_store_training_loss()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_training_seed"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_training_seed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managers.ParamsManager.get_weight_decay"><code class="docutils literal notranslate"><span class="pre">ParamsManager.get_weight_decay()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/pipeline/managers.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, EPFL.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
