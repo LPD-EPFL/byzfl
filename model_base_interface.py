@@ -9,8 +9,11 @@ class ModelBaseInterface(object):
     """
     Description
     -----------
-    This class is the basic interface with the methods that classes that are
-    containers of a model needs to deal with the information exchange.
+    This class serves as an abstract interface that defines the methods 
+    required for classes that encapsulate a model. All subclasses that 
+    contain a model should inherit from this class to ensure they implement 
+    the necessary methods for handling model-related operations and information 
+    exchange.
 
     Parameters
     ----------
@@ -188,6 +191,12 @@ class ModelBaseInterface(object):
         self.model.load_state_dict(state_dict)
 
     def compute_batch_norm_keys(self):
+        """
+        Description
+        -----------
+        Compute batch normalization keys.
+
+        """
         for key in self.model.state_dict().keys():
             if "running_mean" in key:
                 self.running_mean_key_list.append(key)
@@ -196,7 +205,28 @@ class ModelBaseInterface(object):
                 self.running_var_key_list.append(key)            
     
     def use_batch_norm(self):
+        """
+        Description
+        -----------
+        Getter to determine whether the model is using Batch Normalization.
+
+        Returns
+        -------
+        bool
+            A boolean indicating whether the model is utilizing Batch Normalization.
+        """
         return len(self.batch_norm_keys) > 0
-    
+
+
     def use_federated_batch_norm(self):
+        """
+        Description
+        -----------
+        Getter to determine whether the model is using Federated Batch Normalization.
+
+        Returns
+        -------
+        bool
+            A boolean indicating whether the model is utilizing Federated Batch Normalization.
+        """
         return self.use_fbn

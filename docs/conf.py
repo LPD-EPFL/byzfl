@@ -12,7 +12,7 @@ import sys
 sys.path.insert(0, os.path.abspath(".."))
 
 project = 'Byzantine ML Library'
-copyright = '2024, Geovani Rizk, John Stephan, Marc Gonzalez'
+copyright = '2024, EPFL'
 author = 'Geovani Rizk, John Stephan, Marc Gonzalez'
 release = '0.0'
 
