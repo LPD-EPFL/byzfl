@@ -221,7 +221,29 @@ class ComputeCluster(object):
         return [client.get_loss_list() for client in self.client_list]
     
     def compute_batch_norm_keys(self):
+        """
+        Description
+        -----------
+        Compute batch normalization keys for each client.
+
+        This function iterates over all clients in the Compute Cluster and 
+        computes batch normalization keys for each one.
+
+        Returns
+        -------
+        None
+        """
         [client.compute_batch_norm_keys() for client in self.client_list]
     
     def get_train_acc_of_clients(self):
+        """
+        Description
+        -----------
+        Retrieve the training accuracy of all clients.
+
+        Returns
+        -------
+        List
+            A list containing the training accuracy for all clients in the Compute Cluster
+        """
         return [client.get_train_accuracy() for client in self.client_list]

@@ -127,8 +127,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../pipeline/index.html">
+                        Pipeline
                       </a>
                     </li>
                 
@@ -213,8 +227,22 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../pipeline/index.html">
+                        Pipeline
                       </a>
                     </li>
                 
@@ -304,13 +332,16 @@ document.write(`
 <span class="kn">from</span> <span class="nn">utils.conversion</span> <span class="kn">import</span> <span class="n">flatten_dict</span><span class="p">,</span> <span class="n">unflatten_dict</span><span class="p">,</span> <span class="n">unflatten_generator</span>
 
 <div class="viewcode-block" id="ModelBaseInterface">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface">[docs]</a>
 <span class="k">class</span> <span class="nc">ModelBaseInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    This class is the basic interface with the methods that classes that are</span>
-<span class="sd">    containers of a model needs to deal with the information exchange.</span>
+<span class="sd">    This class serves as an abstract interface that defines the methods </span>
+<span class="sd">    required for classes that encapsulate a model. All subclasses that </span>
+<span class="sd">    contain a model should inherit from this class to ensure they implement </span>
+<span class="sd">    the necessary methods for handling model-related operations and information </span>
+<span class="sd">    exchange.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -338,6 +369,7 @@ document.write(`
 
         <span class="k">if</span> <span class="s2">&quot;fbn&quot;</span> <span class="ow">in</span> <span class="n">model_name</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_workers&quot;</span><span class="p">]))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_fbn</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
@@ -356,11 +388,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_keys</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running_mean_key_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running_var_key_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">global_running_mean_key_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">global_running_var_key_list</span> <span class="o">=</span> <span class="p">[]</span>
     
 <div class="viewcode-block" id="ModelBaseInterface.get_flat_parameters">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_parameters">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -375,7 +405,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ModelBaseInterface.get_flat_gradients">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_gradients">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -390,7 +420,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ModelBaseInterface.get_dict_parameters">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.get_dict_parameters">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.get_dict_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">get_dict_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -406,7 +436,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ModelBaseInterface.get_dict_gradients">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.get_dict_gradients">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.get_dict_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">get_dict_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -425,7 +455,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ModelBaseInterface.get_batch_norm_stats">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.get_batch_norm_stats">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.get_batch_norm_stats">[docs]</a>
     <span class="k">def</span> <span class="nf">get_batch_norm_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -449,7 +479,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ModelBaseInterface.get_flat_batch_norm_stats">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_batch_norm_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -465,7 +495,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ModelBaseInterface.set_parameters">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.set_parameters">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.set_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat_vector</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -482,7 +512,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ModelBaseInterface.set_gradients">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.set_gradients">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.set_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">set_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat_vector</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -500,7 +530,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ModelBaseInterface.set_model_state">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.set_model_state">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.set_model_state">[docs]</a>
     <span class="k">def</span> <span class="nf">set_model_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -516,14 +546,16 @@ document.write(`
 
 
 <div class="viewcode-block" id="ModelBaseInterface.compute_batch_norm_keys">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.compute_batch_norm_keys">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.compute_batch_norm_keys">[docs]</a>
     <span class="k">def</span> <span class="nf">compute_batch_norm_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Compute batch normalization keys.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s2">&quot;global_running_mean&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">global_running_mean_key_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="s2">&quot;global_running_var&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">global_running_var_key_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="s2">&quot;running_mean&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;running_mean&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">running_mean_key_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">elif</span> <span class="s2">&quot;running_var&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
@@ -531,15 +563,36 @@ document.write(`
 
     
 <div class="viewcode-block" id="ModelBaseInterface.use_batch_norm">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.use_batch_norm">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.use_batch_norm">[docs]</a>
     <span class="k">def</span> <span class="nf">use_batch_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Getter to determine whether the model is using Batch Normalization.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            A boolean indicating whether the model is utilizing Batch Normalization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_keys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
-    
+
+
 <div class="viewcode-block" id="ModelBaseInterface.use_federated_batch_norm">
-<a class="viewcode-back" href="../model_base_interface.html#model_base_interface.ModelBaseInterface.use_federated_batch_norm">[docs]</a>
+<a class="viewcode-back" href="../pipeline/model_base_interface.html#model_base_interface.ModelBaseInterface.use_federated_batch_norm">[docs]</a>
     <span class="k">def</span> <span class="nf">use_federated_batch_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_running_mean_key_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Getter to determine whether the model is using Federated Batch Normalization.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            A boolean indicating whether the model is utilizing Federated Batch Normalization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_fbn</span></div>
 </div>
 
 </pre></div>
@@ -585,7 +638,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      © Copyright 2024, EPFL.
       <br/>
     
   </p>

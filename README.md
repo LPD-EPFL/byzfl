@@ -6,6 +6,7 @@ This tool facilitates the testing of aggregations and attacks by simulating dist
 2. Set the environment variable `CUBLAS_WORKSPACE_CONFIG=:4096:8`
 
 # Usage or Pipeline
+0. If this is your first time running the framework, execute `python main.py`. This will create a default settings.json file, which you can customize according to your requirements.
 1. Configure the experiment you wish to run in the `settings.json` file. Refer to the above section on how to configure it.
 2. Run the framework with `python main.py --nb_jobs n` where `n = how many trainings will be done in paralel`.
 3. When the code have finished, run `python evaluate_results.py` to choose the best hyperparameters and create the heatmaps with the results.

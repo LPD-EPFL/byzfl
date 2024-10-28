@@ -127,8 +127,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../pipeline/index.html">
+                        Pipeline
                       </a>
                     </li>
                 
@@ -213,8 +227,22 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../pipeline/index.html">
+                        Pipeline
                       </a>
                     </li>
                 
@@ -304,7 +332,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">utils.misc</span> <span class="k">as</span> <span class="nn">misc</span>
 
 <div class="viewcode-block" id="Average">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Average">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Average">[docs]</a>
 <span class="k">class</span> <span class="nc">Average</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -325,7 +353,7 @@ document.write(`
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="Average.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Average.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Average.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the arithmetic mean along axis=0.</span>
@@ -365,7 +393,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Median">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Median">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Median">[docs]</a>
 <span class="k">class</span> <span class="nc">Median</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -387,7 +415,7 @@ document.write(`
         <span class="k">pass</span>
     
 <div class="viewcode-block" id="Median.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Median.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Median.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the arithmetic mean along axis=0.</span>
@@ -427,7 +455,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="TrMean">
-<a class="viewcode-back" href="../aggregators.html#aggregators.TrMean">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.TrMean">[docs]</a>
 <span class="k">class</span> <span class="nc">TrMean</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -467,7 +495,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
 
 <div class="viewcode-block" id="TrMean.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.TrMean.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.TrMean.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sorts the vector values by coordinates, removes the first lowest</span>
@@ -518,7 +546,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="GeometricMedian">
-<a class="viewcode-back" href="../aggregators.html#aggregators.GeometricMedian">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.GeometricMedian">[docs]</a>
 <span class="k">class</span> <span class="nc">GeometricMedian</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -551,7 +579,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span>
 
 <div class="viewcode-block" id="GeometricMedian.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.GeometricMedian.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.GeometricMedian.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the smoothed Weiszfeld algorithm [XXX] to return the</span>
@@ -605,7 +633,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Krum">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Krum">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Krum">[docs]</a>
 <span class="k">class</span> <span class="nc">Krum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -645,7 +673,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
     
 <div class="viewcode-block" id="Krum.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Krum.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Krum.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the Krum aggregation rule (Blanchard et al. (2017))</span>
@@ -695,7 +723,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="MultiKrum">
-<a class="viewcode-back" href="../aggregators.html#aggregators.MultiKrum">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.MultiKrum">[docs]</a>
 <span class="k">class</span> <span class="nc">MultiKrum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -736,7 +764,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
     
 <div class="viewcode-block" id="MultiKrum.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.MultiKrum.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.MultiKrum.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the Multi-Krum function (Blanchard et al. (2017)):</span>
@@ -794,7 +822,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="CenteredClipping">
-<a class="viewcode-back" href="../aggregators.html#aggregators.CenteredClipping">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.CenteredClipping">[docs]</a>
 <span class="k">class</span> <span class="nc">CenteredClipping</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -838,7 +866,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">clip_thresh</span> <span class="o">=</span> <span class="n">clip_thresh</span>
 
 <div class="viewcode-block" id="CenteredClipping.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.CenteredClipping.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.CenteredClipping.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the Centered Clipping Algorithm presented in</span>
@@ -912,7 +940,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="MDA">
-<a class="viewcode-back" href="../aggregators.html#aggregators.MDA">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.MDA">[docs]</a>
 <span class="k">class</span> <span class="nc">MDA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -943,7 +971,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
 
 <div class="viewcode-block" id="MDA.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.MDA.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.MDA.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
@@ -1010,7 +1038,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="MVA">
-<a class="viewcode-back" href="../aggregators.html#aggregators.MVA">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.MVA">[docs]</a>
 <span class="k">class</span> <span class="nc">MVA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1044,7 +1072,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
     
 <div class="viewcode-block" id="MVA.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.MVA.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.MVA.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
@@ -1118,7 +1146,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Monna">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Monna">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Monna">[docs]</a>
 <span class="k">class</span> <span class="nc">Monna</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1152,7 +1180,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">pivot_index</span> <span class="o">=</span> <span class="n">pivot_index</span>
     
 <div class="viewcode-block" id="Monna.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Monna.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Monna.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
@@ -1213,7 +1241,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Meamed">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Meamed">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Meamed">[docs]</a>
 <span class="k">class</span> <span class="nc">Meamed</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -1239,7 +1267,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
     
 <div class="viewcode-block" id="Meamed.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators.html#aggregators.Meamed.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../aggregations/aggregators.html#aggregators.Meamed.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Apply Meamed aggregation</span>
@@ -1334,7 +1362,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      © Copyright 2024, EPFL.
       <br/>
     
   </p>

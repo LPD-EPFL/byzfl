@@ -7,6 +7,126 @@ import copy
 from combinations import generate_all_combinations
 from train import Train
 
+default_settings = {
+    "general": {
+        "training_seed": 0,
+        "nb_training_seeds": 5,
+        "device": "cuda",
+        "nb_workers": None,
+        "nb_honest": 10,
+        "nb_byz": [1, 3, 5, 7, 9],
+        "declared_nb_byz": [1, 3, 5, 7, 9],
+        "declared_equal_real": True,
+        "size_train_set": 0.8,
+        "nb_steps": 800,
+        "evaluation_delta": 50,
+        "evaluate_on_test": True,
+        "store_training_accuracy": True,
+        "store_training_loss": True,
+        "store_models": False,
+        "data_folder": None,
+        "results_directory": "results"
+    },
+    "model": {
+        "name": "cnn_mnist",
+        "dataset_name": "mnist",
+        "nb_labels": 10,
+        "data_distribution_seed": 0,
+        "nb_data_distribution_seeds": 1,
+        "data_distribution": [
+            {
+                "name": "gamma_similarity_niid",
+                "distribution_parameter": [1.0, 0.75, 0.5, 0.25, 0.0]
+            }
+        ],
+        "loss": "NLLLoss"
+    },
+    "aggregator": [
+        {
+            "name": "Median",
+            "parameters": {}
+        },
+        {
+            "name": "TrMean",
+            "parameters": {}
+        },
+        {
+            "name": "GeometricMedian",
+            "parameters": {
+                "nu": 0.1,
+                "T": 3
+            }
+        },
+        {
+            "name": "MultiKrum",
+            "parameters": {}
+        }
+    ],
+    "pre_aggregators": [
+        {
+            "name": "Clipping", 
+            "parameters": {}
+        },
+        {
+            "name": "NNM", 
+            "parameters": {}
+        }
+    ],
+    "server": {
+        "batch_norm_momentum": None,
+        "batch_size_validation": 100,
+        "learning_rate_decay": 1.0,
+        "milestones": []
+    },
+    "honest_nodes": {
+        "momentum": [0.0, 0.25, 0.5, 0.75, 0.9, 0.99],
+        "batch_size": 25,
+        "learning_rate": [0.1, 0.25, 0.35],
+        "weight_decay": 1e-4
+    },
+    "attack": [
+        {
+            "name": "SignFlipping",
+            "parameters": {},
+            "attack_optimizer": {
+                "name": None
+            }
+        },
+        {
+            "name": "LabelFlipping",
+            "parameters": {},
+            "attack_optimizer": {
+                "name": None
+            }
+        },
+        {
+            "name": "FallOfEmpires",
+            "parameters": {},
+            "attack_optimizer": {
+                "name": "LineMaximize"
+            }
+        },
+        {
+            "name": "LittleIsEnough",
+            "parameters": {},
+            "attack_optimizer": {
+                "name": "LineMaximize"
+            }
+        },
+        {
+            "name": "Mimic",
+            "parameters": {},
+            "attack_optimizer": {
+                "name": "WorkerWithMaxVariance",
+                "parameters": {
+                    "steps_to_learn": 200
+                }
+            }
+        }
+    ]
+}
+
+
 def init_pool_processes(shared_value):
     global counter
     counter = shared_value
@@ -120,7 +240,14 @@ if __name__ == '__main__':
         with open('settings.json', 'r') as file:
             data = json.load(file)
     except:
-        print("ERROR")
+        print(f"{'settings.json'} not found.")
+
+        with open('settings.json', 'w') as f:
+            json.dump(default_settings, f, indent=4)
+
+        print(f"{'settings.json'} created successfully.")
+        print("Please configure the experiment you want to run.")
+        exit()
     
     results_directory = None
     if data["general"]["results_directory"] is None:
