@@ -8,9 +8,12 @@ Welcome to Byzantine Machine Learning Library Documentation's!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
-   modules
+   aggregations/index
+   attacker/index
+   pipeline/index
+
 
 Indices and tables
 ==================
