@@ -127,8 +127,22 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../pipeline/index.html">
+                        Pipeline
                       </a>
                     </li>
                 
@@ -213,8 +227,22 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
+                      <a class="nav-link nav-internal" href="../aggregations/index.html">
+                        Aggregations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../attacker/index.html">
+                        Attacker
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../pipeline/index.html">
+                        Pipeline
                       </a>
                     </li>
                 
@@ -296,11 +324,11 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for robust_aggregators</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">aggregators</span>
-<span class="kn">import</span> <span class="nn">preaggregators</span>
+<span></span><span class="kn">from</span> <span class="nn">aggregations</span> <span class="kn">import</span> <span class="n">aggregators</span>
+<span class="kn">from</span> <span class="nn">aggregations</span> <span class="kn">import</span> <span class="n">preaggregators</span>
 
 <div class="viewcode-block" id="RobustAggregator">
-<a class="viewcode-back" href="../robust_aggregators.html#robust_aggregators.RobustAggregator">[docs]</a>
+<a class="viewcode-back" href="../pipeline/robust_aggregators.html#robust_aggregators.RobustAggregator">[docs]</a>
 <span class="k">class</span> <span class="nc">RobustAggregator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -340,7 +368,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RobustAggregator.aggregate">
-<a class="viewcode-back" href="../robust_aggregators.html#robust_aggregators.RobustAggregator.aggregate">[docs]</a>
+<a class="viewcode-back" href="../pipeline/robust_aggregators.html#robust_aggregators.RobustAggregator.aggregate">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -409,7 +437,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      © Copyright 2024, EPFL.
       <br/>
     
   </p>
