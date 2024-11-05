@@ -7,41 +7,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>managers &#8212; Byzantine ML Library 0.0 documentation</title>
+    <title>managers &#8212; ByzFL 0.0 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=837179f8"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/managers';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -49,31 +53,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -81,7 +70,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -89,20 +77,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -112,7 +107,7 @@
   
   
   
-    <p class="title logo__title">Byzantine ML Library 0.0 documentation</p>
+    <p class="title logo__title">ByzFL 0.0 documentation</p>
   
 </a></div>
     
@@ -123,15 +118,29 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../attacker/index.html">
+    Attacker
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -143,29 +152,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -174,15 +175,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -199,7 +196,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -208,18 +206,35 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../attacker/index.html">
+    Attacker
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -229,15 +244,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -252,22 +263,20 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -278,7 +287,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">managers</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">managers</span></li>
   </ul>
 </nav>
 </div>
@@ -304,7 +313,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">torch</span>
 
 <div class="viewcode-block" id="FileManager">
-<a class="viewcode-back" href="../managers.html#managers.FileManager">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager">[docs]</a>
 <span class="k">class</span> <span class="nc">FileManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -341,32 +350,32 @@ document.write(`
             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">_%m_%y&quot;</span><span class="p">)))</span>
         
 <div class="viewcode-block" id="FileManager.set_experiment_path">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.set_experiment_path">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.set_experiment_path">[docs]</a>
     <span class="k">def</span> <span class="nf">set_experiment_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files_path</span> <span class="o">=</span> <span class="n">path</span></div>
 
     
 <div class="viewcode-block" id="FileManager.get_experiment_path">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.get_experiment_path">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.get_experiment_path">[docs]</a>
     <span class="k">def</span> <span class="nf">get_experiment_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_path</span></div>
 
     
 <div class="viewcode-block" id="FileManager.save_config_dict">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.save_config_dict">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.save_config_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">save_config_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_to_save</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files_path</span><span class="o">+</span><span class="s2">&quot;settings.json&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_to_save</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">))</span></div>
 
     
 <div class="viewcode-block" id="FileManager.write_array_in_file">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.write_array_in_file">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.write_array_in_file">[docs]</a>
     <span class="k">def</span> <span class="nf">write_array_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
         <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files_path</span><span class="o">+</span><span class="n">file_name</span><span class="p">,</span> <span class="p">[</span><span class="n">array</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.4f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="FileManager.save_state_dict">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.save_state_dict">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.save_state_dict">[docs]</a>
     <span class="k">def</span> <span class="nf">save_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">,</span> <span class="n">training_seed</span><span class="p">,</span> <span class="n">data_dist_seed</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">files_path</span><span class="o">+</span><span class="s2">&quot;models_tr_seed_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_seed</span><span class="p">)</span>
@@ -380,7 +389,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="FileManager.save_loss">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.save_loss">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.save_loss">[docs]</a>
     <span class="k">def</span> <span class="nf">save_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss_array</span><span class="p">,</span> <span class="n">training_seed</span><span class="p">,</span> <span class="n">data_dist_seed</span><span class="p">,</span> <span class="n">client_id</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">files_path</span><span class="o">+</span><span class="s2">&quot;loss_tr_seed_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_seed</span><span class="p">)</span> 
@@ -397,7 +406,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="FileManager.save_accuracy">
-<a class="viewcode-back" href="../managers.html#managers.FileManager.save_accuracy">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.FileManager.save_accuracy">[docs]</a>
     <span class="k">def</span> <span class="nf">save_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acc_array</span><span class="p">,</span> <span class="n">training_seed</span><span class="p">,</span> <span class="n">data_dist_seed</span><span class="p">,</span> <span class="n">client_id</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">files_path</span><span class="o">+</span><span class="s2">&quot;accuracy_tr_seed_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_seed</span><span class="p">)</span> 
@@ -418,7 +427,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager">[docs]</a>
 <span class="k">class</span> <span class="nc">ParamsManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -446,7 +455,7 @@ document.write(`
         <span class="k">return</span> <span class="n">obj</span>
     
 <div class="viewcode-block" id="ParamsManager.get_flatten_info">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_flatten_info">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_flatten_info">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flatten_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;training_seed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_training_seed</span><span class="p">(),</span>
@@ -490,7 +499,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_data">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_data">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_data">[docs]</a>
     <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>   
             <span class="s2">&quot;general&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -557,7 +566,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_training_seed">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_training_seed">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_training_seed">[docs]</a>
     <span class="k">def</span> <span class="nf">get_training_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;training_seed&quot;</span><span class="p">]</span>
@@ -566,7 +575,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_device">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_device">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_device">[docs]</a>
     <span class="k">def</span> <span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">]</span>
@@ -575,7 +584,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_nb_workers">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_nb_workers">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_nb_workers">[docs]</a>
     <span class="k">def</span> <span class="nf">get_nb_workers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">15</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_workers&quot;</span><span class="p">]</span>
@@ -584,7 +593,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_nb_honest">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_nb_honest">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_nb_honest">[docs]</a>
     <span class="k">def</span> <span class="nf">get_nb_honest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_honest&quot;</span><span class="p">]</span>
@@ -593,7 +602,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_nb_byz">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_nb_byz">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_nb_byz">[docs]</a>
     <span class="k">def</span> <span class="nf">get_nb_byz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_byz&quot;</span><span class="p">]</span>
@@ -602,7 +611,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_declared_nb_byz">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_declared_nb_byz">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_declared_nb_byz">[docs]</a>
     <span class="k">def</span> <span class="nf">get_declared_nb_byz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;declared_nb_byz&quot;</span><span class="p">]</span>
@@ -611,7 +620,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_declared_equal_real">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_declared_equal_real">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_declared_equal_real">[docs]</a>
     <span class="k">def</span> <span class="nf">get_declared_equal_real</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;declared_equal_real&quot;</span><span class="p">]</span>
@@ -620,7 +629,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_size_train_set">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_size_train_set">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_size_train_set">[docs]</a>
     <span class="k">def</span> <span class="nf">get_size_train_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mf">0.8</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;size_train_set&quot;</span><span class="p">]</span>
@@ -629,7 +638,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_nb_steps">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_nb_steps">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_nb_steps">[docs]</a>
     <span class="k">def</span> <span class="nf">get_nb_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">1000</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_steps&quot;</span><span class="p">]</span>
@@ -638,7 +647,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_evaluation_delta">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_evaluation_delta">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_evaluation_delta">[docs]</a>
     <span class="k">def</span> <span class="nf">get_evaluation_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">50</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;evaluation_delta&quot;</span><span class="p">]</span>
@@ -647,7 +656,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_evaluate_on_test">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_evaluate_on_test">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_evaluate_on_test">[docs]</a>
     <span class="k">def</span> <span class="nf">get_evaluate_on_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;evaluate_on_test&quot;</span><span class="p">]</span>
@@ -656,7 +665,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_store_training_accuracy">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_store_training_accuracy">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_store_training_accuracy">[docs]</a>
     <span class="k">def</span> <span class="nf">get_store_training_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;store_training_accuracy&quot;</span><span class="p">]</span>
@@ -665,7 +674,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_store_training_loss">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_store_training_loss">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_store_training_loss">[docs]</a>
     <span class="k">def</span> <span class="nf">get_store_training_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;store_training_loss&quot;</span><span class="p">]</span>
@@ -674,7 +683,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_store_models">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_store_models">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_store_models">[docs]</a>
     <span class="k">def</span> <span class="nf">get_store_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;store_models&quot;</span><span class="p">]</span>
@@ -683,7 +692,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_batch_size_validation">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_batch_size_validation">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_batch_size_validation">[docs]</a>
     <span class="k">def</span> <span class="nf">get_batch_size_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">100</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;batch_size_validation&quot;</span><span class="p">]</span>
@@ -692,7 +701,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_data_folder">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_data_folder">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_data_folder">[docs]</a>
     <span class="k">def</span> <span class="nf">get_data_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;./data&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;data_folder&quot;</span><span class="p">]</span>
@@ -701,7 +710,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_results_directory">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_results_directory">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_results_directory">[docs]</a>
     <span class="k">def</span> <span class="nf">get_results_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">,</span> <span class="s2">&quot;results_directory&quot;</span><span class="p">]</span>
@@ -710,7 +719,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_model_name">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_model_name">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_model_name">[docs]</a>
     <span class="k">def</span> <span class="nf">get_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;cnn_mnist&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
@@ -719,7 +728,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_dataset_name">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_dataset_name">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_dataset_name">[docs]</a>
     <span class="k">def</span> <span class="nf">get_dataset_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;mnist&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset_name&quot;</span><span class="p">]</span>
@@ -728,14 +737,14 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_nb_labels">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_nb_labels">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_nb_labels">[docs]</a>
     <span class="k">def</span> <span class="nf">get_nb_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_labels&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_object</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ParamsManager.get_data_distribution_seed">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_data_distribution_seed">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_data_distribution_seed">[docs]</a>
     <span class="k">def</span> <span class="nf">get_data_distribution_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;data_distribution_seed&quot;</span><span class="p">]</span>
@@ -744,7 +753,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_name_data_distribution">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_name_data_distribution">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_name_data_distribution">[docs]</a>
     <span class="k">def</span> <span class="nf">get_name_data_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;iid&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;data_distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
@@ -753,7 +762,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_parameter_data_distribution">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_parameter_data_distribution">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_parameter_data_distribution">[docs]</a>
     <span class="k">def</span> <span class="nf">get_parameter_data_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;data_distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;distribution_parameter&quot;</span><span class="p">]</span>
@@ -762,7 +771,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_loss">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_loss">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_loss">[docs]</a>
     <span class="k">def</span> <span class="nf">get_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;NLLLoss&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;loss&quot;</span><span class="p">]</span>
@@ -771,7 +780,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_aggregator_info">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_aggregator_info">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_aggregator_info">[docs]</a>
     <span class="k">def</span> <span class="nf">get_aggregator_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Average&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aggregator&quot;</span><span class="p">]</span>
@@ -780,7 +789,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_aggregator_name">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_aggregator_name">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_aggregator_name">[docs]</a>
     <span class="k">def</span> <span class="nf">get_aggregator_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;average&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aggregator&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
@@ -789,21 +798,21 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_aggregator_parameters">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_aggregator_parameters">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_aggregator_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">get_aggregator_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aggregator&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_object</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="ParamsManager.get_preaggregators">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_preaggregators">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_preaggregators">[docs]</a>
     <span class="k">def</span> <span class="nf">get_preaggregators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pre_aggregators&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_object</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ParamsManager.get_batch_norm_momentum">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_batch_norm_momentum">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_batch_norm_momentum">[docs]</a>
     <span class="k">def</span> <span class="nf">get_batch_norm_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mf">0.1</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;batch_norm_momentum&quot;</span><span class="p">]</span>
@@ -812,7 +821,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_learning_rate_decay">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_learning_rate_decay">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_learning_rate_decay">[docs]</a>
     <span class="k">def</span> <span class="nf">get_learning_rate_decay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">5000</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">]</span>
@@ -821,7 +830,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_momentum">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_momentum">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_momentum">[docs]</a>
     <span class="k">def</span> <span class="nf">get_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mf">0.99</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;honest_nodes&quot;</span><span class="p">,</span> <span class="s2">&quot;momentum&quot;</span><span class="p">]</span>
@@ -830,7 +839,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_batch_size">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_batch_size">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_batch_size">[docs]</a>
     <span class="k">def</span> <span class="nf">get_batch_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">25</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;honest_nodes&quot;</span><span class="p">,</span> <span class="s2">&quot;batch_size&quot;</span><span class="p">]</span>
@@ -839,7 +848,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_learning_rate">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_learning_rate">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_learning_rate">[docs]</a>
     <span class="k">def</span> <span class="nf">get_learning_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mf">0.1</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;honest_nodes&quot;</span><span class="p">,</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">]</span>
@@ -848,7 +857,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_weight_decay">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_weight_decay">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_weight_decay">[docs]</a>
     <span class="k">def</span> <span class="nf">get_weight_decay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;honest_nodes&quot;</span><span class="p">,</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">]</span>
@@ -857,7 +866,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ParamsManager.get_milestones">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_milestones">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_milestones">[docs]</a>
     <span class="k">def</span> <span class="nf">get_milestones</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="mi">200</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;milestones&quot;</span><span class="p">]</span>
@@ -866,7 +875,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_attack_name">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_attack_name">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_attack_name">[docs]</a>
     <span class="k">def</span> <span class="nf">get_attack_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;no_attack&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;attack&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
@@ -875,7 +884,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_attack_parameters">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">get_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;NoAttack&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;attack&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
@@ -884,7 +893,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_attack_optimizer_name">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_attack_optimizer_name">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_attack_optimizer_name">[docs]</a>
     <span class="k">def</span> <span class="nf">get_attack_optimizer_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s2">&quot;attack_optimizer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;attack&quot;</span><span class="p">]:</span>
@@ -896,7 +905,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="ParamsManager.get_attack_optimizer_parameters">
-<a class="viewcode-back" href="../managers.html#managers.ParamsManager.get_attack_optimizer_parameters">[docs]</a>
+<a class="viewcode-back" href="../pipeline/managers.html#managers.ParamsManager.get_attack_optimizer_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">get_attack_optimizer_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">default</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="s2">&quot;attack_optimizer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;attack&quot;</span><span class="p">]:</span>
@@ -915,7 +924,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -924,8 +933,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -938,8 +945,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -950,7 +957,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      © Copyright 2024, EPFL.
       <br/>
     
   </p>
@@ -959,7 +966,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -972,7 +979,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
 </p></div>
       
     </div>

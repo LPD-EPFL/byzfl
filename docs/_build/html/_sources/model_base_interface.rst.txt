@@ -1,7 +1,0 @@
-model\_base\_interface module
-=============================
-
-.. automodule:: model_base_interface
-   :members:
-   :undoc-members:
-   :show-inheritance:

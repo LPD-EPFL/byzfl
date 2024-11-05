@@ -7,41 +7,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>attacks &#8212; Byzantine ML Library 0.0 documentation</title>
+    <title>attacks &#8212; ByzFL 0.0 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=837179f8"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/attacks';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -49,31 +53,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -81,7 +70,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -89,20 +77,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -112,7 +107,7 @@
   
   
   
-    <p class="title logo__title">Byzantine ML Library 0.0 documentation</p>
+    <p class="title logo__title">ByzFL 0.0 documentation</p>
   
 </a></div>
     
@@ -123,15 +118,29 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../attacker/index.html">
+    Attacker
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -143,29 +152,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -174,15 +175,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -199,7 +196,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -208,18 +206,35 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../modules.html">
-                        Library
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../attacker/index.html">
+    Attacker
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -229,15 +244,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -252,22 +263,20 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -278,7 +287,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">attacks</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">attacks</span></li>
   </ul>
 </nav>
 </div>
@@ -301,7 +310,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span>
 
 <div class="viewcode-block" id="NoAttack">
-<a class="viewcode-back" href="../attacks.html#attacks.NoAttack">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.NoAttack">[docs]</a>
 <span class="k">class</span> <span class="nc">NoAttack</span><span class="p">():</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -320,7 +329,7 @@ document.write(`
 <span class="sd">    ---------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="NoAttack.get_malicious_vector">
-<a class="viewcode-back" href="../attacks.html#attacks.NoAttack.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.NoAttack.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the arithmetic mean along axis = 0.</span>
@@ -365,7 +374,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="SignFlipping">
-<a class="viewcode-back" href="../attacks.html#attacks.SignFlipping">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.SignFlipping">[docs]</a>
 <span class="k">class</span> <span class="nc">SignFlipping</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -384,7 +393,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SignFlipping.get_malicious_vector">
-<a class="viewcode-back" href="../attacks.html#attacks.SignFlipping.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.SignFlipping.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the arithmetic mean along axis = 0 and flip its sign.</span>
@@ -426,7 +435,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="FallOfEmpires">
-<a class="viewcode-back" href="../attacks.html#attacks.FallOfEmpires">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.FallOfEmpires">[docs]</a>
 <span class="k">class</span> <span class="nc">FallOfEmpires</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -455,7 +464,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
     
 <div class="viewcode-block" id="FallOfEmpires.set_attack_parameters">
-<a class="viewcode-back" href="../attacks.html#attacks.FallOfEmpires.set_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.FallOfEmpires.set_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the attack factor for scale the mean vector of honest vectors.</span>
@@ -469,7 +478,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="FallOfEmpires.get_malicious_vector">
-<a class="viewcode-back" href="../attacks.html#attacks.FallOfEmpires.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.FallOfEmpires.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the weakened arithmetic mean along axis=0.</span>
@@ -513,7 +522,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="LittleIsEnough">
-<a class="viewcode-back" href="../attacks.html#attacks.LittleIsEnough">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.LittleIsEnough">[docs]</a>
 <span class="k">class</span> <span class="nc">LittleIsEnough</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -543,7 +552,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
     
 <div class="viewcode-block" id="LittleIsEnough.set_attack_parameters">
-<a class="viewcode-back" href="../attacks.html#attacks.LittleIsEnough.set_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.LittleIsEnough.set_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the attack factor for scaling the standard deviation vector.</span>
@@ -557,7 +566,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="LittleIsEnough.get_malicious_vector">
-<a class="viewcode-back" href="../attacks.html#attacks.LittleIsEnough.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.LittleIsEnough.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perturb the mean vector of honest vectors by adding a scaled version </span>
@@ -603,7 +612,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Mimic">
-<a class="viewcode-back" href="../attacks.html#attacks.Mimic">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.Mimic">[docs]</a>
 <span class="k">class</span> <span class="nc">Mimic</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -632,7 +641,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span> <span class="o">=</span> <span class="n">worker_to_mimic</span>
     
 <div class="viewcode-block" id="Mimic.set_attack_parameters">
-<a class="viewcode-back" href="../attacks.html#attacks.Mimic.set_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.Mimic.set_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the worker ID to be mimicked.</span>
@@ -646,7 +655,7 @@ document.write(`
 
     
 <div class="viewcode-block" id="Mimic.get_malicious_vector">
-<a class="viewcode-back" href="../attacks.html#attacks.Mimic.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.Mimic.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the data from the worker to be mimicked.</span>
@@ -690,7 +699,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Inf">
-<a class="viewcode-back" href="../attacks.html#attacks.Inf">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.Inf">[docs]</a>
 <span class="k">class</span> <span class="nc">Inf</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -710,7 +719,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Inf.get_malicious_vector">
-<a class="viewcode-back" href="../attacks.html#attacks.Inf.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/attacks.html#attacks.Inf.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a vector with positive infinity values.</span>
@@ -758,7 +767,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -767,8 +776,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -781,8 +788,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -793,7 +800,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      © Copyright 2024, EPFL.
       <br/>
     
   </p>
@@ -802,7 +809,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -815,7 +822,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
 </p></div>
       
     </div>

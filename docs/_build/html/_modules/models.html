@@ -7,41 +7,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>models &#8212; Byzantine ML Library 0.0 documentation</title>
+    <title>models &#8212; ByzFL 0.0 documentation</title>
   
   
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=837179f8"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/models';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -49,31 +53,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -81,7 +70,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -89,20 +77,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -112,7 +107,7 @@
   
   
   
-    <p class="title logo__title">Byzantine ML Library 0.0 documentation</p>
+    <p class="title logo__title">ByzFL 0.0 documentation</p>
   
 </a></div>
     
@@ -123,128 +118,29 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../attacks.html">
-                        attacks module
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../aggregators.html">
-                        aggregators module
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../preaggregators.html">
-                        preaggregators module
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../attacker/index.html">
+    Attacker
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../robust_aggregators.html">
-                        robust_aggregators module
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../attacks.html">
-                        attacks module
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../attack_optimizers.html">
-                        attack_optimizers module
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../byzantine_worker.html">
-                        byzantine_worker module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../client.html">
-                        client module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../compute_cluster.html">
-                        compute_cluster module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../dataset.html">
-                        dataset module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../main.html">
-                        main module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../managers.html">
-                        managers module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../model_base_interface.html">
-                        model_base_interface module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../models.html">
-                        models module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../server.html">
-                        server module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../train.html">
-                        train module
-                      </a>
-                    </li>
-                
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -256,29 +152,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -287,15 +175,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -312,7 +196,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -321,131 +206,35 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../attacks.html">
-                        attacks module
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../aggregators.html">
-                        aggregators module
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../preaggregators.html">
-                        preaggregators module
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../attacker/index.html">
+    Attacker
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../robust_aggregators.html">
-                        robust_aggregators module
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../attacks.html">
-                        attacks module
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
-                    More
-                </button>
-                <ul id="pst-nav-more-links-2" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../attack_optimizers.html">
-                        attack_optimizers module
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../byzantine_worker.html">
-                        byzantine_worker module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../client.html">
-                        client module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../compute_cluster.html">
-                        compute_cluster module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../dataset.html">
-                        dataset module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../main.html">
-                        main module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../managers.html">
-                        managers module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../model_base_interface.html">
-                        model_base_interface module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../models.html">
-                        models module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../server.html">
-                        server module
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../train.html">
-                        train module
-                      </a>
-                    </li>
-                
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -455,15 +244,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -478,22 +263,20 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -504,7 +287,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">models</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">models</span></li>
   </ul>
 </nav>
 </div>
@@ -544,7 +327,7 @@ document.write(`
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1"># Simple fully-connected model, for MNIST</span>
 <div class="viewcode-block" id="fc_mnist">
-<a class="viewcode-back" href="../models.html#models.fc_mnist">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.fc_mnist">[docs]</a>
 <span class="k">class</span> <span class="nc">fc_mnist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Simple, small fully connected model.&quot;&quot;&quot;</span>
 
@@ -556,7 +339,7 @@ document.write(`
 		<span class="bp">self</span><span class="o">.</span><span class="n">_f2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="fc_mnist.forward">
-<a class="viewcode-back" href="../models.html#models.fc_mnist.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.fc_mnist.forward">[docs]</a>
 	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot; Model&#39;s forward pass. &quot;&quot;&quot;</span>
 		<span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_f1</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)))</span>
@@ -568,7 +351,7 @@ document.write(`
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1"># Simple convolutional model, for MNIST</span>
 <div class="viewcode-block" id="cnn_mnist">
-<a class="viewcode-back" href="../models.html#models.cnn_mnist">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_mnist">[docs]</a>
 <span class="k">class</span> <span class="nc">cnn_mnist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Simple, small convolutional model.&quot;&quot;&quot;</span>
 
@@ -582,7 +365,7 @@ document.write(`
 		<span class="bp">self</span><span class="o">.</span><span class="n">_f2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cnn_mnist.forward">
-<a class="viewcode-back" href="../models.html#models.cnn_mnist.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_mnist.forward">[docs]</a>
 	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot; Model&#39;s forward pass. &quot;&quot;&quot;</span>
 		<span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -598,7 +381,7 @@ document.write(`
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1"># Simple logistic regression model for MNIST</span>
 <div class="viewcode-block" id="logreg_mnist">
-<a class="viewcode-back" href="../models.html#models.logreg_mnist">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.logreg_mnist">[docs]</a>
 <span class="k">class</span> <span class="nc">logreg_mnist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Simple logistic regression model.&quot;&quot;&quot;</span>
 
@@ -609,7 +392,7 @@ document.write(`
 		<span class="bp">self</span><span class="o">.</span><span class="n">_linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="logreg_mnist.forward">
-<a class="viewcode-back" href="../models.html#models.logreg_mnist.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.logreg_mnist.forward">[docs]</a>
 	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot; Model&#39;s forward pass. &quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">)))</span></div>
@@ -619,7 +402,7 @@ document.write(`
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#JS: Simple logistic regression model (for phishing)</span>
 <div class="viewcode-block" id="logreg_phishing">
-<a class="viewcode-back" href="../models.html#models.logreg_phishing">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.logreg_phishing">[docs]</a>
 <span class="k">class</span> <span class="nc">logreg_phishing</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Simple logistic regression model.&quot;&quot;&quot;</span>
 
@@ -637,7 +420,7 @@ document.write(`
 		<span class="bp">self</span><span class="o">.</span><span class="n">_linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">din</span><span class="p">,</span> <span class="n">dout</span><span class="p">)</span>
 
 <div class="viewcode-block" id="logreg_phishing.forward">
-<a class="viewcode-back" href="../models.html#models.logreg_phishing.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.logreg_phishing.forward">[docs]</a>
 	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot; Model&#39;s forward pass. &quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_din</span><span class="p">)))</span></div>
@@ -648,7 +431,7 @@ document.write(`
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#JS: Simple convolutional model, for CIFAR-10/100 (3 input channels)</span>
 <div class="viewcode-block" id="cnn_cifar_old">
-<a class="viewcode-back" href="../models.html#models.cnn_cifar_old">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_cifar_old">[docs]</a>
 <span class="k">class</span> <span class="nc">cnn_cifar_old</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot; Simple, small convolutional model.&quot;&quot;&quot;</span>
 
@@ -673,7 +456,7 @@ document.write(`
     <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_f1</span><span class="o">.</span><span class="n">out_features</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cnn_cifar_old.forward">
-<a class="viewcode-back" href="../models.html#models.cnn_cifar_old.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_cifar_old.forward">[docs]</a>
   <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Model&#39;s forward pass. &quot;&quot;&quot;</span>
     <span class="n">activation</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span>
@@ -707,7 +490,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="FedBatchNorm1d">
-<a class="viewcode-back" href="../models.html#models.FedBatchNorm1d">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.FedBatchNorm1d">[docs]</a>
 <span class="k">class</span> <span class="nc">FedBatchNorm1d</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">num_features</span><span class="p">,</span> 
@@ -737,7 +520,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
 <div class="viewcode-block" id="FedBatchNorm1d.forward">
-<a class="viewcode-back" href="../models.html#models.FedBatchNorm1d.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.FedBatchNorm1d.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_batches_tracked</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span>  <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">momentum</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_batch_mean</span>
@@ -758,7 +541,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="FedBatchNorm">
-<a class="viewcode-back" href="../models.html#models.FedBatchNorm">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.FedBatchNorm">[docs]</a>
 <span class="k">class</span> <span class="nc">FedBatchNorm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_features</span><span class="p">,</span> <span class="n">nb_clients</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                  <span class="n">affine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">track_running_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -767,7 +550,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">nb_clients</span>
 
 <div class="viewcode-block" id="FedBatchNorm.forward">
-<a class="viewcode-back" href="../models.html#models.FedBatchNorm.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.FedBatchNorm.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_input_dim</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 
@@ -795,7 +578,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="cnn_cifar_old_with_fbn">
-<a class="viewcode-back" href="../models.html#models.cnn_cifar_old_with_fbn">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_cifar_old_with_fbn">[docs]</a>
 <span class="k">class</span> <span class="nc">cnn_cifar_old_with_fbn</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot; Simple, small convolutional model.&quot;&quot;&quot;</span>
 
@@ -820,7 +603,7 @@ document.write(`
     <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_f1</span><span class="o">.</span><span class="n">out_features</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cnn_cifar_old_with_fbn.forward">
-<a class="viewcode-back" href="../models.html#models.cnn_cifar_old_with_fbn.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_cifar_old_with_fbn.forward">[docs]</a>
   <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Model&#39;s forward pass. &quot;&quot;&quot;</span>
     <span class="n">activation</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span>
@@ -854,7 +637,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="cifar_Net">
-<a class="viewcode-back" href="../models.html#models.cifar_Net">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cifar_Net">[docs]</a>
 <span class="k">class</span> <span class="nc">cifar_Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -866,7 +649,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cifar_Net.forward">
-<a class="viewcode-back" href="../models.html#models.cifar_Net.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cifar_Net.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
@@ -878,7 +661,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="cnn_cifar">
-<a class="viewcode-back" href="../models.html#models.cnn_cifar">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_cifar">[docs]</a>
 <span class="k">class</span> <span class="nc">cnn_cifar</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -891,7 +674,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="o">.</span><span class="n">out_features</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cnn_cifar.forward">
-<a class="viewcode-back" href="../models.html#models.cnn_cifar.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.cnn_cifar.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
@@ -908,7 +691,7 @@ document.write(`
 <span class="c1">#JS: Resnet models</span>
 
 <div class="viewcode-block" id="BasicBlock">
-<a class="viewcode-back" href="../models.html#models.BasicBlock">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.BasicBlock">[docs]</a>
 <span class="k">class</span> <span class="nc">BasicBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="n">expansion</span> <span class="o">=</span> <span class="mi">1</span>
  
@@ -927,7 +710,7 @@ document.write(`
             <span class="p">)</span>
  
 <div class="viewcode-block" id="BasicBlock.forward">
-<a class="viewcode-back" href="../models.html#models.BasicBlock.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.BasicBlock.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
@@ -939,7 +722,7 @@ document.write(`
  
  
 <div class="viewcode-block" id="Bottleneck">
-<a class="viewcode-back" href="../models.html#models.Bottleneck">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.Bottleneck">[docs]</a>
 <span class="k">class</span> <span class="nc">Bottleneck</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="n">expansion</span> <span class="o">=</span> <span class="mi">4</span>
  
@@ -960,7 +743,7 @@ document.write(`
             <span class="p">)</span>
  
 <div class="viewcode-block" id="Bottleneck.forward">
-<a class="viewcode-back" href="../models.html#models.Bottleneck.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.Bottleneck.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bn2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">out</span><span class="p">)))</span>
@@ -973,7 +756,7 @@ document.write(`
  
  
 <div class="viewcode-block" id="ResNet">
-<a class="viewcode-back" href="../models.html#models.ResNet">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet">[docs]</a>
 <span class="k">class</span> <span class="nc">ResNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">num_blocks</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ResNet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -996,7 +779,7 @@ document.write(`
         <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
  
 <div class="viewcode-block" id="ResNet.forward">
-<a class="viewcode-back" href="../models.html#models.ResNet.forward">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out_feature</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
@@ -1019,31 +802,31 @@ document.write(`
  
  
 <div class="viewcode-block" id="ResNet18">
-<a class="viewcode-back" href="../models.html#models.ResNet18">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet18">[docs]</a>
 <span class="k">def</span> <span class="nf">ResNet18</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">BasicBlock</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span></div>
 
  
 <div class="viewcode-block" id="ResNet34">
-<a class="viewcode-back" href="../models.html#models.ResNet34">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet34">[docs]</a>
 <span class="k">def</span> <span class="nf">ResNet34</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">BasicBlock</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span></div>
 
  
 <div class="viewcode-block" id="ResNet50">
-<a class="viewcode-back" href="../models.html#models.ResNet50">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet50">[docs]</a>
 <span class="k">def</span> <span class="nf">ResNet50</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">Bottleneck</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span></div>
 
  
 <div class="viewcode-block" id="ResNet101">
-<a class="viewcode-back" href="../models.html#models.ResNet101">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet101">[docs]</a>
 <span class="k">def</span> <span class="nf">ResNet101</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">Bottleneck</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span></div>
 
  
 <div class="viewcode-block" id="ResNet152">
-<a class="viewcode-back" href="../models.html#models.ResNet152">[docs]</a>
+<a class="viewcode-back" href="../pipeline/models.html#models.ResNet152">[docs]</a>
 <span class="k">def</span> <span class="nf">ResNet152</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">Bottleneck</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span></div>
 
@@ -1055,7 +838,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -1064,8 +847,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -1078,8 +859,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1090,7 +871,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Geovani Rizk, John Stephan, Marc Gonzalez.
+      © Copyright 2024, EPFL.
       <br/>
     
   </p>
@@ -1099,7 +880,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -1112,7 +893,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
 </p></div>
       
     </div>

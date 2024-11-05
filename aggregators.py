@@ -465,22 +465,25 @@ class CenteredClipping(object):
     Description
     -----------
     Applies the Centered Clipping Algorithm presented in (Karimireddy et al.(2021)): 
-     It adds to 'prev_momentum' the average clipped differences between 'prev_momentum' 
-     and each of the vectors in 'vectors'. This is done 'L_iter' times using at 
-     each iteration the new value of 'prev_momentum'
-
+    It adds to 'prev_momentum' the average clipped differences between 'prev_momentum' 
+    and each of the vectors in 'vectors'. This is done 'L_iter' times using at 
+    each iteration the new value of 'prev_momentum'
+    
     Reference(s)
     ------------
     Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Learning
     from history for byzantine robust optimization. In 38th
     International Conference on Machine Learning (ICML), 2021.
-        URL http://proceedings.mlr.press/v139/karimireddy21a/karimireddy21a.pdf
+    URL http://proceedings.mlr.press/v139/karimireddy21a/karimireddy21a.pdf
 
     Parameters
     ----------
-    prev_momentum (np.ndarray):
-    L_iter (int):
-    clip_thresh (int):
+    prev_momentum : np.dnarray or torch.Tensor
+        Vector of previous iteration
+    L_iter : int
+        Number of iteration
+    clip_thresh : int
+        Threshold parameter
 
     How to use it in experiments
     ----------------------------
@@ -494,6 +497,7 @@ class CenteredClipping(object):
 
     Methods
     ---------
+    test
     """
 
     def __init__(self, previous_momentum=None, L_iter=1, clip_thresh=100, **kwargs):

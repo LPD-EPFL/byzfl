@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-project = 'Byzantine ML Library'
+project = 'ByzFL'
 copyright = '2024, EPFL'
 author = 'Geovani Rizk, John Stephan, Marc Gonzalez'
 release = '0.0'
@@ -19,11 +19,15 @@ release = '0.0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.todo",
+              "sphinx.ext.viewcode",
+              "sphinx.ext.autodoc",
+              "sphinx.ext.autosummary"]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+autosummary_generate=True
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -31,3 +35,5 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
+
+

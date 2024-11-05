@@ -18,7 +18,7 @@ class NNM(object):
     mixing: A recipe for optimal Byzantine ML under heterogeneity.
     In International Conference on Artificial Intelligence and
     Statistics, pages 1232–1300. PMLR, 2023. 
-     URL https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf
+    URL https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf
 
     Parameters
     ----------
@@ -198,27 +198,27 @@ class Bucketing(object):
 
     """
     Description
-    -----------
+    ------------
     Applies the Bucketing aggregation rule (Karimireddy et al., 2022):
-     Returns a 2 dimensionnal array of type "np.ndarray" containing
-     averages of "bucket_size" vectors. Each average is computed on a
-     disjoint subset of "bucket_size" vectors drawn uniformely whithout
-     replacement in "vectors".
+    Returns a 2 dimensionnal array of type "np.ndarray" containing
+    averages of "bucket_size" vectors. Each average is computed on a
+    disjoint subset of "bucket_size" vectors drawn uniformely whithout
+    replacement in "vectors".
 
     Reference(s)
-    ------------
+    -------------
     Karimireddy, S. P., He, L., and Jaggi, M. (2022). Byzantine-
     robust learning on heterogeneous datasets via bucketing. In
     International Conference on Learning Representations. 
-     URL https://openreview.net/pdf?id=jXKKDEi5vJt
+    URL https://openreview.net/pdf?id=jXKKDEi5vJt
 
     Parameters
-    ----------
+    -----------
     bucket_size : int 
         Size of the buckets
 
     How to use it in experiments
-    ----------------------------
+    -----------------------------
     >>> "pre_aggregators" : [{
     >>>     "name": "Bucketing",
     >>>     "parameters": {
@@ -228,6 +228,8 @@ class Bucketing(object):
 
     Methods
     ---------
+
+
     """
 
     def __init__(self, nb_workers, nb_byz, bucket_size=None, **kwargs):
