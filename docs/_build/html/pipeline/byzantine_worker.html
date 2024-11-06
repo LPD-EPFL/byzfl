@@ -133,7 +133,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -226,7 +226,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -341,74 +341,67 @@
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Class that is responsible for carrying out the byzantine attacks.</p>
-</section>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<blockquote>
-<div><p>All this parameters should be passed in a dictionary that contains the following keys.</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <dl class="simple">
 <dt>nb_byz<span class="classifier">int</span></dt><dd><p>Number of byzantine nodes that has the byzantine worker.</p>
 </dd>
 <dt>attack_name<span class="classifier">str</span></dt><dd><p>Name of the attack</p>
 </dd>
-<dt>attack_parameters<span class="classifier">dict</span></dt><dd><p>Dictionary with the parameters of the attack 
-where every key is the name of the paramater and their value is 
+<dt>attack_parameters<span class="classifier">dict</span></dt><dd><p>Dictionary with the parameters of the attack
+where every key is the name of the paramater and their value is
 the value of the parameter.</p>
 </dd>
 <dt>attack_optimizer_name<span class="classifier">(str, optional)</span></dt><dd><p>Name of the optimizer to be used to find the best attack parameters.</p>
 </dd>
-<dt>attack_optimizer_parameters<span class="classifier">(dict, optional)</span></dt><dd><p>Dictionary with the parameters of the optimizer where every key is 
+<dt>attack_optimizer_parameters<span class="classifier">(dict, optional)</span></dt><dd><p>Dictionary with the parameters of the optimizer where every key is
 the name of the paramater and their value is the value of the parameter.</p>
 </dd>
 <dt>aggregator_info<span class="classifier">dict</span></dt><dd><p>Dictionary with the keys “name” and “parameters” defined for the aggregator.</p>
 </dd>
-<dt>pre_agg_list<span class="classifier">list </span></dt><dd><p>List of dictionaries (one for every pre_agg function)
+<dt>pre_agg_list<span class="classifier">list</span></dt><dd><p>List of dictionaries (one for every pre_agg function)
 where every dictionary have the keys “name” and “parameters” defined.</p>
 </dd>
 </dl>
-</section>
-<section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzantine_worker.ByzantineWorker.apply_attack">
 <span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzantine_worker.html#ByzantineWorker.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzantine_worker.ByzantineWorker.apply_attack" title="Link to this definition">#</a></dt>
 <dd><p>Computes the byzantine vector and (optimized or not depending
 if the optimizer is configured) and then it returns a list
 with this vector n times, where n = number of byzantine nodes</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>vectors<span class="classifier">list or np.ndarray or torch.Tensor</span></dt><dd><p>A list of vectors or a matrix (2D array/tensor) where each row represents a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>list</em><em> or </em><em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – A list of vectors or a matrix (2D array/tensor) where each row represents a vector.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Returns a list with the byzantine vector n times,</strong></p></li>
+<li><p><strong>where n = number of byzantine nodes</strong></p></li>
+</ul>
 </dd>
 </dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<p>Returns a list with the byzantine vector n times, 
-where n = number of byzantine nodes</p>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzantine_worker.ByzantineWorker.apply_batch_norm_attack">
 <span class="sig-name descname"><span class="pre">apply_batch_norm_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzantine_worker.html#ByzantineWorker.apply_batch_norm_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzantine_worker.ByzantineWorker.apply_batch_norm_attack" title="Link to this definition">#</a></dt>
-<dd><p>Computes the byzantine vector of the batch norms 
-and (optimized or not depending if the optimizer is configured) 
-and then it returns a list with this vector n times, where n = number 
+<dd><p>Computes the byzantine vector of the batch norms
+and (optimized or not depending if the optimizer is configured)
+and then it returns a list with this vector n times, where n = number
 of byzantine nodes</p>
-<section id="id2">
-<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>vectors<span class="classifier">list or np.ndarray or torch.Tensor</span></dt><dd><p>A list of vectors or a matrix (2D array/tensor) where each row represents a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>list</em><em> or </em><em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – A list of vectors or a matrix (2D array/tensor) where each row represents a vector.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Returns a list with the byzantine vector n times,</strong></p></li>
+<li><p><strong>where n = number of byzantine nodes</strong></p></li>
+</ul>
 </dd>
 </dl>
-</section>
-<section id="id3">
-<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>Returns a list with the byzantine vector n times, 
-where n = number of byzantine nodes</p>
-</section>
 </dd></dl>
 
 </section>

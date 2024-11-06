@@ -44,8 +44,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'attacker/attacks';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="attack_optimizers module" href="attack_optimizers.html" />
-    <link rel="prev" title="Attacker" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -131,9 +129,9 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -201,8 +199,10 @@
       
       
       
+        
+      
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -224,9 +224,9 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -259,19 +259,6 @@
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">attacks module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="attack_optimizers.html">attack_optimizers module</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -302,9 +289,6 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Attacker</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">attacks module</span></li>
   </ul>
 </nav>
@@ -331,52 +315,59 @@
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Class representing an attack that scale the mean vector by some factor (1-attack_factor).</p>
-</section>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>attack_factor<span class="classifier">int or float</span></dt><dd><p>The factor by which to weaken the mean vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param attack_factor<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The factor by which to weaken the mean vector.</p>
 </dd>
+<dt class="field-even">type attack_factor<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param —————————-<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">param &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-even"><p>“FallOfEmpires”,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;         “attack_factor”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;         “attack_factor”<span class="colon">:</span></dt>
+<dd class="field-even"><p>3,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;      }<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
 </dl>
-</section>
-<section id="how-to-use-it-in-experiments">
-<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;FallOfEmpires&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;attack_factor&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.FallOfEmpires.get_malicious_vector">
 <span class="sig-name descname"><span class="pre">get_malicious_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#FallOfEmpires.get_malicious_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.FallOfEmpires.get_malicious_vector" title="Link to this definition">#</a></dt>
 <dd><p>Compute the weakened arithmetic mean along axis=0.</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor with floating point or complex dtype</span></dt><dd><p>Matrix containing arrays whose mean is desired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor with floating point</em><em> or </em><em>complex dtype</em>) – Matrix containing arrays whose mean is desired.</p>
 </dd>
-</dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>mean_vector<span class="classifier">ndarray or torch.tensor</span></dt><dd><p>The scaled vector from mean of honest vectors. 
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mean_vector</strong> (<em>ndarray or torch.tensor</em>) – The scaled vector from mean of honest vectors.
 The dtype of the outputs will be the same as the input.</p>
 </dd>
 </dl>
-</section>
-<section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><dl>
-<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> 
-<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> 
+<p class="rubric">Examples</p>
+<dl>
+<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">FallOfEmpires</span><span class="p">(</span><span class="n">attack_factor</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -386,7 +377,7 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 <dt>With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> 
+<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">FallOfEmpires</span><span class="p">(</span><span class="n">attack_factor</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -396,21 +387,17 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.FallOfEmpires.set_attack_parameters">
 <span class="sig-name descname"><span class="pre">set_attack_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#FallOfEmpires.set_attack_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.FallOfEmpires.set_attack_parameters" title="Link to this definition">#</a></dt>
 <dd><p>Set the attack factor for scale the mean vector of honest vectors.</p>
-<section id="id2">
-<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>factor<span class="classifier">int or float</span></dt><dd><p>The factor by which to weaken the mean vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>factor</strong> (<em>int</em><em> or </em><em>float</em>) – The factor by which to weaken the mean vector.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 </section>
@@ -420,49 +407,38 @@ The dtype of the outputs will be the same as the input.</p>
 <dt class="sig sig-object py" id="attacks.Inf">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">attacks.</span></span><span class="sig-name descname"><span class="pre">Inf</span></span><a class="reference internal" href="../_modules/attacks.html#Inf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.Inf" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id3">
-<h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h2>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <dl class="simple">
-<dt>Class representing an attack that generates a vector </dt><dd><p>with positive infinity values.</p>
+<dt>Class representing an attack that generates a vector</dt><dd><p>with positive infinity values.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h2>How to use it in experiments<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="how-to-use-it-in-experiments">
+<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Inf&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="id5">
-<h2>Methods<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.Inf.get_malicious_vector">
 <span class="sig-name descname"><span class="pre">get_malicious_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#Inf.get_malicious_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.Inf.get_malicious_vector" title="Link to this definition">#</a></dt>
 <dd><p>Generate a vector with positive infinity values.</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor</span></dt><dd><p>Matrix containing arrays of honest vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor</em>) – Matrix containing arrays of honest vectors.</p>
 </dd>
-</dl>
-</section>
-<section id="id7">
-<h3>Returns<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>malicious_vector<span class="classifier">ndarray or torch.tensor</span></dt><dd><p>The malicious vector with all elements set to positive infinity.
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>malicious_vector</strong> (<em>ndarray or torch.tensor</em>) – The malicious vector with all elements set to positive infinity.
 The dtype of the outputs will be the same as the input.</p>
 </dd>
 </dl>
-</section>
-<section id="id8">
-<h3>Examples<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><dl>
-<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> 
-<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> 
+<p class="rubric">Examples</p>
+<dl>
+<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">Inf</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -472,7 +448,7 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 <dt>With torch tensors:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> 
+<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">Inf</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -482,8 +458,6 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
-</section>
 </dd></dl>
 
 </section>
@@ -493,61 +467,69 @@ The dtype of the outputs will be the same as the input.</p>
 <dt class="sig sig-object py" id="attacks.LittleIsEnough">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">attacks.</span></span><span class="sig-name descname"><span class="pre">LittleIsEnough</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attack_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#LittleIsEnough"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.LittleIsEnough" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id9">
-<h2>Description<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h2>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <dl class="simple">
-<dt>Class representing an attack that perturbs the mean vector of honest </dt><dd><p>vectors by adding a scaled version of the standard deviation vector.</p>
+<dt>Class representing an attack that perturbs the mean vector of honest</dt><dd><p>vectors by adding a scaled version of the standard deviation vector.</p>
 </dd>
 </dl>
-</section>
-<section id="id10">
-<h2>Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>attack_factor<span class="classifier">int or float</span></dt><dd><p>The factor by which to scale the standard deviation vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param attack_factor<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The factor by which to scale the standard deviation vector.</p>
 </dd>
+<dt class="field-even">type attack_factor<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param —————————-<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">param &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-even"><p>“LittleIsEnough”,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;      “parameters”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;      “parameters”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;          “attack_factor”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;          “attack_factor”<span class="colon">:</span></dt>
+<dd class="field-even"><p>1.5,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;      }<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param &gt;&gt;&gt;  }<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
 </dl>
-</section>
-<section id="id11">
-<h2>How to use it in experiments<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;LittleIsEnough&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>         <span class="s2">&quot;attack_factor&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span> <span class="p">},</span>
-</pre></div>
-</div>
-</section>
-<section id="id12">
-<h2>Methods<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<p>:param :</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.LittleIsEnough.get_malicious_vector">
 <span class="sig-name descname"><span class="pre">get_malicious_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#LittleIsEnough.get_malicious_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.LittleIsEnough.get_malicious_vector" title="Link to this definition">#</a></dt>
 <dd><dl class="simple">
-<dt>Perturb the mean vector of honest vectors by adding a scaled version </dt><dd><p>of the standard deviation vector.</p>
+<dt>Perturb the mean vector of honest vectors by adding a scaled version</dt><dd><p>of the standard deviation vector.</p>
 </dd>
 </dl>
-<section id="id13">
-<h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor with floating point or </span></dt><dd><p>complex dtype</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor with floating point or</em>) – complex dtype</p>
 </dd>
-</dl>
-</section>
-<section id="id14">
-<h3>Returns<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>malicious_vector<span class="classifier">ndarray or torch.tensor</span></dt><dd><p>The perturbed mean vector of honest vectors.
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>malicious_vector</strong> (<em>ndarray or torch.tensor</em>) – The perturbed mean vector of honest vectors.
 The dtype of the outputs will be the same as the input.</p>
 </dd>
 </dl>
-</section>
-<section id="id15">
-<h3>Examples<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><dl>
-<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> 
-<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> 
+<p class="rubric">Examples</p>
+<dl>
+<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">LittleIsEnough</span><span class="p">(</span><span class="n">attack_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -557,7 +539,7 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 <dt>With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                       <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> 
+<span class="gp">&gt;&gt;&gt; </span>                       <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>                       <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">LittleIsEnough</span><span class="p">(</span><span class="n">attack_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -567,21 +549,17 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.LittleIsEnough.set_attack_parameters">
 <span class="sig-name descname"><span class="pre">set_attack_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#LittleIsEnough.set_attack_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.LittleIsEnough.set_attack_parameters" title="Link to this definition">#</a></dt>
 <dd><p>Set the attack factor for scaling the standard deviation vector.</p>
-<section id="id16">
-<h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>factor<span class="classifier">(int or float)</span></dt><dd><p>The factor by which to scale the standard deviation vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>factor</strong> (<em>(</em><em>int</em><em> or </em><em>float</em><em>)</em>) – The factor by which to scale the standard deviation vector.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 </section>
@@ -591,55 +569,62 @@ The dtype of the outputs will be the same as the input.</p>
 <dt class="sig sig-object py" id="attacks.Mimic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">attacks.</span></span><span class="sig-name descname"><span class="pre">Mimic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker_to_mimic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#Mimic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.Mimic" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id17">
-<h2>Description<a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>Class representing an attack where the attacker mimics the behavior of a specific worker.</p>
-</section>
-<section id="id18">
-<h2>Parameters<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>worker_to_mimic<span class="classifier">int</span></dt><dd><p>ID of the worker whose behavior is to be mimicked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param worker_to_mimic<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ID of the worker whose behavior is to be mimicked.</p>
 </dd>
+<dt class="field-even">type worker_to_mimic<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param —————————-<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">param &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-even"><p>“Mimic”,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;         “worker_to_mimic”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;         “worker_to_mimic”<span class="colon">:</span></dt>
+<dd class="field-even"><p>0</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     }<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
 </dl>
-</section>
-<section id="id19">
-<h2>How to use it in experiments<a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mimic&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;worker_to_mimic&quot;</span><span class="p">:</span> <span class="mi">0</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="id20">
-<h2>Methods<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.Mimic.get_malicious_vector">
 <span class="sig-name descname"><span class="pre">get_malicious_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#Mimic.get_malicious_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.Mimic.get_malicious_vector" title="Link to this definition">#</a></dt>
 <dd><p>Retrieve the data from the worker to be mimicked.</p>
-<section id="id21">
-<h3>Parameters<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor</span></dt><dd><p>Matrix containing arrays of honest workers data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor</em>) – Matrix containing arrays of honest workers data.</p>
 </dd>
-</dl>
-</section>
-<section id="id22">
-<h3>Returns<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>malicious_vector<span class="classifier">ndarray or torch.tensor</span></dt><dd><p>The data from the worker to be mimicked.
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>malicious_vector</strong> (<em>ndarray or torch.tensor</em>) – The data from the worker to be mimicked.
 The dtype of the outputs will be the same as the input.</p>
 </dd>
 </dl>
-</section>
-<section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><dl>
-<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> 
-<span class="go">                    [4., 5., 6.], </span>
+<p class="rubric">Example</p>
+<dl>
+<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="go">                    [4., 5., 6.],</span>
 <span class="go">                    [7., 8., 9.]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">Mimic</span><span class="p">(</span><span class="n">worker_to_mimic</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="o">.</span><span class="n">set_attack_parameters</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -650,7 +635,7 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 <dt>With torch tensors:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="go">                        torch.tensor([4., 5., 6.]), </span>
+<span class="go">                        torch.tensor([4., 5., 6.]),</span>
 <span class="go">                        torch.tensor([7., 8., 9.])])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">Mimic</span><span class="p">(</span><span class="n">worker_to_mimic</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="o">.</span><span class="n">set_attack_parameters</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -661,21 +646,17 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.Mimic.set_attack_parameters">
 <span class="sig-name descname"><span class="pre">set_attack_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#Mimic.set_attack_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.Mimic.set_attack_parameters" title="Link to this definition">#</a></dt>
 <dd><p>Set the worker ID to be mimicked.</p>
-<section id="id23">
-<h3>Parameters<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>worker<span class="classifier">int</span></dt><dd><p>ID of the worker whose behavior is to be mimicked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>worker</strong> (<em>int</em>) – ID of the worker whose behavior is to be mimicked.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 </section>
@@ -685,45 +666,35 @@ The dtype of the outputs will be the same as the input.</p>
 <dt class="sig sig-object py" id="attacks.NoAttack">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">attacks.</span></span><span class="sig-name descname"><span class="pre">NoAttack</span></span><a class="reference internal" href="../_modules/attacks.html#NoAttack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.NoAttack" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id24">
-<h2>Description<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h2>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>Class representing an attack which behaves like an honest node</p>
 </section>
-<section id="id25">
-<h2>How to use it in experiments<a class="headerlink" href="#id25" title="Link to this heading">#</a></h2>
+<section id="id5">
+<h2>How to use it in experiments<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NoAttack&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="id26">
-<h2>Methods<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.NoAttack.get_malicious_vector">
 <span class="sig-name descname"><span class="pre">get_malicious_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#NoAttack.get_malicious_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.NoAttack.get_malicious_vector" title="Link to this definition">#</a></dt>
 <dd><p>Compute the arithmetic mean along axis = 0.</p>
 <p>Returns the average of the array elements.</p>
-<section id="id27">
-<h3>Parameters<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor with floating point or complex dtype</span></dt><dd><p>Matrix containing arrays whose mean is desired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor with floating point</em><em> or </em><em>complex dtype</em>) – Matrix containing arrays whose mean is desired.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mean_vector</strong> (<em>ndarray or torch.tensor</em>) – The mean vector of the input. The dtype of the outputs will be the same as the input.</p>
 </dd>
 </dl>
-</section>
-<section id="id28">
-<h3>Returns<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>mean_vector<span class="classifier">ndarray or torch.tensor</span></dt><dd><p>The mean vector of the input. The dtype of the outputs will be the same as the input.</p>
-</dd>
-</dl>
-</section>
-<section id="id29">
-<h3>Examples<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p class="rubric">Examples</p>
 <dl>
-<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> 
-<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> 
+<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">NoAttack</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -733,7 +704,7 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 <dt>With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> 
+<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">NoAttack</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -743,7 +714,6 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 </section>
@@ -753,45 +723,34 @@ The dtype of the outputs will be the same as the input.</p>
 <dt class="sig sig-object py" id="attacks.SignFlipping">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">attacks.</span></span><span class="sig-name descname"><span class="pre">SignFlipping</span></span><a class="reference internal" href="../_modules/attacks.html#SignFlipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.SignFlipping" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id30">
-<h2>Description<a class="headerlink" href="#id30" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
 <p>Class representing an attack where the sign of the mean vector is flipped.</p>
 </section>
-<section id="id31">
-<h2>How to use it in experiments<a class="headerlink" href="#id31" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h2>How to use it in experiments<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;SignFlipping&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="id32">
-<h2>Methods<a class="headerlink" href="#id32" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attacks.SignFlipping.get_malicious_vector">
 <span class="sig-name descname"><span class="pre">get_malicious_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attacks.html#SignFlipping.get_malicious_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attacks.SignFlipping.get_malicious_vector" title="Link to this definition">#</a></dt>
 <dd><p>Compute the arithmetic mean along axis = 0 and flip its sign.</p>
-<section id="id33">
-<h3>Parameters<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor with floating point or complex dtype</span></dt><dd><p>Matrix containing arrays whose mean is desired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor with floating point</em><em> or </em><em>complex dtype</em>) – Matrix containing arrays whose mean is desired.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mean_vector</strong> (<em>ndarray or torch.tensor</em>) – The mean vector with flipped sign. The dtype of the outputs will be the same as the input.</p>
 </dd>
 </dl>
-</section>
-<section id="id34">
-<h3>Returns<a class="headerlink" href="#id34" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>mean_vector<span class="classifier">ndarray or torch.tensor</span></dt><dd><p>The mean vector with flipped sign. The dtype of the outputs will be the same as the input.</p>
-</dd>
-</dl>
-</section>
-<section id="id35">
-<h3>Examples<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><dl>
-<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> 
-<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> 
+<p class="rubric">Examples</p>
+<dl>
+<dt>With numpy arrays:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                   <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">SignFlipping</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -801,7 +760,7 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 <dt>With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> 
+<span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>                      <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">SignFlipping</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">attack</span><span class="o">.</span><span class="n">get_malicious_vector</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
@@ -811,8 +770,6 @@ The dtype of the outputs will be the same as the input.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
-</section>
 </dd></dl>
 
 </section>
@@ -830,24 +787,6 @@ The dtype of the outputs will be the same as the input.</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="index.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Attacker</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="attack_optimizers.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">attack_optimizers module</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               

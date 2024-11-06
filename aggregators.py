@@ -7,57 +7,63 @@ import utils.misc as misc
 
 class Average(object):
     """
-    Description
-    -----------
-    Aggregator that computes the average vector in vectors.
+        This aggregator computes the average of a set of vectors given as input
+        
+        .. math::
+            \mathrm{Average} \ (v_1, \dots, v_n) = \sum_{i=1}^n v_i
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "Average",
-    >>>     "parameters": {}
-    >>> }
 
-    Methods
-    ---------
+        Initialization parameters
+        -------------------------
+        None
+        
+        Calling the instance
+        --------------------
+
+        Input parameters
+        ----------------
+        vectors: list of np.ndarray, list of torch.Tensor, np.ndarray or torch.Tensor
+            A list of vectors, matrix, tensors where each row represents a vector.
+        
+        
+        Returns
+        -------
+        :ndarray or torch.Tensor
+            The average vector. The data type of the output will be the same as the input.
+
+        Examples
+        --------
+                >>> import aggregators.Average as Average
+                >>> agg = Average()
+
+                Using numpy arrays
+
+                >>> np_vectors = np.array([[1., 2., 3.],         # np.ndarray
+                >>>                        [4., 5., 6.], 
+                >>>                        [7., 8., 9.]])
+                >>> agg.aggregate_vectors(vectors)
+                ndarray([4. 5. 6.])
+                
+                Using torch tensors
+
+                >>> torch_vectors = torch.tensor([[1., 2., 3.],   # torch.tensor 
+                >>>                              [4., 5., 6.], 
+                >>>                              [7., 8., 9.]])
+                >>> agg.aggregate_vectors(vectors)
+                tensor([4., 5., 6.])
+
+
+
     """
     def __init__(self, **kwargs):
         pass
 
     def aggregate_vectors(self, vectors):
-        """
-        Computes the arithmetic mean along axis=0.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            The average vector of the input. The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = Average()
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([4. 5. 6.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([4., 5., 6.])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         return tools.mean(vectors, axis=0)
+    
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 
 class Median(object):

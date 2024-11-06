@@ -133,7 +133,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -226,7 +226,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -342,39 +342,38 @@
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Class to apply all the pre-aggregations and the aggregation
 to the vectors.</p>
-</section>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>aggregator-info<span class="classifier">dict </span></dt><dd><p>Dictionary with the keys “name” and “parameters” 
+<dl class="field-list simple">
+<dt class="field-odd">param aggregator-info<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary with the keys “name” and “parameters”
 of the aggregation defined.</p>
 </dd>
-<dt>pre-agg-info<span class="classifier">list</span></dt><dd><p>List of dictionaries (one for every pre_agg function)
+<dt class="field-even">type aggregator-info<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">param pre-agg-info<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries (one for every pre_agg function)
 where every dictionary have the keys “name” and “parameters” defined.</p>
 </dd>
+<dt class="field-even">type pre-agg-info<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
 </dl>
-</section>
-<section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="robust_aggregators.RobustAggregator.aggregate">
 <span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/robust_aggregators.html#RobustAggregator.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robust_aggregators.RobustAggregator.aggregate" title="Link to this definition">#</a></dt>
 <dd><section id="id1">
 <h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>Apply pre-aggregations and aggregations to the vectors</p>
-</section>
-<section id="id2">
-<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>vectors<span class="classifier">(list or np.ndarray or torch.Tensor)</span></dt><dd><p>A list of vectors or a matrix (2D array/tensor) where each
+<dl class="field-list simple">
+<dt class="field-odd">param vectors<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of vectors or a matrix (2D array/tensor) where each
 row represents a vector.</p>
 </dd>
-</dl>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>ndarray or torch.Tensor</dt><dd><p>Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors</p>
+<dt class="field-even">type vectors<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list or np.ndarray or torch.Tensor)</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ndarray or torch.Tensor</strong> – Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors</p>
 </dd>
 </dl>
 </section>

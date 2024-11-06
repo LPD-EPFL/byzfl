@@ -133,7 +133,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -226,7 +226,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -340,34 +340,29 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>This class serves as an abstract interface that defines the methods 
-required for classes that encapsulate a model. All subclasses that 
-contain a model should inherit from this class to ensure they implement 
-the necessary methods for handling model-related operations and information 
+<p>This class serves as an abstract interface that defines the methods
+required for classes that encapsulate a model. All subclasses that
+contain a model should inherit from this class to ensure they implement
+the necessary methods for handling model-related operations and information
 exchange.</p>
-</section>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<blockquote>
-<div><p>All this parameters should be passed in a dictionary that contains the following keys.</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <dl class="simple">
-<dt>model-name<span class="classifier">str </span></dt><dd><p>Indicates the model to be used</p>
+<dt>model-name<span class="classifier">str</span></dt><dd><p>Indicates the model to be used</p>
 </dd>
 <dt>device<span class="classifier">str</span></dt><dd><p>Name of the device used</p>
 </dd>
-<dt>learning-rate<span class="classifier">float </span></dt><dd><p>Learning rate</p>
+<dt>learning-rate<span class="classifier">float</span></dt><dd><p>Learning rate</p>
 </dd>
-<dt>weight-decay<span class="classifier">float </span></dt><dd><p>Regularization used</p>
+<dt>weight-decay<span class="classifier">float</span></dt><dd><p>Regularization used</p>
 </dd>
-<dt>milestones<span class="classifier">list </span></dt><dd><p>List of the milestones, where the learning rate decay should be applied</p>
+<dt>milestones<span class="classifier">list</span></dt><dd><p>List of the milestones, where the learning rate decay should be applied</p>
 </dd>
-<dt>learning-rate-decay<span class="classifier">float </span></dt><dd><p>Rate decreases over time during training</p>
+<dt>learning-rate-decay<span class="classifier">float</span></dt><dd><p>Rate decreases over time during training</p>
 </dd>
 </dl>
-</section>
-<section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.compute_batch_norm_keys">
 <span class="sig-name descname"><span class="pre">compute_batch_norm_keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.compute_batch_norm_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.compute_batch_norm_keys" title="Link to this definition">#</a></dt>
@@ -383,11 +378,14 @@ exchange.</p>
 <dd><section id="id2">
 <h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Get the batch norm stats of the model in a dictionary.</p>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<p>Dicctionary where the keys are the name of the parameters
-of batch norm stats and their values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dicctionary where the keys are the name of the parameters</strong></p></li>
+<li><p><strong>of batch norm stats and their values.</strong></p></li>
+</ul>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -397,78 +395,88 @@ of batch norm stats and their values.</p>
 <dd><section id="id3">
 <h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>Get the gradients of the model in a dictionary.</p>
-</section>
-<section id="id4">
-<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
-<p>Dicctionary where the keys are the name of the parameters
-and the values are the gradients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dicctionary where the keys are the name of the parameters</strong></p></li>
+<li><p><strong>and the values are the gradients.</strong></p></li>
+</ul>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.get_dict_parameters">
 <span class="sig-name descname"><span class="pre">get_dict_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.get_dict_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.get_dict_parameters" title="Link to this definition">#</a></dt>
-<dd><section id="id5">
-<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Get the gradients of the model in a dictionary.</p>
-</section>
-<section id="id6">
-<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
-<p>Dicctionary where the keys are the name of the parameters
-and de values are the gradients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dicctionary where the keys are the name of the parameters</strong></p></li>
+<li><p><strong>and de values are the gradients.</strong></p></li>
+</ul>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats">
 <span class="sig-name descname"><span class="pre">get_flat_batch_norm_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.get_flat_batch_norm_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats" title="Link to this definition">#</a></dt>
-<dd><section id="id7">
-<h3>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dd><section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>Get the batch norm stats of the model in a flatten array.</p>
-</section>
-<section id="id8">
-<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<p>Array with the values of the batch norm stats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Array with the values of the batch norm stats.</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.get_flat_gradients">
 <span class="sig-name descname"><span class="pre">get_flat_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.get_flat_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.get_flat_gradients" title="Link to this definition">#</a></dt>
-<dd><section id="id9">
-<h3>Description<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dd><section id="id6">
+<h3>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>Get the gradients of the model in a flat array</p>
-</section>
-<section id="id10">
-<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
-<p>List of the gradients</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List of the gradients</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.get_flat_parameters">
 <span class="sig-name descname"><span class="pre">get_flat_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.get_flat_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.get_flat_parameters" title="Link to this definition">#</a></dt>
-<dd><section id="id11">
-<h3>Description<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<dd><section id="id7">
+<h3>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <p>Get the gradients of the model in a flat array</p>
-</section>
-<section id="id12">
-<h3>Returns<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
-<p>List of the gradients</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List of the gradients</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.set_gradients">
 <span class="sig-name descname"><span class="pre">set_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.set_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.set_gradients" title="Link to this definition">#</a></dt>
-<dd><section id="id13">
-<h3>Description<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<dd><section id="id8">
+<h3>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <p>Sets the model gradients given a flat vector.</p>
-</section>
-<section id="id14">
-<h3>Parameters<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>flat_vector<span class="classifier">list</span></dt><dd><p>Flat list with the parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">param flat_vector<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flat list with the parameters</p>
+</dd>
+<dt class="field-even">type flat_vector<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </section>
@@ -477,14 +485,15 @@ and de values are the gradients.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.set_model_state">
 <span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.set_model_state" title="Link to this definition">#</a></dt>
-<dd><section id="id15">
-<h3>Description<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<dd><section id="id9">
+<h3>Description<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p>Sets the state_dict of the model for the state_dict given by parameter.</p>
-</section>
-<section id="id16">
-<h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>state_dict<span class="classifier">dict </span></dt><dd><p>State_dict from a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">param state_dict<span class="colon">:</span></dt>
+<dd class="field-odd"><p>State_dict from a model</p>
+</dd>
+<dt class="field-even">type state_dict<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
 </section>
@@ -493,14 +502,15 @@ and de values are the gradients.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.set_parameters">
 <span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.set_parameters" title="Link to this definition">#</a></dt>
-<dd><section id="id17">
-<h3>Description<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<dd><section id="id10">
+<h3>Description<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
 <p>Sets the model parameters given a flat vector.</p>
-</section>
-<section id="id18">
-<h3>Parameters<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>flat_vector<span class="classifier">list </span></dt><dd><p>Flat list with the parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">param flat_vector<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flat list with the parameters</p>
+</dd>
+<dt class="field-even">type flat_vector<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </section>
@@ -509,14 +519,12 @@ and de values are the gradients.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.use_batch_norm">
 <span class="sig-name descname"><span class="pre">use_batch_norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.use_batch_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.use_batch_norm" title="Link to this definition">#</a></dt>
-<dd><section id="id19">
-<h3>Description<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<dd><section id="id11">
+<h3>Description<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
 <p>Getter to determine whether the model is using Batch Normalization.</p>
-</section>
-<section id="id20">
-<h3>Returns<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>bool</dt><dd><p>A boolean indicating whether the model is utilizing Batch Normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bool</strong> – A boolean indicating whether the model is utilizing Batch Normalization.</p>
 </dd>
 </dl>
 </section>
@@ -525,14 +533,12 @@ and de values are the gradients.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model_base_interface.ModelBaseInterface.use_federated_batch_norm">
 <span class="sig-name descname"><span class="pre">use_federated_batch_norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/model_base_interface.html#ModelBaseInterface.use_federated_batch_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_base_interface.ModelBaseInterface.use_federated_batch_norm" title="Link to this definition">#</a></dt>
-<dd><section id="id21">
-<h3>Description<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<dd><section id="id12">
+<h3>Description<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
 <p>Getter to determine whether the model is using Federated Batch Normalization.</p>
-</section>
-<section id="id22">
-<h3>Returns<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>bool</dt><dd><p>A boolean indicating whether the model is utilizing Federated Batch Normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bool</strong> – A boolean indicating whether the model is utilizing Federated Batch Normalization.</p>
 </dd>
 </dl>
 </section>

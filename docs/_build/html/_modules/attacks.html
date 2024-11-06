@@ -130,7 +130,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -221,7 +221,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -310,7 +310,7 @@
 <span class="kn">from</span> <span class="nn">utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span>
 
 <div class="viewcode-block" id="NoAttack">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.NoAttack">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/no_attack.html#attacks.NoAttack">[docs]</a>
 <span class="k">class</span> <span class="nc">NoAttack</span><span class="p">():</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -329,7 +329,7 @@
 <span class="sd">    ---------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="NoAttack.get_malicious_vector">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.NoAttack.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/no_attack.html#attacks.NoAttack.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the arithmetic mean along axis = 0.</span>
@@ -374,7 +374,7 @@
 
 
 <div class="viewcode-block" id="SignFlipping">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.SignFlipping">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/sign_flipping.html#attacks.SignFlipping">[docs]</a>
 <span class="k">class</span> <span class="nc">SignFlipping</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -393,7 +393,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SignFlipping.get_malicious_vector">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.SignFlipping.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/sign_flipping.html#attacks.SignFlipping.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the arithmetic mean along axis = 0 and flip its sign.</span>
@@ -435,7 +435,7 @@
 
 
 <div class="viewcode-block" id="FallOfEmpires">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.FallOfEmpires">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/fall_of_empires.html#attacks.FallOfEmpires">[docs]</a>
 <span class="k">class</span> <span class="nc">FallOfEmpires</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -464,7 +464,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
     
 <div class="viewcode-block" id="FallOfEmpires.set_attack_parameters">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.FallOfEmpires.set_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/fall_of_empires.html#attacks.FallOfEmpires.set_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the attack factor for scale the mean vector of honest vectors.</span>
@@ -478,7 +478,7 @@
 
 
 <div class="viewcode-block" id="FallOfEmpires.get_malicious_vector">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.FallOfEmpires.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/fall_of_empires.html#attacks.FallOfEmpires.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the weakened arithmetic mean along axis=0.</span>
@@ -522,7 +522,7 @@
 
 
 <div class="viewcode-block" id="LittleIsEnough">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.LittleIsEnough">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/little_is_enough.html#attacks.LittleIsEnough">[docs]</a>
 <span class="k">class</span> <span class="nc">LittleIsEnough</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -552,7 +552,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
     
 <div class="viewcode-block" id="LittleIsEnough.set_attack_parameters">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.LittleIsEnough.set_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/little_is_enough.html#attacks.LittleIsEnough.set_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the attack factor for scaling the standard deviation vector.</span>
@@ -566,7 +566,7 @@
 
 
 <div class="viewcode-block" id="LittleIsEnough.get_malicious_vector">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.LittleIsEnough.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/little_is_enough.html#attacks.LittleIsEnough.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perturb the mean vector of honest vectors by adding a scaled version </span>
@@ -612,7 +612,7 @@
 
 
 <div class="viewcode-block" id="Mimic">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.Mimic">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/mimic.html#attacks.Mimic">[docs]</a>
 <span class="k">class</span> <span class="nc">Mimic</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -641,7 +641,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span> <span class="o">=</span> <span class="n">worker_to_mimic</span>
     
 <div class="viewcode-block" id="Mimic.set_attack_parameters">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.Mimic.set_attack_parameters">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/mimic.html#attacks.Mimic.set_attack_parameters">[docs]</a>
     <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the worker ID to be mimicked.</span>
@@ -655,7 +655,7 @@
 
     
 <div class="viewcode-block" id="Mimic.get_malicious_vector">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.Mimic.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/mimic.html#attacks.Mimic.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the data from the worker to be mimicked.</span>
@@ -699,7 +699,7 @@
 
 
 <div class="viewcode-block" id="Inf">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.Inf">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/inf.html#attacks.Inf">[docs]</a>
 <span class="k">class</span> <span class="nc">Inf</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -719,7 +719,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Inf.get_malicious_vector">
-<a class="viewcode-back" href="../attacker/attacks.html#attacks.Inf.get_malicious_vector">[docs]</a>
+<a class="viewcode-back" href="../attacker/classes/inf.html#attacks.Inf.get_malicious_vector">[docs]</a>
     <span class="k">def</span> <span class="nf">get_malicious_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a vector with positive infinity values.</span>

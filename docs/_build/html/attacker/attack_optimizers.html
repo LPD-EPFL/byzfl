@@ -44,8 +44,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'attacker/attack_optimizers';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Pipeline" href="../pipeline/index.html" />
-    <link rel="prev" title="attacks module" href="attacks.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -131,9 +129,9 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -201,8 +199,10 @@
       
       
       
+        
+      
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -224,9 +224,9 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -259,19 +259,6 @@
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="attacks.html">attacks module</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">attack_optimizers module</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -302,9 +289,6 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Attacker</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">attack_optimizers module</span></li>
   </ul>
 </nav>
@@ -331,66 +315,116 @@
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Class to optimize attacks using the Line Maximize method: Best-effort arg-maximize a function: ℝ⁺⟶ ℝ, by mere exploration.</p>
-</section>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>agg_info<span class="classifier">dict </span></dt><dd><p>Dictionary with the keys “name” and “parameters” defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param agg_info<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary with the keys “name” and “parameters” defined.</p>
 </dd>
-<dt>pre_agg_info<span class="classifier">list</span></dt><dd><p>List of dictionaries (one for every pre_agg function)
+<dt class="field-even">type agg_info<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">param pre_agg_info<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries (one for every pre_agg function)
 where every dictionary have the keys “name” and “parameters” defined.</p>
 </dd>
-<dt>nb_byz<span class="classifier">int</span></dt><dd><p>Number ob byzantine nodes</p>
+<dt class="field-even">type pre_agg_info<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
-<dt>evals<span class="classifier">int</span></dt><dd><p>Maximum number of evaluations, must be a positive integer</p>
+<dt class="field-odd">param nb_byz<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number ob byzantine nodes</p>
 </dd>
-<dt>start<span class="classifier">float</span></dt><dd><p>Initial x evaluated, must be a non-negative float</p>
+<dt class="field-even">type nb_byz<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
 </dd>
-<dt>delta<span class="classifier">float</span></dt><dd><p>Initial step delta, must be a positive float</p>
+<dt class="field-odd">param evals<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Maximum number of evaluations, must be a positive integer</p>
 </dd>
-<dt>ratio<span class="classifier">float</span></dt><dd><p>Contraction ratio, must be between 0.5 and 1. (both excluded)</p>
+<dt class="field-even">type evals<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
 </dd>
+<dt class="field-odd">param start<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Initial x evaluated, must be a non-negative float</p>
+</dd>
+<dt class="field-even">type start<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param delta<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Initial step delta, must be a positive float</p>
+</dd>
+<dt class="field-even">type delta<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param ratio<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Contraction ratio, must be between 0.5 and 1. (both excluded)</p>
+</dd>
+<dt class="field-even">type ratio<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param —————————-<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">param &gt;&gt;&gt; “attack_optimizer”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt; “attack_optimizer”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
+<dd class="field-even"><p>“LineMaximize”,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
+<dd class="field-even"><p>{</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;         “evals”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;         “evals”<span class="colon">:</span></dt>
+<dd class="field-even"><p>16,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;         “start”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;         “start”<span class="colon">:</span></dt>
+<dd class="field-even"><p>0,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;         “delta”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;         “delta”<span class="colon">:</span></dt>
+<dd class="field-even"><p>1,</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;         “ratio”<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">type &gt;&gt;&gt;         “ratio”<span class="colon">:</span></dt>
+<dd class="field-even"><p>0.8</p>
+</dd>
+<dt class="field-odd">param &gt;&gt;&gt;     }<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
 </dl>
-</section>
-<section id="how-to-use-it-in-experiments">
-<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack_optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;LineMaximize&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;evals&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;ratio&quot;</span><span class="p">:</span> <span class="mf">0.8</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attack_optimizers.LineMaximize.optimize">
 <span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attack_optimizers.html#LineMaximize.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attack_optimizers.LineMaximize.optimize" title="Link to this definition">#</a></dt>
 <dd><p>Iterative algorithm to set the
 best attack factor to the attack
 given the attributs of the class.</p>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>attack<span class="classifier">Attack</span></dt><dd><p>Class that simulates the attack we would like to reproduce.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attack</strong> (<em>Attack</em>) – Class that simulates the attack we would like to reproduce.
 It is important that this class has the set_attack_parameters and
 get_malicious_vectors implemented. (See Fall of Empires or
-LittleIsEnough from attacks.py)</p>
-</dd>
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor with floating point or complex dtype</span></dt><dd><p>Vectors from the honest nodes</p>
+LittleIsEnough from attacks.py)</p></li>
+<li><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor with floating point</em><em> or </em><em>complex dtype</em>) – Vectors from the honest nodes</p></li>
+</ul>
 </dd>
 </dl>
-</section>
-<section id="note">
-<h3>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>This function doesn’t return anything but it sets to the attack
 passed by parameter the best attack factor.</p>
-</section>
+</div>
 </dd></dl>
 
 </section>
@@ -400,14 +434,14 @@ passed by parameter the best attack factor.</p>
 <dt class="sig sig-object py" id="attack_optimizers.WorkerWithMaxVariance">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">attack_optimizers.</span></span><span class="sig-name descname"><span class="pre">WorkerWithMaxVariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps_to_learn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attack_optimizers.html#WorkerWithMaxVariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attack_optimizers.WorkerWithMaxVariance" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id2">
-<h2>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h2>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>Class to optimize attacks that need to focus on the worker
 with maximum variance. This clase evaluates the honest vectors
 and sets the attack to focus on the worker with maximum variance.</p>
 </section>
-<section id="id3">
-<h2>How to use it in experiments<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="how-to-use-it-in-experiments">
+<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack_optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkerWithMaxVariance&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -416,37 +450,34 @@ and sets the attack to focus on the worker with maximum variance.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="id4">
-<h2>Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>steps_to_learn<span class="classifier">int</span></dt><dd><p>How many steps we are computing which worker to mimic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param steps_to_learn<span class="colon">:</span></dt>
+<dd class="field-odd"><p>How many steps we are computing which worker to mimic.</p>
+</dd>
+<dt class="field-even">type steps_to_learn<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
-</section>
-<section id="id5">
-<h2>Methods<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="attack_optimizers.WorkerWithMaxVariance.optimize">
 <span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/attack_optimizers.html#WorkerWithMaxVariance.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#attack_optimizers.WorkerWithMaxVariance.optimize" title="Link to this definition">#</a></dt>
-<dd><p>Optimize the attack by setting their parameter to the ID 
+<dd><p>Optimize the attack by setting their parameter to the ID
 of the worker with more variance</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>attack<span class="classifier">Attack </span></dt><dd><p>Class that simulates the attack we would like to reproduce.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attack</strong> (<em>Attack</em>) – Class that simulates the attack we would like to reproduce.
 It is important that this class has the set_attack_parameters and
-get_malicious_vectors implemented.</p>
-</dd>
-<dt>honest_vectors<span class="classifier">2D ndarray or 2D torch.tensor with floating point or complex dtype</span></dt><dd><p>Vectors from the honest nodes</p>
+get_malicious_vectors implemented.</p></li>
+<li><p><strong>honest_vectors</strong> (<em>2D ndarray</em><em> or </em><em>2D torch.tensor with floating point</em><em> or </em><em>complex dtype</em>) – Vectors from the honest nodes</p></li>
+</ul>
 </dd>
 </dl>
-</section>
-<section id="id7">
-<h3>Note<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>This function doesn’t return anything but it sets to the attack
 passed by parameter the ID of the worker with maximum variance.</p>
-</section>
+</div>
 </dd></dl>
 
 </section>
@@ -464,24 +495,6 @@ passed by parameter the ID of the worker with maximum variance.</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="attacks.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">attacks module</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="../pipeline/index.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Pipeline</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               

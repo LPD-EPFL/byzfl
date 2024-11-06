@@ -133,7 +133,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -226,7 +226,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../attacker/index.html">
-    Attacker
+    Attacks
   </a>
 </li>
 
@@ -340,50 +340,45 @@
 <dd><p>Bases: <a class="reference internal" href="model_base_interface.html#model_base_interface.ModelBaseInterface" title="model_base_interface.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>This class simulates one honest node which is able to train 
+<p>This class simulates one honest node which is able to train
 his local model to send the gradients and get the global model every round.</p>
-</section>
-<section id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<blockquote>
-<div><p>All this parameters should be passed in a dictionary that contains the following keys.</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <dl class="simple">
-<dt>model_name<span class="classifier">str </span></dt><dd><p>Name of the model to be used</p>
+<dt>model_name<span class="classifier">str</span></dt><dd><p>Name of the model to be used</p>
 </dd>
-<dt>device<span class="classifier">str </span></dt><dd><p>Name of the device to be used</p>
+<dt>device<span class="classifier">str</span></dt><dd><p>Name of the device to be used</p>
 </dd>
-<dt>learning_rate<span class="classifier">float </span></dt><dd><p>Learning rate</p>
+<dt>learning_rate<span class="classifier">float</span></dt><dd><p>Learning rate</p>
 </dd>
 <dt>loss_name<span class="classifier">str</span></dt><dd><p>Name of the loss to be used</p>
 </dd>
-<dt>weight_decay<span class="classifier">float </span></dt><dd><p>Regularization used</p>
+<dt>weight_decay<span class="classifier">float</span></dt><dd><p>Regularization used</p>
 </dd>
-<dt>milestones<span class="classifier">list </span></dt><dd><p>List of the milestones, where the learning rate
+<dt>milestones<span class="classifier">list</span></dt><dd><p>List of the milestones, where the learning rate
 decay should be applied</p>
 </dd>
 <dt>learning_rate_decay<span class="classifier">float</span></dt><dd><p>Rate decreases over time during training</p>
 </dd>
-<dt>attack_name<span class="classifier">str </span></dt><dd><p>Name of the attack to be used</p>
+<dt>attack_name<span class="classifier">str</span></dt><dd><p>Name of the attack to be used</p>
 </dd>
-<dt>momentum<span class="classifier">float </span></dt><dd><p>Momentum</p>
+<dt>momentum<span class="classifier">float</span></dt><dd><p>Momentum</p>
 </dd>
 <dt>training_dataloader<span class="classifier">Dataloader</span></dt><dd><p>Traning dataloader</p>
 </dd>
-<dt>nb_labels<span class="classifier">int </span></dt><dd><p>Number of labels in the dataset</p>
+<dt>nb_labels<span class="classifier">int</span></dt><dd><p>Number of labels in the dataset</p>
 </dd>
 <dt>nb_steps<span class="classifier">int</span></dt><dd><p>Number of steps in the training</p>
 </dd>
 </dl>
-</section>
-<section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="client.Client.compute_gradients">
 <span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Client.compute_gradients" title="Link to this definition">#</a></dt>
 <dd><section id="id1">
 <h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>Function where the client compute their gradients 
+<p>Function where the client compute their gradients
 of their model loss function.</p>
 </section>
 </dd></dl>
@@ -395,10 +390,11 @@ of their model loss function.</p>
 <h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Get the gradients of the model with their targets
 flipped in a flat array.</p>
-</section>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<p>List of the gradients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List of the gradients.</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
@@ -407,52 +403,56 @@ flipped in a flat array.</p>
 <span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Client.get_flat_gradients_with_momentum" title="Link to this definition">#</a></dt>
 <dd><section id="id3">
 <h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>Get the gradients of the model applying the momentum 
+<p>Get the gradients of the model applying the momentum
 in a flat array.</p>
-</section>
-<section id="id4">
-<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
-<p>List with the gradiends with momentum applied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List with the gradiends with momentum applied.</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="client.Client.get_loss_list">
 <span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Client.get_loss_list" title="Link to this definition">#</a></dt>
-<dd><section id="id5">
-<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Get the loss list of the client</p>
-</section>
-<section id="id6">
-<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
-<p>List with the losses that have been computed over the training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List with the losses that have been computed over the training.</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="client.Client.get_train_accuracy">
 <span class="sig-name descname"><span class="pre">get_train_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#Client.get_train_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Client.get_train_accuracy" title="Link to this definition">#</a></dt>
-<dd><section id="id7">
-<h3>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dd><section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>Get the batch train accuracy list of the client</p>
-</section>
-<section id="id8">
-<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<p>List with the accuracies that have been computed over the training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List with the accuracies that have been computed over the training.</strong></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="client.Client.set_model_state">
 <span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Client.set_model_state" title="Link to this definition">#</a></dt>
-<dd><section id="id9">
-<h3>Description<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dd><section id="id6">
+<h3>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>Sets the state_dict of the model for the state_dict given by parameter.</p>
-</section>
-<section id="id10">
-<h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>state_dict<span class="classifier">dict </span></dt><dd><p>State_dict from a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">param state_dict<span class="colon">:</span></dt>
+<dd class="field-odd"><p>State_dict from a model</p>
+</dd>
+<dt class="field-even">type state_dict<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
 </section>
