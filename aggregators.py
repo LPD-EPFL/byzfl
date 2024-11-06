@@ -35,6 +35,7 @@ class Average(object):
         --------
                 >>> import aggregators.Average as Average
                 >>> agg = Average()
+                >>> test
 
                 Using numpy arrays
 
