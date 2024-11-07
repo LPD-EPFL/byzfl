@@ -243,17 +243,17 @@ class TrMean(object):
     """
 
     def __init__(self, f=0, **kwargs):
-        self.nb_trimmed = nb_trimmed
+        self.f = f
 
     def aggregate_vectors(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_trimmed, int)
+        misc.check_type(self.f, int)
 
-        if self.nb_trimmed == 0:
+        if self.f == 0:
             avg = Average()
             return avg.aggregate_vectors(vectors)
 
-        selected_vectors = tools.sort(vectors, axis=0)[self.nb_trimmed:-self.nb_trimmed]
+        selected_vectors = tools.sort(vectors, axis=0)[self.f:-self.f]
         return tools.mean(selected_vectors, axis=0)
 
     def __call__(self, vectors):
@@ -267,13 +267,8 @@ class GeometricMedian(object):
 
     .. math::
 
-        \left[\mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n)\right]_k \in \argmin_{y}\sum_{i = 1}^{n} \|y - x_i\|_2
+        \mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n) \in \argmin_{y}\sum_{i = 1}^{n} \|y - x_i\|_2
         
-    
-    where 
-    
-    - \\([\\cdot]_k\\) refers to the k-th coordinate
-
     
     Initialization parameters
     --------------------------
@@ -369,88 +364,113 @@ class GeometricMedian(object):
         return self.aggregate_vectors(vectors)
 
 class Krum(object):
+    r"""
+    Apply the Krum aggregation rule [1]_:
 
-    """
-    Description
-    -----------
-    Applies the Krum aggregation rule (Blanchard et al. (2017)):
-     Returns the vector closest in average to len(vectors) - nb_byz - 1
-     other vectors.
+    .. math::
 
-    Reference(s)
-    ------------
-    Peva Blanchard, El Mahdi El Mhamdi, Rachid Guerraoui, and 
-    Julien Stainer. Machine learning with adversaries: Byzantine
-    tolerant gradient descent. In I. Guyon, U. V. Luxburg,
-    S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and
-    R. Garnett, editors, Advances in Neural Information Processing
-    Systems 30, pages 119–129. Curran Associates, Inc., 2017.
-     URL https://proceedings.neurips.cc/paper/2017/file/f4b9ec30ad9f68f89b29639786cb62ef-Paper.pdf
+        \mathrm{Krum}_{f} \ (x_1, \dots, x_n) = x_{k^\star}
+        
+    with
 
-    Parameters
+    .. math::
+
+        k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathcal{N}_i} \|x_i - x\|^2_2
+
+    where \\(\\mathcal{N}_i\\) is the set of the \\(n − f\\) nearest 
+    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)
+
+    
+    Initialization parameters
+    --------------------------
+    f : int, optional
+    
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        
+        >>> import aggregators
+        >>> agg = aggregators.Krum()
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([1. 2. 3.])
+
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([1., 2., 3.])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([1. 2. 3.])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([1., 2., 3.])
+
+
+    References
     ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "Krum",
-    >>>     "parameters": {}
-    >>> }
-
-    Methods
-    ---------
+    .. [1] Peva Blanchard, El Mahdi El Mhamdi, Rachid Guer- raoui, and Julien
+           Stainer. Machine learning with adversaries: Byzantine tolerant 
+           gradient descent. In I. Guyon, U. V. Luxburg, S. Bengio, H. 
+           Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, 
+           Advances in Neural Information Processing Systems 30, pages 
+           119–129. Curran Associates, Inc., 2017.
     """
 
-    def __init__(self, nb_byz, **kwargs):
-        self.nb_byz = nb_byz
+    def __init__(self, f=0, **kwargs):
+        self.f = f
     
     def aggregate_vectors(self, vectors):
-        """
-        Applies the Krum aggregation rule (Blanchard et al. (2017))
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Returns the vector closest in average 
-            to len(vectors) - nb_byz - 1 other vectors.
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = Krum(1)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([1. 2. 3.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([1., 2., 3.])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
+        misc.check_type(self.f, int)
 
         distance = misc.distance_tool(vectors)
 
         dist = distance.cdist(vectors, vectors)**2
-        dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.nb_byz]
+        dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.f]
         dist = tools.mean(dist, axis=1)
+        print(dist)
         index = tools.argmin(dist)
         return vectors[index]
+
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 class MultiKrum(object):
     """
