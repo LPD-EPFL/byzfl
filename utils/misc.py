@@ -12,9 +12,10 @@ def check_vectors_type(vectors):
         tools = np
     elif isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor):
         tools = torch_tools
-        vectors = torch.stack(vectors)
+        vectors = torch.stack(vectors).float()
     elif isinstance(vectors, torch.Tensor):
         tools = torch_tools
+        vectors = vectors.float()
     else :
         raise TypeError("'vectors' should be a 'list' of"
                         " ('np.ndarray' or 'torch.Tensor') or 'np.ndarray'"
