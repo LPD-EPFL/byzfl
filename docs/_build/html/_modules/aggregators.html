@@ -380,6 +380,8 @@
 <span class="sd">        &gt;&gt;&gt; agg(x)</span>
 <span class="sd">        tensor([4., 5., 6.])</span>
 
+<span class="sd">        ---------</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -416,7 +418,7 @@
 <span class="sd">        </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :ndarray or torch.Tensor</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
 <span class="sd">        The data type of the output will be the same as the input.</span>
 
 <span class="sd">    Examples</span>
@@ -510,7 +512,7 @@
 <span class="sd">        </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :ndarray or torch.Tensor</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
 <span class="sd">        The data type of the output will be the same as the input.</span>
 
 <span class="sd">    Examples</span>
@@ -580,74 +582,96 @@
 <div class="viewcode-block" id="GeometricMedian">
 <a class="viewcode-back" href="../aggregators/classes/geometric_median.html#aggregators.GeometricMedian">[docs]</a>
 <span class="k">class</span> <span class="nc">GeometricMedian</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the smoothed Weiszfeld algorithm [1]_ to return the</span>
+<span class="sd">    approximate geometric median vector:</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Applies the smoothed Weiszfeld algorithm [XXX] to return the</span>
-<span class="sd">    approximate geometric median vector.</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">    Parameters</span>
+<span class="sd">        \left[\mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n)\right]_k \in \argmin_{y}\sum_{i = 1}^{n} \|y - x_i\|_2</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    where </span>
+<span class="sd">    </span>
+<span class="sd">    - \\([\\cdot]_k\\) refers to the k-th coordinate</span>
+
+<span class="sd">    </span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+<span class="sd">    nu : float, optional</span>
+<span class="sd">    T : int, optional</span>
+<span class="sd">    </span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = aggregators.GeometricMedian()</span>
+
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([3.78788764 4.78788764 5.78788764])</span>
+
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([3.7879, 4.7879, 5.7879])</span>
+
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([3.78788764 4.78788764 5.78788764])</span>
+
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([3.7879, 4.7879, 5.7879])</span>
+
+
+<span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nu : float</span>
-<span class="sd">    T : int</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;aggregator&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;GeometricMedian&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;nu&quot;: 0.1,</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;T&quot;: 1</span>
-<span class="sd">    &gt;&gt;&gt;     }</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    .. [1] Endre Weiszfeld. Sur le point pour lequel la somme des distances de </span>
+<span class="sd">           n points donnés est minimum. Tohoku Mathematical Journal, First Series, </span>
+<span class="sd">           43:355–386, 1937</span>
 
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="n">nu</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">T</span>
 
-<div class="viewcode-block" id="GeometricMedian.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/geometric_median.html#aggregators.GeometricMedian.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Applies the smoothed Weiszfeld algorithm [XXX] to return the</span>
-<span class="sd">        approximate geometric median vector of &#39;vectors&#39;.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) </span>
-<span class="sd">            where each row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray or torch.Tensor</span>
-<span class="sd">            Return the approximate geometric median vector</span>
-<span class="sd">            using smoothed Weiszfeld algorithm.</span>
-<span class="sd">            The data type of the output will be the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; agg = GeometricMedian(nu=1., T=3})</span>
-<span class="sd">                &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([3.78788764 4.78788764 5.78788764])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; vectors = torch.stack([torch.tensor([1., 2., 3.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([3.7879, 4.7879, 5.7879])</span>
-<span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
         <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
@@ -660,8 +684,10 @@
             <span class="n">betas</span><span class="p">[</span><span class="n">betas</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span>
             <span class="n">betas</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span><span class="o">/</span><span class="n">betas</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">filtered_vectors</span><span class="o">*</span><span class="n">betas</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">tools</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">betas</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">z</span></div>
-</div>
+        <span class="k">return</span> <span class="n">z</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Krum">

@@ -68,6 +68,8 @@ class Average(object):
         >>> agg(x)
         tensor([4., 5., 6.])
 
+        ---------
+
     """
     def __init__(self, **kwargs):
         pass
@@ -101,7 +103,7 @@ class Median(object):
         
     Returns
     -------
-    :ndarray or torch.Tensor
+    :numpy.ndarray or torch.Tensor
         The data type of the output will be the same as the input.
 
     Examples
@@ -192,7 +194,7 @@ class TrMean(object):
         
     Returns
     -------
-    :ndarray or torch.Tensor
+    :numpy.ndarray or torch.Tensor
         The data type of the output will be the same as the input.
 
     Examples
@@ -259,30 +261,89 @@ class TrMean(object):
 
 
 class GeometricMedian(object):
+    r"""
+    Apply the smoothed Weiszfeld algorithm [1]_ to return the
+    approximate geometric median vector:
 
-    """
-    Description
-    -----------
-    Applies the smoothed Weiszfeld algorithm [XXX] to return the
-    approximate geometric median vector.
+    .. math::
 
-    Parameters
+        \left[\mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n)\right]_k \in \argmin_{y}\sum_{i = 1}^{n} \|y - x_i\|_2
+        
+    
+    where 
+    
+    - \\([\\cdot]_k\\) refers to the k-th coordinate
+
+    
+    Initialization parameters
+    --------------------------
+    nu : float, optional
+    T : int, optional
+    
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        
+        >>> import aggregators
+        >>> agg = aggregators.GeometricMedian()
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([3.78788764 4.78788764 5.78788764])
+
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([3.7879, 4.7879, 5.7879])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([3.78788764 4.78788764 5.78788764])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([3.7879, 4.7879, 5.7879])
+
+
+    References
     ----------
-    nu : float
-    T : int
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "GeometricMedian",
-    >>>     "parameters": {
-    >>>         "nu": 0.1,
-    >>>         "T": 1
-    >>>     }
-    >>> }
+    .. [1] Endre Weiszfeld. Sur le point pour lequel la somme des distances de 
+           n points donnés est minimum. Tohoku Mathematical Journal, First Series, 
+           43:355–386, 1937
 
-    Methods
-    ---------
     """
 
     def __init__(self, nu=0.1, T=3, **kwargs):
@@ -290,41 +351,6 @@ class GeometricMedian(object):
         self.T = T
 
     def aggregate_vectors(self, vectors):
-        """
-        Applies the smoothed Weiszfeld algorithm [XXX] to return the
-        approximate geometric median vector of 'vectors'.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Return the approximate geometric median vector
-            using smoothed Weiszfeld algorithm.
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = GeometricMedian(nu=1., T=3})
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([3.78788764 4.78788764 5.78788764])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([3.7879, 4.7879, 5.7879])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.nu, float)
         misc.check_type(self.T, int)
@@ -338,6 +364,9 @@ class GeometricMedian(object):
             betas = (alpha/betas)[:, None]
             z = tools.sum((filtered_vectors*betas), axis=0) / tools.sum(betas)
         return z
+
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 class Krum(object):
 

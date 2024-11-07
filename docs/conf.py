@@ -28,7 +28,9 @@ extensions = ["sphinx.ext.todo",
               "sphinx.ext.autosummary", 
               "sphinx.ext.mathjax",
               "sphinx.ext.napoleon",
-              "sphinx_copybutton"]
+              "sphinx_copybutton", 
+              "sphinx.ext.autosectionlabel", 
+              "sphinx.ext.intersphinx"]
 
 
 # Use MathJax to render math in HTML
@@ -53,3 +55,17 @@ napoleon_custom_sections = [
     ("Returns", "params_style")
 ]
 
+latex_elements = {
+    'preamble': r'''
+        \usepackage{amsmath}  % Load amsmath for advanced math commands
+        \newcommand{\argmin}{\mathop{\mathrm{arg\,min}}
+    '''
+}
+
+mathjax_config = {
+    'TeX': {
+        'Macros': {
+            'argmin': r'\mathop{\mathrm{arg\,min}}',
+        }
+    }
+}
