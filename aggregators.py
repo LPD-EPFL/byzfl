@@ -25,7 +25,7 @@ class Average(object):
     Returns
     -------
     :numpy.ndarray or torch.Tensor
-        The average vector. The data type of the output will be the same as the input.
+        The data type of the output will be the same as the input.
 
     Examples
     --------
@@ -102,7 +102,7 @@ class Median(object):
     Returns
     -------
     :ndarray or torch.Tensor
-        The average vector. The data type of the output will be the same as the input.
+        The data type of the output will be the same as the input.
 
     Examples
     --------
@@ -158,79 +158,92 @@ class Median(object):
 
 
 class TrMean(object):
+    r"""
+    Compute the trimmed mean (or truncated mean) along the first axis:
+
+    .. math::
+
+        \left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\tau_k(j)}\right]_k
+    
+    where 
+    
+    - \\([\\cdot]_k\\) refers to the k-th coordinate
+
+    - \\(\\tau_k\\) denote a permutation on \\([n]\\) that sorts the k-th
+      coordinate of the input vectors in non-decreasing order, i.e., 
+      \\([x_{\\tau_k(1)}]_k \\leq ...\\leq [x_{\\tau_k(n)}]_k\\)
+    
+    In other words, TrMean removes the \\(f\\) highest values and \\(f\\) 
+    lowers values coordinate-wise, and then applies the average.
+
+    Initialization parameters
+    --------------------------
+    f : int, optional
+        Number of trimmed values to be considered in the aggregation. The default is setting \\(f=0\\).
+
+    
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        >>> import aggregators
+        >>> agg = aggregators.TrMean(1)
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([4. 5. 6.])
+                
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([4., 5., 6.])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([4., 5., 6.])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([4., 5., 6.])
+
+
     """
-    Description
-    -----------
-    Applies the Trimmed Mean aggregation rule (Yin et al. (2021)):
-     Sorts the vector values by coordinates, removes the first lowest
-     'nb_byz' values and the highest 'nb_byz' values by coordinates and
-     applies the 'average' function to the resulting vector list.
 
-    Reference(s)
-    ------------
-    Dong Yin, Yudong Chen, Ramchandran Kannan, and Peter 
-    Bartlett. Byzantine-robust distributed learning: Towards
-    optimal statistical rates. In Jennifer Dy and Andreas Krause,
-    editors, Proceedings of the 35th International Conference on
-    Machine Learning, volume 80 of Proceedings of Machine 
-    Learning Research, pages 5650–5659. PMLR, 10–15 Jul 2018. 
-     URL https://proceedings.mlr.press/v80/yin18a.html.
-
-    Parameters
-    ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
-
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "TrMean",
-    >>>     "parameters": {}
-    >>> }
-
-    Methods
-    ---------
-    """
-
-    def __init__(self, nb_trimmed, **kwargs):
+    def __init__(self, f=0, **kwargs):
         self.nb_trimmed = nb_trimmed
 
     def aggregate_vectors(self, vectors):
-        """
-        Sorts the vector values by coordinates, removes the first lowest
-        'nb_byz' values and the highest 'nb_byz' values by coordinates and
-        applies the 'average' function to the resulting vector list.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Input vector with TrMean applied. 
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = TrMean(1)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([4. 5. 6.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([4., 5., 6.])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.nb_trimmed, int)
 
@@ -240,6 +253,9 @@ class TrMean(object):
 
         selected_vectors = tools.sort(vectors, axis=0)[self.nb_trimmed:-self.nb_trimmed]
         return tools.mean(selected_vectors, axis=0)
+
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 
 class GeometricMedian(object):
