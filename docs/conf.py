@@ -27,7 +27,8 @@ extensions = ["sphinx.ext.todo",
               "sphinx.ext.autodoc",
               "sphinx.ext.autosummary", 
               "sphinx.ext.mathjax",
-              "sphinx.ext.napoleon"]
+              "sphinx.ext.napoleon",
+              "sphinx_copybutton"]
 
 
 # Use MathJax to render math in HTML

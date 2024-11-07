@@ -30,6 +30,7 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- So that users can add custom icons -->
   <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
@@ -40,6 +41,8 @@
     <script src="../_static/documentation_options.js?v=837179f8"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/aggregators';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -316,52 +319,66 @@
 <a class="viewcode-back" href="../aggregators/classes/average.html#aggregators.Average">[docs]</a>
 <span class="k">class</span> <span class="nc">Average</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This aggregator computes the average of a set of vectors given as input</span>
+<span class="sd">    Compute the average along the first axis</span>
 <span class="sd">        </span>
-<span class="sd">        .. math::</span>
-<span class="sd">            \mathrm{Average} \ (v_1, \dots, v_n) = \sum_{i=1}^n v_i</span>
-
-
-<span class="sd">        Initialization parameters</span>
-<span class="sd">        -------------------------</span>
-<span class="sd">        None</span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    -------------------------</span>
+<span class="sd">    None</span>
 <span class="sd">        </span>
-<span class="sd">        Calling the instance</span>
-<span class="sd">        --------------------</span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
 
-<span class="sd">        Input parameters</span>
-<span class="sd">        ----------------</span>
-<span class="sd">        vectors: list of np.ndarray, list of torch.Tensor, np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors, matrix, tensors where each row represents a vector.</span>
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of np.ndarray or list of torch.Tensor</span>
+<span class="sd">        A list of vectors, matrix, tensors where each row represents a vector.</span>
 <span class="sd">        </span>
 <span class="sd">        </span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :ndarray or torch.Tensor</span>
-<span class="sd">            The average vector. The data type of the output will be the same as the input.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The average vector. The data type of the output will be the same as the input.</span>
 
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">                &gt;&gt;&gt; import aggregators.Average as Average</span>
-<span class="sd">                &gt;&gt;&gt; agg = Average()</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = aggregators.Average()</span>
 
-<span class="sd">                Using numpy arrays</span>
-
-<span class="sd">                &gt;&gt;&gt; np_vectors = np.array([[1., 2., 3.],         # np.ndarray</span>
-<span class="sd">                &gt;&gt;&gt;                        [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                        [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; agg.aggregate_vectors(vectors)</span>
-<span class="sd">                ndarray([4. 5. 6.])</span>
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([4. 5. 6.])</span>
 <span class="sd">                </span>
-<span class="sd">                Using torch tensors</span>
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([4., 5., 6.])</span>
 
-<span class="sd">                &gt;&gt;&gt; torch_vectors = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">                &gt;&gt;&gt;                              [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                              [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; agg.aggregate_vectors(vectors)</span>
-<span class="sd">                tensor([4., 5., 6.])</span>
+<span class="sd">        Using list of numpy arrays</span>
 
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([4., 5., 6.])</span>
 
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([4., 5., 6.])</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -381,25 +398,68 @@
 <span class="k">class</span> <span class="nc">Median</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Computes the coordinate-wise median vector in vectors.</span>
+<span class="sd">    Compute the coordinate-wise median along the first axis</span>
+<span class="sd">        </span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;aggregator&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Median&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    -------------------------</span>
+<span class="sd">    None</span>
+<span class="sd">        </span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
 
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    vectors: np.ndarray, torch.tensor, list of np.ndarray or list of torch.tensor</span>
+<span class="sd">        A list of vectors, matrix, tensors where each row represents a vector.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :ndarray or torch.Tensor</span>
+<span class="sd">        The average vector. The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">            &gt;&gt;&gt; import aggregators.Median as Median</span>
+<span class="sd">            &gt;&gt;&gt; agg = Median()</span>
+
+<span class="sd">            Using numpy arrays</span>
+
+<span class="sd">            &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">            &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">            &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">            &gt;&gt;&gt; agg(x)</span>
+<span class="sd">            ndarray([4. 5. 6.])</span>
+<span class="sd">                </span>
+<span class="sd">            Using torch tensors</span>
+
+<span class="sd">            &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">            &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">            &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">            &gt;&gt;&gt; agg(x)</span>
+<span class="sd">            tensor([4., 5., 6.])</span>
+
+<span class="sd">            Using list of numpy arrays</span>
+
+<span class="sd">            &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of  torch.tensor </span>
+<span class="sd">            &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">            &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">            &gt;&gt;&gt; agg(x)</span>
+<span class="sd">            ndarray([4., 5., 6.])</span>
+
+<span class="sd">            Using list of torch tensors</span>
+
+<span class="sd">            &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">            &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">            &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">            &gt;&gt;&gt; agg(x)</span>
+<span class="sd">            tensor([4., 5., 6.])</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">pass</span>
     
-<div class="viewcode-block" id="Median.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/median.html#aggregators.Median.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the arithmetic mean along axis=0.</span>
@@ -434,7 +494,6 @@
 <span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-</div>
 
 
 
