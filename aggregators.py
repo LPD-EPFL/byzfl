@@ -150,39 +150,11 @@ class Median(object):
         pass
     
     def aggregate_vectors(self, vectors):
-        """
-        Computes the arithmetic mean along axis=0.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            The median vector of the input. The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = Median()
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([4. 5. 6.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([4., 5., 6.])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         return tools.median(vectors, axis=0)
+
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 
 class TrMean(object):
@@ -220,8 +192,8 @@ class TrMean(object):
     ---------
     """
 
-    def __init__(self, nb_byz, **kwargs):
-        self.nb_byz = nb_byz
+    def __init__(self, nb_trimmed, **kwargs):
+        self.nb_trimmed = nb_trimmed
 
     def aggregate_vectors(self, vectors):
         """
@@ -260,13 +232,13 @@ class TrMean(object):
                 tensor([4., 5., 6.])
          """
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
+        misc.check_type(self.nb_trimmed, int)
 
-        if self.nb_byz == 0:
+        if self.nb_trimmed == 0:
             avg = Average()
             return avg.aggregate_vectors(vectors)
 
-        selected_vectors = tools.sort(vectors, axis=0)[self.nb_byz:-self.nb_byz]
+        selected_vectors = tools.sort(vectors, axis=0)[self.nb_trimmed:-self.nb_trimmed]
         return tools.mean(selected_vectors, axis=0)
 
 
