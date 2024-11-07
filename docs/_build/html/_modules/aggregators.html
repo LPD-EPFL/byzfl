@@ -330,8 +330,8 @@
 
 <span class="sd">    Input parameters</span>
 <span class="sd">    ----------------</span>
-<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of np.ndarray or list of torch.Tensor</span>
-<span class="sd">        A list of vectors, matrix, tensors where each row represents a vector.</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
 <span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">    Returns</span>
@@ -410,8 +410,8 @@
 
 <span class="sd">    Input parameters</span>
 <span class="sd">    ----------------</span>
-<span class="sd">    vectors: np.ndarray, torch.tensor, list of np.ndarray or list of torch.tensor</span>
-<span class="sd">        A list of vectors, matrix, tensors where each row represents a vector.</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
 <span class="sd">        </span>
 <span class="sd">        </span>
 <span class="sd">    Returns</span>
@@ -421,41 +421,45 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">            &gt;&gt;&gt; import aggregators.Median as Median</span>
-<span class="sd">            &gt;&gt;&gt; agg = Median()</span>
 
-<span class="sd">            Using numpy arrays</span>
+<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = aggregators.Median()</span>
 
-<span class="sd">            &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">            &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">            &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">            &gt;&gt;&gt; agg(x)</span>
-<span class="sd">            ndarray([4. 5. 6.])</span>
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([4. 5. 6.])</span>
 <span class="sd">                </span>
-<span class="sd">            Using torch tensors</span>
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([4., 5., 6.])</span>
 
-<span class="sd">            &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">            &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">            &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">            &gt;&gt;&gt; agg(x)</span>
-<span class="sd">            tensor([4., 5., 6.])</span>
+<span class="sd">        Using list of numpy arrays</span>
 
-<span class="sd">            Using list of numpy arrays</span>
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([4., 5., 6.])</span>
 
-<span class="sd">            &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of  torch.tensor </span>
-<span class="sd">            &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">            &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">            &gt;&gt;&gt; agg(x)</span>
-<span class="sd">            ndarray([4., 5., 6.])</span>
-
-<span class="sd">            Using list of torch tensors</span>
-
-<span class="sd">            &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
-<span class="sd">            &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">            &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">            &gt;&gt;&gt; agg(x)</span>
-<span class="sd">            tensor([4., 5., 6.])</span>
-
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([4., 5., 6.])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">pass</span>

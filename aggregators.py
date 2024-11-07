@@ -18,8 +18,8 @@ class Average(object):
 
     Input parameters
     ----------------
-    vectors: numpy.ndarray, torch.Tensor, list of np.ndarray or list of torch.Tensor
-        A list of vectors, matrix, tensors where each row represents a vector.
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
         
         
     Returns
@@ -95,8 +95,8 @@ class Median(object):
 
     Input parameters
     ----------------
-    vectors: np.ndarray, torch.tensor, list of np.ndarray or list of torch.tensor
-        A list of vectors, matrix, tensors where each row represents a vector.
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
         
         
     Returns
@@ -106,41 +106,45 @@ class Median(object):
 
     Examples
     --------
-            >>> import aggregators.Median as Median
-            >>> agg = Median()
 
-            Using numpy arrays
+        >>> import aggregators
+        >>> agg = aggregators.Median()
 
-            >>> x = np.array([[1., 2., 3.],       # np.ndarray
-            >>>               [4., 5., 6.], 
-            >>>               [7., 8., 9.]])
-            >>> agg(x)
-            ndarray([4. 5. 6.])
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([4. 5. 6.])
                 
-            Using torch tensors
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([4., 5., 6.])
 
-            >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-            >>>                   [4., 5., 6.], 
-            >>>                   [7., 8., 9.]])
-            >>> agg(x)
-            tensor([4., 5., 6.])
+        Using list of numpy arrays
 
-            Using list of numpy arrays
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([4., 5., 6.])
 
-            >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
-            >>>      np.array([4., 5., 6.]), 
-            >>>      np.array([7., 8., 9.])]
-            >>> agg(x)
-            ndarray([4., 5., 6.])
-
-            Using list of torch tensors
-
-            >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
-            >>>      torch.tensor([4., 5., 6.]), 
-            >>>      torch.tensor([7., 8., 9.])]
-            >>> agg(x)
-            tensor([4., 5., 6.])
-
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([4., 5., 6.])
     """
     def __init__(self, **kwargs):
         pass
