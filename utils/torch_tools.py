@@ -35,7 +35,7 @@ def argmax(vectors, axis=0):
 	return torch.argmax(vectors, axis=axis)
 
 def argpartition(vectors, k, axis=0):
-	return torch.topk(vectors, k, largest=False, dim=axis)[1]
+	return torch.topk(vectors, k+1, largest=False, dim=axis)[1]
 
 def permutation(vectors):
 	return vectors[torch.randperm(len(vectors))]
