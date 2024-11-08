@@ -53,7 +53,7 @@ class Average(object):
         Using list of numpy arrays
 
         >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
         >>> agg(x)
@@ -62,7 +62,7 @@ class Average(object):
         Using list of torch tensors
             
         >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
         >>>      torch.tensor([4., 5., 6.]), 
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
@@ -133,7 +133,7 @@ class Median(object):
         Using list of numpy arrays
 
         >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
         >>> agg(x)
@@ -142,7 +142,7 @@ class Median(object):
         Using list of torch tensors
             
         >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
         >>>      torch.tensor([4., 5., 6.]), 
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
@@ -224,7 +224,7 @@ class TrMean(object):
         Using list of numpy arrays
 
         >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
         >>> agg(x)
@@ -233,7 +233,7 @@ class TrMean(object):
         Using list of torch tensors
             
         >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
         >>>      torch.tensor([4., 5., 6.]), 
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
@@ -316,7 +316,7 @@ class GeometricMedian(object):
         Using list of numpy arrays
 
         >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
         >>> agg(x)
@@ -325,7 +325,7 @@ class GeometricMedian(object):
         Using list of torch tensors
             
         >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
         >>>      torch.tensor([4., 5., 6.]), 
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
@@ -426,7 +426,7 @@ class Krum(object):
         Using list of numpy arrays
 
         >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
         >>> agg(x)
@@ -536,7 +536,7 @@ class MultiKrum(object):
         Using list of numpy arrays
 
         >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of  torch.tensor 
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
         >>> agg(x)
@@ -545,7 +545,7 @@ class MultiKrum(object):
         Using list of torch tensors
             
         >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
         >>>      torch.tensor([4., 5., 6.]), 
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
@@ -583,120 +583,140 @@ class MultiKrum(object):
         return self.aggregate_vectors(vectors)
 
 class CenteredClipping(object):
+    r"""
+    Apply the Centered Clipping aggregation rule [1]_:
 
-    """
-    Description
-    -----------
-    Applies the Centered Clipping Algorithm presented in (Karimireddy et al.(2021)): 
-    It adds to 'prev_momentum' the average clipped differences between 'prev_momentum' 
-    and each of the vectors in 'vectors'. This is done 'L_iter' times using at 
-    each iteration the new value of 'prev_momentum'
-    
-    Reference(s)
-    ------------
-    Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Learning
-    from history for byzantine robust optimization. In 38th
-    International Conference on Machine Learning (ICML), 2021.
-    URL http://proceedings.mlr.press/v139/karimireddy21a/karimireddy21a.pdf
+    .. math::
 
-    Parameters
+        \mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}
+        
+    with
+
+    .. math::
+
+        v_0 &= m \\
+        v_{l+1} &= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{1,\dots, L\}
+
+    Initialization parameters
+    --------------------------
+    m : numpy.ndarray, torch.Tensor, optional
+        Value on which the Center Clipping aggregation starts. Default makes 
+        it start from a vector with all its coordinates equal to 0.
+    L : int, optional
+        Number of iterations. Default is set to 1.
+    tau : float, optional
+          Clipping threshold. Default is set to 100.
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Note
+    ----
+
+        If the instance is called more than once, the value of \\(m\\) used in
+        the next call is equal to the output vector of the previous call.
+
+    Note
+    ----
+        
+        In case you specify the optional parameter \\(m\\) when initializing 
+        the instance, ensure that it has the same type and shape as the input
+        vectors \\(x_i\\) that you will use when calling the instance.
+
+    Examples
+    --------
+        
+        >>> import aggregators
+        >>> import numpy as np
+        >>> import torch
+
+        Using numpy arrays
+
+        >>> agg = aggregators.CenteredClipping()
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([4., 5., 6.])
+        
+        Using torch tensors
+
+        >>> agg = aggregators.CenteredClipping()
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([4., 5., 6.])
+
+        Using list of numpy arrays
+
+        >>> agg = aggregators.CenteredClipping()
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([4., 5., 6.])
+        
+        Using list of torch tensors
+
+        >>> agg = aggregators.CenteredClipping()
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([4., 5., 6.])
+
+
+    References
     ----------
-    prev_momentum : np.dnarray or torch.Tensor
-        Vector of previous iteration
-    L_iter : int
-        Number of iteration
-    clip_thresh : int
-        Threshold parameter
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "CenteredClipping",
-    >>>     "parameters": {
-    >>>         "L_iter": 10,
-    >>>         "clip_thresh": 2
-    >>>     }
-    >>> }
-
-    Methods
-    ---------
-    test
+    .. [1] Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Learning
+           from history for byzantine robust optimization. In 38th
+           International Conference on Machine Learning (ICML), 2021.
     """
 
-    def __init__(self, previous_momentum=None, L_iter=1, clip_thresh=100, **kwargs):
-        self.prev_momentum = previous_momentum
-        self.L_iter = L_iter
-        self.clip_thresh = clip_thresh
+    def __init__(self, m=None, L=1, tau=100, **kwargs):
+        self.m = m
+        self.L = L
+        self.tau = tau
 
     def aggregate_vectors(self, vectors):
-        """
-        Applies the Centered Clipping Algorithm presented in
-        (Karimireddy et al.(2021)): It adds to prev_momentum the average
-        clipped differences between prev_momentum and each of the vectors
-        in vectors. This is done L_iter times using at each iteration
-        the new value of prev_momentum.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Returns the input vector with Centered Clipping Algorithm
-            applied.
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> previous_momentum = [1., 2., 3.]
-                >>> L_iter = 10,
-                >>> clip_thresh = 2
-                >>> agg = CenteredClipping(previous_momentum=previous_momentum,
-                                           L_iter=L_iter,
-                                           clip_thresh=clip_thresh)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([3.91684398 4.91684398 5.91684398])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> agg = CenteredClipping(previous_momentum=previous_momentum,
-                >>>                        L_iter=L_iter,
-                >>>                        clip_thresh=clip_thresh)
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([[3.9168, 4.9168, 5.9168]])
-         """
 
         tools, vectors = misc.check_vectors_type(vectors)
 
-        if self.prev_momentum is None:
-            self.prev_momentum = tools.zeros_like(vectors[0])
+        if self.m is None:
+            self.m = tools.zeros_like(vectors[0])
 
-        misc.check_type(self.prev_momentum, (list, np.ndarray, torch.Tensor, int))
-        misc.check_type(self.L_iter, int)
-        misc.check_type(self.clip_thresh, int)
+        misc.check_type(self.m, (np.ndarray, torch.Tensor))
+        misc.check_type(self.L, int)
+        misc.check_type(self.tau, int)
 
-        v = self.prev_momentum
+        v = self.m
 
-        for _ in range(self.L_iter):
+        for _ in range(self.L):
             differences = vectors - v
-            clip_factor = self.clip_thresh / tools.linalg.norm(differences, axis = 1)
+            clip_factor = self.tau / tools.linalg.norm(differences, axis = 1)
             clip_factor = tools.minimum(tools.ones_like(clip_factor), clip_factor)
             differences = tools.multiply(differences, clip_factor.reshape(-1,1))
             v = tools.add(v, tools.mean(differences, axis=0))
         
-        self.prev_momentum = v
+        self.m = v
 
         return v
+    
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
+
 
 class MDA(object):
 
