@@ -49,6 +49,7 @@ html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
 html_css_files = ['custom.css']
 
+
 napoleon_custom_sections = [
 	("Initialization parameters", "params_style"),
 	("Input parameters", "params_style"), 

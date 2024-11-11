@@ -595,7 +595,7 @@ class CenteredClipping(object):
     .. math::
 
         v_0 &= m \\
-        v_{l+1} &= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{1,\dots, L\}
+        v_{l+1} &= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}
 
     Initialization parameters
     --------------------------
@@ -719,83 +719,101 @@ class CenteredClipping(object):
 
 
 class MDA(object):
+    r"""
+    Apply the Minimum-Diameter Averaging aggregation rule [1]_:
 
-    """
-    Description
-    -----------
-    Finds the subset of vectors of size len(vectors) - nb_byz that
-    has the smallest diameter and returns the average of the vectors in
-    the selected subset. The diameter of a subset of vectors is equal
-    to the maximal distance between two vectors in the subset.
+    .. math::
 
-    Parameters
+        \mathrm{MDA}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i\in S^\star} x_i
+        
+    with
+
+    .. math::
+        
+        S^\star \in \argmin_{\substack{S \subset \{1,\dots,n\} \\ |S|=n-f}} \left\{\max_{i,j \in S} \|x_i - x_j\|_2\right\}
+    Initialization parameters
+    --------------------------
+    f : int, optional
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+        
+        >>> import aggregators
+        >>> agg = aggregators.MDA(1)
+
+        Using numpy arrays
+
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([2.5, 3.5, 4.5])
+
+        Using torch tensors
+
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([2.5000, 3.5000, 4.5000])
+
+        Using list of numpy arrays
+
+        >>> import numpy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([2.5, 3.5, 4.5])
+        
+        Using list of torch tensors
+
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([2.5000, 3.5000, 4.5000])
+
+
+    References
     ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "MDA",
-    >>>     "parameters": {}
-    >>> }
+    .. [1] El Mhamdi, E. M., Guerraoui, R., Guirguis, A., Hoang, L. N., and 
+           Rouault, S. Genuinely distributed byzantine machine learning. In 
+           Proceedings of the 39th Symposium on Principles of Distributed 
+           Computing, pp. 355–364, 2020.   
 
-    Methods
-    ---------
     """
 
-    def __init__(self, nb_byz, **kwargs):
-        self.nb_byz = nb_byz
+    def __init__(self, f=0, **kwargs):
+        self.f = f
 
     def aggregate_vectors(self, vectors):
-        """
-        Finds the subset of vectors of size (len(vectors) - nb_byz) that
-        has the smallest diameter and returns the average of the vectors in
-        the selected subset. The diameter of a subset of vectors is equal
-        to the maximal distance between two vectors in the subset.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor:
-            Returns the mean of the subset of vectors of size (len(vectors) - nb_byz)
-            that has the smallest diameter and returns the average of the vectors in
-            the selected subset. The diameter of a subset of vectors is equal
-            to the maximal distance between two vectors in the subset.
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = MDA(2)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([1. 2. 3.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([1., 2., 3.])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
+        misc.check_type(self.f, int)
 
         distance = misc.distance_tool(vectors)
 
         dist = distance.cdist(vectors, vectors)
         
         n = len(vectors)
-        k = n - self.nb_byz
+        k = n - self.f
 
         min_diameter = np.inf
         min_subset = np.arange(k)
