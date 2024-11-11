@@ -181,7 +181,7 @@ class TrMean(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of trimmed values to be considered in the aggregation. The default is setting \\(f=0\\).
+        Number of faulty vectors. The default is setting \\(f=0\\).
 
     
     Calling the instance
@@ -384,6 +384,7 @@ class Krum(object):
     Initialization parameters
     --------------------------
     f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\).
     
     Calling the instance
     --------------------
@@ -494,6 +495,7 @@ class MultiKrum(object):
     Initialization parameters
     --------------------------
     f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\).
     
     Calling the instance
     --------------------
@@ -555,7 +557,7 @@ class MultiKrum(object):
     References
     ----------
 
-    .. [1] Peva Blanchard, El Mahdi El Mhamdi, Rachid Guer- raoui, and Julien
+    .. [1] Peva Blanchard, El Mahdi El Mhamdi, Rachid Guerraoui, and Julien
            Stainer. Machine learning with adversaries: Byzantine tolerant 
            gradient descent. In I. Guyon, U. V. Luxburg, S. Bengio, H. 
            Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, 
@@ -734,6 +736,7 @@ class MDA(object):
     Initialization parameters
     --------------------------
     f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\).
 
     Calling the instance
     --------------------
@@ -833,82 +836,10 @@ class MDA(object):
 
 class MVA(object):
 
-    """
-    Description
-    -----------
-    Finds the subset of vectors of size (len(vectors) - nb_byz) that
-    has the smallest variance and returns the average of the vectors in
-    the selected subset. The variance of a subset is equal to the sum
-    of the difference's norm between each pair of vectors divided by 
-    (len(vectors) - nb_byz). Note that we do not apply this last 
-    division since all the subsets have the same length, hence the
-    comparision is the same whithout the division.
-
-    Parameters
-    ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
-
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "MVA",
-    >>>     "parameters": {}
-    >>> }
-
-    Methods
-    ---------
-    """
-
     def __init__(self, nb_byz, **kwargs):
         self.nb_byz = nb_byz
     
     def aggregate_vectors(self, vectors):
-        """
-        Finds the subset of vectors of size (len(vectors) - nb_byz) that
-        has the smallest variance and returns the average of the vectors in
-        the selected subset. The variance of a subset is equal to the sum
-        of the difference's norm between each pair of vectors divided by 
-        (len(vectors) - nb_byz). Note that we do not apply this last 
-        division since all the subsets have the same length, hence the
-        comparision is the same whithout the division.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Returns the mean of the subset of vectors of size (len(vectors) - nb_byz) that
-            has the smallest variance and returns the average of the vectors in
-            the selected subset. The variance of a subset is equal to the sum
-            of the difference's norm between each pair of vectors divided by 
-            (len(vectors) - nb_byz). Note that we do not apply this last 
-            division since all the subsets have the same length, hence the
-            comparision is the same whithout the division.
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = MVA(1)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([2.5 3.5 4.5])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([2.5000, 3.5000, 4.5000])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.nb_byz, int)
 
@@ -932,94 +863,124 @@ class MVA(object):
                 
         return vectors[tools.asarray(min_subset)].mean(axis=0)
 
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 class Monna(object):
 
-    """
-    Description
-    -----------
-    Returns the average of the (len(vectors)-nb_byz) closest vectors
-    to "vectors[pivot_index]".
 
-    Parameters
+    r"""
+    Apply the Monna rule [1]_:
+
+    .. math::
+
+        \mathrm{Monna}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathcal{N}_{\mathrm{idx}}} x_{i}
+        
+    where \\(\\mathcal{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest 
+    neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\)
+
+
+
+    Initialization parameters
+    --------------------------
+    f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\).
+    idx : int, optional
+        Index of the vector on which the neighborhood will be computed. The 
+        default is setting \\(\\mathrm{idx}=0\\).
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Note
+    ----
+
+    Monna is used in peer-to-peer settings where the idx refer to a vectors 
+    that is known to be correct (i.e. not faulty).
+
+    Examples
+    --------
+        
+        >>> import aggregators
+        >>> agg = aggregators.Monna(1, 1)
+
+        Using numpy arrays
+
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([2.5, 3.5, 4.5])
+
+        Using torch tensors
+
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([2.5000, 3.5000, 4.5000])
+
+        Using list of numpy arrays
+
+        >>> import numpy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([2.5, 3.5, 4.5])
+        
+        Using list of torch tensors
+
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([2.5000, 3.5000, 4.5000])
+
+
+    References
     ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
-    pivot_index : int
-        Index to the pivot
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "Monna",
-    >>>     "parameters": {
-    >>>         "pivot_index": 2
-    >>>     }
-    >>> }
+    .. [1] Farhadkhani, S., Guerraoui, R., Gupta, N., Hoang, L. N., Pinot, R.,
+           & Stephan, J. (2023, July). Robust collaborative learning with 
+           linear gradient overhead. In International Conference on Machine 
+           Learning (pp. 9761-9813). PMLR. 
 
-    Methods
-    ---------
     """
+
     
-    def __init__(self, nb_byz, pivot_index=0, **kwargs):
-        self.nb_byz = nb_byz
-        self.pivot_index = pivot_index
+    def __init__(self, f=0, idx=0, **kwargs):
+        self.f = f
+        self.idx = idx
     
     def aggregate_vectors(self, vectors):
-        """
-        Finds the subset of vectors of size (len(vectors) - nb_byz) that
-        has the smallest variance and returns the average of the vectors in
-        the selected subset. The variance of a subset is equal to the sum
-        of the difference's norm between each pair of vectors divided by 
-        (len(vectors) - nb_by). Note that we do not apply this last 
-        division since all the subsets have the same length, hence the
-        comparision is the same whithout the division.
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Returns the mean of the subset of vectors of size (len(vectors) - nb_byz) that
-            has the smallest variance and returns the average of the vectors in
-            the selected subset. The variance of a subset is equal to the sum
-            of the difference's norm between each pair of vectors divided by 
-            (len(vectors) - nb_byz). Note that we do not apply this last 
-            division since all the subsets have the same length, hence the
-            comparision is the same whithout the division.
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = Monna(1, pivot_index=1)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([2.5 3.5 4.5])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([2.5000, 3.5000, 4.5000])
-        """
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
+        misc.check_type(self.f, int)
+        misc.check_type(self.idx, int)
 
         distance = misc.distance_tool(vectors)
 
-        dist = distance.cdist(vectors, vectors[self.pivot_index].reshape(1,-1))
-        k = len(vectors) - self.nb_byz
-        indices = tools.argpartition(dist.reshape(-1), k)[:k]
+        dist = distance.cdist(vectors, vectors[self.idx].reshape(1,-1))
+        k = len(vectors) - self.f
+        indices = tools.argpartition(dist.reshape(-1), k-1)[:k]
         return tools.mean(vectors[indices], axis=0)
+
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 
 class Meamed(object):
@@ -1088,10 +1049,14 @@ class Meamed(object):
         median = tools.median(vectors, axis=0)
         abs_diff = tools.abs((vectors - median))
 
-        indices = tools.argpartition(abs_diff, k, axis=0)[:k]
+        indices = tools.argpartition(abs_diff, k-1, axis=0)[:k]
         indices = tools.multiply(indices, d)
         a = tools.arange(d)
         if not tools == np:
             a = a.to(indices.device)
         indices = tools.add(indices, a)
         return tools.mean(vectors.take(indices), axis=0)
+
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
+

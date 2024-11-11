@@ -500,7 +500,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of trimmed values to be considered in the aggregation. The default is setting \\(f=0\\).</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
 
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
@@ -709,6 +709,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -822,6 +823,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -883,7 +885,7 @@
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 
-<span class="sd">    .. [1] Peva Blanchard, El Mahdi El Mhamdi, Rachid Guer- raoui, and Julien</span>
+<span class="sd">    .. [1] Peva Blanchard, El Mahdi El Mhamdi, Rachid Guerraoui, and Julien</span>
 <span class="sd">           Stainer. Machine learning with adversaries: Byzantine tolerant </span>
 <span class="sd">           gradient descent. In I. Guyon, U. V. Luxburg, S. Bengio, H. </span>
 <span class="sd">           Wallach, R. Fergus, S. Vishwanathan, and R. Garnett, editors, </span>
@@ -1068,6 +1070,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
 
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -1135,76 +1138,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Finds the subset of vectors of size len(vectors) - nb_byz that</span>
-<span class="sd">    has the smallest diameter and returns the average of the vectors in</span>
-<span class="sd">    the selected subset. The diameter of a subset of vectors is equal</span>
-<span class="sd">    to the maximal distance between two vectors in the subset.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number of byzantine nodes to be considered in the aggregation.</span>
-
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;aggregator&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;MDA&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
-
-
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
 
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
-<span class="sd">        has the smallest diameter and returns the average of the vectors in</span>
-<span class="sd">        the selected subset. The diameter of a subset of vectors is equal</span>
-<span class="sd">        to the maximal distance between two vectors in the subset.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) </span>
-<span class="sd">            where each row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray or torch.Tensor:</span>
-<span class="sd">            Returns the mean of the subset of vectors of size (len(vectors) - nb_byz)</span>
-<span class="sd">            that has the smallest diameter and returns the average of the vectors in</span>
-<span class="sd">            the selected subset. The diameter of a subset of vectors is equal</span>
-<span class="sd">            to the maximal distance between two vectors in the subset.</span>
-<span class="sd">            The data type of the output will be the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; agg = MDA(2)</span>
-<span class="sd">                &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([1. 2. 3.])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; vectors = torch.stack([torch.tensor([1., 2., 3.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([1., 2., 3.])</span>
-<span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
@@ -1236,84 +1173,12 @@
 <a class="viewcode-back" href="../aggregators/classes/mva.html#aggregators.MVA">[docs]</a>
 <span class="k">class</span> <span class="nc">MVA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
-<span class="sd">    has the smallest variance and returns the average of the vectors in</span>
-<span class="sd">    the selected subset. The variance of a subset is equal to the sum</span>
-<span class="sd">    of the difference&#39;s norm between each pair of vectors divided by </span>
-<span class="sd">    (len(vectors) - nb_byz). Note that we do not apply this last </span>
-<span class="sd">    division since all the subsets have the same length, hence the</span>
-<span class="sd">    comparision is the same whithout the division.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number of byzantine nodes to be considered in the aggregation.</span>
-
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;aggregator&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;MVA&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_byz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
     
 <div class="viewcode-block" id="MVA.aggregate_vectors">
 <a class="viewcode-back" href="../aggregators/classes/mva.html#aggregators.MVA.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
-<span class="sd">        has the smallest variance and returns the average of the vectors in</span>
-<span class="sd">        the selected subset. The variance of a subset is equal to the sum</span>
-<span class="sd">        of the difference&#39;s norm between each pair of vectors divided by </span>
-<span class="sd">        (len(vectors) - nb_byz). Note that we do not apply this last </span>
-<span class="sd">        division since all the subsets have the same length, hence the</span>
-<span class="sd">        comparision is the same whithout the division.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) </span>
-<span class="sd">            where each row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray or torch.Tensor</span>
-<span class="sd">            Returns the mean of the subset of vectors of size (len(vectors) - nb_byz) that</span>
-<span class="sd">            has the smallest variance and returns the average of the vectors in</span>
-<span class="sd">            the selected subset. The variance of a subset is equal to the sum</span>
-<span class="sd">            of the difference&#39;s norm between each pair of vectors divided by </span>
-<span class="sd">            (len(vectors) - nb_byz). Note that we do not apply this last </span>
-<span class="sd">            division since all the subsets have the same length, hence the</span>
-<span class="sd">            comparision is the same whithout the division.</span>
-<span class="sd">            The data type of the output will be the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; agg = MVA(1)</span>
-<span class="sd">                &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([2.5 3.5 4.5])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; vectors = torch.stack([torch.tensor([1., 2., 3.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([2.5000, 3.5000, 4.5000])</span>
-<span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
@@ -1336,102 +1201,129 @@
                 <span class="n">min_diameter</span> <span class="o">=</span> <span class="n">diameter</span>
                 
         <span class="k">return</span> <span class="n">vectors</span><span class="p">[</span><span class="n">tools</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">min_subset</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-</div>
 
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Monna">
 <a class="viewcode-back" href="../aggregators/classes/monna.html#aggregators.Monna">[docs]</a>
 <span class="k">class</span> <span class="nc">Monna</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Returns the average of the (len(vectors)-nb_byz) closest vectors</span>
-<span class="sd">    to &quot;vectors[pivot_index]&quot;.</span>
 
-<span class="sd">    Parameters</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the Monna rule [1]_:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{Monna}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathcal{N}_{\mathrm{idx}}} x_{i}</span>
+<span class="sd">        </span>
+<span class="sd">    where \\(\\mathcal{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest </span>
+<span class="sd">    neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\)</span>
+
+
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+<span class="sd">    f : int, optional</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">    idx : int, optional</span>
+<span class="sd">        Index of the vector on which the neighborhood will be computed. The </span>
+<span class="sd">        default is setting \\(\\mathrm{idx}=0\\).</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+
+<span class="sd">    Monna is used in peer-to-peer settings where the idx refer to a vectors </span>
+<span class="sd">    that is known to be correct (i.e. not faulty).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = aggregators.Monna(1, 1)</span>
+
+<span class="sd">        Using numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([2.5, 3.5, 4.5])</span>
+
+<span class="sd">        Using torch tensors</span>
+
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([2.5, 3.5, 4.5])</span>
+<span class="sd">        </span>
+<span class="sd">        Using list of torch tensors</span>
+
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+
+
+<span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number of byzantine nodes to be considered in the aggregation.</span>
-<span class="sd">    pivot_index : int</span>
-<span class="sd">        Index to the pivot</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;aggregator&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Monna&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;pivot_index&quot;: 2</span>
-<span class="sd">    &gt;&gt;&gt;     }</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    .. [1] Farhadkhani, S., Guerraoui, R., Gupta, N., Hoang, L. N., Pinot, R.,</span>
+<span class="sd">           &amp; Stephan, J. (2023, July). Robust collaborative learning with </span>
+<span class="sd">           linear gradient overhead. In International Conference on Machine </span>
+<span class="sd">           Learning (pp. 9761-9813). PMLR. </span>
 
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_byz</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pivot_index</span> <span class="o">=</span> <span class="n">pivot_index</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span>
     
-<div class="viewcode-block" id="Monna.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/monna.html#aggregators.Monna.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds the subset of vectors of size (len(vectors) - nb_byz) that</span>
-<span class="sd">        has the smallest variance and returns the average of the vectors in</span>
-<span class="sd">        the selected subset. The variance of a subset is equal to the sum</span>
-<span class="sd">        of the difference&#39;s norm between each pair of vectors divided by </span>
-<span class="sd">        (len(vectors) - nb_by). Note that we do not apply this last </span>
-<span class="sd">        division since all the subsets have the same length, hence the</span>
-<span class="sd">        comparision is the same whithout the division.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) </span>
-<span class="sd">            where each row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray or torch.Tensor</span>
-<span class="sd">            Returns the mean of the subset of vectors of size (len(vectors) - nb_byz) that</span>
-<span class="sd">            has the smallest variance and returns the average of the vectors in</span>
-<span class="sd">            the selected subset. The variance of a subset is equal to the sum</span>
-<span class="sd">            of the difference&#39;s norm between each pair of vectors divided by </span>
-<span class="sd">            (len(vectors) - nb_byz). Note that we do not apply this last </span>
-<span class="sd">            division since all the subsets have the same length, hence the</span>
-<span class="sd">            comparision is the same whithout the division.</span>
-<span class="sd">            The data type of the output will be the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; agg = Monna(1, pivot_index=1)</span>
-<span class="sd">                &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([2.5 3.5 4.5])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; vectors = torch.stack([torch.tensor([1., 2., 3.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([2.5000, 3.5000, 4.5000])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
         <span class="n">distance</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">distance_tool</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
 
-        <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_index</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">k</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-</div>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
 
 
@@ -1505,14 +1397,18 @@
         <span class="n">median</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">abs_diff</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">vectors</span> <span class="o">-</span> <span class="n">median</span><span class="p">))</span>
 
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">abs_diff</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">abs_diff</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tools</span> <span class="o">==</span> <span class="n">np</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">indices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-</div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
+
 
 </pre></div>
 
