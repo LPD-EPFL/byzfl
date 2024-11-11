@@ -808,6 +808,9 @@ class MDA(object):
                 min_subset = subset
                 min_diameter = diameter
         return vectors[tools.asarray(min_subset)].mean(axis=0)
+    
+    def __call__(self, vectors):
+        return self.aggregate_vectors(vectors)
 
 
 class MVA(object):
