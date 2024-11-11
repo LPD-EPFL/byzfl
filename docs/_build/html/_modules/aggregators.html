@@ -1330,69 +1330,90 @@
 <div class="viewcode-block" id="Meamed">
 <a class="viewcode-back" href="../aggregators/classes/meamed.html#aggregators.Meamed">[docs]</a>
 <span class="k">class</span> <span class="nc">Meamed</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Implements the Meamed aggregation</span>
 
-<span class="sd">    Parameters</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        </span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+<span class="sd">    f : int, optional</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\)</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = aggregators.Meamed(1)</span>
+
+<span class="sd">        Using numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([2.5, 3.5, 4.5])</span>
+
+<span class="sd">        Using torch tensors</span>
+
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([2.5, 3.5, 4.5])</span>
+<span class="sd">        </span>
+<span class="sd">        Using list of torch tensors</span>
+
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+
+
+<span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number of byzantine nodes to be considered in the aggregation.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;aggregator&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Meamed&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    .. [1] XXXXX</span>
 
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_byz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
     
-<div class="viewcode-block" id="Meamed.aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/meamed.html#aggregators.Meamed.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Apply Meamed aggregation</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) </span>
-<span class="sd">            where each row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray or torch.Tensor</span>
-<span class="sd">            Returns a vector with the Meamed applied to the input vectors</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; agg = Meamed(1)</span>
-<span class="sd">                &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                        [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                        [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([2.5 3.5 4.5])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; vectors = torch.stack([torch.tensor([1., 2., 3.]), </span>
-<span class="sd">                &gt;&gt;&gt;                           torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                           torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; result = agg.aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([2.5000, 3.5000, 4.5000])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
         <span class="n">d</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
 
         <span class="n">median</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">abs_diff</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">vectors</span> <span class="o">-</span> <span class="n">median</span><span class="p">))</span>
@@ -1403,8 +1424,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tools</span> <span class="o">==</span> <span class="n">np</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">indices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">indices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>

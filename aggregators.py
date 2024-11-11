@@ -984,67 +984,90 @@ class Monna(object):
 
 
 class Meamed(object):
-    """
-    Description
-    -----------
-    Implements the Meamed aggregation
 
-    Parameters
+    r"""
+
+    .. math::
+
+        
+
+    Initialization parameters
+    --------------------------
+    f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\)
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+        
+        >>> import aggregators
+        >>> agg = aggregators.Meamed(1)
+
+        Using numpy arrays
+
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([2.5, 3.5, 4.5])
+
+        Using torch tensors
+
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([2.5000, 3.5000, 4.5000])
+
+        Using list of numpy arrays
+
+        >>> import numpy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([2.5, 3.5, 4.5])
+        
+        Using list of torch tensors
+
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([2.5000, 3.5000, 4.5000])
+
+
+    References
     ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "aggregator": {
-    >>>     "name": "Meamed",
-    >>>     "parameters": {}
-    >>> }
+    .. [1] XXXXX
 
-    Methods
-    ---------
     """
-    def __init__(self, nb_byz, **kwargs):
-        self.nb_byz = nb_byz
+    def __init__(self, f=0, **kwargs):
+        self.f = f
     
     def aggregate_vectors(self, vectors):
-        """
-        Apply Meamed aggregation
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        ndarray or torch.Tensor
-            Returns a vector with the Meamed applied to the input vectors
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> agg = Meamed(1)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                        [4., 5., 6.], 
-                >>>                        [7., 8., 9.]])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([2.5 3.5 4.5])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                           torch.tensor([4., 5., 6.]), 
-                >>>                           torch.tensor([7., 8., 9.])])
-                >>> result = agg.aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([2.5000, 3.5000, 4.5000])
-        """
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
+        misc.check_type(self.f, int)
 
         d = len(vectors[0])
-        k = len(vectors) - self.nb_byz
+        k = len(vectors) - self.f
 
         median = tools.median(vectors, axis=0)
         abs_diff = tools.abs((vectors - median))
