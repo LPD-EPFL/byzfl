@@ -37,7 +37,7 @@ class NNM(object):
     --------
 
         
-        >>> import aggregators
+        >>> import preaggregators
         >>> agg = preaggregators.NNM(1)
 
         Using numpy arrays
@@ -119,7 +119,7 @@ class Bucketing(object):
 
     .. math::
 
-        \mathrm{Bucketing}_{f} \ (x_1, \dots, x_n) = 
+        \mathrm{Bucketing}_{s} \ (x_1, \dots, x_n) = 
         \left(\frac{1}{s}\sum_{i=0}^s x_{\pi(i)} \ \ , \ \ 
         \frac{1}{s}\sum_{i=s+1}^{2s} x_{\pi(i)} \ \ , \ \dots \ ,\ \  
         \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)
@@ -129,7 +129,7 @@ class Bucketing(object):
     Initialization parameters
     --------------------------
     s : int, optional
-        Number of vectors per bucket. The default is setting \\(n=1\\).
+        Number of vectors per bucket. The default is setting \\(s=1\\).
     
     Calling the instance
     --------------------
@@ -148,7 +148,7 @@ class Bucketing(object):
     --------
 
         
-        >>> import aggregators
+        >>> import preaggregators
         >>> agg = preaggregators.Bucketing(2)
 
         Using numpy arrays
@@ -234,62 +234,11 @@ class Bucketing(object):
 
 
 class Identity(object):
-    """
-    Description
-    -----------
-    Return a copy of the same vectors
 
-    How to use it in experiments
-    ----------------------------
-    >>> "pre_aggregators" : [{
-    >>>     "name": "Identity",
-    >>>     "parameters": {}
-    >>> }]
-
-    Methods
-    ---------
-    """
     def __init__(self, **kwargs):
         pass
     
     def pre_aggregate_vectors(self, vectors):
-        """
-        Applies Identity
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        list or np.ndarray or torch.Tensor
-            Input vector with Idenity applied. 
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> pre_agg = Identity()
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([[1. 2. 3.]
-                        [4. 5. 6.]
-                        [7. 8. 9.]])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([[1., 2., 3.],
-                        [4., 5., 6.],
-                        [7., 8., 9.]])
-        """
         tools, vectors = misc.check_vectors_type(vectors)
         return tools.copy(vectors)
     def __call__(self, vectors):
@@ -297,118 +246,213 @@ class Identity(object):
 
 
 class Clipping(object):
-    def __init__(self, clip_factor=2, **kwargs):
-        self.clip_factor = clip_factor
+
+    r"""
+    Apply the static Clipping pre-aggregation rule:
+
+    .. math::
+
+        \mathrm{Clipping}_{c} \ (x_1, \dots, x_n) = 
+        \left( \min\left\{1, \frac{c}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  
+        \min\left\{1, \frac{c}{\|x_n\|}\right\} x_n \right)
+
+    Initialization parameters
+    --------------------------
+    c : float, optional
+        Static clipping threshold. The default is setting \\(c=2\\).
+    
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        
+        >>> import preaggregators
+        >>> agg = preaggregators.Clipping(2)
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([[0.53452248, 1.06904497, 1.60356745],
+               [0.91168461, 1.13960576, 1.36752692],
+               [1.00514142, 1.14873305, 1.29232469]])
+
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([[0.5345, 1.0690, 1.6036],
+                [0.9117, 1.1396, 1.3675],
+                [1.0051, 1.1487, 1.2923]])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([[0.53452248, 1.06904497, 1.60356745],
+               [0.91168461, 1.13960576, 1.36752692],
+               [1.00514142, 1.14873305, 1.29232469]])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([[0.5345, 1.0690, 1.6036],
+                [0.9117, 1.1396, 1.3675],
+                [1.0051, 1.1487, 1.2923]])
+
+ 
+    """
+    def __init__(self, c=2, **kwargs):
+        self.c = c
     
     def _clip_vector(self, vector):
         tools, vector = misc.check_vectors_type(vector)
         vector_norm = tools.linalg.norm(vector)
-        if vector_norm > self.clip_factor:
-            vector = tools.multiply(vector, self.clip_factor / vector_norm)
+        if vector_norm > self.c:
+            vector = tools.multiply(vector, self.c / vector_norm)
         return vector
     
     def pre_aggregate_vectors(self, vectors):
-        return [self._clip_vector(gradient) for gradient in vectors]
+        for i in range(len(vectors)):
+            vectors[i] = self._clip_vector(vectors[i])
+        return vectors
 
     def __call__(self, vectors):
         return self.pre_aggregate_vectors(vectors)
-class Arc(object):
-    """
-    Description
-    -----------
-    Applies Arc pre-aggregation rule
 
-    Parameters
-    ----------
-    nb_workers : int
-        Number of workers (nodes) in the training
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
+class ARC(object):
+    r"""
 
-    How to use it in experiments
-    ----------------------------
-    >>> "pre_aggregators" : [{
-    >>>     "name": "Arc",
-    >>>     "parameters": {
-    >>>         "nb_workers" : 10,
-    >>>         "nb_byz" : 2
-    >>>     }
-    >>> }]
+    Apply the Adaptive Robust Clipping pre-aggregation rule [1]_:
 
-    Methods
-    ---------
-    """
-    def __init__(self, nb_workers, nb_byz, **kwargs):
-        self.nb_workers = nb_workers
-        self.nb_byz = nb_byz
+    .. math::
+
+        \mathrm{ARC}_{f} \ (x_1, \dots, x_n) = 
+        \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  
+        \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)
+
+    where \\(k = \\lfloor 2(n-f)n \\ /f\\rfloor\\) and \\(\\pi\\) is a permutation such that \\( x_{\\pi(1)} \\geq \\dots \\geq x_{\\pi(n)}\\).
+
+    Initialization parameters
+    --------------------------
+    s : int, optional
+        Number of vectors per bucket. The default is setting \\(s=1\\).
     
-    def _clip_vector(vector, clip_threshold):
-        """
-        Private function to clip a vector
+    Calling the instance
+    --------------------
 
-        Parameters
-        ----------
-        vector : 1D ndarray or 1D torch.tensor
-            Input vector to clip
-        clip_threshold : float 
-            Threshold to clip the vector
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
 
-        Returns
-        -------
-        The same vector if it note reaches the threshold and a vector
-        with the same directon but their norm now is the clip_threshold.
-        """
+    Examples
+    --------
+
+        
+        >>> import preaggregators
+        >>> agg = preaggregators.ARC(1)
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([[1.        , 2.        , 3.        ],
+               [4.        , 5.        , 6.        ],
+               [4.41004009, 5.04004582, 5.67005155]])
+
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([[1.0000, 2.0000, 3.0000],
+                [4.0000, 5.0000, 6.0000],
+                [4.4100, 5.0400, 5.6701]])
+        
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([[1.        , 2.        , 3.        ],
+               [4.        , 5.        , 6.        ],
+               [4.41004009, 5.04004582, 5.67005155]])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([[1.0000, 2.0000, 3.0000],
+                [4.0000, 5.0000, 6.0000],
+                [4.4100, 5.0400, 5.6701]])
+
+    References
+    ----------
+
+    .. [1] Allouah, Y., Guerraoui, R., Gupta, N., Jellouli, A., Rizk, G., &
+           Stephan, J. (2024). Boosting Robustness by Clipping Gradients in
+           Distributed Learning. arXiv preprint arXiv:2405.14432.
+    """
+    def __init__(self, f, **kwargs):
+        self.f = f
+    
+    def _clip_vector(self, vector, clip_threshold):
         tools, vector = misc.check_vectors_type(vector)
         vector_norm = tools.linalg.norm(vector)
+
         if vector_norm > clip_threshold:
-            tools.multiply(vector, (clip_threshold / vector_norm))
+            vector = tools.multiply(vector, (clip_threshold / vector_norm))
         return vector
 
     def pre_aggregate_vectors(self, vectors):
-        """
-        Applies the Arc pre-aggregation
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        list or np.ndarray or torch.Tensor
-            Input vector with Arc applied. 
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> pre_agg = Arc(nb-workers=4, nb-byz=1})
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([[1. 2. 3.]
-                        [4. 5. 6.]
-                        [7. 8. 9.]])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([[1., 2., 3.],
-                        [4., 5., 6.],
-                        [7., 8., 9.]])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         magnitudes = [(tools.linalg.norm(vector), vector_id) 
                       for vector_id, vector in enumerate(vectors)]
         magnitudes.sort(key=lambda x:x[0])
-        nb_clipped = int((2 * self.nb_byz / self.nb_workers) * (self.nb_workers - self.nb_byz))
-        cut_off_value = self.nb_workers - nb_clipped
-
+        nb_vectors = len(vectors)
+        nb_clipped = int((2 * self.f / nb_vectors) * (nb_vectors - self.f))
+        cut_off_value = nb_vectors - nb_clipped
         f_largest = magnitudes[cut_off_value:]
         clipping_threshold = magnitudes[cut_off_value - 1][0]
         for _, vector_id in f_largest:

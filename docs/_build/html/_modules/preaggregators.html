@@ -350,7 +350,7 @@
 <span class="sd">    --------</span>
 
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; import preaggregators</span>
 <span class="sd">        &gt;&gt;&gt; agg = preaggregators.NNM(1)</span>
 
 <span class="sd">        Using numpy arrays</span>
@@ -435,7 +435,7 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \mathrm{Bucketing}_{f} \ (x_1, \dots, x_n) = </span>
+<span class="sd">        \mathrm{Bucketing}_{s} \ (x_1, \dots, x_n) = </span>
 <span class="sd">        \left(\frac{1}{s}\sum_{i=0}^s x_{\pi(i)} \ \ , \ \ </span>
 <span class="sd">        \frac{1}{s}\sum_{i=s+1}^{2s} x_{\pi(i)} \ \ , \ \dots \ ,\ \  </span>
 <span class="sd">        \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)</span>
@@ -445,7 +445,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    s : int, optional</span>
-<span class="sd">        Number of vectors per bucket. The default is setting \\(n=1\\).</span>
+<span class="sd">        Number of vectors per bucket. The default is setting \\(s=1\\).</span>
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -464,7 +464,7 @@
 <span class="sd">    --------</span>
 
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; import preaggregators</span>
 <span class="sd">        &gt;&gt;&gt; agg = preaggregators.Bucketing(2)</span>
 
 <span class="sd">        Using numpy arrays</span>
@@ -551,62 +551,11 @@
 
 
 <span class="k">class</span> <span class="nc">Identity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Return a copy of the same vectors</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;pre_aggregators&quot; : [{</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Identity&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
-<span class="sd">    &gt;&gt;&gt; }]</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">pass</span>
     
     <span class="k">def</span> <span class="nf">pre_aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Applies Identity</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) </span>
-<span class="sd">            where each row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list or np.ndarray or torch.Tensor</span>
-<span class="sd">            Input vector with Idenity applied. </span>
-<span class="sd">            The data type of the output will be the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; pre_agg = Identity()</span>
-<span class="sd">                &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                     [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; result = pre_agg.pre_aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([[1. 2. 3.]</span>
-<span class="sd">                        [4. 5. 6.]</span>
-<span class="sd">                        [7. 8. 9.]])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; vectors = torch.stack([torch.tensor([1., 2., 3.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; result = pre_agg.pre_aggregate_vectors(vectors)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([[1., 2., 3.],</span>
-<span class="sd">                        [4., 5., 6.],</span>
-<span class="sd">                        [7., 8., 9.]])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
@@ -616,58 +565,215 @@
 <div class="viewcode-block" id="Clipping">
 <a class="viewcode-back" href="../aggregators/classes/clipping.html#preaggregators.Clipping">[docs]</a>
 <span class="k">class</span> <span class="nc">Clipping</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clip_factor</span> <span class="o">=</span> <span class="n">clip_factor</span>
+
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the static Clipping pre-aggregation rule:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{Clipping}_{c} \ (x_1, \dots, x_n) = </span>
+<span class="sd">        \left( \min\left\{1, \frac{c}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  </span>
+<span class="sd">        \min\left\{1, \frac{c}{\|x_n\|}\right\} x_n \right)</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+<span class="sd">    c : float, optional</span>
+<span class="sd">        Static clipping threshold. The default is setting \\(c=2\\).</span>
+<span class="sd">    </span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import preaggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = preaggregators.Clipping(2)</span>
+
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([[4. 5. 6.]</span>
+<span class="sd">               [4. 5. 6.]])</span>
+
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([[5.5000, 6.5000, 7.5000],</span>
+<span class="sd">                [1.0000, 2.0000, 3.0000]])</span>
+
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([[4. 5. 6.]</span>
+<span class="sd">               [4. 5. 6.]])</span>
+
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([[5.5000, 6.5000, 7.5000],</span>
+<span class="sd">                [1.0000, 2.0000, 3.0000]])</span>
+
+<span class="sd">        </span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">        </span>
+<span class="sd">    The results when using torch tensor and numpy array differ as it </span>
+<span class="sd">    depends on random permutation that are not necessary the same</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Karimireddy, S. P., He, L., &amp; Jaggi, M. (2020). Byzantine-robust </span>
+<span class="sd">           learning on heterogeneous datasets via bucketing. International </span>
+<span class="sd">           Conference on Learning Representations 2022.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">c</span>
     
     <span class="k">def</span> <span class="nf">_clip_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="n">vector_norm</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">vector_norm</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_factor</span><span class="p">:</span>
-            <span class="n">vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_factor</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vector_norm</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">:</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vector</span>
     
-<div class="viewcode-block" id="Clipping.pre_aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/clipping.html#preaggregators.Clipping.pre_aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">pre_aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_clip_vector</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span> <span class="k">for</span> <span class="n">gradient</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
-
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_clip_vector</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span> <span class="k">for</span> <span class="n">gradient</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Arc">
-<a class="viewcode-back" href="../aggregators/classes/arc.html#preaggregators.Arc">[docs]</a>
-<span class="k">class</span> <span class="nc">Arc</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Applies Arc pre-aggregation rule</span>
 
-<span class="sd">    Parameters</span>
+<div class="viewcode-block" id="ARC">
+<a class="viewcode-back" href="../aggregators/classes/arc.html#preaggregators.ARC">[docs]</a>
+<span class="k">class</span> <span class="nc">ARC</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the Adaptive Robust Clipping pre-aggregation rule [1]_:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{ARC}_{f} \ (x_1, \dots, x_n) = </span>
+<span class="sd">        \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  </span>
+<span class="sd">        \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)</span>
+
+<span class="sd">    where \\(k = \\lfloor 2(n-f)n \\ /f\\rfloor\\) and \\(\\pi\\) is a permutation such that \\( x_{\\pi(1)} \\geq \\dots \\geq x_{\\pi(n)}\\).</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+<span class="sd">    s : int, optional</span>
+<span class="sd">        Number of vectors per bucket. The default is setting \\(s=1\\).</span>
+<span class="sd">    </span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import preaggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = preaggregators.ARC(1)</span>
+
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([[1.        , 2.        , 3.        ],</span>
+<span class="sd">               [4.        , 5.        , 6.        ],</span>
+<span class="sd">               [4.41004009, 5.04004582, 5.67005155]])</span>
+
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([[1.0000, 2.0000, 3.0000],</span>
+<span class="sd">                [4.0000, 5.0000, 6.0000],</span>
+<span class="sd">                [4.4100, 5.0400, 5.6701]])</span>
+<span class="sd">        </span>
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([[1.        , 2.        , 3.        ],</span>
+<span class="sd">               [4.        , 5.        , 6.        ],</span>
+<span class="sd">               [4.41004009, 5.04004582, 5.67005155]])</span>
+
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([[1.0000, 2.0000, 3.0000],</span>
+<span class="sd">                [4.0000, 5.0000, 6.0000],</span>
+<span class="sd">                [4.4100, 5.0400, 5.6701]])</span>
+
+<span class="sd">        </span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">        </span>
+<span class="sd">    The results when using torch tensor and numpy array differ as it </span>
+<span class="sd">    depends on random permutation that are not necessary the same</span>
+
+
+<span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nb_workers : int</span>
-<span class="sd">        Number of workers (nodes) in the training</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number of byzantine nodes to be considered in the aggregation.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;pre_aggregators&quot; : [{</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Arc&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;nb_workers&quot; : 10,</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;nb_byz&quot; : 2</span>
-<span class="sd">    &gt;&gt;&gt;     }</span>
-<span class="sd">    &gt;&gt;&gt; }]</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
+<span class="sd">    .. [1] Allouah, Y., Guerraoui, R., Gupta, N., Jellouli, A., Rizk, G., &amp;</span>
+<span class="sd">           Stephan, J. (2024). Boosting Robustness by Clipping Gradients in</span>
+<span class="sd">           Distributed Learning. arXiv preprint arXiv:2405.14432.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_workers</span><span class="p">,</span> <span class="n">nb_byz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nb_workers</span> <span class="o">=</span> <span class="n">nb_workers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
     
-    <span class="k">def</span> <span class="nf">_clip_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">clip_threshold</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_clip_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">clip_threshold</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Private function to clip a vector</span>
 
@@ -685,12 +791,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="n">vector_norm</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">vector_norm</span> <span class="o">&gt;</span> <span class="n">clip_threshold</span><span class="p">:</span>
-            <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="p">(</span><span class="n">clip_threshold</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">))</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="p">(</span><span class="n">clip_threshold</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">vector</span>
 
-<div class="viewcode-block" id="Arc.pre_aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/arc.html#preaggregators.Arc.pre_aggregate_vectors">[docs]</a>
+<div class="viewcode-block" id="ARC.pre_aggregate_vectors">
+<a class="viewcode-back" href="../aggregators/classes/arc.html#preaggregators.ARC.pre_aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">pre_aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the Arc pre-aggregation</span>
@@ -733,9 +840,9 @@
         <span class="n">magnitudes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">),</span> <span class="n">vector_id</span><span class="p">)</span> 
                       <span class="k">for</span> <span class="n">vector_id</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vectors</span><span class="p">)]</span>
         <span class="n">magnitudes</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">nb_clipped</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_workers</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_workers</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span><span class="p">))</span>
-        <span class="n">cut_off_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_workers</span> <span class="o">-</span> <span class="n">nb_clipped</span>
-
+        <span class="n">nb_vectors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="n">nb_clipped</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">/</span> <span class="n">nb_vectors</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nb_vectors</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">))</span>
+        <span class="n">cut_off_value</span> <span class="o">=</span> <span class="n">nb_vectors</span> <span class="o">-</span> <span class="n">nb_clipped</span>
         <span class="n">f_largest</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">[</span><span class="n">cut_off_value</span><span class="p">:]</span>
         <span class="n">clipping_threshold</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">[</span><span class="n">cut_off_value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">vector_id</span> <span class="ow">in</span> <span class="n">f_largest</span><span class="p">:</span>
