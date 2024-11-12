@@ -99,43 +99,6 @@ class NNM(object):
         self.f = f
     
     def pre_aggregate_vectors(self, vectors):
-        """
-        Applies the Nearest Neighbor Mixing
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        list or np.ndarray or torch.Tensor
-            Input vector with NNM applied. 
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> pre_agg = NNM(1)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([[2.5 3.5 4.5]
-                        [2.5 3.5 4.5]
-                        [5.5 6.5 7.5]])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([[2.5000, 3.5000, 4.5000],
-                        [2.5000, 3.5000, 4.5000],
-                        [5.5000, 6.5000, 7.5000]])
-         """
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -149,8 +112,206 @@ class NNM(object):
     def __call__(self, vectors):
         return self.pre_aggregate_vectors(vectors)
 
+class Bucketing(object):
+
+    r"""
+    Apply the Bucketing pre-aggregation rule [1]_:
+
+    .. math::
+
+        \mathrm{Bucketing}_{f} \ (x_1, \dots, x_n) = 
+        \left(\frac{1}{s}\sum_{i=0}^s x_{\pi(i)} \ \ , \ \ 
+        \frac{1}{s}\sum_{i=s+1}^{2s} x_{\pi(i)} \ \ , \ \dots \ ,\ \  
+        \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)
+
+    where \\(\\pi\\) is a random permutation of  \\([n]\\).
+
+    Initialization parameters
+    --------------------------
+    s : int, optional
+        Number of vectors per bucket. The default is setting \\(n=1\\).
+    
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        
+        >>> import aggregators
+        >>> agg = preaggregators.Bucketing(2)
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([[4. 5. 6.]
+               [4. 5. 6.]])
+
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([[5.5000, 6.5000, 7.5000],
+                [1.0000, 2.0000, 3.0000]])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([[4. 5. 6.]
+               [4. 5. 6.]])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([[5.5000, 6.5000, 7.5000],
+                [1.0000, 2.0000, 3.0000]])
+
+        
+    Note
+    ----
+        
+    The results when using torch tensor and numpy array differ as it 
+    depends on random permutation that are not necessary the same
 
 
+    References
+    ----------
+
+    .. [1] Karimireddy, S. P., He, L., & Jaggi, M. (2020). Byzantine-robust 
+           learning on heterogeneous datasets via bucketing. International 
+           Conference on Learning Representations 2022.
+    """
+
+    def __init__(self, s=1, **kwargs):
+        self.s = s
+    
+    def pre_aggregate_vectors(self, vectors):
+        tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_type(self.s, int)
+
+        random = misc.random_tool(vectors)
+
+        vectors = random.permutation(vectors)
+        nb_buckets = int(math.floor(len(vectors) / self.s))
+        buckets = vectors[:nb_buckets * self.s]
+        buckets = tools.reshape(buckets, (nb_buckets, self.s, len(vectors[0])))
+        output = tools.mean(buckets, axis = 1)
+        
+        # Adding the last incomplete bucket if it exists
+        if nb_buckets != len(vectors) / self.s :
+            last_mean = tools.mean(vectors[nb_buckets * self.s:], axis = 0)
+            last_mean = last_mean.reshape(1,-1)
+            output = tools.concatenate((output, last_mean), axis = 0)
+        return output
+
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
+
+
+class Identity(object):
+    """
+    Description
+    -----------
+    Return a copy of the same vectors
+
+    How to use it in experiments
+    ----------------------------
+    >>> "pre_aggregators" : [{
+    >>>     "name": "Identity",
+    >>>     "parameters": {}
+    >>> }]
+
+    Methods
+    ---------
+    """
+    def __init__(self, **kwargs):
+        pass
+    
+    def pre_aggregate_vectors(self, vectors):
+        """
+        Applies Identity
+
+        Parameters
+        ----------
+        vectors : list or np.ndarray or torch.Tensor
+            A list of vectors or a matrix (2D array/tensor) 
+            where each row represents a vector.
+
+        Returns
+        -------
+        list or np.ndarray or torch.Tensor
+            Input vector with Idenity applied. 
+            The data type of the output will be the same as the input.
+
+        Examples
+        --------
+            With numpy arrays:
+                >>> pre_agg = Identity()
+                >>> vectors = np.array([[1., 2., 3.], 
+                >>>                     [4., 5., 6.], 
+                >>>                     [7., 8., 9.]])
+                >>> result = pre_agg.pre_aggregate_vectors(vectors)
+                >>> print(result)
+                ndarray([[1. 2. 3.]
+                        [4. 5. 6.]
+                        [7. 8. 9.]])
+            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
+                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
+                >>>                        torch.tensor([4., 5., 6.]), 
+                >>>                        torch.tensor([7., 8., 9.])])
+                >>> result = pre_agg.pre_aggregate_vectors(vectors)
+                >>> print(result)
+                tensor([[1., 2., 3.],
+                        [4., 5., 6.],
+                        [7., 8., 9.]])
+        """
+        tools, vectors = misc.check_vectors_type(vectors)
+        return tools.copy(vectors)
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
+
+
+class Clipping(object):
+    def __init__(self, clip_factor=2, **kwargs):
+        self.clip_factor = clip_factor
+    
+    def _clip_vector(self, vector):
+        tools, vector = misc.check_vectors_type(vector)
+        vector_norm = tools.linalg.norm(vector)
+        if vector_norm > self.clip_factor:
+            vector = tools.multiply(vector, self.clip_factor / vector_norm)
+        return vector
+    
+    def pre_aggregate_vectors(self, vectors):
+        return [self._clip_vector(gradient) for gradient in vectors]
+
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
 class Arc(object):
     """
     Description
@@ -257,184 +418,4 @@ class Arc(object):
     def __call__(self, vectors):
         return self.pre_aggregate_vectors(vectors)
 
-class Bucketing(object):
-
-    """
-    Description
-    ------------
-    Applies the Bucketing aggregation rule (Karimireddy et al., 2022):
-    Returns a 2 dimensionnal array of type "np.ndarray" containing
-    averages of "bucket_size" vectors. Each average is computed on a
-    disjoint subset of "bucket_size" vectors drawn uniformely whithout
-    replacement in "vectors".
-
-    Reference(s)
-    -------------
-    Karimireddy, S. P., He, L., and Jaggi, M. (2022). Byzantine-
-    robust learning on heterogeneous datasets via bucketing. In
-    International Conference on Learning Representations. 
-    URL https://openreview.net/pdf?id=jXKKDEi5vJt
-
-    Parameters
-    -----------
-    bucket_size : int 
-        Size of the buckets
-
-    How to use it in experiments
-    -----------------------------
-    >>> "pre_aggregators" : [{
-    >>>     "name": "Bucketing",
-    >>>     "parameters": {
-    >>>         "bucket_size" : 2,
-    >>>     }
-    >>> }]
-
-    Methods
-    ---------
-
-
-    """
-
-    def __init__(self, nb_workers, nb_byz, bucket_size=None, **kwargs):
-        self.bucket_size = bucket_size
-        if self.bucket_size is None:
-            self.bucket_size = math.floor(nb_workers/(2*nb_byz))
-    
-    def pre_aggregate_vectors(self, vectors):
-        """
-        Applies Bucketing
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        list or np.ndarray or torch.Tensor
-            Input vector with Bucketing applied. 
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> pre_agg = Bucketing(2)
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([[4. 5. 6.]
-                        [4. 5. 6.]])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([[5.5000, 6.5000, 7.5000],
-                        [1.0000, 2.0000, 3.0000]])
-         """
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.bucket_size, int)
-
-        random = misc.random_tool(vectors)
-
-        vectors = random.permutation(vectors)
-        nb_buckets = int(math.floor(len(vectors) / self.bucket_size))
-        buckets = vectors[:nb_buckets * self.bucket_size]
-        buckets = tools.reshape(buckets, (nb_buckets, self.bucket_size, len(vectors[0])))
-        output = tools.mean(buckets, axis = 1)
-        
-        # Adding the last incomplete bucket if it exists
-        if nb_buckets != len(vectors) / self.bucket_size :
-            last_mean = tools.mean(vectors[nb_buckets * self.bucket_size:], axis = 0)
-            last_mean = last_mean.reshape(1,-1)
-            output = tools.concatenate((output, last_mean), axis = 0)
-        return output
-
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
-
-
-class Identity(object):
-    """
-    Description
-    -----------
-    Return a copy of the same vectors
-
-    How to use it in experiments
-    ----------------------------
-    >>> "pre_aggregators" : [{
-    >>>     "name": "Identity",
-    >>>     "parameters": {}
-    >>> }]
-
-    Methods
-    ---------
-    """
-    def __init__(self, **kwargs):
-        pass
-    
-    def pre_aggregate_vectors(self, vectors):
-        """
-        Applies Identity
-
-        Parameters
-        ----------
-        vectors : list or np.ndarray or torch.Tensor
-            A list of vectors or a matrix (2D array/tensor) 
-            where each row represents a vector.
-
-        Returns
-        -------
-        list or np.ndarray or torch.Tensor
-            Input vector with Idenity applied. 
-            The data type of the output will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> pre_agg = Identity()
-                >>> vectors = np.array([[1., 2., 3.], 
-                >>>                     [4., 5., 6.], 
-                >>>                     [7., 8., 9.]])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                ndarray([[1. 2. 3.]
-                        [4. 5. 6.]
-                        [7. 8. 9.]])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> vectors = torch.stack([torch.tensor([1., 2., 3.]), 
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> result = pre_agg.pre_aggregate_vectors(vectors)
-                >>> print(result)
-                tensor([[1., 2., 3.],
-                        [4., 5., 6.],
-                        [7., 8., 9.]])
-        """
-        tools, vectors = misc.check_vectors_type(vectors)
-        return tools.copy(vectors)
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
-
-
-class Clipping(object):
-    def __init__(self, clip_factor=2, **kwargs):
-        self.clip_factor = clip_factor
-    
-    def _clip_vector(self, vector):
-        tools, vector = misc.check_vectors_type(vector)
-        vector_norm = tools.linalg.norm(vector)
-        if vector_norm > self.clip_factor:
-            vector = tools.multiply(vector, self.clip_factor / vector_norm)
-        return vector
-    
-    def pre_aggregate_vectors(self, vectors):
-        return [self._clip_vector(gradient) for gradient in vectors]
-
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
 
