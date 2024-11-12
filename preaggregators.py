@@ -4,42 +4,99 @@ import utils.misc as misc
 
 class NNM(object):
 
-    """
-    Description
-    -----------
-    Applies the Nearest Neighbor Mixing (NNM) pre-aggregation rule (Allouah et al. (2023)): 
-     Returns a 2 dimensionnal array of type "np.ndarray" containing the average 
-     of the (len(vectors) - nb_byz) nearest neighbors of each vector.
+    r"""
+    Apply the Nearest Neighbor Mixing pre-aggregation rule [1]_:
 
-    Reference(s)
-    ------------
-    Youssef Allouah, Sadegh Farhadkhani, Rachid Guerraoui,
-    Nirupam Gupta, Rafaël Pinot, and John Stephan. Fixing by
-    mixing: A recipe for optimal Byzantine ML under heterogeneity.
-    In International Conference on Artificial Intelligence and
-    Statistics, pages 1232–1300. PMLR, 2023. 
-    URL https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf
+    .. math::
 
-    Parameters
+        \mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i\in\mathcal{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i\in\mathcal{N}_{n}} x_i \right)
+        
+    where \\(\\mathcal{N}_i\\) is the set of the \\(n − f\\) nearest 
+    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)
+
+    
+    Initialization parameters
+    --------------------------
+    f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\).
+    
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        
+        >>> import aggregators
+        >>> agg = preaggregators.NNM(1)
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> agg(x)
+        array([[2.5 3.5 4.5]
+               [2.5 3.5 4.5]
+               [5.5 6.5 7.5]])
+
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> agg(x)
+        tensor([[2.5000, 3.5000, 4.5000],
+                [2.5000, 3.5000, 4.5000],
+                [5.5000, 6.5000, 7.5000]])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> agg(x)
+        array([[2.5 3.5 4.5]
+               [2.5 3.5 4.5]
+               [5.5 6.5 7.5]])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> agg(x)
+        tensor([[2.5000, 3.5000, 4.5000],
+                [2.5000, 3.5000, 4.5000],
+                [5.5000, 6.5000, 7.5000]])
+
+
+    References
     ----------
-    nb_byz : int
-        Number of byzantine nodes to be considered in the aggregation.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "pre_aggregators" : [{
-    >>>     "name": "NNM",
-    >>>     "parameters": {
-    >>>         "nb_byz" : 2
-    >>>     }
-    >>> }]
+    .. [1] Allouah, Y., Farhadkhani, S., Guerraoui, R., Gupta, N., Pinot, R.,
+           & Stephan, J. (2023, April). Fixing by mixing: A recipe for optimal
+           byzantine ml under heterogeneity. In International Conference on 
+           Artificial Intelligence and Statistics (pp. 1232-1300). PMLR.    
 
-    Methods
-    ---------
     """
 
-    def __init__(self, nb_byz, **kwargs):
-        self.nb_byz = nb_byz
+    def __init__(self, f=0, **kwargs):
+        self.f = f
     
     def pre_aggregate_vectors(self, vectors):
         """
@@ -80,14 +137,18 @@ class NNM(object):
                         [5.5000, 6.5000, 7.5000]])
          """
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
+        misc.check_type(self.f, int)
 
         distance = misc.distance_tool(vectors)
 
         dist = distance.cdist(vectors, vectors)
-        k = len(vectors) - self.nb_byz
-        indices = tools.argpartition(dist, k , axis = 1)[:,:k]
+        k = len(vectors) - self.f
+        indices = tools.argpartition(dist, k-1, axis = 1)[:,:k]
         return tools.mean(vectors[indices], axis = 1)
+
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
+
 
 
 class Arc(object):
@@ -193,6 +254,8 @@ class Arc(object):
             vectors[vector_id] = self._clip_vector(vectors[vector_id], clipping_threshold)
         return vectors
 
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
 
 class Bucketing(object):
 
@@ -291,6 +354,9 @@ class Bucketing(object):
             output = tools.concatenate((output, last_mean), axis = 0)
         return output
 
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
+
 
 class Identity(object):
     """
@@ -351,6 +417,8 @@ class Identity(object):
         """
         tools, vectors = misc.check_vectors_type(vectors)
         return tools.copy(vectors)
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
 
 
 class Clipping(object):
@@ -366,3 +434,7 @@ class Clipping(object):
     
     def pre_aggregate_vectors(self, vectors):
         return [self._clip_vector(gradient) for gradient in vectors]
+
+    def __call__(self, vectors):
+        return self.pre_aggregate_vectors(vectors)
+

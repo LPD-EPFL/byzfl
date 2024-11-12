@@ -317,45 +317,100 @@
 <a class="viewcode-back" href="../aggregators/classes/nnm.html#preaggregators.NNM">[docs]</a>
 <span class="k">class</span> <span class="nc">NNM</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Applies the Nearest Neighbor Mixing (NNM) pre-aggregation rule (Allouah et al. (2023)): </span>
-<span class="sd">     Returns a 2 dimensionnal array of type &quot;np.ndarray&quot; containing the average </span>
-<span class="sd">     of the (len(vectors) - nb_byz) nearest neighbors of each vector.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the Nearest Neighbor Mixing pre-aggregation rule [1]_:</span>
 
-<span class="sd">    Reference(s)</span>
-<span class="sd">    ------------</span>
-<span class="sd">    Youssef Allouah, Sadegh Farhadkhani, Rachid Guerraoui,</span>
-<span class="sd">    Nirupam Gupta, Rafaël Pinot, and John Stephan. Fixing by</span>
-<span class="sd">    mixing: A recipe for optimal Byzantine ML under heterogeneity.</span>
-<span class="sd">    In International Conference on Artificial Intelligence and</span>
-<span class="sd">    Statistics, pages 1232–1300. PMLR, 2023. </span>
-<span class="sd">    URL https://proceedings.mlr.press/v206/allouah23a/allouah23a.pdf</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">    Parameters</span>
+<span class="sd">        \mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i\in\mathcal{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i\in\mathcal{N}_{n}} x_i \right)</span>
+<span class="sd">        </span>
+<span class="sd">    where \\(\\mathcal{N}_i\\) is the set of the \\(n − f\\) nearest </span>
+<span class="sd">    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)</span>
+
+<span class="sd">    </span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+<span class="sd">    f : int, optional</span>
+<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">    </span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import aggregators</span>
+<span class="sd">        &gt;&gt;&gt; agg = preaggregators.NNM(1)</span>
+
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([[2.5 3.5 4.5]</span>
+<span class="sd">               [2.5 3.5 4.5]</span>
+<span class="sd">               [5.5 6.5 7.5]])</span>
+
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([[2.5000, 3.5000, 4.5000],</span>
+<span class="sd">                [2.5000, 3.5000, 4.5000],</span>
+<span class="sd">                [5.5000, 6.5000, 7.5000]])</span>
+
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        array([[2.5 3.5 4.5]</span>
+<span class="sd">               [2.5 3.5 4.5]</span>
+<span class="sd">               [5.5 6.5 7.5]])</span>
+
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; agg(x)</span>
+<span class="sd">        tensor([[2.5000, 3.5000, 4.5000],</span>
+<span class="sd">                [2.5000, 3.5000, 4.5000],</span>
+<span class="sd">                [5.5000, 6.5000, 7.5000]])</span>
+
+
+<span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number of byzantine nodes to be considered in the aggregation.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;pre_aggregators&quot; : [{</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;NNM&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;nb_byz&quot; : 2</span>
-<span class="sd">    &gt;&gt;&gt;     }</span>
-<span class="sd">    &gt;&gt;&gt; }]</span>
+<span class="sd">    .. [1] Allouah, Y., Farhadkhani, S., Guerraoui, R., Gupta, N., Pinot, R.,</span>
+<span class="sd">           &amp; Stephan, J. (2023, April). Fixing by mixing: A recipe for optimal</span>
+<span class="sd">           byzantine ml under heterogeneity. In International Conference on </span>
+<span class="sd">           Artificial Intelligence and Statistics (pp. 1232-1300). PMLR.    </span>
 
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_byz</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span> <span class="o">=</span> <span class="n">nb_byz</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
     
-<div class="viewcode-block" id="NNM.pre_aggregate_vectors">
-<a class="viewcode-back" href="../aggregators/classes/nnm.html#preaggregators.NNM.pre_aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">pre_aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the Nearest Neighbor Mixing</span>
@@ -395,15 +450,18 @@
 <span class="sd">                        [5.5000, 6.5000, 7.5000]])</span>
 <span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
         <span class="n">distance</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">distance_tool</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
 
         <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_byz</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">k</span> <span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[:,:</span><span class="n">k</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
-</div>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[:,:</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
+
 
 
 
@@ -513,8 +571,10 @@
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">vector_id</span> <span class="ow">in</span> <span class="n">f_largest</span><span class="p">:</span>
             <span class="n">vectors</span><span class="p">[</span><span class="n">vector_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clip_vector</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">vector_id</span><span class="p">],</span> <span class="n">clipping_threshold</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vectors</span></div>
-</div>
 
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Bucketing">
@@ -617,7 +677,10 @@
             <span class="n">last_mean</span> <span class="o">=</span> <span class="n">last_mean</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">output</span><span class="p">,</span> <span class="n">last_mean</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span></div>
-</div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
 
 
@@ -680,6 +743,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Clipping">
@@ -699,7 +764,11 @@
 <a class="viewcode-back" href="../aggregators/classes/clipping.html#preaggregators.Clipping.pre_aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">pre_aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_clip_vector</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span> <span class="k">for</span> <span class="n">gradient</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span></div>
-</div>
+
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
+
 
 </pre></div>
 
