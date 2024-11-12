@@ -360,8 +360,8 @@ class ARC(object):
 
     Initialization parameters
     --------------------------
-    s : int, optional
-        Number of vectors per bucket. The default is setting \\(s=1\\).
+    f : int, optional
+        Number of faulty vectors. The default is setting \\(f=0\\).
     
     Calling the instance
     --------------------
@@ -434,7 +434,7 @@ class ARC(object):
            Stephan, J. (2024). Boosting Robustness by Clipping Gradients in
            Distributed Learning. arXiv preprint arXiv:2405.14432.
     """
-    def __init__(self, f, **kwargs):
+    def __init__(self, f=0, **kwargs):
         self.f = f
     
     def _clip_vector(self, vector, clip_threshold):
