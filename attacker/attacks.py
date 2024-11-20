@@ -1,8 +1,8 @@
 import numpy as np
 
-from utils.misc import check_vectors_type
+from Library.utils.misc import check_vectors_type
 
-class NoAttack():
+class NoAttack(object):
 
     """
     Description
@@ -19,7 +19,10 @@ class NoAttack():
     Methods
     ---------
     """
-    def get_malicious_vector(self, honest_vectors):
+    def __init__(self):
+        pass 
+    
+    def __call__(self, honest_vectors):
         """
         Compute the arithmetic mean along axis = 0.
         
@@ -75,9 +78,9 @@ class SignFlipping:
 
     Methods
     -------
-    """
-
-    def get_malicious_vector(self, honest_vectors):
+    """ 
+    
+    def __call__(self, honest_vectors):
         """
         Compute the arithmetic mean along axis = 0 and flip its sign.
 
@@ -115,6 +118,7 @@ class SignFlipping:
         mean_vector = tools.mean(honest_vectors, axis=0)
         return tools.multiply(mean_vector, -1)
 
+
 class FallOfEmpires:
     """
     Description
@@ -151,9 +155,9 @@ class FallOfEmpires:
         factor : int or float
             The factor by which to weaken the mean vector.
         """
-        self.attack_factor = factor
-
-    def get_malicious_vector(self, honest_vectors):
+        self.attack_factor = factor        
+    
+    def __call__(self, honest_vectors):
         """
         Compute the weakened arithmetic mean along axis=0.
 
@@ -191,6 +195,7 @@ class FallOfEmpires:
         tools, honest_vectors = check_vectors_type(honest_vectors)
         mean_vector = tools.mean(honest_vectors, axis=0)
         return tools.multiply(mean_vector, 1 - self.attack_factor)
+
 
 
 class LittleIsEnough():
@@ -231,8 +236,8 @@ class LittleIsEnough():
             The factor by which to scale the standard deviation vector.
         """
         self.attack_factor = factor
-
-    def get_malicious_vector(self, honest_vectors):
+    
+    def __call__(self, honest_vectors):
         """
         Perturb the mean vector of honest vectors by adding a scaled version 
             of the standard deviation vector.
@@ -274,6 +279,7 @@ class LittleIsEnough():
                 tools.multiply(attack_vector, self.attack_factor))
 
 
+
 class Mimic():
     """
     Description
@@ -312,7 +318,7 @@ class Mimic():
         """
         self.worker_to_mimic = worker
     
-    def get_malicious_vector(self, honest_vectors):
+    def __call__(self, honest_vectors):
         """
         Retrieve the data from the worker to be mimicked.
 
@@ -352,6 +358,7 @@ class Mimic():
         return honest_vectors[self.worker_to_mimic]
 
 
+
 class Inf():
     """
     Description
@@ -368,9 +375,9 @@ class Inf():
 
     Methods
     -------
-    """
-
-    def get_malicious_vector(self, honest_vectors):
+    """ 
+    
+    def __call__(self, honest_vectors):
         """
         Generate a vector with positive infinity values.
 

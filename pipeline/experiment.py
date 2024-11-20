@@ -4,8 +4,7 @@ from multiprocessing import Pool, Value
 import os
 import copy
 
-from combinations import generate_all_combinations
-from train import Train
+from Library.pipeline.train import Train
 
 default_settings = {
     "general": {
@@ -126,6 +125,64 @@ default_settings = {
     ]
 }
 
+def generate_all_combinations_aux(list_dict, orig_dict, aux_dict, rest_list):
+    if len(aux_dict) < len(orig_dict):
+        key = list(orig_dict)[len(aux_dict)]
+        if isinstance(orig_dict[key], list):
+            if not orig_dict[key] or (key in rest_list and 
+                not isinstance(orig_dict[key][0], list)):
+                aux_dict[key] = orig_dict[key]
+                generate_all_combinations_aux(list_dict, 
+                                              orig_dict, 
+                                              aux_dict, 
+                                              rest_list)
+            else:
+                for item in orig_dict[key]:
+                    if isinstance(item, dict):
+                        new_list_dict = []
+                        new_aux_dict = {}
+                        generate_all_combinations_aux(new_list_dict, 
+                                                    item, 
+                                                    new_aux_dict, 
+                                                    rest_list)
+                    else:
+                        new_list_dict = [item]
+                    for new_dict in new_list_dict:
+                        new_aux_dict = aux_dict.copy()
+                        new_aux_dict[key] = new_dict
+                        
+                        generate_all_combinations_aux(list_dict,
+                                                    orig_dict, 
+                                                    new_aux_dict, 
+                                                    rest_list)
+        elif isinstance(orig_dict[key], dict):
+            new_list_dict = []
+            new_aux_dict = {}
+            generate_all_combinations_aux(new_list_dict, 
+                                          orig_dict[key], 
+                                          new_aux_dict, 
+                                          rest_list)
+            for dictionary in new_list_dict:
+                new_aux_dict = aux_dict.copy()
+                new_aux_dict[key] = dictionary
+                generate_all_combinations_aux(list_dict, 
+                                              orig_dict, 
+                                              new_aux_dict, 
+                                              rest_list)
+        else:
+            aux_dict[key] = orig_dict[key]
+            generate_all_combinations_aux(list_dict, 
+                                          orig_dict, 
+                                          aux_dict, 
+                                          rest_list)
+    else:
+        list_dict.append(aux_dict)
+
+def generate_all_combinations(original_dict, restriction_list):
+    list_dict = []
+    aux_dict = {}
+    generate_all_combinations_aux(list_dict, original_dict, aux_dict, restriction_list)
+    return list_dict
 
 def init_pool_processes(shared_value):
     global counter
@@ -233,8 +290,58 @@ def remove_real_not_equal_declared(dict_list):
             real_dict_list.append(setting)
     return real_dict_list
 
+"""
 if __name__ == '__main__':
     nb_jobs = process_args()
+    data = {}
+    try:
+        with open('settings.json', 'r') as file:
+            data = json.load(file)
+    except:
+        print(f"{'settings.json'} not found.")
+
+        with open('settings.json', 'w') as f:
+            json.dump(default_settings, f, indent=4)
+
+        print(f"{'settings.json'} created successfully.")
+        print("Please configure the experiment you want to run.")
+        exit()
+    
+    results_directory = None
+    if data["general"]["results_directory"] is None:
+        results_directory = "./results"
+    else:
+        results_directory = data["general"]["results_directory"]
+
+    if not os.path.exists(results_directory):
+        os.makedirs(results_directory)
+    
+    with open(results_directory+"/settings.json", 'w') as json_file:
+            json.dump(data, json_file, indent=4, separators=(',', ': '))
+
+    restriction_list = ["pre_aggregators", "milestones"]
+    dict_list = generate_all_combinations(data, restriction_list)
+
+    if data["general"]["declared_equal_real"]:
+        dict_list = remove_real_not_equal_declared(dict_list)
+    else:
+        dict_list = remove_real_greater_declared(dict_list)
+
+    #Do a setting for every seed
+    dict_list = delegate_training_seeds(dict_list)
+    dict_list = delegate_data_distribution_seeds(dict_list)
+
+    #Do only experiments that haven't been done
+    dict_list = eliminate_experiments_done(dict_list)
+
+    print("Total trainings to do: " + str(len(dict_list)))
+
+    counter = Value('i', 0)
+    with Pool(initializer=init_pool_processes, initargs=(counter,), processes=nb_jobs) as pool:
+        pool.map(run_training, dict_list)
+"""
+
+def run_experiment(nb_jobs=1):
     data = {}
     try:
         with open('settings.json', 'r') as file:

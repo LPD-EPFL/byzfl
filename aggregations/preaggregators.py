@@ -1,6 +1,6 @@
 import math
 
-import utils.misc as misc
+import Library.utils.misc as misc
 
 class NNM(object):
 
@@ -95,10 +95,10 @@ class NNM(object):
 
     """
 
-    def __init__(self, f=0, **kwargs):
+    def __init__(self, f=0):
         self.f = f
-    
-    def pre_aggregate_vectors(self, vectors):
+
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -108,9 +108,6 @@ class NNM(object):
         k = len(vectors) - self.f
         indices = tools.argpartition(dist, k-1, axis = 1)[:,:k]
         return tools.mean(vectors[indices], axis = 1)
-
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
 
 class Bucketing(object):
 
@@ -207,10 +204,10 @@ class Bucketing(object):
            Conference on Learning Representations 2022.
     """
 
-    def __init__(self, s=1, **kwargs):
+    def __init__(self, s=1):
         self.s = s
-    
-    def pre_aggregate_vectors(self, vectors):
+
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.s, int)
 
@@ -229,20 +226,15 @@ class Bucketing(object):
             output = tools.concatenate((output, last_mean), axis = 0)
         return output
 
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
-
 
 class Identity(object):
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         pass
-    
-    def pre_aggregate_vectors(self, vectors):
+
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         return tools.copy(vectors)
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
 
 
 class Clipping(object):
@@ -327,7 +319,7 @@ class Clipping(object):
 
  
     """
-    def __init__(self, c=2, **kwargs):
+    def __init__(self, c=2):
         self.c = c
     
     def _clip_vector(self, vector):
@@ -336,14 +328,11 @@ class Clipping(object):
         if vector_norm > self.c:
             vector = tools.multiply(vector, self.c / vector_norm)
         return vector
-    
-    def pre_aggregate_vectors(self, vectors):
+
+    def __call__(self, vectors):
         for i in range(len(vectors)):
             vectors[i] = self._clip_vector(vectors[i])
         return vectors
-
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
 
 class ARC(object):
     r"""
@@ -434,7 +423,7 @@ class ARC(object):
            Stephan, J. (2024). Boosting Robustness by Clipping Gradients in
            Distributed Learning. arXiv preprint arXiv:2405.14432.
     """
-    def __init__(self, f=0, **kwargs):
+    def __init__(self, f=0):
         self.f = f
     
     def _clip_vector(self, vector, clip_threshold):
@@ -445,7 +434,7 @@ class ARC(object):
             vector = tools.multiply(vector, (clip_threshold / vector_norm))
         return vector
 
-    def pre_aggregate_vectors(self, vectors):
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         magnitudes = [(tools.linalg.norm(vector), vector_id) 
                       for vector_id, vector in enumerate(vectors)]
@@ -458,8 +447,5 @@ class ARC(object):
         for _, vector_id in f_largest:
             vectors[vector_id] = self._clip_vector(vectors[vector_id], clipping_threshold)
         return vectors
-
-    def __call__(self, vectors):
-        return self.pre_aggregate_vectors(vectors)
 
 

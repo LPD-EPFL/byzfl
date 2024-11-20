@@ -1,5 +1,7 @@
-import aggregators
-import preaggregators
+import inspect
+
+from Library.aggregations import aggregators
+from Library.aggregations import preaggregators
 
 class RobustAggregator(object):
 
@@ -23,19 +25,39 @@ class RobustAggregator(object):
     """
 
     def __init__(self, aggregator_info, pre_agg_list=[]):
-        self.aggregator = getattr(
-            aggregators, 
-            aggregator_info["name"]
-        )(**aggregator_info["parameters"])
+
+        self.aggregator = getattr(aggregators, aggregator_info["name"])
+
+        signature_agg = inspect.signature(self.aggregator.__init__)
+
+        agg_parameters = {}
+
+        for parameter in signature_agg.parameters.values():
+            param_name = parameter.name
+            if param_name in aggregator_info["parameters"]:
+                agg_parameters[param_name] = aggregator_info["parameters"][param_name]
         
+        self.aggregator = self.aggregator(**agg_parameters)
 
         self.pre_agg_list = []
 
         for pre_agg_info in pre_agg_list:
+
             pre_agg = getattr(
                 preaggregators, 
                 pre_agg_info["name"]
-            )(**pre_agg_info["parameters"])
+            )
+
+            signature_pre_agg = inspect.signature(pre_agg.__init__)
+
+            pre_agg_parameters = {}
+
+            for parameter in signature_pre_agg.parameters.values():
+                param_name = parameter.name
+                if param_name in pre_agg_info["parameters"]:
+                    pre_agg_parameters[param_name] = pre_agg_info["parameters"][param_name]
+
+            pre_agg = pre_agg(**pre_agg_parameters)
 
             self.pre_agg_list.append(pre_agg)
 
@@ -57,8 +79,8 @@ class RobustAggregator(object):
             Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors
         """
         for pre_agg in self.pre_agg_list:
-            vectors = pre_agg.pre_aggregate_vectors(vectors)
+            vectors = pre_agg(vectors)
 
-        aggregate_vector = self.aggregator.aggregate_vectors(vectors)  
+        aggregate_vector = self.aggregator(vectors)  
 
         return aggregate_vector

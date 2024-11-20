@@ -1,7 +1,8 @@
 import numpy as np
 import torch
-import utils.torch_tools as torch_tools
 from scipy.spatial import distance
+
+import Library.utils.torch_tools as torch_tools
 
 
 def check_vectors_type(vectors):

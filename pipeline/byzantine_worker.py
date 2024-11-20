@@ -1,5 +1,5 @@
-import attacks
-import attack_optimizers
+import Library.attacker.attacks as attacks
+import Library.attacker.attack_optimizers as attack_optimizers
 
 class ByzantineWorker():
     """
@@ -79,8 +79,8 @@ class ByzantineWorker():
         if self.nb_real_byz == 0:
             return list()
         if self.optimizer is not None:
-            self.optimizer.optimize(self.attack, honest_vectors)
-        byz_vector = self.attack.get_malicious_vector(honest_vectors)
+            self.optimizer(self.attack, honest_vectors)
+        byz_vector = self.attack(honest_vectors)
         
         return [byz_vector] * self.nb_real_byz
     
@@ -104,7 +104,7 @@ class ByzantineWorker():
         if self.nb_real_byz == 0:
             return list()
         if self.optimizer_batch_norm is not None:
-            self.optimizer_batch_norm.optimize(self.attack, honest_vectors)
-        byz_vector = self.attack.get_malicious_vector(honest_vectors)
+            self.optimizer_batch_norm(self.attack, honest_vectors)
+        byz_vector = self.attack(honest_vectors)
         
         return [byz_vector] * self.nb_real_byz

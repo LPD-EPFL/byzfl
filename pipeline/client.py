@@ -1,8 +1,8 @@
 import torch
 import numpy as np
 
-from model_base_interface import ModelBaseInterface
-from utils.conversion import flatten_dict
+from Library.pipeline.model_base_interface import ModelBaseInterface
+from Library.utils.conversion import flatten_dict
 
 class Client(ModelBaseInterface):
     """

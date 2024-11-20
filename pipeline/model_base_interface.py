@@ -2,8 +2,8 @@ import collections
 
 import torch
 
-import models
-from utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
+import Library.pipeline.models as models
+from Library.utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
 
 class ModelBaseInterface(object):
     """

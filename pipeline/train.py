@@ -4,10 +4,10 @@ import time
 import numpy as np
 import torch
 
-from server import Server
-from compute_cluster import ComputeCluster
-from dataset import get_dataloaders
-from managers import FileManager, ParamsManager
+from Library.pipeline.server import Server
+from Library.pipeline.compute_cluster import ComputeCluster
+from Library.pipeline.dataset import get_dataloaders
+from Library.pipeline.managers import FileManager, ParamsManager
 
 class Train(object):
     """
@@ -123,11 +123,10 @@ class Train(object):
         self.file_manager = FileManager(file_manager_params)
         self.file_manager.save_config_dict(params_manager.get_data())
 
-        params["aggregator_info"]["parameters"]["nb_byz"] = params["declared_nb_byz"]
+        params["aggregator_info"]["parameters"]["f"] = params["declared_nb_byz"]
         if len(params["pre_agg_list"]) > 0:
             for pre_agg in params["pre_agg_list"]:
-                pre_agg["parameters"]["nb_byz"] = params["declared_nb_byz"]
-                pre_agg["parameters"]["nb_workers"] = params["nb_workers"]
+                pre_agg["parameters"]["f"] = params["declared_nb_byz"]
 
         params_dataloaders = {
             "dataset_name": params["dataset_name"],

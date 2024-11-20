@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 import torch
 
-import utils.misc as misc
+import Library.utils.misc as misc
 
 class Average(object):
     """
@@ -71,15 +71,12 @@ class Average(object):
         ---------
 
     """
-    def __init__(self, **kwargs):
-        pass
-
-    def aggregate_vectors(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        return tools.mean(vectors, axis=0)
+    def __init__(self):
+        pass        
     
     def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
+        tools, vectors = misc.check_vectors_type(vectors)
+        return tools.mean(vectors, axis=0)
 
 
 class Median(object):
@@ -148,15 +145,12 @@ class Median(object):
         >>> agg(x)
         tensor([4., 5., 6.])
     """
-    def __init__(self, **kwargs):
+    def __init__(self):
         pass
-    
-    def aggregate_vectors(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        return tools.median(vectors, axis=0)
 
     def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
+        tools, vectors = misc.check_vectors_type(vectors)
+        return tools.median(vectors, axis=0)
 
 
 class TrMean(object):
@@ -242,10 +236,10 @@ class TrMean(object):
 
     """
 
-    def __init__(self, f=0, **kwargs):
+    def __init__(self, f=0):
         self.f = f
 
-    def aggregate_vectors(self, vectors):
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -255,9 +249,6 @@ class TrMean(object):
 
         selected_vectors = tools.sort(vectors, axis=0)[self.f:-self.f]
         return tools.mean(selected_vectors, axis=0)
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 
 class GeometricMedian(object):
@@ -341,11 +332,11 @@ class GeometricMedian(object):
 
     """
 
-    def __init__(self, nu=0.1, T=3, **kwargs):
+    def __init__(self, nu=0.1, T=3):
         self.nu = nu
         self.T = T
 
-    def aggregate_vectors(self, vectors):
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.nu, float)
         misc.check_type(self.T, int)
@@ -359,9 +350,6 @@ class GeometricMedian(object):
             betas = (alpha/betas)[:, None]
             z = tools.sum((filtered_vectors*betas), axis=0) / tools.sum(betas)
         return z
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 class Krum(object):
     r"""
@@ -454,10 +442,10 @@ class Krum(object):
            119–129. Curran Associates, Inc., 2017.
     """
 
-    def __init__(self, f=0, **kwargs):
+    def __init__(self, f=0):
         self.f = f
     
-    def aggregate_vectors(self, vectors):
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -469,9 +457,6 @@ class Krum(object):
         print(dist)
         index = tools.argmin(dist)
         return vectors[index]
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 class MultiKrum(object):
 
@@ -565,10 +550,10 @@ class MultiKrum(object):
            119–129. Curran Associates, Inc., 2017.
     """
 
-    def __init__(self, f = 0, **kwargs):
+    def __init__(self, f = 0):
         self.f = f
-    
-    def aggregate_vectors(self, vectors):
+
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -580,9 +565,6 @@ class MultiKrum(object):
         k = len(vectors) - self.f
         indices = tools.argpartition(dist, k-1)[:k]
         return tools.mean(vectors[indices], axis=0)
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 class CenteredClipping(object):
     r"""
@@ -687,13 +669,12 @@ class CenteredClipping(object):
            International Conference on Machine Learning (ICML), 2021.
     """
 
-    def __init__(self, m=None, L=1, tau=100, **kwargs):
+    def __init__(self, m=None, L=1, tau=100):
         self.m = m
         self.L = L
         self.tau = tau
-
-    def aggregate_vectors(self, vectors):
-
+    
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
 
         if self.m is None:
@@ -715,9 +696,6 @@ class CenteredClipping(object):
         self.m = v
 
         return v
-    
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 
 class MDA(object):
@@ -804,10 +782,10 @@ class MDA(object):
 
     """
 
-    def __init__(self, f=0, **kwargs):
-        self.f = f
-
-    def aggregate_vectors(self, vectors):
+    def __init__(self, f=0):
+        self.f = f        
+    
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -829,17 +807,14 @@ class MDA(object):
                 min_subset = subset
                 min_diameter = diameter
         return vectors[tools.asarray(min_subset)].mean(axis=0)
-    
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 
 class MVA(object):
 
-    def __init__(self, nb_byz, **kwargs):
+    def __init__(self, nb_byz):
         self.nb_byz = nb_byz
     
-    def aggregate_vectors(self, vectors):
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.nb_byz, int)
 
@@ -862,9 +837,6 @@ class MVA(object):
                 min_diameter = diameter
                 
         return vectors[tools.asarray(min_subset)].mean(axis=0)
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 class Monna(object):
 
@@ -963,11 +935,11 @@ class Monna(object):
     """
 
     
-    def __init__(self, f=0, idx=0, **kwargs):
+    def __init__(self, f=0, idx=0):
         self.f = f
         self.idx = idx
     
-    def aggregate_vectors(self, vectors):
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
         misc.check_type(self.idx, int)
@@ -978,9 +950,6 @@ class Monna(object):
         k = len(vectors) - self.f
         indices = tools.argpartition(dist.reshape(-1), k-1)[:k]
         return tools.mean(vectors[indices], axis=0)
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 
 
 class Meamed(object):
@@ -1059,10 +1028,10 @@ class Meamed(object):
     .. [1] XXXXX
 
     """
-    def __init__(self, f=0, **kwargs):
+    def __init__(self, f=0):
         self.f = f
-    
-    def aggregate_vectors(self, vectors):
+
+    def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         misc.check_type(self.f, int)
 
@@ -1079,7 +1048,4 @@ class Meamed(object):
             a = a.to(indices.device)
         indices = tools.add(indices, a)
         return tools.mean(vectors.take(indices), axis=0)
-
-    def __call__(self, vectors):
-        return self.aggregate_vectors(vectors)
 

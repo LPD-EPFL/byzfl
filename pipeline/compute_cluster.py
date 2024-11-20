@@ -1,5 +1,5 @@
-from client import Client
-from byzantine_worker import ByzantineWorker
+from Library.pipeline.client import Client
+from Library.pipeline.byzantine_worker import ByzantineWorker
 
 class ComputeCluster(object):
     """

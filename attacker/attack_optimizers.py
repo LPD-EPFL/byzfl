@@ -1,5 +1,5 @@
-from utils.misc import check_vectors_type, random_tool
-from robust_aggregators import RobustAggregator
+from Library.utils.misc import check_vectors_type, random_tool
+from Library.pipeline.robust_aggregators import RobustAggregator
 
 class LineMaximize():
     """
@@ -90,19 +90,19 @@ class LineMaximize():
         
         attack.set_attack_parameters(attack_factor)
 
-        byzantine_vector = attack.get_malicious_vector(honest_vectors)
+        byzantine_vector = attack(honest_vectors)
 
         byzantine_vectors = tools.array([byzantine_vector] * self.nb_byz)
 
         vectors = tools.concatenate((honest_vectors, byzantine_vectors), axis=0)
         
-        agg_vectors = self.robust_aggregator.aggregate(vectors)
+        agg_vectors = self.robust_aggregator(vectors)
         
         distance = tools.subtract(agg_vectors, avg_honest_vector)
         
         return tools.linalg.norm(distance)
     
-    def optimize(self, attack, honest_vectors):
+    def __call__(self, attack, honest_vectors):
         """
         Iterative algorithm to set the
         best attack factor to the attack
@@ -238,9 +238,8 @@ class WorkerWithMaxVariance():
         self.z = tools.multiply(self.z, step_ratio)
         self.z = tools.add(self.z, tools.multiply(cumulative, time_factor))
         self.z = tools.divide(self.z, tools.linalg.norm(self.z))
-        
     
-    def optimize(self, attack, honest_vectors):
+    def __call__(self, attack, honest_vectors):
         """
         Optimize the attack by setting their parameter to the ID 
         of the worker with more variance
@@ -275,3 +274,4 @@ class WorkerWithMaxVariance():
             parameter = tools.argmax(dot_products)
 
         attack.set_attack_parameters(parameter)
+
