@@ -12,7 +12,7 @@ from sphinx.util.docfields import Field
 from sphinx.ext.autodoc import between
 
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("../"))
 
 project = 'ByzFL'
 copyright = '2024, EPFL'

@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 import torch
 
-import Library.utils.misc as misc
+from ..utils import misc
 
 class Average(object):
     """

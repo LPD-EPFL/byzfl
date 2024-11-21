@@ -336,81 +336,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-byzantine_worker">
-<span id="byzantine-worker-module"></span><h1>byzantine_worker module<a class="headerlink" href="#module-byzantine_worker" title="Link to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzantine_worker.ByzantineWorker">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzantine_worker.</span></span><span class="sig-name descname"><span class="pre">ByzantineWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzantine_worker.html#ByzantineWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzantine_worker.ByzantineWorker" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Class that is responsible for carrying out the byzantine attacks.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<dl class="simple">
-<dt>nb_byz<span class="classifier">int</span></dt><dd><p>Number of byzantine nodes that has the byzantine worker.</p>
-</dd>
-<dt>attack_name<span class="classifier">str</span></dt><dd><p>Name of the attack</p>
-</dd>
-<dt>attack_parameters<span class="classifier">dict</span></dt><dd><p>Dictionary with the parameters of the attack
-where every key is the name of the paramater and their value is
-the value of the parameter.</p>
-</dd>
-<dt>attack_optimizer_name<span class="classifier">(str, optional)</span></dt><dd><p>Name of the optimizer to be used to find the best attack parameters.</p>
-</dd>
-<dt>attack_optimizer_parameters<span class="classifier">(dict, optional)</span></dt><dd><p>Dictionary with the parameters of the optimizer where every key is
-the name of the paramater and their value is the value of the parameter.</p>
-</dd>
-<dt>aggregator_info<span class="classifier">dict</span></dt><dd><p>Dictionary with the keys “name” and “parameters” defined for the aggregator.</p>
-</dd>
-<dt>pre_agg_list<span class="classifier">list</span></dt><dd><p>List of dictionaries (one for every pre_agg function)
-where every dictionary have the keys “name” and “parameters” defined.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzantine_worker.ByzantineWorker.apply_attack">
-<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzantine_worker.html#ByzantineWorker.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzantine_worker.ByzantineWorker.apply_attack" title="Link to this definition">#</a></dt>
-<dd><p>Computes the byzantine vector and (optimized or not depending
-if the optimizer is configured) and then it returns a list
-with this vector n times, where n = number of byzantine nodes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>list</em><em> or </em><em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – A list of vectors or a matrix (2D array/tensor) where each row represents a vector.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>Returns a list with the byzantine vector n times,</strong></p></li>
-<li><p><strong>where n = number of byzantine nodes</strong></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzantine_worker.ByzantineWorker.apply_batch_norm_attack">
-<span class="sig-name descname"><span class="pre">apply_batch_norm_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzantine_worker.html#ByzantineWorker.apply_batch_norm_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzantine_worker.ByzantineWorker.apply_batch_norm_attack" title="Link to this definition">#</a></dt>
-<dd><p>Computes the byzantine vector of the batch norms
-and (optimized or not depending if the optimizer is configured)
-and then it returns a list with this vector n times, where n = number
-of byzantine nodes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>list</em><em> or </em><em>np.ndarray</em><em> or </em><em>torch.Tensor</em>) – A list of vectors or a matrix (2D array/tensor) where each row represents a vector.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>Returns a list with the byzantine vector n times,</strong></p></li>
-<li><p><strong>where n = number of byzantine nodes</strong></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-</dd></dl>
-
+  <section id="byzantine-worker-module">
+<h1>byzantine_worker module<a class="headerlink" href="#byzantine-worker-module" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -451,22 +378,6 @@ of byzantine nodes</p>
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzantine_worker.ByzantineWorker"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzantine_worker.ByzantineWorker.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_attack()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzantine_worker.ByzantineWorker.apply_batch_norm_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_batch_norm_attack()</span></code></a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
 
   <div class="sidebar-secondary-item">
 

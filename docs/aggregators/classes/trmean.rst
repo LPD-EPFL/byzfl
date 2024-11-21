@@ -1,6 +1,6 @@
 Trimmed Mean
 =============
 
-.. autoclass:: aggregators.TrMean
+.. autoclass:: aggregations.aggregators.TrMean
     :no-members:
 

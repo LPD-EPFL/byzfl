@@ -64,56 +64,79 @@ class NoAttack(object):
 
 
 class SignFlipping:
-    """
-    Description
-    -----------
-    Class representing an attack where the sign of the mean vector is flipped.
+    
+    r"""
+    
+    Apply the SignFlipping attack:
 
-    How to use it in experiments
-    ----------------------------
-    >>> "attack": {
-    >>>     "name": "SignFlipping",
-    >>>     "parameters": {}
-    >>> }
+    .. math::
 
-    Methods
+        \mathrm{SignFlipping} \ (x_1, \dots, x_n) = 
+        - \frac{1}{n}\sum_{i=1}^{n} x_i    
+    
+    Initialization parameters
+    --------------------------
+
+    None
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+
+    Returns
     -------
-    """ 
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+
+        >>> import attacks
+        >>> attack = attacks.SignFlipping()
+
+        Using numpy arrays
+            
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> attack(x)
+        array([-4. -5. -6.])
+                
+        Using torch tensors
+            
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> attack(x)
+        tensor([-4., -5., -6.])
+
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> attack(x)
+        array([-4., -5., -6.])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> attack(x)
+        tensor([-4., -5., -6.])
+    """
     
     def __call__(self, honest_vectors):
-        """
-        Compute the arithmetic mean along axis = 0 and flip its sign.
-
-        Parameters
-        ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype
-            Matrix containing arrays whose mean is desired.
-
-        Returns
-        -------
-        mean_vector : ndarray or torch.tensor
-            The mean vector with flipped sign. The dtype of the outputs will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> matrix = np.array([[1., 2., 3.], 
-                >>>                    [4., 5., 6.], 
-                >>>                    [7., 8., 9.]])
-                >>> attack = SignFlipping()
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                ndarray([-4. -5. -6.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> matrix = torch.stack([torch.tensor([1., 2., 3.]),
-                >>>                       torch.tensor([4., 5., 6.]), 
-                >>>                       torch.tensor([7., 8., 9.])])
-                >>> attack = SignFlipping()
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                tensor([-4., -5., -6.])
-        """
-
         tools, honest_vectors = check_vectors_type(honest_vectors)
         mean_vector = tools.mean(honest_vectors, axis=0)
         return tools.multiply(mean_vector, -1)

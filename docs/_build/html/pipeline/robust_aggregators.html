@@ -336,56 +336,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-robust_aggregators">
-<span id="robust-aggregators-module"></span><h1>robust_aggregators module<a class="headerlink" href="#module-robust_aggregators" title="Link to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="robust_aggregators.RobustAggregator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">robust_aggregators.</span></span><span class="sig-name descname"><span class="pre">RobustAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregator_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_agg_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/robust_aggregators.html#RobustAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robust_aggregators.RobustAggregator" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Class to apply all the pre-aggregations and the aggregation
-to the vectors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param aggregator-info<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with the keys “name” and “parameters”
-of the aggregation defined.</p>
-</dd>
-<dt class="field-even">type aggregator-info<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-<dt class="field-odd">param pre-agg-info<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of dictionaries (one for every pre_agg function)
-where every dictionary have the keys “name” and “parameters” defined.</p>
-</dd>
-<dt class="field-even">type pre-agg-info<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="robust_aggregators.RobustAggregator.aggregate">
-<span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/robust_aggregators.html#RobustAggregator.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#robust_aggregators.RobustAggregator.aggregate" title="Link to this definition">#</a></dt>
-<dd><section id="id1">
-<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>Apply pre-aggregations and aggregations to the vectors</p>
-<dl class="field-list simple">
-<dt class="field-odd">param vectors<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of vectors or a matrix (2D array/tensor) where each
-row represents a vector.</p>
-</dd>
-<dt class="field-even">type vectors<span class="colon">:</span></dt>
-<dd class="field-even"><p>(list or np.ndarray or torch.Tensor)</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ndarray or torch.Tensor</strong> – Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-</section>
-</dd></dl>
-
+  <section id="robust-aggregators-module">
+<h1>robust_aggregators module<a class="headerlink" href="#robust-aggregators-module" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -426,21 +378,6 @@ row represents a vector.</p>
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust_aggregators.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#robust_aggregators.RobustAggregator.aggregate"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate()</span></code></a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
 
   <div class="sidebar-secondary-item">
 
