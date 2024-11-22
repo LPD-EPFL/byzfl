@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 import torch
 
-from ..utils import misc
+from Library.utils import misc
 
 class Average(object):
     """
@@ -245,7 +245,7 @@ class TrMean(object):
 
         if self.f == 0:
             avg = Average()
-            return avg.aggregate_vectors(vectors)
+            return avg(vectors)
 
         selected_vectors = tools.sort(vectors, axis=0)[self.f:-self.f]
         return tools.mean(selected_vectors, axis=0)
@@ -809,34 +809,34 @@ class MDA(object):
         return vectors[tools.asarray(min_subset)].mean(axis=0)
 
 
-class MVA(object):
-
-    def __init__(self, nb_byz):
-        self.nb_byz = nb_byz
-    
-    def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nb_byz, int)
-
-        distance = misc.distance_tool(vectors)
-
-        dist = distance.cdist(vectors, vectors)**2
-        
-        n = len(vectors)
-        k = n - self.nb_byz
-
-        min_diameter = np.inf
-        min_subset = np.arange(k)
-
-        all_subsets = list(itertools.combinations(range(n), k))
-        for subset in all_subsets:
-            vector_indices = list(itertools.combinations(subset, 2))
-            diameter = tools.sum(dist[tuple(zip(*vector_indices))])
-            if diameter < min_diameter:
-                min_subset = subset
-                min_diameter = diameter
-                
-        return vectors[tools.asarray(min_subset)].mean(axis=0)
+# class MVA(object):
+#
+#     def __init__(self, nb_byz):
+#         self.nb_byz = nb_byz
+#
+#     def __call__(self, vectors):
+#         tools, vectors = misc.check_vectors_type(vectors)
+#         misc.check_type(self.nb_byz, int)
+#
+#         distance = misc.distance_tool(vectors)
+#
+#         dist = distance.cdist(vectors, vectors)**2
+#
+#         n = len(vectors)
+#         k = n - self.nb_byz
+#
+#         min_diameter = np.inf
+#         min_subset = np.arange(k)
+#
+#         all_subsets = list(itertools.combinations(range(n), k))
+#         for subset in all_subsets:
+#             vector_indices = list(itertools.combinations(subset, 2))
+#             diameter = tools.sum(dist[tuple(zip(*vector_indices))])
+#             if diameter < min_diameter:
+#                 min_subset = subset
+#                 min_diameter = diameter
+#
+#         return vectors[tools.asarray(min_subset)].mean(axis=0)
 
 class Monna(object):
 
