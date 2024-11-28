@@ -16,23 +16,22 @@ ByzFL Library
 
 .. rubric:: Getting Started
 
-Here you can include any introductory content or installation instructions for your plugin.
+  TBD
 
 .. rubric:: Features
 
-You can outline key features of your plugin here.
+  TBD
 
 .. rubric:: API Reference
 
-You can provide links to the API reference documentation here.
+  TBD
 
 .. rubric:: Contributing
 
-Information on how to contribute to the project can go here.
+  TBD
 
 .. rubric:: License
 
-Include your license information here.
 
 
 Indices and tables
