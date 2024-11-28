@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>byzfl.attacker.attacks &#8212; ByzFL 0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=94d5f328" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=837179f8"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/attacker/attacks';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ByzFL 0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../attacker/index.html">
+    Attacks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aggregators/index.html">
+    Aggregators and pre-aggregators
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../attacker/index.html">
+    Attacks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../pipeline/index.html">
+    Pipeline
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.attacker.attacks</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for byzfl.attacker.attacks</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span>
+
+<div class="viewcode-block" id="NoAttack">
+<a class="viewcode-back" href="../../../attacker/classes/no_attack.html#byzfl.attacker.attacks.NoAttack">[docs]</a>
+<span class="k">class</span> <span class="nc">NoAttack</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Class representing an attack which behaves like an honest node</span>
+
+<span class="sd">    How to use it in experiments</span>
+<span class="sd">    ----------------------------</span>
+<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;NoAttack&quot;,</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
+<span class="sd">    &gt;&gt;&gt; }</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    ---------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span> 
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the arithmetic mean along axis = 0.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns the average of the array elements.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype</span>
+<span class="sd">            Matrix containing arrays whose mean is desired.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mean_vector : ndarray or torch.tensor</span>
+<span class="sd">            The mean vector of the input. The dtype of the outputs will be the same as the input.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        With numpy arrays:</span>
+<span class="sd">            &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
+<span class="sd">            &gt;&gt;&gt;                    [4., 5., 6.], </span>
+<span class="sd">            &gt;&gt;&gt;                    [7., 8., 9.]])</span>
+<span class="sd">            &gt;&gt;&gt; attack = NoAttack()</span>
+<span class="sd">            &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">            &gt;&gt;&gt; print(result)</span>
+<span class="sd">            ndarray([4. 5. 6.])</span>
+<span class="sd">        With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
+<span class="sd">            &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">            &gt;&gt;&gt;                       torch.tensor([4., 5., 6.]), </span>
+<span class="sd">            &gt;&gt;&gt;                       torch.tensor([7., 8., 9.])])</span>
+<span class="sd">            &gt;&gt;&gt; attack = NoAttack()</span>
+<span class="sd">            &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">            &gt;&gt;&gt; print(result)</span>
+<span class="sd">            tensor([4., 5., 6.])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mean_vector</span></div>
+
+
+
+<div class="viewcode-block" id="SignFlipping">
+<a class="viewcode-back" href="../../../attacker/classes/sign_flipping.html#byzfl.attacker.attacks.SignFlipping">[docs]</a>
+<span class="k">class</span> <span class="nc">SignFlipping</span><span class="p">:</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Apply the SignFlipping attack:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{SignFlipping} \ (x_1, \dots, x_n) = </span>
+<span class="sd">        - \frac{1}{n}\sum_{i=1}^{n} x_i    </span>
+<span class="sd">    </span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    None</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        &gt;&gt;&gt; import attacks</span>
+<span class="sd">        &gt;&gt;&gt; attack = attacks.SignFlipping()</span>
+
+<span class="sd">        Using numpy arrays</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        array([-4. -5. -6.])</span>
+<span class="sd">                </span>
+<span class="sd">        Using torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        tensor([-4., -5., -6.])</span>
+
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        array([-4., -5., -6.])</span>
+
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        tensor([-4., -5., -6.])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">mean_vector</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FallOfEmpires">
+<a class="viewcode-back" href="../../../attacker/classes/fall_of_empires.html#byzfl.attacker.attacks.FallOfEmpires">[docs]</a>
+<span class="k">class</span> <span class="nc">FallOfEmpires</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Class representing an attack that scale the mean vector by some factor (1-attack_factor).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    attack_factor : int or float</span>
+<span class="sd">        The factor by which to weaken the mean vector.</span>
+
+<span class="sd">    How to use it in experiments</span>
+<span class="sd">    ----------------------------</span>
+<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;FallOfEmpires&quot;,</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;         &quot;attack_factor&quot;: 3,</span>
+<span class="sd">    &gt;&gt;&gt;      }</span>
+<span class="sd">    &gt;&gt;&gt; }</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attack_factor</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
+    
+<div class="viewcode-block" id="FallOfEmpires.set_attack_parameters">
+<a class="viewcode-back" href="../../../attacker/classes/fall_of_empires.html#byzfl.attacker.attacks.FallOfEmpires.set_attack_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the attack factor for scale the mean vector of honest vectors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        factor : int or float</span>
+<span class="sd">            The factor by which to weaken the mean vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">factor</span>        </div>
+
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the weakened arithmetic mean along axis=0.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype</span>
+<span class="sd">            Matrix containing arrays whose mean is desired.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mean_vector : ndarray or torch.tensor</span>
+<span class="sd">            The scaled vector from mean of honest vectors. </span>
+<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            With numpy arrays:</span>
+<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
+<span class="sd">                &gt;&gt;&gt;                    [4., 5., 6.], </span>
+<span class="sd">                &gt;&gt;&gt;                    [7., 8., 9.]])</span>
+<span class="sd">                &gt;&gt;&gt; attack = FallOfEmpires(attack_factor=3)</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                ndarray([ -8. -10. -12.])</span>
+<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
+<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">                &gt;&gt;&gt;                       torch.tensor([4., 5., 6.]), </span>
+<span class="sd">                &gt;&gt;&gt;                       torch.tensor([7., 8., 9.])])</span>
+<span class="sd">                &gt;&gt;&gt; attack = FallOfEmpires(attack_factor=3)</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                tensor([ -8., -10., -12.])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">mean_vector</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="LittleIsEnough">
+<a class="viewcode-back" href="../../../attacker/classes/little_is_enough.html#byzfl.attacker.attacks.LittleIsEnough">[docs]</a>
+<span class="k">class</span> <span class="nc">LittleIsEnough</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Class representing an attack that perturbs the mean vector of honest </span>
+<span class="sd">        vectors by adding a scaled version of the standard deviation vector.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    attack_factor : int or float</span>
+<span class="sd">        The factor by which to scale the standard deviation vector.</span>
+
+<span class="sd">    How to use it in experiments</span>
+<span class="sd">    ----------------------------</span>
+<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;LittleIsEnough&quot;,</span>
+<span class="sd">    &gt;&gt;&gt;      &quot;parameters&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;          &quot;attack_factor&quot;: 1.5,</span>
+<span class="sd">    &gt;&gt;&gt;      }</span>
+<span class="sd">    &gt;&gt;&gt;  },</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attack_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
+    
+<div class="viewcode-block" id="LittleIsEnough.set_attack_parameters">
+<a class="viewcode-back" href="../../../attacker/classes/little_is_enough.html#byzfl.attacker.attacks.LittleIsEnough.set_attack_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the attack factor for scaling the standard deviation vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        factor : (int or float)</span>
+<span class="sd">            The factor by which to scale the standard deviation vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">factor</span></div>
+
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perturb the mean vector of honest vectors by adding a scaled version </span>
+<span class="sd">            of the standard deviation vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or </span>
+<span class="sd">            complex dtype</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        malicious_vector : ndarray or torch.tensor</span>
+<span class="sd">            The perturbed mean vector of honest vectors.</span>
+<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            With numpy arrays:</span>
+<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
+<span class="sd">                &gt;&gt;&gt;                    [4., 5., 6.], </span>
+<span class="sd">                &gt;&gt;&gt;                    [7., 8., 9.]])</span>
+<span class="sd">                &gt;&gt;&gt; attack = LittleIsEnough(attack_factor=1.5)</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                ndarray([ 8.5  9.5 10.5])</span>
+<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
+<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
+<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
+<span class="sd">                &gt;&gt;&gt; attack = LittleIsEnough(attack_factor=1.5)</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                tensor([ 8.5000,  9.5000, 10.5000])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">attack_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">attack_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span><span class="p">))</span></div>
+
+
+
+
+<div class="viewcode-block" id="Mimic">
+<a class="viewcode-back" href="../../../attacker/classes/mimic.html#byzfl.attacker.attacks.Mimic">[docs]</a>
+<span class="k">class</span> <span class="nc">Mimic</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Class representing an attack where the attacker mimics the behavior of a specific worker.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    worker_to_mimic : int</span>
+<span class="sd">        ID of the worker whose behavior is to be mimicked.</span>
+
+<span class="sd">    How to use it in experiments</span>
+<span class="sd">    ----------------------------</span>
+<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Mimic&quot;,</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;         &quot;worker_to_mimic&quot;: 0</span>
+<span class="sd">    &gt;&gt;&gt;     }</span>
+<span class="sd">    &gt;&gt;&gt; }</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_to_mimic</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span> <span class="o">=</span> <span class="n">worker_to_mimic</span>
+    
+<div class="viewcode-block" id="Mimic.set_attack_parameters">
+<a class="viewcode-back" href="../../../attacker/classes/mimic.html#byzfl.attacker.attacks.Mimic.set_attack_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the worker ID to be mimicked.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        worker : int</span>
+<span class="sd">            ID of the worker whose behavior is to be mimicked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span> <span class="o">=</span> <span class="n">worker</span></div>
+
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the data from the worker to be mimicked.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor</span>
+<span class="sd">            Matrix containing arrays of honest workers data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        malicious_vector : ndarray or torch.tensor</span>
+<span class="sd">            The data from the worker to be mimicked.</span>
+<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">            With numpy arrays:</span>
+<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
+<span class="sd">                                    [4., 5., 6.], </span>
+<span class="sd">                                    [7., 8., 9.]])</span>
+<span class="sd">                &gt;&gt;&gt; attack = Mimic(worker_to_mimic=0)</span>
+<span class="sd">                &gt;&gt;&gt; attack.set_attack_parameters(0)</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                ndarray([1., 2., 3.])</span>
+<span class="sd">            With torch tensors:</span>
+<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">                                        torch.tensor([4., 5., 6.]), </span>
+<span class="sd">                                        torch.tensor([7., 8., 9.])])</span>
+<span class="sd">                &gt;&gt;&gt; attack = Mimic(worker_to_mimic=0)</span>
+<span class="sd">                &gt;&gt;&gt; attack.set_attack_parameters(0)</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                tensor([1., 2., 3.])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">honest_vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span><span class="p">]</span></div>
+
+
+
+
+<div class="viewcode-block" id="Inf">
+<a class="viewcode-back" href="../../../attacker/classes/inf.html#byzfl.attacker.attacks.Inf">[docs]</a>
+<span class="k">class</span> <span class="nc">Inf</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    Class representing an attack that generates a vector </span>
+<span class="sd">        with positive infinity values.</span>
+
+<span class="sd">    How to use it in experiments</span>
+<span class="sd">    ---------------------------</span>
+<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Inf&quot;,</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
+<span class="sd">    &gt;&gt;&gt; }</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a vector with positive infinity values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor</span>
+<span class="sd">            Matrix containing arrays of honest vectors.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        malicious_vector : ndarray or torch.tensor</span>
+<span class="sd">            The malicious vector with all elements set to positive infinity.</span>
+<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">            With numpy arrays:</span>
+<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
+<span class="sd">                &gt;&gt;&gt;                    [4., 5., 6.], </span>
+<span class="sd">                &gt;&gt;&gt;                    [7., 8., 9.]])</span>
+<span class="sd">                &gt;&gt;&gt; attack = Inf()</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                ndarray([inf, inf, inf])</span>
+<span class="sd">            With torch tensors:</span>
+<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">                &gt;&gt;&gt;                       torch.tensor([4., 5., 6.]), </span>
+<span class="sd">                &gt;&gt;&gt;                       torch.tensor([7., 8., 9.])])</span>
+<span class="sd">                &gt;&gt;&gt; attack = Inf()</span>
+<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
+<span class="sd">                &gt;&gt;&gt; print(result)</span>
+<span class="sd">                tensor([inf, inf, inf])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, EPFL.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

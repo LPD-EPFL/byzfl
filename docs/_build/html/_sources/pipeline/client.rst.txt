@@ -1,7 +1,7 @@
 client module
 =============
 
-.. automodule:: client
+.. automodule:: byzfl.pipeline.client
    :members:
    :undoc-members:
    :show-inheritance:

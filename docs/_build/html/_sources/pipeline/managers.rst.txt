@@ -1,7 +1,7 @@
 managers module
 ===============
 
-.. automodule:: managers
+.. automodule:: byzfl.pipeline.managers
    :members:
    :undoc-members:
    :show-inheritance:

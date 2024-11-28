@@ -1,7 +1,7 @@
 dataset module
 ==============
 
-.. automodule:: dataset
+.. automodule:: byzfl.pipeline.dataset
    :members:
    :undoc-members:
    :show-inheritance:

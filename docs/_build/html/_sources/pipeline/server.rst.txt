@@ -1,7 +1,7 @@
 server module
 =============
 
-.. automodule:: server
+.. automodule:: byzfl.pipeline.server
    :members:
    :undoc-members:
    :show-inheritance:

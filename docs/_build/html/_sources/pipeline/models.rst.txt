@@ -1,7 +1,7 @@
 models module
 =============
 
-.. automodule:: models
+.. automodule:: byzfl.pipeline.models
    :members:
    :undoc-members:
    :show-inheritance:

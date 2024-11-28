@@ -1,7 +1,7 @@
 train module
 ============
 
-.. automodule:: train
+.. automodule:: byzfl.pipeline.train
    :members:
    :undoc-members:
    :show-inheritance:

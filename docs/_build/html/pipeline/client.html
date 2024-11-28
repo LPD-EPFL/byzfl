@@ -280,7 +280,7 @@
 <li class="toctree-l1"><a class="reference internal" href="models.html">models module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="train.html">train module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">experiment</a></li>
 </ul>
 </div>
 </nav></div>
@@ -336,8 +336,135 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="client-module">
-<h1>client module<a class="headerlink" href="#client-module" title="Link to this heading">#</a></h1>
+  <section id="module-byzfl.pipeline.client">
+<span id="client-module"></span><h1>client module<a class="headerlink" href="#module-byzfl.pipeline.client" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.client.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface" title="byzfl.pipeline.model_base_interface.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>This class simulates one honest node which is able to train
+his local model to send the gradients and get the global model every round.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<dl class="simple">
+<dt>model_name<span class="classifier">str</span></dt><dd><p>Name of the model to be used</p>
+</dd>
+<dt>device<span class="classifier">str</span></dt><dd><p>Name of the device to be used</p>
+</dd>
+<dt>learning_rate<span class="classifier">float</span></dt><dd><p>Learning rate</p>
+</dd>
+<dt>loss_name<span class="classifier">str</span></dt><dd><p>Name of the loss to be used</p>
+</dd>
+<dt>weight_decay<span class="classifier">float</span></dt><dd><p>Regularization used</p>
+</dd>
+<dt>milestones<span class="classifier">list</span></dt><dd><p>List of the milestones, where the learning rate
+decay should be applied</p>
+</dd>
+<dt>learning_rate_decay<span class="classifier">float</span></dt><dd><p>Rate decreases over time during training</p>
+</dd>
+<dt>attack_name<span class="classifier">str</span></dt><dd><p>Name of the attack to be used</p>
+</dd>
+<dt>momentum<span class="classifier">float</span></dt><dd><p>Momentum</p>
+</dd>
+<dt>training_dataloader<span class="classifier">Dataloader</span></dt><dd><p>Traning dataloader</p>
+</dd>
+<dt>nb_labels<span class="classifier">int</span></dt><dd><p>Number of labels in the dataset</p>
+</dd>
+<dt>nb_steps<span class="classifier">int</span></dt><dd><p>Number of steps in the training</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client.compute_gradients">
+<span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client.compute_gradients" title="Link to this definition">#</a></dt>
+<dd><section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Function where the client compute their gradients
+of their model loss function.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client.get_flat_flipped_gradients">
+<span class="sig-name descname"><span class="pre">get_flat_flipped_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client.get_flat_flipped_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client.get_flat_flipped_gradients" title="Link to this definition">#</a></dt>
+<dd><section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Get the gradients of the model with their targets
+flipped in a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List of the gradients.</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client.get_flat_gradients_with_momentum">
+<span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client.get_flat_gradients_with_momentum" title="Link to this definition">#</a></dt>
+<dd><section id="id3">
+<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Get the gradients of the model applying the momentum
+in a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List with the gradiends with momentum applied.</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client.get_loss_list">
+<span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client.get_loss_list" title="Link to this definition">#</a></dt>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Get the loss list of the client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List with the losses that have been computed over the training.</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client.get_train_accuracy">
+<span class="sig-name descname"><span class="pre">get_train_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client.get_train_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client.get_train_accuracy" title="Link to this definition">#</a></dt>
+<dd><section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>Get the batch train accuracy list of the client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List with the accuracies that have been computed over the training.</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.client.Client.set_model_state">
+<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/client.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.client.Client.set_model_state" title="Link to this definition">#</a></dt>
+<dd><section id="id6">
+<h3>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Sets the state_dict of the model for the state_dict given by parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param state_dict<span class="colon">:</span></dt>
+<dd class="field-odd"><p>State_dict from a model</p>
+</dd>
+<dt class="field-even">type state_dict<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 
@@ -378,6 +505,26 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client.compute_gradients"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client.get_flat_flipped_gradients"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client.get_flat_gradients_with_momentum"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client.get_loss_list"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client.get_train_accuracy"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.client.Client.set_model_state"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

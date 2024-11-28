@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/train';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="main" href="main.html" />
+    <link rel="next" title="experiment" href="experiment.html" />
     <link rel="prev" title="server module" href="server.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -280,7 +280,7 @@
 <li class="toctree-l1"><a class="reference internal" href="models.html">models module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">train module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">experiment</a></li>
 </ul>
 </div>
 </nav></div>
@@ -336,8 +336,102 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="train-module">
-<h1>train module<a class="headerlink" href="#train-module" title="Link to this heading">#</a></h1>
+  <section id="module-byzfl.pipeline.train">
+<span id="train-module"></span><h1>train module<a class="headerlink" href="#module-byzfl.pipeline.train" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.pipeline.train.Train">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.train.</span></span><span class="sig-name descname"><span class="pre">Train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/train.html#Train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.train.Train" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>Class with implements the train algorithms and stores some stadistics
+of the training</p>
+<dl class="field-list simple">
+<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<dl class="simple">
+<dt>nb_steps<span class="classifier">int</span></dt><dd><p>Number of steps to do in the Training</p>
+</dd>
+<dt>evaluation_delta<span class="classifier">int</span></dt><dd><p>How many steps it have to wait to compute accuracy</p>
+</dd>
+<dt>evaulate_on_test<span class="classifier">bool</span></dt><dd><p>Indicates if will be evaluate on test set</p>
+</dd>
+<dt>model_name<span class="classifier">str</span></dt><dd><p>Indicates the model to be used</p>
+</dd>
+<dt>device<span class="classifier">str</span></dt><dd><p>Name of the device used</p>
+</dd>
+<dt>bit_precision<span class="classifier">int</span></dt><dd><p>How many bits will be displayed in the accuracy</p>
+</dd>
+<dt>learning_rate<span class="classifier">float</span></dt><dd><p>Learning rate</p>
+</dd>
+<dt>weight_decay<span class="classifier">float</span></dt><dd><p>Weight decay used</p>
+</dd>
+<dt>learning_rate_decay<span class="classifier">float</span></dt><dd><p>Lerning rate decay used</p>
+</dd>
+<dt>batch_size<span class="classifier">int</span></dt><dd><p>Batch size used in the train dataloaders</p>
+</dd>
+<dt>batch_size_validation: int</dt><dd><p>Batch size used in the validation and test dataloader</p>
+</dd>
+<dt>size_train_set: float</dt><dd><p>Proportion of data from the train that will be used to train</p>
+</dd>
+<dt>dataset_name<span class="classifier">str</span></dt><dd><p>Name of the dataset used</p>
+</dd>
+<dt>nb_labels<span class="classifier">int</span></dt><dd><p>Number of labels in the dataset</p>
+</dd>
+<dt>data_folder<span class="classifier">str</span></dt><dd><p>Path of the folder that contains the data</p>
+</dd>
+<dt>data_distribution_name<span class="classifier">str</span></dt><dd><p>Name of the data distribution</p>
+</dd>
+<dt>distribution_parameter<span class="classifier">float</span></dt><dd><p>Parameter for the data distribution</p>
+</dd>
+<dt>aggregator_info<span class="classifier">dict</span></dt><dd><p>Dictionary with the keys “name” and “parameters” defined.</p>
+</dd>
+<dt>pre_agg_list<span class="classifier">list</span></dt><dd><p>List of dictionaries (one for every pre_agg function)
+where every dictionary have the keys “name” and “parameters” defined.</p>
+</dd>
+<dt>nb_workers<span class="classifier">int</span></dt><dd><p>Number of workers</p>
+</dd>
+<dt>nb_byz<span class="classifier">int</span></dt><dd><p>Number of byzantine nodes</p>
+</dd>
+<dt>declared_nb_byz<span class="classifier">int</span></dt><dd><p>Number of byzantine nodes that the server will try to defend against</p>
+</dd>
+<dt>loss_name<span class="classifier">str</span></dt><dd><p>Loss name to be used</p>
+</dd>
+<dt>milestones<span class="classifier">list</span></dt><dd><p>List of the milestones, where the learning rate decay should be applied</p>
+</dd>
+<dt>learning_rate_decay<span class="classifier">float</span></dt><dd><p>Rate decreases over time during training</p>
+</dd>
+<dt>momentum<span class="classifier">float</span></dt><dd><p>Momentum</p>
+</dd>
+<dt>batch_norm_momentum<span class="classifier">float</span></dt><dd><p>Momentum used in the federated batch norm</p>
+</dd>
+<dt>attack_name<span class="classifier">str</span></dt><dd><p>Attack name</p>
+</dd>
+<dt>attack_parameters<span class="classifier">dict</span></dt><dd><p>Dictionary with the parameters of the attack where every key is the name
+of the paramater and their value is the value of the parameter</p>
+</dd>
+<dt>attack_optimizer_name<span class="classifier">(str, optional)</span></dt><dd><p>Name of the optimizer to be used</p>
+</dd>
+<dt>attack_optimizer_parameters<span class="classifier">(dict, optional)</span></dt><dd><p>Dictionary with the parameters of the optimizer where every
+key is the name of the paramater and their value is the value
+of the parameter</p>
+</dd>
+<dt>store_models<span class="classifier">(bool)</span></dt><dd><p>If true every delta steps the model will be saved</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.train.Train.run_SGD">
+<span class="sig-name descname"><span class="pre">run_SGD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/train.html#Train.run_SGD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.train.Train.run_SGD" title="Link to this definition">#</a></dt>
+<dd><section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Trains the model running SGD for n steps (setting.json)</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 
@@ -360,11 +454,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="main.html"
+       href="experiment.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">main</p>
+        <p class="prev-next-title">experiment</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -378,6 +472,21 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.train.Train"><code class="docutils literal notranslate"><span class="pre">Train</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.train.Train.run_SGD"><code class="docutils literal notranslate"><span class="pre">Train.run_SGD()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

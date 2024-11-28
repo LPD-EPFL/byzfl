@@ -1,7 +1,7 @@
 attack\_optimizers module
 =========================
 
-.. automodule:: attack_optimizers
+.. automodule:: byzfl.attacker.attack_optimizers
    :members:
    :undoc-members:
    :show-inheritance:

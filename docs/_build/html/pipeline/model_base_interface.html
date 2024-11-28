@@ -280,7 +280,7 @@
 <li class="toctree-l1"><a class="reference internal" href="models.html">models module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="server.html">server module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="train.html">train module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">experiment</a></li>
 </ul>
 </div>
 </nav></div>
@@ -336,8 +336,221 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="model-base-interface-module">
-<h1>model_base_interface module<a class="headerlink" href="#model-base-interface-module" title="Link to this heading">#</a></h1>
+  <section id="module-byzfl.pipeline.model_base_interface">
+<span id="model-base-interface-module"></span><h1>model_base_interface module<a class="headerlink" href="#module-byzfl.pipeline.model_base_interface" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.model_base_interface.</span></span><span class="sig-name descname"><span class="pre">ModelBaseInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>This class serves as an abstract interface that defines the methods
+required for classes that encapsulate a model. All subclasses that
+contain a model should inherit from this class to ensure they implement
+the necessary methods for handling model-related operations and information
+exchange.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param All this parameters should be passed in a dictionary that contains the following keys.<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<dl class="simple">
+<dt>model-name<span class="classifier">str</span></dt><dd><p>Indicates the model to be used</p>
+</dd>
+<dt>device<span class="classifier">str</span></dt><dd><p>Name of the device used</p>
+</dd>
+<dt>learning-rate<span class="classifier">float</span></dt><dd><p>Learning rate</p>
+</dd>
+<dt>weight-decay<span class="classifier">float</span></dt><dd><p>Regularization used</p>
+</dd>
+<dt>milestones<span class="classifier">list</span></dt><dd><p>List of the milestones, where the learning rate decay should be applied</p>
+</dd>
+<dt>learning-rate-decay<span class="classifier">float</span></dt><dd><p>Rate decreases over time during training</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.compute_batch_norm_keys">
+<span class="sig-name descname"><span class="pre">compute_batch_norm_keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.compute_batch_norm_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.compute_batch_norm_keys" title="Link to this definition">#</a></dt>
+<dd><section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Compute batch normalization keys.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.get_batch_norm_stats">
+<span class="sig-name descname"><span class="pre">get_batch_norm_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.get_batch_norm_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_batch_norm_stats" title="Link to this definition">#</a></dt>
+<dd><section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Get the batch norm stats of the model in a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dicctionary where the keys are the name of the parameters</strong></p></li>
+<li><p><strong>of batch norm stats and their values.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.get_dict_gradients">
+<span class="sig-name descname"><span class="pre">get_dict_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.get_dict_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_dict_gradients" title="Link to this definition">#</a></dt>
+<dd><section id="id3">
+<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Get the gradients of the model in a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dicctionary where the keys are the name of the parameters</strong></p></li>
+<li><p><strong>and the values are the gradients.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.get_dict_parameters">
+<span class="sig-name descname"><span class="pre">get_dict_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.get_dict_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_dict_parameters" title="Link to this definition">#</a></dt>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Get the gradients of the model in a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dicctionary where the keys are the name of the parameters</strong></p></li>
+<li><p><strong>and de values are the gradients.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats">
+<span class="sig-name descname"><span class="pre">get_flat_batch_norm_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.get_flat_batch_norm_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats" title="Link to this definition">#</a></dt>
+<dd><section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>Get the batch norm stats of the model in a flatten array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Array with the values of the batch norm stats.</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_gradients">
+<span class="sig-name descname"><span class="pre">get_flat_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.get_flat_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_gradients" title="Link to this definition">#</a></dt>
+<dd><section id="id6">
+<h3>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Get the gradients of the model in a flat array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List of the gradients</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_parameters">
+<span class="sig-name descname"><span class="pre">get_flat_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.get_flat_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_parameters" title="Link to this definition">#</a></dt>
+<dd><section id="id7">
+<h3>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Get the gradients of the model in a flat array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>List of the gradients</strong></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.set_gradients">
+<span class="sig-name descname"><span class="pre">set_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.set_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_gradients" title="Link to this definition">#</a></dt>
+<dd><section id="id8">
+<h3>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>Sets the model gradients given a flat vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param flat_vector<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flat list with the parameters</p>
+</dd>
+<dt class="field-even">type flat_vector<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.set_model_state">
+<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_model_state" title="Link to this definition">#</a></dt>
+<dd><section id="id9">
+<h3>Description<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>Sets the state_dict of the model for the state_dict given by parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param state_dict<span class="colon">:</span></dt>
+<dd class="field-odd"><p>State_dict from a model</p>
+</dd>
+<dt class="field-even">type state_dict<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_parameters" title="Link to this definition">#</a></dt>
+<dd><section id="id10">
+<h3>Description<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>Sets the model parameters given a flat vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param flat_vector<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flat list with the parameters</p>
+</dd>
+<dt class="field-even">type flat_vector<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.use_batch_norm">
+<span class="sig-name descname"><span class="pre">use_batch_norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.use_batch_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.use_batch_norm" title="Link to this definition">#</a></dt>
+<dd><section id="id11">
+<h3>Description<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>Getter to determine whether the model is using Batch Normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bool</strong> – A boolean indicating whether the model is utilizing Batch Normalization.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.pipeline.model_base_interface.ModelBaseInterface.use_federated_batch_norm">
+<span class="sig-name descname"><span class="pre">use_federated_batch_norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/model_base_interface.html#ModelBaseInterface.use_federated_batch_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.use_federated_batch_norm" title="Link to this definition">#</a></dt>
+<dd><section id="id12">
+<h3>Description<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Getter to determine whether the model is using Federated Batch Normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bool</strong> – A boolean indicating whether the model is utilizing Federated Batch Normalization.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 
@@ -378,6 +591,32 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.compute_batch_norm_keys"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.compute_batch_norm_keys()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_batch_norm_stats()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_dict_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_dict_gradients()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_dict_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_dict_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_batch_norm_stats"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_flat_batch_norm_stats()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_flat_gradients()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_flat_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.set_gradients()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_model_state"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.set_model_state()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.set_parameters()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.use_batch_norm"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.use_batch_norm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.model_base_interface.ModelBaseInterface.use_federated_batch_norm"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.use_federated_batch_norm()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

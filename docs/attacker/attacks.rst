@@ -1,7 +1,7 @@
 attacks module
 ==============
 
-.. automodule:: attacks
+.. automodule:: byzfl.attacker.attacks
    :members:
    :undoc-members:
    :show-inheritance:
