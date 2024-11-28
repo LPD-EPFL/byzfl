@@ -61,7 +61,7 @@ class RobustAggregator(object):
 
             self.pre_agg_list.append(pre_agg)
 
-    def aggregate(self, vectors):
+    def __call__(self, vectors):
         """
         Description
         -----------

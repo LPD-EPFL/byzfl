@@ -100,7 +100,7 @@ class Server(ModelBaseInterface):
         list or ndarray or torch.Tensor
             The average vector of the input. The data type of the output will be the same as the input.
         """
-        return self.robust_aggregator.aggregate(vectors)
+        return self.robust_aggregator(vectors)
     
     def update_model(self, gradients):
         """
@@ -146,12 +146,12 @@ class Server(ModelBaseInterface):
         batch_norm_stats : list
             Flat list with the bath norm statistics
         """
-        agg_mean = self.robust_aggregator_mean.aggregate(new_running_mean)
-        agg_var = self.robust_aggregator_var.aggregate(new_running_var)
+        agg_mean = self.robust_aggregator_mean(new_running_mean)
+        agg_var = self.robust_aggregator_var(new_running_var)
 
         if self.use_federated_batch_norm():
             list_of_bias = [(param - agg_mean)**2 for param in new_running_mean]
-            agg_bias = self.robust_aggregator_bias.aggregate(list_of_bias)
+            agg_bias = self.robust_aggregator_bias(list_of_bias)
             agg_var = agg_var + (self.nb_workers*self.batch_size / (self.batch_norm_momentum * (self.nb_workers*self.batch_size - 1))) * agg_bias
         
         self.set_batch_norm_stats(agg_mean, agg_var)
