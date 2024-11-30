@@ -52,7 +52,7 @@ html_static_path = ['_static']
 html_css_files = ['custom.css','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css']
 html_show_sourcelink = False
 html_theme_options = {
-    "header_links_before_dropdown": 3,  # Adjust based on the layout
+    "header_links_before_dropdown": 5,  # Adjust based on the layout
     "icon_links": [
         {
             "name": "GitHub",
