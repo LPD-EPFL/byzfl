@@ -3,20 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-ByzFL Library
-==============================================================
-
 .. toctree::
-   :maxdepth: 1 
-   :caption: Table of Content
+  :hidden:
+  :titlesonly:
+  
+  aggregators/index
+  attacker/index
+  pipeline/index
 
-   aggregators/index
-   attacker/index
-   pipeline/index
+Welcome to the official documentation web page of ByzFL powered by `DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_!
 
+ByzFL is a Python Library for Byzantine-resilient Federated Learning 
+compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays
+   
 .. rubric:: Getting Started
 
-  TBD
+  
 
 .. rubric:: Features
 
@@ -32,14 +34,6 @@ ByzFL Library
 
 .. rubric:: License
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
 
 

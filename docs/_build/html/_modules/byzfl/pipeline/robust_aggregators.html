@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=94d5f328" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
@@ -74,8 +75,8 @@
   <input type="search"
          class="form-control"
          name="q"
-         placeholder="Search the docs ..."
-         aria-label="Search the docs ..."
+         placeholder="None"
+         aria-label="None"
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -110,8 +111,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../../../_static/byzfl_logo.png" class="logo__image only-light" alt="ByzFL 0.0 documentation - Home"/>
+    <img src="../../../_static/byzfl_logo.png" class="logo__image only-dark pst-js-only" alt="ByzFL 0.0 documentation - Home"/>
   
-    <p class="title logo__title">ByzFL 0.0 documentation</p>
   
 </a></div>
     
@@ -127,7 +134,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../aggregators/index.html">
-    Aggregators and pre-aggregators
+    Aggregations
   </a>
 </li>
 
@@ -171,6 +178,22 @@
   <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
   <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
 </button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
       
     </div>
     
@@ -218,7 +241,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../aggregators/index.html">
-    Aggregators and pre-aggregators
+    Aggregations
   </a>
 </li>
 
@@ -253,6 +276,22 @@
   <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
   <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
 </button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
         
       </div>
     
@@ -374,9 +413,7 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">)</span>
 
-<div class="viewcode-block" id="RobustAggregator.aggregate">
-<a class="viewcode-back" href="../../../pipeline/robust_aggregators.html#byzfl.pipeline.robust_aggregators.RobustAggregator.aggregate">[docs]</a>
-    <span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
@@ -399,7 +436,6 @@
         <span class="n">aggregate_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>  
 
         <span class="k">return</span> <span class="n">aggregate_vector</span></div>
-</div>
 
 </pre></div>
 

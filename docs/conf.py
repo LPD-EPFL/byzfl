@@ -19,6 +19,7 @@ copyright = '2024, EPFL'
 author = 'Geovani Rizk, John Stephan, Marc Gonzalez'
 release = '0.0'
 
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
@@ -47,7 +48,23 @@ autosummary_generate=True
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
-html_css_files = ['custom.css']
+html_css_files = ['custom.css','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css']
+html_show_sourcelink = False
+html_theme_options = {
+    "search_bar": None,
+    "header_links_before_dropdown": 3,  # Adjust based on the layout
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/LPD-EPFL/byzfl",  # Replace with your repo URL
+            "icon": "fab fa-github",  # Font Awesome GitHub icon
+            "type": "fontawesome",  # Ensures the correct icon rendering
+        },
+    ],
+}
+
+html_logo = "_static/byzfl_logo.png"
+
 
 
 napoleon_custom_sections = [

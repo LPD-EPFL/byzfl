@@ -1,3 +1,15 @@
 .MathJax {
   vertical-align: sub;
 }
+
+/*.reference{*/
+/*  test-underline: None,*/
+/*}*/
+
+a {
+  text-decoration: none;
+}
+
+.reference {
+  text-decoration: none;
+}

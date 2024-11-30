@@ -32,7 +32,8 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=94d5f328" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=30c2a97f" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
   <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
@@ -113,8 +114,14 @@
   
   
   
+    
+    
+      
+    
+    
+    <img src="../_static/byzfl_logo.png" class="logo__image only-light" alt="ByzFL 0.0 documentation - Home"/>
+    <img src="../_static/byzfl_logo.png" class="logo__image only-dark pst-js-only" alt="ByzFL 0.0 documentation - Home"/>
   
-    <p class="title logo__title">ByzFL 0.0 documentation</p>
   
 </a></div>
     
@@ -130,7 +137,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../aggregators/index.html">
-    Aggregators and pre-aggregators
+    Aggregations
   </a>
 </li>
 
@@ -174,6 +181,22 @@
   <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
   <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
 </button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
       
     </div>
     
@@ -223,7 +246,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../aggregators/index.html">
-    Aggregators and pre-aggregators
+    Aggregations
   </a>
 </li>
 
@@ -258,6 +281,22 @@
   <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
   <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
 </button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
         
       </div>
     
@@ -362,27 +401,6 @@ where every dictionary have the keys “name” and “parameters” defined.</p
 <dd class="field-even"><p>list</p>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.pipeline.robust_aggregators.RobustAggregator.aggregate">
-<span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/robust_aggregators.html#RobustAggregator.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.robust_aggregators.RobustAggregator.aggregate" title="Link to this definition">#</a></dt>
-<dd><section id="id1">
-<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>Apply pre-aggregations and aggregations to the vectors</p>
-<dl class="field-list simple">
-<dt class="field-odd">param vectors<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of vectors or a matrix (2D array/tensor) where each
-row represents a vector.</p>
-</dd>
-<dt class="field-even">type vectors<span class="colon">:</span></dt>
-<dd class="field-even"><p>(list or np.ndarray or torch.Tensor)</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ndarray or torch.Tensor</strong> – Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
 </section>
 </dd></dl>
 
@@ -435,21 +453,9 @@ row represents a vector.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.robust_aggregators.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.robust_aggregators.RobustAggregator.aggregate"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.robust_aggregators.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a></li>
 </ul>
   </nav></div>
-
-  <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/pipeline/robust_aggregators.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
 
 </div></div>
               
