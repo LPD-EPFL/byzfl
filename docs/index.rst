@@ -11,28 +11,26 @@
   attacker/index
   pipeline/index
 
-Welcome to the official documentation web page of ByzFL powered by `DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_!
+
+
+.. raw:: html
+
+   <div style="visibility: hidden;height:1px;">
+ByzFL Documentation
+===================
+.. raw:: html
+
+   </div>
+Welcome to the official documentation of ByzFL powered by `DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_!
 
 ByzFL is a Python Library for Byzantine-resilient Federated Learning 
 compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays
    
 .. rubric:: Getting Started
 
-  
+You can install the ByzFL module with pip3 command
 
-.. rubric:: Features
-
-  TBD
-
-.. rubric:: API Reference
-
-  TBD
-
-.. rubric:: Contributing
-
-  TBD
-
-.. rubric:: License
+  >>> pip install byzfl
 
 
 

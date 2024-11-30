@@ -17,7 +17,6 @@ sys.path.insert(0, os.path.abspath(".."))
 project = 'ByzFL'
 copyright = '2024, EPFL'
 author = 'Geovani Rizk, John Stephan, Marc Gonzalez'
-release = '0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,7 +30,8 @@ extensions = ["sphinx.ext.todo",
               "sphinx.ext.napoleon",
               "sphinx_copybutton", 
               "sphinx.ext.autosectionlabel", 
-              "sphinx.ext.intersphinx"]
+              "sphinx.ext.intersphinx",
+              "sphinx_favicon"]
 
 
 # Use MathJax to render math in HTML
@@ -47,12 +47,12 @@ autosummary_generate=True
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "pydata_sphinx_theme"
+html_title = "ByzFL"
 html_static_path = ['_static']
 html_css_files = ['custom.css','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css']
 html_show_sourcelink = False
 html_theme_options = {
-    "search_bar": None,
-    "header_links_before_dropdown": 3,  # Adjust based on the layout
+    "header_links_before_dropdown": 1,  # Adjust based on the layout
     "icon_links": [
         {
             "name": "GitHub",
@@ -60,12 +60,19 @@ html_theme_options = {
             "icon": "fab fa-github",  # Font Awesome GitHub icon
             "type": "fontawesome",  # Ensures the correct icon rendering
         },
+        {
+            "name": "PyPi",
+            "url": "https://pypi.org/project/byzfl/",  # Replace with your repo URL
+            "icon": "fa-custom fa-pypi",  # Font Awesome GitHub icon
+            "type": "fontawesome",  # Ensures the correct icon rendering
+        },
+
     ],
 }
 
 html_logo = "_static/byzfl_logo.png"
-
-
+html_js_files = ["custom-icon.js"]
+html_favicon = "_static/favicon.ico"
 
 napoleon_custom_sections = [
 	("Initialization parameters", "params_style"),
