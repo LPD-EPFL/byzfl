@@ -27,10 +27,10 @@ Welcome to the official documentation of ByzFL powered by `DCL <http://dcl.epfl.
 ByzFL is a Python Library for Byzantine-resilient Federated Learning 
 compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays.
 
-ByzFL provide three main tools.
+ByzFL provides three main tools.
 
-1. Robust aggregation and pre-aggregation.
-2. Implementation of Attacks.
+1. Robust aggregations and pre-aggregations.
+2. Implementation of attacks.
 3. Pipeline to train and benchmark new methods using ByzFL implemented schemes.
 
 Our code is available on `Github <https://github.com/LPD-EPFL/byzfl>`_
