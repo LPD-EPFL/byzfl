@@ -42,7 +42,7 @@ You can install the ByzFL module with pip command
 
   >>> pip install byzfl
 
-The `byzfl` module is then redeay to use. For instance, to use the :ref:`trmean-label` robust aggregation:
+The `byzfl` module is then ready to use. For instance, to use the :ref:`trmean-label` robust aggregation:
 
   >>> import byzfl
   >>> import numpy as np
