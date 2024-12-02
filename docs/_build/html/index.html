@@ -370,29 +370,29 @@
 <h1>ByzFL Documentation<a class="headerlink" href="#byzfl-documentation" title="Link to this heading">#</a></h1>
 </div><p>Welcome to the official documentation of ByzFL powered by <a class="reference external" href="http://dcl.epfl.ch">DCL</a> from <a class="reference external" href="http://epfl.ch">EPFL</a>!</p>
 <p>ByzFL is a Python Library for Byzantine-resilient Federated Learning
-compatible with <a class="reference external" href="http://pytorch.org">PyTorch</a> tensors and  <a class="reference external" href="http://numpy.org">NumPy</a> arrays</p>
+compatible with <a class="reference external" href="http://pytorch.org">PyTorch</a> tensors and  <a class="reference external" href="http://numpy.org">NumPy</a> arrays.</p>
 <p>ByzFL provide three main tools.</p>
 <ol class="arabic simple">
 <li><p>Robust aggregation and pre-aggregation.</p></li>
-<li><p>Implementation of Attacks</p></li>
-<li><p>Pipeline to train and benchmark new methods using ByzFL implemented schemes</p></li>
+<li><p>Implementation of Attacks.</p></li>
+<li><p>Pipeline to train and benchmark new methods using ByzFL implemented schemes.</p></li>
 </ol>
 <p>Our code is available on <a class="reference external" href="https://github.com/LPD-EPFL/byzfl">Github</a></p>
 <p class="rubric">Getting Started</p>
-<p>You can install the ByzFL module with pip command</p>
+<p>You can install the ByzFL module with pip command.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">byzfl</span>
 </pre></div>
 </div>
-<p>The <cite>byzfl</cite> module is then ready to use. For instance, to use the <a class="reference internal" href="aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> robust aggregation:</p>
+<p>The <cite>byzfl</cite> module is then ready to use. For instance, to use the <a class="reference internal" href="aggregators/classes/mda.html#mda-label"><span class="std std-ref">Minimum-Diameter Averaging</span></a> robust aggregation:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">TrMean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">MDA</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([4. 5. 6.])</span>
+<span class="go">array([2.5 3.5. 4.5])</span>
 </pre></div>
 </div>
 <p>Learn more about ByzFL:</p>

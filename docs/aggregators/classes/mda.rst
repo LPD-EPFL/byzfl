@@ -1,3 +1,5 @@
+.. _mda-label:
+
 Minimum-Diameter Averaging
 ===========================
 

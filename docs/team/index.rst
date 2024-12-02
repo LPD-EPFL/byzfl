@@ -51,7 +51,7 @@ Our Team
       <img src="../_static/rafael_pinot.jpg" alt="Rafael Pinot" style="width:100%">
       <div class="container">
         <h2>Rafael Pinot</h2>
-        <p>Junior Professor @ Sorbonne Université</p>
+        <p>Junior Professor @Sorbonne Université</p>
       </div>
     </div>
   </div>
@@ -60,7 +60,7 @@ Our Team
     <div class="card">
       <img src="../_static/francois_taiani.jpg" alt="Jane" style="width:100%">
       <div class="container">
-        <h2>Francois Taiani</h2>
+        <h2>François Taiani</h2>
         <p> Professor @Université de Rennes and @IRISA/INRIA</p>
       </div>
     </div>

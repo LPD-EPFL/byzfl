@@ -25,34 +25,34 @@ ByzFL Documentation
 Welcome to the official documentation of ByzFL powered by `DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_!
 
 ByzFL is a Python Library for Byzantine-resilient Federated Learning 
-compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays
+compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays.
 
 ByzFL provide three main tools.
 
 1. Robust aggregation and pre-aggregation.
-2. Implementation of Attacks
-3. Pipeline to train and benchmark new methods using ByzFL implemented schemes
+2. Implementation of Attacks.
+3. Pipeline to train and benchmark new methods using ByzFL implemented schemes.
 
 Our code is available on `Github <https://github.com/LPD-EPFL/byzfl>`_
 
 
 .. rubric:: Getting Started
 
-You can install the ByzFL module with pip command
+You can install the ByzFL module with pip command.
 
   >>> pip install byzfl
 
-The `byzfl` module is then ready to use. For instance, to use the :ref:`trmean-label` robust aggregation:
+The `byzfl` module is then ready to use. For instance, to use the :ref:`mda-label` robust aggregation:
 
   >>> import byzfl
   >>> import numpy as np
   >>> 
-  >>> agg = byzfl.TrMean(1)
+  >>> agg = byzfl.MDA(1)
   >>> x = np.array([[1., 2., 3.],       # np.ndarray
   >>>               [4., 5., 6.],
   >>>               [7., 8., 9.]])
   >>> agg(x)
-  array([4. 5. 6.])
+  array([2.5 3.5. 4.5])
 
 Learn more about ByzFL:
 
