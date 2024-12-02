@@ -1,3 +1,5 @@
+.. _pipeline-label:
+
 Pipeline
 ================
 

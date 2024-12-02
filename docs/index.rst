@@ -10,6 +10,7 @@
   aggregators/index
   attacker/index
   pipeline/index
+  team/index
 
 
 
@@ -25,13 +26,82 @@ Welcome to the official documentation of ByzFL powered by `DCL <http://dcl.epfl.
 
 ByzFL is a Python Library for Byzantine-resilient Federated Learning 
 compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays
-   
+
+ByzFL provide three main tools.
+
+1. Robust aggregation and pre-aggregation.
+2. Implementation of Attacks
+3. Pipeline to train and benchmark new methods using ByzFL implemented schemes
+
+Our code is available on `Github <https://github.com/LPD-EPFL/byzfl>`_
+
+
 .. rubric:: Getting Started
 
-You can install the ByzFL module with pip3 command
+You can install the ByzFL module with pip command
 
   >>> pip install byzfl
 
+The `byzfl` module is then redeay to use. For instance, to use the :ref:`trmean-label` robust aggregation:
 
+  >>> import byzfl
+  >>> import numpy as np
+  >>> 
+  >>> agg = byzfl.TrMean(1)
+  >>> x = np.array([[1., 2., 3.],       # np.ndarray
+  >>>               [4., 5., 6.],
+  >>>               [7., 8., 9.]])
+  >>> agg(x)
+  array([4. 5. 6.])
 
+Learn more about ByzFL:
+
+.. raw:: html
+
+  <div class="row">
+  <div class="column">
+    <div class="card">
+      <div class="container">
+        <h2>Aggregations</h2>
+        <p>
+
+:ref:`Get Started <aggregations-label>`
+
+.. raw:: html
+
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <div class="container">
+        <h2>Attacks</h2>
+
+:ref:`Get Started <attacks-label>`
+
+.. raw:: html
+
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <div class="container">
+        <h2>Pipeline</h2>
+
+:ref:`Get Started <pipeline-label>`
+
+.. raw:: html
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+.. rubric:: Lisence
+
+`MIT <https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt>`_
 

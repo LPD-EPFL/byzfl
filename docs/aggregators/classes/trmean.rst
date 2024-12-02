@@ -1,3 +1,5 @@
+.. _trmean-label:
+
 Trimmed Mean
 =============
 

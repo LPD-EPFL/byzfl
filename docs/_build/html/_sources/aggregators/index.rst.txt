@@ -1,3 +1,5 @@
+.. _aggregations-label:
+
 Aggregations
 ============
 
