@@ -22,7 +22,10 @@ ByzFL Documentation
 .. raw:: html
 
    </div>
-Welcome to the official documentation of ByzFL powered by `DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_!
+Welcome to the official documentation of ByzFL powered by 
+`DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_ and by
+`WIDE <https://team.inria.fr/wide/>`_ from 
+`INRIA Rennes <https://www.inria.fr/fr/centre-inria-universite-rennes>`_!
 
 ByzFL is a Python Library for Byzantine-resilient Federated Learning 
 compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays.
