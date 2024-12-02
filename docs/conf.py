@@ -46,6 +46,10 @@ autosummary_generate=True
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
+html_sidebars = {
+    "team/index": [],
+}
+
 html_theme = "pydata_sphinx_theme"
 html_title = "ByzFL"
 html_static_path = ['_static']
