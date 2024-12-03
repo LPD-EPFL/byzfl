@@ -9,13 +9,6 @@ class NoAttack(object):
     -----------
     Class representing an attack which behaves like an honest node
 
-    How to use it in experiments
-    ----------------------------
-    >>> "attack": {
-    >>>     "name": "NoAttack",
-    >>>     "parameters": {}
-    >>> }
-
     Methods
     ---------
     """
