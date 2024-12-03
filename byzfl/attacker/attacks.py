@@ -7,7 +7,7 @@ class NoAttack(object):
     """
     Description
     -----------
-    Class representing an attack which behaves like an honest node
+    Class representing an attack which behaves like an honest node.
 
     Methods
     ---------
