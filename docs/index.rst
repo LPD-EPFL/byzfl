@@ -55,7 +55,7 @@ The `byzfl` module is then ready to use. For instance, to use the :ref:`mda-labe
   >>>               [4., 5., 6.],
   >>>               [7., 8., 9.]])
   >>> agg(x)
-  array([2.5 3.5. 4.5])
+  array([2.5 3.5 4.5])
 
 Learn more about ByzFL:
 
