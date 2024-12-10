@@ -639,86 +639,95 @@
 
 
 
-<div class="viewcode-block" id="LittleIsEnough">
-<a class="viewcode-back" href="../../../attacker/classes/little_is_enough.html#byzfl.attacker.attacks.LittleIsEnough">[docs]</a>
-<span class="k">class</span> <span class="nc">LittleIsEnough</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ALittleIsEnough">
+<a class="viewcode-back" href="../../../attacker/classes/little_is_enough.html#byzfl.attacker.attacks.ALittleIsEnough">[docs]</a>
+<span class="k">class</span> <span class="nc">ALittleIsEnough</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    Class representing an attack that perturbs the mean vector of honest </span>
-<span class="sd">        vectors by adding a scaled version of the standard deviation vector.</span>
+
+<span class="sd">    Execute the A Little is Enough (ALIE) attack [1]_: perturb the mean vector using the coordinate-wise standard deviation of the vectors scaled with the attack factor :math:`\tau`.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}</span>
 <span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    attack_factor : int or float</span>
-<span class="sd">        The factor by which to scale the standard deviation vector.</span>
+<span class="sd">    where :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector, :math:`\sigma_{x_1, \dots, x_n} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \mu_{x_1, \dots, x_n})^2}` is the coordinate-wise standard deviation of the input vectors :math:`x_1, \dots, x_n`, and :math:`\tau` is the attack factor.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;LittleIsEnough&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;      &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;          &quot;attack_factor&quot;: 1.5,</span>
-<span class="sd">    &gt;&gt;&gt;      }</span>
-<span class="sd">    &gt;&gt;&gt;  },</span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
 
-<span class="sd">    Methods</span>
+<span class="sd">    tau : int or float</span>
+<span class="sd">        The attack factor :math:`\tau` used to adjust the mean vector. Set to 1.5 by default.</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
+
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.ALittleIsEnough(1.5)</span>
+
+<span class="sd">    Using numpy arrays:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.], </span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([ 8.5  9.5 10.5])</span>
+<span class="sd">    </span>
+<span class="sd">    Using torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">    &gt;&gt;&gt;                  torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;                  torch.tensor([7., 8., 9.])])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([ 8.5000,  9.5000, 10.5000])</span>
+
+<span class="sd">    Using list of numpy arrays</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([ 8.5  9.5 10.5])</span>
+
+<span class="sd">    Using list of torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([ 8.5000,  9.5000, 10.5000])</span>
+<span class="sd">   </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Baruch, M., Baruch, G., and Goldberg, Y. A little is enough: Circumventing defenses for distributed learning.</span>
+<span class="sd">           In Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, 8-14 December 2019, Long Beach, CA, USA, 2019.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attack_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
-    
-<div class="viewcode-block" id="LittleIsEnough.set_attack_parameters">
-<a class="viewcode-back" href="../../../attacker/classes/little_is_enough.html#byzfl.attacker.attacks.LittleIsEnough.set_attack_parameters">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the attack factor for scaling the standard deviation vector.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        factor : (int or float)</span>
-<span class="sd">            The factor by which to scale the standard deviation vector.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">factor</span></div>
-
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perturb the mean vector of honest vectors by adding a scaled version </span>
-<span class="sd">            of the standard deviation vector.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or </span>
-<span class="sd">            complex dtype</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        malicious_vector : ndarray or torch.tensor</span>
-<span class="sd">            The perturbed mean vector of honest vectors.</span>
-<span class="sd">            The dtype of the outputs is the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                    [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                    [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; attack = LittleIsEnough(attack_factor=1.5)</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([ 8.5  9.5 10.5])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; attack = LittleIsEnough(attack_factor=1.5)</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([ 8.5000,  9.5000, 10.5000])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">attack_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>

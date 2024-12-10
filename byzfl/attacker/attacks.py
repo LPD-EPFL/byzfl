@@ -240,81 +240,93 @@ class FallOfEmpires:
         return tools.multiply(mean_vector, 1 - self.tau)
 
 
-class LittleIsEnough():
-    """
+class ALittleIsEnough():
+    r"""
     Description
     -----------
-    Class representing an attack that perturbs the mean vector of honest 
-        vectors by adding a scaled version of the standard deviation vector.
+
+    Execute the A Little is Enough (ALIE) attack [1]_: perturb the mean vector using the coordinate-wise standard deviation of the vectors scaled with the attack factor :math:`\tau`.
+
+    .. math::
+
+        \text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}
     
-    Parameters
-    ----------
-    attack_factor : int or float
-        The factor by which to scale the standard deviation vector.
+    where :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector, :math:`\sigma_{x_1, \dots, x_n} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \mu_{x_1, \dots, x_n})^2}` is the coordinate-wise standard deviation of the input vectors :math:`x_1, \dots, x_n`, and :math:`\tau` is the attack factor.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "attack": {
-    >>>     "name": "LittleIsEnough",
-    >>>      "parameters": {
-    >>>          "attack_factor": 1.5,
-    >>>      }
-    >>>  },
+    Initialization parameters
+    --------------------------
 
-    Methods
+    tau : int or float
+        The attack factor :math:`\tau` used to adjust the mean vector. Set to 1.5 by default.
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+
+    Returns
     -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output is the same as the input.
+    
+    Examples
+    --------
+
+    >>> import byzfl
+    >>> attack = byzfl.ALittleIsEnough(1.5)
+
+    Using numpy arrays:
+
+    >>> import numppy as np
+    >>> x = np.array([[1., 2., 3.], 
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> attack(x)
+    array([ 8.5  9.5 10.5])
+    
+    Using torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
+    
+    >>> import torch
+    >>> x = torch.stack([torch.tensor([1., 2., 3.]),
+    >>>                  torch.tensor([4., 5., 6.]), 
+    >>>                  torch.tensor([7., 8., 9.])])
+    >>> attack(x)
+    tensor([ 8.5000,  9.5000, 10.5000])
+
+    Using list of numpy arrays
+
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> attack(x)
+    array([ 8.5  9.5 10.5])
+
+    Using list of torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> attack(x)
+    tensor([ 8.5000,  9.5000, 10.5000])
+   
+    References
+    ----------
+
+    .. [1] Baruch, M., Baruch, G., and Goldberg, Y. A little is enough: Circumventing defenses for distributed learning.
+           In Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, 8-14 December 2019, Long Beach, CA, USA, 2019.
+
     """
 
-    def __init__(self, attack_factor=1.5):
-        self.attack_factor = attack_factor
-    
-    def set_attack_parameters(self, factor):
-        """
-        Set the attack factor for scaling the standard deviation vector.
-
-        Parameters
-        ----------
-        factor : (int or float)
-            The factor by which to scale the standard deviation vector.
-        """
-        self.attack_factor = factor
+    def __init__(self, tau=1.5):
+        self.tau = tau
     
     def __call__(self, honest_vectors):
-        """
-        Perturb the mean vector of honest vectors by adding a scaled version 
-            of the standard deviation vector.
-
-        Parameters
-        ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or 
-            complex dtype
-
-        Returns
-        -------
-        malicious_vector : ndarray or torch.tensor
-            The perturbed mean vector of honest vectors.
-            The dtype of the outputs is the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> matrix = np.array([[1., 2., 3.], 
-                >>>                    [4., 5., 6.], 
-                >>>                    [7., 8., 9.]])
-                >>> attack = LittleIsEnough(attack_factor=1.5)
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                ndarray([ 8.5  9.5 10.5])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> matrix = torch.stack([torch.tensor([1., 2., 3.]),
-                >>>                        torch.tensor([4., 5., 6.]), 
-                >>>                        torch.tensor([7., 8., 9.])])
-                >>> attack = LittleIsEnough(attack_factor=1.5)
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                tensor([ 8.5000,  9.5000, 10.5000])
-        """
-
         tools, honest_vectors = check_vectors_type(honest_vectors)
         attack_vector = tools.sqrt(tools.var(honest_vectors, axis=0, ddof=1))
         return tools.add(tools.mean(honest_vectors, axis=0),
