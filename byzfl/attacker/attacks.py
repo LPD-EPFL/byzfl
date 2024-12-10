@@ -244,6 +244,7 @@ class FallOfEmpires:
 
 
 class ALittleIsEnough():
+    
     r"""
     Description
     -----------
@@ -336,84 +337,94 @@ class ALittleIsEnough():
                 tools.multiply(attack_vector, self.attack_factor))
 
 
-
 class Mimic():
-    """
+    
+    r"""
     Description
     -----------
-    Class representing an attack where the attacker mimics the behavior of a specific worker.
 
-    Parameters
-    ----------
-    worker_to_mimic : int
-        ID of the worker whose behavior is to be mimicked.
+    Execute the Mimic attack [1]_: the attacker mimics the behavior of worker with ID :math:`\epsilon` by sending the same vector as that worker.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "attack": {
-    >>>     "name": "Mimic",
-    >>>     "parameters": {
-    >>>         "worker_to_mimic": 0
-    >>>     }
-    >>> }
+    .. math::
 
-    Methods
+        \text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon}
+    
+    where :math:`\epsilon \in \{0, 1, \dots, n-1\}` is the ID of the worker to mimic.
+
+    Initialization parameters
+    --------------------------
+
+    epsilon : int
+        ID of the worker whose behavior is to be mimicked. Set to 0 by default.
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+
+    Returns
     -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output is the same as the input.
+    
+    Examples
+    --------
+    
+    >>> import byzfl
+    >>> attack = byzfl.Mimic(0)
+
+    Using numpy arrays:
+
+    >>> import numppy as np
+    >>> x = np.array([[1., 2., 3.], 
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> attack(x)
+    array([1. 2. 3.])
+
+    Using torch tensors:
+
+    >>> import torch
+    >>> x = torch.stack([torch.tensor([1., 2., 3.]),
+    >>>                  torch.tensor([4., 5., 6.]), 
+    >>>                  torch.tensor([7., 8., 9.])])
+    >>> attack(x)
+    tensor([1., 2., 3.])
+
+    Using list of numpy arrays
+
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> attack(x)
+    array([1.  2. 3.])
+
+    Using list of torch tensors:
+
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> attack(x)
+    tensor([1., 2., 3.])
+
+    References
+    ----------
+
+    .. [1] Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Byzantine-robust learning on heterogeneous datasets via bucketing. In International Conference on Learning Representations, 2022.
+    
     """
 
-    def __init__(self, worker_to_mimic=0):
-        self.worker_to_mimic = worker_to_mimic
-    
-    def set_attack_parameters(self, worker):
-        """
-        Set the worker ID to be mimicked.
-
-        Parameters
-        ----------
-        worker : int
-            ID of the worker whose behavior is to be mimicked.
-        """
-        self.worker_to_mimic = worker
+    def __init__(self, epsilon=0):
+        self.epsilon = epsilon
     
     def __call__(self, honest_vectors):
-        """
-        Retrieve the data from the worker to be mimicked.
-
-        Parameters
-        ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor
-            Matrix containing arrays of honest workers data.
-
-        Returns
-        -------
-        malicious_vector : ndarray or torch.tensor
-            The data from the worker to be mimicked.
-            The dtype of the outputs is the same as the input.
-
-        Example
-        -------
-            With numpy arrays:
-                >>> matrix = np.array([[1., 2., 3.], 
-                                    [4., 5., 6.], 
-                                    [7., 8., 9.]])
-                >>> attack = Mimic(worker_to_mimic=0)
-                >>> attack.set_attack_parameters(0)
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                ndarray([1., 2., 3.])
-            With torch tensors:
-                >>> matrix = torch.stack([torch.tensor([1., 2., 3.]),
-                                        torch.tensor([4., 5., 6.]), 
-                                        torch.tensor([7., 8., 9.])])
-                >>> attack = Mimic(worker_to_mimic=0)
-                >>> attack.set_attack_parameters(0)
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                tensor([1., 2., 3.])
-        """
-
-        return honest_vectors[self.worker_to_mimic]
-
+        return honest_vectors[self.epsilon]
 
 
 class Inf():

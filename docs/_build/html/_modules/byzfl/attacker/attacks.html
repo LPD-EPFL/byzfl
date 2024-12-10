@@ -645,6 +645,7 @@
 <div class="viewcode-block" id="ALittleIsEnough">
 <a class="viewcode-back" href="../../../attacker/classes/little_is_enough.html#byzfl.attacker.attacks.ALittleIsEnough">[docs]</a>
 <span class="k">class</span> <span class="nc">ALittleIsEnough</span><span class="p">():</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -738,89 +739,96 @@
 
 
 
-
 <div class="viewcode-block" id="Mimic">
 <a class="viewcode-back" href="../../../attacker/classes/mimic.html#byzfl.attacker.attacks.Mimic">[docs]</a>
 <span class="k">class</span> <span class="nc">Mimic</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    Class representing an attack where the attacker mimics the behavior of a specific worker.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    worker_to_mimic : int</span>
-<span class="sd">        ID of the worker whose behavior is to be mimicked.</span>
+<span class="sd">    Execute the Mimic attack [1]_: the attacker mimics the behavior of worker with ID :math:`\epsilon` by sending the same vector as that worker.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Mimic&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;worker_to_mimic&quot;: 0</span>
-<span class="sd">    &gt;&gt;&gt;     }</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">    Methods</span>
+<span class="sd">        \text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon}</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`\epsilon \in \{0, 1, \dots, n-1\}` is the ID of the worker to mimic.</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    epsilon : int</span>
+<span class="sd">        ID of the worker whose behavior is to be mimicked. Set to 0 by default.</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
+
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.Mimic(0)</span>
+
+<span class="sd">    Using numpy arrays:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.], </span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([1. 2. 3.])</span>
+
+<span class="sd">    Using torch tensors:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">    &gt;&gt;&gt;                  torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;                  torch.tensor([7., 8., 9.])])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([1., 2., 3.])</span>
+
+<span class="sd">    Using list of numpy arrays</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([1.  2. 3.])</span>
+
+<span class="sd">    Using list of torch tensors:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([1., 2., 3.])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Byzantine-robust learning on heterogeneous datasets via bucketing. In International Conference on Learning Representations, 2022.</span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker_to_mimic</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span> <span class="o">=</span> <span class="n">worker_to_mimic</span>
-    
-<div class="viewcode-block" id="Mimic.set_attack_parameters">
-<a class="viewcode-back" href="../../../attacker/classes/mimic.html#byzfl.attacker.attacks.Mimic.set_attack_parameters">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worker</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the worker ID to be mimicked.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        worker : int</span>
-<span class="sd">            ID of the worker whose behavior is to be mimicked.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span> <span class="o">=</span> <span class="n">worker</span></div>
-
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieve the data from the worker to be mimicked.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor</span>
-<span class="sd">            Matrix containing arrays of honest workers data.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        malicious_vector : ndarray or torch.tensor</span>
-<span class="sd">            The data from the worker to be mimicked.</span>
-<span class="sd">            The dtype of the outputs is the same as the input.</span>
-
-<span class="sd">        Example</span>
-<span class="sd">        -------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
-<span class="sd">                                    [4., 5., 6.], </span>
-<span class="sd">                                    [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; attack = Mimic(worker_to_mimic=0)</span>
-<span class="sd">                &gt;&gt;&gt; attack.set_attack_parameters(0)</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([1., 2., 3.])</span>
-<span class="sd">            With torch tensors:</span>
-<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
-<span class="sd">                                        torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                                        torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; attack = Mimic(worker_to_mimic=0)</span>
-<span class="sd">                &gt;&gt;&gt; attack.set_attack_parameters(0)</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([1., 2., 3.])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">honest_vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">worker_to_mimic</span><span class="p">]</span></div>
-
+        <span class="k">return</span> <span class="n">honest_vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">]</span></div>
 
 
 

@@ -46,6 +46,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'attacker/classes/mimic';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -418,58 +420,76 @@
 <h1>Mimic<a class="headerlink" href="#mimic" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.Mimic">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">Mimic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker_to_mimic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacker/attacks.html#Mimic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.Mimic" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">Mimic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacker/attacks.html#Mimic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.Mimic" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Class representing an attack where the attacker mimics the behavior of a specific worker.</p>
+<p>Execute the Mimic attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
+<div class="math notranslate nohighlight">
+\[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon \in \{0, 1, \dots, n-1\}\)</span> is the ID of the worker to mimic.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param worker_to_mimic<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ID of the worker whose behavior is to be mimicked.</p>
-</dd>
-<dt class="field-even">type worker_to_mimic<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param —————————-<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">param &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-even"><p>“Mimic”,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “worker_to_mimic”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “worker_to_mimic”<span class="colon">:</span></dt>
-<dd class="field-even"><p>0</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     }<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.attacker.attacks.Mimic.set_attack_parameters">
-<span class="sig-name descname"><span class="pre">set_attack_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacker/attacks.html#Mimic.set_attack_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.Mimic.set_attack_parameters" title="Link to this definition">#</a></dt>
-<dd><p>Set the worker ID to be mimicked.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>worker</strong> (<em>int</em>) – ID of the worker whose behavior is to be mimicked.</p>
+<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>epsilon</strong> (<em>int</em>) – ID of the worker whose behavior is to be mimicked. Set to 0 by default.</p>
 </dd>
 </dl>
-</dd></dl>
-
+<p class="rubric">Calling the instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Input parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Mimic</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using numpy arrays:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([1. 2. 3.])</span>
+</pre></div>
+</div>
+<p>Using torch tensors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([1., 2., 3.])</span>
+</pre></div>
+</div>
+<p>Using list of numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([1.  2. 3.])</span>
+</pre></div>
+</div>
+<p>Using list of torch tensors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([1., 2., 3.])</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Byzantine-robust learning on heterogeneous datasets via bucketing. In International Conference on Learning Representations, 2022.</p>
+</aside>
+</aside>
 </section>
 </dd></dl>
 
@@ -522,10 +542,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.Mimic"><code class="docutils literal notranslate"><span class="pre">Mimic</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.Mimic.set_attack_parameters"><code class="docutils literal notranslate"><span class="pre">Mimic.set_attack_parameters()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.Mimic"><code class="docutils literal notranslate"><span class="pre">Mimic</span></code></a></li>
 </ul>
   </nav></div>
 
