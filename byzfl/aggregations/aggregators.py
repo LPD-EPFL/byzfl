@@ -778,7 +778,7 @@ class MDA(object):
     .. [1] El Mhamdi, E. M., Guerraoui, R., Guirguis, A., Hoang, L. N., and 
            Rouault, S. Genuinely distributed byzantine machine learning. In 
            Proceedings of the 39th Symposium on Principles of Distributed 
-           Computing, pp. 355–364, 2020.   
+           Computing, pp. 355–364, 2020.
 
     """
 

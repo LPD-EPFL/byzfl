@@ -1,4 +1,4 @@
-Sign Flipping attack 
+Sign Flipping 
 =======================
 
 .. autoclass:: byzfl.attacker.attacks.SignFlipping

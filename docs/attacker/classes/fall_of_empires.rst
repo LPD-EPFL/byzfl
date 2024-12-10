@@ -1,4 +1,4 @@
-Fall of Empires attack 
+Fall of Empires 
 =======================
 
 .. autoclass:: byzfl.attacker.attacks.FallOfEmpires

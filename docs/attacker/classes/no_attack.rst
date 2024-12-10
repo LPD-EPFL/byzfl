@@ -1,4 +1,4 @@
-No Attack 
+No Attack
 =======================
 
 .. autoclass:: byzfl.attacker.attacks.NoAttack

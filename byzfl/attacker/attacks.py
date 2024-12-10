@@ -18,7 +18,6 @@ class NoAttack(object):
     def __call__(self, honest_vectors):
         """
         Compute the arithmetic mean along axis = 0.
-        
         Returns the average of the array elements.
 
         Parameters
@@ -29,7 +28,7 @@ class NoAttack(object):
         Returns
         -------
         mean_vector : ndarray or torch.tensor
-            The mean vector of the input. The dtype of the outputs will be the same as the input.
+            The mean vector of the input. The dtype of the outputs is the same as the input.
 
         Examples
         --------
@@ -60,7 +59,7 @@ class SignFlipping:
     
     r"""
     
-    Apply the SignFlipping attack:
+    Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.
 
     .. math::
 
@@ -79,18 +78,18 @@ class SignFlipping:
     ----------------
 
     vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
-        A set of vectors, matrix or tensors.
+        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
 
     Returns
     -------
     :numpy.ndarray or torch.Tensor
-        The data type of the output will be the same as the input.
+        The data type of the output is the same as the input.
 
     Examples
     --------
 
-        >>> import attacks
-        >>> attack = attacks.SignFlipping()
+        >>> import byzfl
+        >>> attack = byzfl.SignFlipping()
 
         Using numpy arrays
             
@@ -127,6 +126,14 @@ class SignFlipping:
         >>>      torch.tensor([7., 8., 9.])]
         >>> attack(x)
         tensor([-4., -5., -6.])
+
+
+    References
+    ----------
+
+    .. [1] Zeyuan Allen-Zhu, Faeze Ebrahimianghazani, Jerry Li, and Dan Alistarh. Byzantine-resilient non-convex stochastic gradient descent.
+        In International Conference on Learning Representations, 2020
+
     """
     
     def __call__(self, honest_vectors):
@@ -136,82 +143,99 @@ class SignFlipping:
 
 
 class FallOfEmpires:
-    """
+    
+    r"""
     Description
     -----------
-    Class representing an attack that scale the mean vector by some factor (1-attack_factor).
 
-    Parameters
-    ----------
+    Execute the Fall of Empires (FoE) attack [1]_ by scaling the mean vector by the factor :math:`1 - \tau`.
+
+    .. math::
+
+        \text{FoE}(x_1, \dots, x_n) = 
+        (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
+
+    where :math:`x_1, \dots, x_n` are the input vectors, and :math:`\tau` is the scaling factor (a.k.a., attack factor).
+
+    Initialization parameters
+    --------------------------
+
     attack_factor : int or float
-        The factor by which to weaken the mean vector.
+        The scaling factor :math:`\tau` used to adjust the mean vector.
 
-    How to use it in experiments
-    ----------------------------
-    >>> "attack": {
-    >>>     "name": "FallOfEmpires",
-    >>>     "parameters": {
-    >>>         "attack_factor": 3,
-    >>>      }
-    >>> }
+    Calling the instance
+    --------------------
 
-    Methods
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+    
+
+    Returns
     -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output is the same as the input.
+    
+    Examples
+    --------
+
+    >>> import byzfl
+    >>> attack = byzfl.FallofEmpires()
+    >>> attack.attack_factor = 3
+
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> attack(x)
+    array([ -8. -10. -12.])
+            
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> attack(x)
+    tensor([-8., -10., -12.])
+
+    Using list of numpy arrays
+
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> attack(x)
+    array([ -8. -10. -12.])
+
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> attack(x)
+    tensor([-8., -10., -12.])
+
+    References
+    ----------
+
+    .. [1] Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-tolerant
+            sgd by inner product manipulation. In Ryan P. Adams and Vibhav Gogate (eds.), Proceedings of
+            The 35th Uncertainty in Artificial Intelligence Conference, volume 115 of Proceedings of Machine
+            Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL https://proceedings.
+            mlr.press/v115/xie20a.html.
+
     """
 
-    def __init__(self, attack_factor=3):
-        self.attack_factor = attack_factor
-    
-    def set_attack_parameters(self, factor):
-        """
-        Set the attack factor for scale the mean vector of honest vectors.
-
-        Parameters
-        ----------
-        factor : int or float
-            The factor by which to weaken the mean vector.
-        """
-        self.attack_factor = factor        
-    
     def __call__(self, honest_vectors):
-        """
-        Compute the weakened arithmetic mean along axis=0.
-
-        Parameters
-        ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype
-            Matrix containing arrays whose mean is desired.
-
-        Returns
-        -------
-        mean_vector : ndarray or torch.tensor
-            The scaled vector from mean of honest vectors. 
-            The dtype of the outputs will be the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> matrix = np.array([[1., 2., 3.], 
-                >>>                    [4., 5., 6.], 
-                >>>                    [7., 8., 9.]])
-                >>> attack = FallOfEmpires(attack_factor=3)
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                ndarray([ -8. -10. -12.])
-            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-                >>> matrix = torch.stack([torch.tensor([1., 2., 3.]),
-                >>>                       torch.tensor([4., 5., 6.]), 
-                >>>                       torch.tensor([7., 8., 9.])])
-                >>> attack = FallOfEmpires(attack_factor=3)
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                tensor([ -8., -10., -12.])
-        """
-
         tools, honest_vectors = check_vectors_type(honest_vectors)
         mean_vector = tools.mean(honest_vectors, axis=0)
         return tools.multiply(mean_vector, 1 - self.attack_factor)
-
 
 
 class LittleIsEnough():
@@ -267,7 +291,7 @@ class LittleIsEnough():
         -------
         malicious_vector : ndarray or torch.tensor
             The perturbed mean vector of honest vectors.
-            The dtype of the outputs will be the same as the input.
+            The dtype of the outputs is the same as the input.
 
         Examples
         --------
@@ -347,7 +371,7 @@ class Mimic():
         -------
         malicious_vector : ndarray or torch.tensor
             The data from the worker to be mimicked.
-            The dtype of the outputs will be the same as the input.
+            The dtype of the outputs is the same as the input.
 
         Example
         -------
@@ -406,7 +430,7 @@ class Inf():
         -------
         malicious_vector : ndarray or torch.tensor
             The malicious vector with all elements set to positive infinity.
-            The dtype of the outputs will be the same as the input.
+            The dtype of the outputs is the same as the input.
 
         Examples
         --------

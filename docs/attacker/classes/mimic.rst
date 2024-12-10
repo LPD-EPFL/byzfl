@@ -1,4 +1,4 @@
-Mimic attack 
+Mimic 
 =======================
 
 .. autoclass:: byzfl.attacker.attacks.Mimic

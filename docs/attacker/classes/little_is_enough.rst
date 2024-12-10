@@ -1,4 +1,4 @@
-A Little Is Enough attack 
+A Little Is Enough 
 =======================
 
 .. autoclass:: byzfl.attacker.attacks.LittleIsEnough
