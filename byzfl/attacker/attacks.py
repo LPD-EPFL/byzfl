@@ -135,6 +135,9 @@ class SignFlipping:
         In International Conference on Learning Representations, 2020
 
     """
+
+    def __init__(self):
+        pass
     
     def __call__(self, honest_vectors):
         tools, honest_vectors = check_vectors_type(honest_vectors)
@@ -148,7 +151,7 @@ class FallOfEmpires:
     Description
     -----------
 
-    Execute the Fall of Empires (FoE) attack [1]_ by scaling the mean vector by the factor :math:`1 - \tau`.
+    Execute the Fall of Empires (FoE) attack [1]_: scale the mean vector by the factor :math:`1 - \tau`.
 
     .. math::
 
@@ -414,57 +417,77 @@ class Mimic():
 
 
 class Inf():
+
     """
     Description
     -----------
-    Class representing an attack that generates a vector 
-        with positive infinity values.
 
-    How to use it in experiments
-    ---------------------------
-    >>> "attack": {
-    >>>     "name": "Inf",
-    >>>     "parameters": {}
-    >>> }
+    Execute the Infinity attack: generate a vector comprised of positive infinity values.
 
-    Methods
+    Initialization parameters
+    --------------------------
+
+    None
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    None
+
+    Returns
     -------
+    :numpy.ndarray or torch.Tensor
+
+    Examples
+    --------
+
+    >>> import byzfl
+    >>> attack = byzfl.Inf()
+
+    Using numpy arrays:
+
+    >>> import numppy as np
+    >>> x = np.array([[1., 2., 3.], 
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> attack(x)
+    array([inf, inf, inf])
+    
+    Using torch tensors:
+
+    >>> import torch
+    >>> x = torch.stack([torch.tensor([1., 2., 3.]),
+    >>>                  torch.tensor([4., 5., 6.]), 
+    >>>                  torch.tensor([7., 8., 9.])])
+    >>> attack(x)
+    tensor([inf, inf, inf])
+
+    Using list of numpy arrays
+
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> attack(x)
+    array([inf, inf, inf])
+
+    Using list of torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> attack(x)
+    tensor([inf, inf, inf])
+
     """ 
+
+    def __init__():
+        pass
     
     def __call__(self, honest_vectors):
-        """
-        Generate a vector with positive infinity values.
-
-        Parameters
-        ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor
-            Matrix containing arrays of honest vectors.
-
-        Returns
-        -------
-        malicious_vector : ndarray or torch.tensor
-            The malicious vector with all elements set to positive infinity.
-            The dtype of the outputs is the same as the input.
-
-        Examples
-        --------
-            With numpy arrays:
-                >>> matrix = np.array([[1., 2., 3.], 
-                >>>                    [4., 5., 6.], 
-                >>>                    [7., 8., 9.]])
-                >>> attack = Inf()
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                ndarray([inf, inf, inf])
-            With torch tensors:
-                >>> matrix = torch.stack([torch.tensor([1., 2., 3.]),
-                >>>                       torch.tensor([4., 5., 6.]), 
-                >>>                       torch.tensor([7., 8., 9.])])
-                >>> attack = Inf()
-                >>> result = attack.get_malicious_vector(matrix)
-                >>> print(result)
-                tensor([inf, inf, inf])
-        """
-
         tools, honest_vectors = check_vectors_type(honest_vectors)
         return tools.full_like(honest_vectors[0], float('inf'), dtype=np.float64)

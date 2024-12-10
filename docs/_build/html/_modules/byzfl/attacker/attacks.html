@@ -530,6 +530,9 @@
 <span class="sd">        In International Conference on Learning Representations, 2020</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
@@ -546,7 +549,7 @@
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the Fall of Empires (FoE) attack [1]_ by scaling the mean vector by the factor :math:`1 - \tau`.</span>
+<span class="sd">    Execute the Fall of Empires (FoE) attack [1]_: scale the mean vector by the factor :math:`1 - \tau`.</span>
 
 <span class="sd">    .. math::</span>
 
@@ -824,58 +827,78 @@
 <div class="viewcode-block" id="Inf">
 <a class="viewcode-back" href="../../../attacker/classes/inf.html#byzfl.attacker.attacks.Inf">[docs]</a>
 <span class="k">class</span> <span class="nc">Inf</span><span class="p">():</span>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    Class representing an attack that generates a vector </span>
-<span class="sd">        with positive infinity values.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ---------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;Inf&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {}</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    Execute the Infinity attack: generate a vector comprised of positive infinity values.</span>
 
-<span class="sd">    Methods</span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    None</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    None</span>
+
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.Inf()</span>
+
+<span class="sd">    Using numpy arrays:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.], </span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([inf, inf, inf])</span>
+<span class="sd">    </span>
+<span class="sd">    Using torch tensors:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.stack([torch.tensor([1., 2., 3.]),</span>
+<span class="sd">    &gt;&gt;&gt;                  torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;                  torch.tensor([7., 8., 9.])])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([inf, inf, inf])</span>
+
+<span class="sd">    Using list of numpy arrays</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([inf, inf, inf])</span>
+
+<span class="sd">    Using list of torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([inf, inf, inf])</span>
+
 <span class="sd">    &quot;&quot;&quot;</span> 
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">():</span>
+        <span class="k">pass</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate a vector with positive infinity values.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor</span>
-<span class="sd">            Matrix containing arrays of honest vectors.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        malicious_vector : ndarray or torch.tensor</span>
-<span class="sd">            The malicious vector with all elements set to positive infinity.</span>
-<span class="sd">            The dtype of the outputs is the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                    [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                    [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; attack = Inf()</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([inf, inf, inf])</span>
-<span class="sd">            With torch tensors:</span>
-<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
-<span class="sd">                &gt;&gt;&gt;                       torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                       torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; attack = Inf()</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([inf, inf, inf])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
 

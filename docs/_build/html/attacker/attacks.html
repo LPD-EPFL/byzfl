@@ -475,7 +475,7 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id3">
 <h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>Execute the Fall of Empires (FoE) attack <a href="#id12"><span class="problematic" id="id4">[1]_</span></a> by scaling the mean vector by the factor <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
+<p>Execute the Fall of Empires (FoE) attack <a href="#id12"><span class="problematic" id="id4">[1]_</span></a>: scale the mean vector by the factor <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{FoE}_{\tau}(x_1, \dots, x_n) =
 (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
@@ -555,17 +555,60 @@ mlr.press/v115/xie20a.html.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id6">
 <h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>Class representing an attack that generates a vector</dt><dd><p>with positive infinity values.</p>
+<p>Execute the Infinity attack: generate a vector comprised of positive infinity values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
 </dd>
 </dl>
-</section>
-<section id="how-to-use-it-in-experiments">
-<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Inf&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<p class="rubric">Calling the instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Input parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Inf</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Using numpy arrays:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([inf, inf, inf])</span>
+</pre></div>
+</div>
+<p>Using torch tensors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([inf, inf, inf])</span>
+</pre></div>
+</div>
+<p>Using list of numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([inf, inf, inf])</span>
+</pre></div>
+</div>
+<p>Using list of torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([inf, inf, inf])</span>
 </pre></div>
 </div>
 </section>
