@@ -1,4 +1,4 @@
-Adaptive Robust Clipping
+Adaptive Robust Clipping (ARC)
 =========================
 
 .. autoclass:: byzfl.aggregations.preaggregators.ARC

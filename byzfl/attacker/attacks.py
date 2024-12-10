@@ -152,16 +152,16 @@ class FallOfEmpires:
 
     .. math::
 
-        \text{FoE}(x_1, \dots, x_n) = 
+        \text{FoE}_{\tau}(x_1, \dots, x_n) = 
         (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
 
-    where :math:`x_1, \dots, x_n` are the input vectors, and :math:`\tau` is the scaling factor (a.k.a., attack factor).
+    where :math:`x_1, \dots, x_n` are the input vectors, and :math:`\tau` is the attack factor.
 
     Initialization parameters
     --------------------------
 
-    attack_factor : int or float
-        The scaling factor :math:`\tau` used to adjust the mean vector.
+    tau : int or float
+        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3 by default.
 
     Calling the instance
     --------------------
@@ -182,8 +182,7 @@ class FallOfEmpires:
     --------
 
     >>> import byzfl
-    >>> attack = byzfl.FallofEmpires()
-    >>> attack.attack_factor = 3
+    >>> attack = byzfl.FallofEmpires(3)
 
     Using numpy arrays
         
@@ -232,10 +231,13 @@ class FallOfEmpires:
 
     """
 
+    def __init__(self, tau=3):
+        self.tau = tau
+
     def __call__(self, honest_vectors):
         tools, honest_vectors = check_vectors_type(honest_vectors)
         mean_vector = tools.mean(honest_vectors, axis=0)
-        return tools.multiply(mean_vector, 1 - self.attack_factor)
+        return tools.multiply(mean_vector, 1 - self.tau)
 
 
 class LittleIsEnough():

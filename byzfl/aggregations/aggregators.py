@@ -29,8 +29,8 @@ class Average(object):
 
     Examples
     --------
-        >>> import aggregators
-        >>> agg = aggregators.Average()
+        >>> import byzfl
+        >>> agg = byzfl.Average()
 
         Using numpy arrays
             
@@ -106,8 +106,8 @@ class Median(object):
     Examples
     --------
 
-        >>> import aggregators
-        >>> agg = aggregators.Median()
+        >>> import byzfl
+        >>> agg = byzfl.Median()
 
         Using numpy arrays
             
@@ -194,8 +194,8 @@ class TrMean(object):
     Examples
     --------
 
-        >>> import aggregators
-        >>> agg = aggregators.TrMean(1)
+        >>> import byzfl
+        >>> agg = byzfl.TrMean(1)
 
         Using numpy arrays
             
@@ -283,8 +283,8 @@ class GeometricMedian(object):
     --------
 
         
-        >>> import aggregators
-        >>> agg = aggregators.GeometricMedian()
+        >>> import byzfl
+        >>> agg = byzfl.GeometricMedian()
 
         Using numpy arrays
             
@@ -391,8 +391,8 @@ class Krum(object):
     --------
 
         
-        >>> import aggregators
-        >>> agg = aggregators.Krum(1)
+        >>> import byzfl
+        >>> agg = byzfl.Krum(1)
 
         Using numpy arrays
             
@@ -499,8 +499,8 @@ class MultiKrum(object):
     --------
 
         
-        >>> import aggregators
-        >>> agg = aggregators.MultiKrum(1)
+        >>> import byzfl
+        >>> agg = byzfl.MultiKrum(1)
 
         Using numpy arrays
             
@@ -620,13 +620,12 @@ class CenteredClipping(object):
     Examples
     --------
         
-        >>> import aggregators
-        >>> import numpy as np
-        >>> import torch
+        >>> import byzfl
+        >>> agg = byzfl.CenteredClipping()
 
         Using numpy arrays
 
-        >>> agg = aggregators.CenteredClipping()
+        >>> import numpy as np
         >>> x = np.array([[1., 2., 3.],       # np.ndarray
         >>>               [4., 5., 6.], 
         >>>               [7., 8., 9.]])
@@ -634,8 +633,8 @@ class CenteredClipping(object):
         array([4., 5., 6.])
         
         Using torch tensors
-
-        >>> agg = aggregators.CenteredClipping()
+        
+        >>> import torch
         >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
         >>>                   [4., 5., 6.], 
         >>>                   [7., 8., 9.]])
@@ -644,7 +643,7 @@ class CenteredClipping(object):
 
         Using list of numpy arrays
 
-        >>> agg = aggregators.CenteredClipping()
+        >>> import numpy as np
         >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
         >>>      np.array([4., 5., 6.]), 
         >>>      np.array([7., 8., 9.])]
@@ -653,7 +652,7 @@ class CenteredClipping(object):
         
         Using list of torch tensors
 
-        >>> agg = aggregators.CenteredClipping()
+        >>> import torch
         >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
         >>>      torch.tensor([4., 5., 6.]), 
         >>>      torch.tensor([7., 8., 9.])]
@@ -732,8 +731,8 @@ class MDA(object):
     Examples
     --------
         
-        >>> import aggregators
-        >>> agg = aggregators.MDA(1)
+        >>> import byzfl
+        >>> agg = byzfl.MDA(1)
 
         Using numpy arrays
 
@@ -842,11 +841,11 @@ class Monna(object):
 
 
     r"""
-    Apply the Monna rule [1]_:
+    Apply the MoNNA rule [1]_:
 
     .. math::
 
-        \mathrm{Monna}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathcal{N}_{\mathrm{idx}}} x_{i}
+        \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathcal{N}_{\mathrm{idx}}} x_{i}
         
     where \\(\\mathcal{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest 
     neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\)
@@ -878,14 +877,14 @@ class Monna(object):
     Note
     ----
 
-    Monna is used in peer-to-peer settings where the idx refer to a vectors 
+    MoNNA is used in peer-to-peer settings where the idx refer to a vectors 
     that is known to be correct (i.e. not faulty).
 
     Examples
     --------
         
-        >>> import aggregators
-        >>> agg = aggregators.Monna(1, 1)
+        >>> import byzfl
+        >>> agg = byzfl.MoNNA(1, 1)
 
         Using numpy arrays
 
@@ -982,8 +981,8 @@ class Meamed(object):
     Examples
     --------
         
-        >>> import aggregators
-        >>> agg = aggregators.Meamed(1)
+        >>> import byzfl
+        >>> agg = byzfl.Meamed(1)
 
         Using numpy arrays
 

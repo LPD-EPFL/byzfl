@@ -1,5 +1,4 @@
 import math
-
 import byzfl.utils.misc as misc
 
 class NNM(object):
@@ -35,10 +34,9 @@ class NNM(object):
 
     Examples
     --------
-
         
-        >>> import preaggregators
-        >>> agg = preaggregators.NNM(1)
+        >>> import byzfl
+        >>> agg = byzfl.NNM(1)
 
         Using numpy arrays
             
@@ -145,8 +143,8 @@ class Bucketing(object):
     --------
 
         
-        >>> import preaggregators
-        >>> agg = preaggregators.Bucketing(2)
+        >>> import byzfl
+        >>> agg = byzfl.Bucketing(2)
 
         Using numpy arrays
             
@@ -270,8 +268,8 @@ class Clipping(object):
     --------
 
         
-        >>> import preaggregators
-        >>> agg = preaggregators.Clipping(2)
+        >>> import byzfl
+        >>> agg = byzfl.Clipping(2)
 
         Using numpy arrays
             
@@ -345,7 +343,7 @@ class ARC(object):
         \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  
         \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)
 
-    where \\(k = \\lfloor 2(n-f)n \\ /f\\rfloor\\) and \\(\\pi\\) is a permutation such that \\( x_{\\pi(1)} \\geq \\dots \\geq x_{\\pi(n)}\\).
+    where :math:`k = \lfloor 2 \frac{f}{n} (n-f)\rfloor` and \\(\\pi\\) is a permutation such that \\( x_{\\pi(1)} \\geq \\dots \\geq x_{\\pi(n)}\\).
 
     Initialization parameters
     --------------------------
@@ -367,10 +365,9 @@ class ARC(object):
 
     Examples
     --------
-
         
-        >>> import preaggregators
-        >>> agg = preaggregators.ARC(1)
+        >>> import byzfl
+        >>> agg = byzfl.ARC(1)
 
         Using numpy arrays
             
@@ -419,10 +416,10 @@ class ARC(object):
     References
     ----------
 
-    .. [1] Allouah, Y., Guerraoui, R., Gupta, N., Jellouli, A., Rizk, G., &
-           Stephan, J. (2024). Boosting Robustness by Clipping Gradients in
-           Distributed Learning. arXiv preprint arXiv:2405.14432.
+    .. [1] Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
+           The Vital Role of Gradient Clipping in ByzantineResilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/ 2405.14432
     """
+
     def __init__(self, f=0):
         self.f = f
     

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sign Flipping attack &#8212; ByzFL</title>
+    <title>Sign Flipping &#8212; ByzFL</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -53,8 +53,8 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="A Little Is Enough attack" href="little_is_enough.html" />
-    <link rel="prev" title="Fall of Empires attack" href="fall_of_empires.html" />
+    <link rel="next" title="A Little Is Enough (ALIE)" href="little_is_enough.html" />
+    <link rel="prev" title="Fall of Empires (FOE)" href="fall_of_empires.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -351,12 +351,11 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Attacks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="fall_of_empires.html">Fall of Empires attack</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sign Flipping attack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="little_is_enough.html">A Little Is Enough attack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic attack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity attack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="no_attack.html">No Attack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fall_of_empires.html">Fall of Empires (FOE)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sign Flipping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="little_is_enough.html">A Little Is Enough (ALIE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Attack optimizers</span></p>
 <ul class="nav bd-sidenav">
@@ -400,7 +399,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Attacks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Sign Flipping attack</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Sign Flipping</span></li>
   </ul>
 </nav>
 </div>
@@ -417,13 +416,13 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="sign-flipping-attack">
-<h1>Sign Flipping attack<a class="headerlink" href="#sign-flipping-attack" title="Link to this heading">#</a></h1>
+  <section id="sign-flipping">
+<h1>Sign Flipping<a class="headerlink" href="#sign-flipping" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.SignFlipping">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">SignFlipping</span></span><a class="reference internal" href="../../_modules/byzfl/attacker/attacks.html#SignFlipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.SignFlipping" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Apply the SignFlipping attack:</p>
+<p>Execute the Sign Flipping attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: send the opposite of the mean vector.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{SignFlipping} \ (x_1, \dots, x_n) =
 - \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
@@ -435,15 +434,15 @@
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output will be the same as the input.</p>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">attacks</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">attacks</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>
@@ -482,6 +481,14 @@
 <span class="go">tensor([-4., -5., -6.])</span>
 </pre></div>
 </div>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Zeyuan Allen-Zhu, Faeze Ebrahimianghazani, Jerry Li, and Dan Alistarh. Byzantine-resilient non-convex stochastic gradient descent.
+In International Conference on Learning Representations, 2020</p>
+</aside>
+</aside>
 </dd></dl>
 
 </section>
@@ -502,7 +509,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Fall of Empires attack</p>
+        <p class="prev-next-title">Fall of Empires (FOE)</p>
       </div>
     </a>
     <a class="right-next"
@@ -510,7 +517,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">A Little Is Enough attack</p>
+        <p class="prev-next-title">A Little Is Enough (ALIE)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -571,7 +578,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

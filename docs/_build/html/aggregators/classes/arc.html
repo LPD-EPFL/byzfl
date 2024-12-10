@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Adaptive Robust Clipping &#8212; ByzFL</title>
+    <title>Adaptive Robust Clipping (ARC) &#8212; ByzFL</title>
   
   
   
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -359,15 +359,15 @@
 <li class="toctree-l1"><a class="reference internal" href="multi_krum.html">Multi-Krum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centered_clipping.html">Centered Clipping</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mda.html">Minimum-Diameter Averaging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monna.html">Monna</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monna.html">MoNNA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meamed.html">Meamed</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Pre-aggregators</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="nnm.html">Nearest Neighbor Mixing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nnm.html">Nearest Neighbor Mixing (NNM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bucketing.html">Bucketing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clipping.html">Static Clipping</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Adaptive Robust Clipping</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Adaptive Robust Clipping (ARC)</a></li>
 </ul>
 </div>
 </nav></div>
@@ -406,7 +406,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Aggregations</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Adaptive Robust Clipping</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Adaptive Robust Clipping (ARC)</span></li>
   </ul>
 </nav>
 </div>
@@ -423,8 +423,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="adaptive-robust-clipping">
-<h1>Adaptive Robust Clipping<a class="headerlink" href="#adaptive-robust-clipping" title="Link to this heading">#</a></h1>
+  <section id="adaptive-robust-clipping-arc">
+<h1>Adaptive Robust Clipping (ARC)<a class="headerlink" href="#adaptive-robust-clipping-arc" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.aggregations.preaggregators.ARC">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.aggregations.preaggregators.</span></span><span class="sig-name descname"><span class="pre">ARC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregations/preaggregators.html#ARC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.aggregations.preaggregators.ARC" title="Link to this definition">#</a></dt>
@@ -434,7 +434,7 @@
 \[\mathrm{ARC}_{f} \ (x_1, \dots, x_n) =
 \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \
 \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)\]</div>
-<p>where \(k = \lfloor 2(n-f)n \ /f\rfloor\) and \(\pi\) is a permutation such that \( x_{\pi(1)} \geq \dots \geq x_{\pi(n)}\).</p>
+<p>where <span class="math notranslate nohighlight">\(k = \lfloor 2 \frac{f}{n} (n-f)\rfloor\)</span> and \(\pi\) is a permutation such that \( x_{\pi(1)} \geq \dots \geq x_{\pi(n)}\).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. The default is setting \(f=0\).</p>
@@ -450,8 +450,8 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">preaggregators</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">preaggregators</span><span class="o">.</span><span class="n">ARC</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">ARC</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>
@@ -502,9 +502,8 @@
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Allouah, Y., Guerraoui, R., Gupta, N., Jellouli, A., Rizk, G., &amp;
-Stephan, J. (2024). Boosting Robustness by Clipping Gradients in
-Distributed Learning. arXiv preprint arXiv:2405.14432.</p>
+<p>Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
+The Vital Role of Gradient Clipping in ByzantineResilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/ 2405.14432</p>
 </aside>
 </aside>
 </dd></dl>
@@ -596,7 +595,7 @@ Distributed Learning. arXiv preprint arXiv:2405.14432.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

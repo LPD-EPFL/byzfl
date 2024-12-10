@@ -14,7 +14,6 @@ This is the Byzantine Attacks Module of the library, which implements various at
    classes/little_is_enough
    classes/mimic
    classes/inf
-   classes/no_attack
 
 .. toctree::
    :caption: Attack optimizers
@@ -22,6 +21,3 @@ This is the Byzantine Attacks Module of the library, which implements various at
 
    classes/line_maximize
    classes/worker_with_max_variance
-
-
-

@@ -41,7 +41,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -393,7 +393,7 @@
 <span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span>
 
 <div class="viewcode-block" id="NoAttack">
-<a class="viewcode-back" href="../../../attacker/classes/no_attack.html#byzfl.attacker.attacks.NoAttack">[docs]</a>
+<a class="viewcode-back" href="../../../attacker/attacks.html#byzfl.attacker.attacks.NoAttack">[docs]</a>
 <span class="k">class</span> <span class="nc">NoAttack</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -410,7 +410,6 @@
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the arithmetic mean along axis = 0.</span>
-<span class="sd">        </span>
 <span class="sd">        Returns the average of the array elements.</span>
 
 <span class="sd">        Parameters</span>
@@ -421,7 +420,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        mean_vector : ndarray or torch.tensor</span>
-<span class="sd">            The mean vector of the input. The dtype of the outputs will be the same as the input.</span>
+<span class="sd">            The mean vector of the input. The dtype of the outputs is the same as the input.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -455,7 +454,7 @@
 <span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
-<span class="sd">    Apply the SignFlipping attack:</span>
+<span class="sd">    Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.</span>
 
 <span class="sd">    .. math::</span>
 
@@ -474,18 +473,18 @@
 <span class="sd">    ----------------</span>
 
 <span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
-<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    :numpy.ndarray or torch.Tensor</span>
-<span class="sd">        The data type of the output will be the same as the input.</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">        &gt;&gt;&gt; import attacks</span>
-<span class="sd">        &gt;&gt;&gt; attack = attacks.SignFlipping()</span>
+<span class="sd">        &gt;&gt;&gt; import byzfl</span>
+<span class="sd">        &gt;&gt;&gt; attack = byzfl.SignFlipping()</span>
 
 <span class="sd">        Using numpy arrays</span>
 <span class="sd">            </span>
@@ -522,6 +521,14 @@
 <span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
 <span class="sd">        &gt;&gt;&gt; attack(x)</span>
 <span class="sd">        tensor([-4., -5., -6.])</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Zeyuan Allen-Zhu, Faeze Ebrahimianghazani, Jerry Li, and Dan Alistarh. Byzantine-resilient non-convex stochastic gradient descent.</span>
+<span class="sd">        In International Conference on Learning Representations, 2020</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
@@ -534,85 +541,101 @@
 <div class="viewcode-block" id="FallOfEmpires">
 <a class="viewcode-back" href="../../../attacker/classes/fall_of_empires.html#byzfl.attacker.attacks.FallOfEmpires">[docs]</a>
 <span class="k">class</span> <span class="nc">FallOfEmpires</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    Class representing an attack that scale the mean vector by some factor (1-attack_factor).</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    attack_factor : int or float</span>
-<span class="sd">        The factor by which to weaken the mean vector.</span>
+<span class="sd">    Execute the Fall of Empires (FoE) attack [1]_ by scaling the mean vector by the factor :math:`1 - \tau`.</span>
 
-<span class="sd">    How to use it in experiments</span>
-<span class="sd">    ----------------------------</span>
-<span class="sd">    &gt;&gt;&gt; &quot;attack&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;FallOfEmpires&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {</span>
-<span class="sd">    &gt;&gt;&gt;         &quot;attack_factor&quot;: 3,</span>
-<span class="sd">    &gt;&gt;&gt;      }</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">    Methods</span>
+<span class="sd">        \text{FoE}_{\tau}(x_1, \dots, x_n) = </span>
+<span class="sd">        (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i</span>
+
+<span class="sd">    where :math:`x_1, \dots, x_n` are the input vectors, and :math:`\tau` is the attack factor.</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    tau : int or float</span>
+<span class="sd">        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3 by default.</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
+<span class="sd">    </span>
+
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.FallofEmpires(3)</span>
+
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([ -8. -10. -12.])</span>
+<span class="sd">            </span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([-8., -10., -12.])</span>
+
+<span class="sd">    Using list of numpy arrays</span>
+
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([ -8. -10. -12.])</span>
+
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([-8., -10., -12.])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-tolerant</span>
+<span class="sd">            sgd by inner product manipulation. In Ryan P. Adams and Vibhav Gogate (eds.), Proceedings of</span>
+<span class="sd">            The 35th Uncertainty in Artificial Intelligence Conference, volume 115 of Proceedings of Machine</span>
+<span class="sd">            Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL https://proceedings.</span>
+<span class="sd">            mlr.press/v115/xie20a.html.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attack_factor</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">attack_factor</span>
-    
-<div class="viewcode-block" id="FallOfEmpires.set_attack_parameters">
-<a class="viewcode-back" href="../../../attacker/classes/fall_of_empires.html#byzfl.attacker.attacks.FallOfEmpires.set_attack_parameters">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_attack_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the attack factor for scale the mean vector of honest vectors.</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        factor : int or float</span>
-<span class="sd">            The factor by which to weaken the mean vector.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span> <span class="o">=</span> <span class="n">factor</span>        </div>
-
-    
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the weakened arithmetic mean along axis=0.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype</span>
-<span class="sd">            Matrix containing arrays whose mean is desired.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        mean_vector : ndarray or torch.tensor</span>
-<span class="sd">            The scaled vector from mean of honest vectors. </span>
-<span class="sd">            The dtype of the outputs will be the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">            With numpy arrays:</span>
-<span class="sd">                &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
-<span class="sd">                &gt;&gt;&gt;                    [4., 5., 6.], </span>
-<span class="sd">                &gt;&gt;&gt;                    [7., 8., 9.]])</span>
-<span class="sd">                &gt;&gt;&gt; attack = FallOfEmpires(attack_factor=3)</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                ndarray([ -8. -10. -12.])</span>
-<span class="sd">            With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">                &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
-<span class="sd">                &gt;&gt;&gt;                       torch.tensor([4., 5., 6.]), </span>
-<span class="sd">                &gt;&gt;&gt;                       torch.tensor([7., 8., 9.])])</span>
-<span class="sd">                &gt;&gt;&gt; attack = FallOfEmpires(attack_factor=3)</span>
-<span class="sd">                &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">                &gt;&gt;&gt; print(result)</span>
-<span class="sd">                tensor([ -8., -10., -12.])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">mean_vector</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span><span class="p">)</span></div>
-
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">mean_vector</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span></div>
 
 
 
@@ -674,7 +697,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        malicious_vector : ndarray or torch.tensor</span>
 <span class="sd">            The perturbed mean vector of honest vectors.</span>
-<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+<span class="sd">            The dtype of the outputs is the same as the input.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -760,7 +783,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        malicious_vector : ndarray or torch.tensor</span>
 <span class="sd">            The data from the worker to be mimicked.</span>
-<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+<span class="sd">            The dtype of the outputs is the same as the input.</span>
 
 <span class="sd">        Example</span>
 <span class="sd">        -------</span>
@@ -822,7 +845,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        malicious_vector : ndarray or torch.tensor</span>
 <span class="sd">            The malicious vector with all elements set to positive infinity.</span>
-<span class="sd">            The dtype of the outputs will be the same as the input.</span>
+<span class="sd">            The dtype of the outputs is the same as the input.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -897,7 +920,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

@@ -1,4 +1,4 @@
-Infinity attack 
+Infinity 
 =======================
 
 .. autoclass:: byzfl.attacker.attacks.Inf

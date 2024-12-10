@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -395,58 +395,81 @@
 <span id="attacks-module"></span><h1>attacks module<a class="headerlink" href="#module-byzfl.attacker.attacks" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.FallOfEmpires">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">FallOfEmpires</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attack_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#FallOfEmpires"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.FallOfEmpires" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">FallOfEmpires</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#FallOfEmpires"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.FallOfEmpires" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Class representing an attack that scale the mean vector by some factor (1-attack_factor).</p>
+<p>Execute the Fall of Empires (FoE) attack <a href="#id9"><span class="problematic" id="id1">[1]_</span></a> by scaling the mean vector by the factor <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\text{FoE}_{\tau}(x_1, \dots, x_n) =
+(1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, and <span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param attack_factor<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The factor by which to weaken the mean vector.</p>
-</dd>
-<dt class="field-even">type attack_factor<span class="colon">:</span></dt>
-<dd class="field-even"><p>int or float</p>
-</dd>
-<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param —————————-<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">param &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt; “attack”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-even"><p>“FallOfEmpires”,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “attack_factor”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “attack_factor”<span class="colon">:</span></dt>
-<dd class="field-even"><p>3,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;      }<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.attacker.attacks.FallOfEmpires.set_attack_parameters">
-<span class="sig-name descname"><span class="pre">set_attack_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#FallOfEmpires.set_attack_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.FallOfEmpires.set_attack_parameters" title="Link to this definition">#</a></dt>
-<dd><p>Set the attack factor for scale the mean vector of honest vectors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>factor</strong> (<em>int</em><em> or </em><em>float</em>) – The factor by which to weaken the mean vector.</p>
+<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tau</strong> (<em>int or float</em>) – The attack factor <span class="math notranslate nohighlight">\(\tau\)</span> used to adjust the mean vector. Set to 3 by default.</p>
 </dd>
 </dl>
-</dd></dl>
-
+<p class="rubric">Calling the instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Input parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">FallofEmpires</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([ -8. -10. -12.])</span>
+</pre></div>
+</div>
+<p>Using torch tensors</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>   <span class="c1"># torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([-8., -10., -12.])</span>
+</pre></div>
+</div>
+<p>Using list of numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([ -8. -10. -12.])</span>
+</pre></div>
+</div>
+<p>Using list of torch tensors</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([-8., -10., -12.])</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-tolerant
+sgd by inner product manipulation. In Ryan P. Adams and Vibhav Gogate (eds.), Proceedings of
+The 35th Uncertainty in Artificial Intelligence Conference, volume 115 of Proceedings of Machine
+Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="reference external" href="https://proceedings">https://proceedings</a>.
+mlr.press/v115/xie20a.html.</p>
+</aside>
+</aside>
 </section>
 </dd></dl>
 
@@ -454,8 +477,8 @@
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.Inf">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">Inf</span></span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#Inf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.Inf" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id1">
-<h2>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Class representing an attack that generates a vector</dt><dd><p>with positive infinity values.</p>
 </dd>
@@ -476,8 +499,8 @@
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.LittleIsEnough">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">LittleIsEnough</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attack_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#LittleIsEnough"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.LittleIsEnough" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id2">
-<h2>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h2>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Class representing an attack that perturbs the mean vector of honest</dt><dd><p>vectors by adding a scaled version of the standard deviation vector.</p>
 </dd>
@@ -537,8 +560,8 @@
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.Mimic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">Mimic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">worker_to_mimic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#Mimic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.Mimic" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id3">
-<h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id5">
+<h2>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <p>Class representing an attack where the attacker mimics the behavior of a specific worker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param worker_to_mimic<span class="colon">:</span></dt>
@@ -594,8 +617,8 @@
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.NoAttack">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">NoAttack</span></span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#NoAttack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.NoAttack" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id4">
-<h2>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
 <p>Class representing an attack which behaves like an honest node.</p>
 </section>
 </dd></dl>
@@ -604,7 +627,7 @@
 <dt class="sig sig-object py" id="byzfl.attacker.attacks.SignFlipping">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacker.attacks.</span></span><span class="sig-name descname"><span class="pre">SignFlipping</span></span><a class="reference internal" href="../_modules/byzfl/attacker/attacks.html#SignFlipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacker.attacks.SignFlipping" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Apply the SignFlipping attack:</p>
+<p>Execute the Sign Flipping attack <a href="#id10"><span class="problematic" id="id7">[1]_</span></a>: send the opposite of the mean vector.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{SignFlipping} \ (x_1, \dots, x_n) =
 - \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
@@ -616,15 +639,15 @@
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output will be the same as the input.</p>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">attacks</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">attacks</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>
@@ -663,6 +686,14 @@
 <span class="go">tensor([-4., -5., -6.])</span>
 </pre></div>
 </div>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id8" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Zeyuan Allen-Zhu, Faeze Ebrahimianghazani, Jerry Li, and Dan Alistarh. Byzantine-resilient non-convex stochastic gradient descent.
+In International Conference on Learning Representations, 2020</p>
+</aside>
+</aside>
 </dd></dl>
 
 </section>
@@ -696,10 +727,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.FallOfEmpires"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.FallOfEmpires.set_attack_parameters"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires.set_attack_parameters()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.FallOfEmpires"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.Inf"><code class="docutils literal notranslate"><span class="pre">Inf</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.LittleIsEnough"><code class="docutils literal notranslate"><span class="pre">LittleIsEnough</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacker.attacks.LittleIsEnough.set_attack_parameters"><code class="docutils literal notranslate"><span class="pre">LittleIsEnough.set_attack_parameters()</span></code></a></li>
@@ -748,7 +776,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

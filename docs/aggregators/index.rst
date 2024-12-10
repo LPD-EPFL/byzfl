@@ -29,5 +29,3 @@ This is the Aggregation Module of the library, which contains all aggregation fu
    classes/bucketing
    classes/clipping
    classes/arc
-
-
