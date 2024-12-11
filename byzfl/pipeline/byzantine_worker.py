@@ -1,5 +1,5 @@
-import byzfl.attacker.attacks as attacks
-import byzfl.attacker.attack_optimizers as attack_optimizers
+import byzfl.attacks.attacks as attacks
+import byzfl.attacks.attack_optimizers as attack_optimizers
 
 class ByzantineWorker():
     """

@@ -8,10 +8,9 @@
   :titlesonly:
   
   aggregators/index
-  attacker/index
+  attacks/index
   pipeline/index
   team/index
-
 
 
 .. raw:: html

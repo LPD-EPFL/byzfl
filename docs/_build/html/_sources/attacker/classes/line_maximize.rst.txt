@@ -1,8 +1,0 @@
-Line Maximize
-=======================
-
-.. autoclass:: byzfl.attacker.attack_optimizers.LineMaximize
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:

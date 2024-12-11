@@ -142,7 +142,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../attacker/index.html">
+  <a class="nav-link nav-internal" href="../../../attacks/index.html">
     Attacks
   </a>
 </li>
@@ -268,7 +268,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../attacker/index.html">
+  <a class="nav-link nav-internal" href="../../../attacks/index.html">
     Attacks
   </a>
 </li>
@@ -555,15 +555,15 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\tau_k(j)}\right]_k</span>
+<span class="sd">        \left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\pi(j)}\right]_k</span>
 <span class="sd">    </span>
 <span class="sd">    where </span>
 <span class="sd">    </span>
 <span class="sd">    - \\([\\cdot]_k\\) refers to the k-th coordinate</span>
 
-<span class="sd">    - \\(\\tau_k\\) denote a permutation on \\([n]\\) that sorts the k-th</span>
+<span class="sd">    - \\(\\pi\\) denote a permutation on \\([n]\\) that sorts the k-th</span>
 <span class="sd">      coordinate of the input vectors in non-decreasing order, i.e., </span>
-<span class="sd">      \\([x_{\\tau_k(1)}]_k \\leq ...\\leq [x_{\\tau_k(n)}]_k\\)</span>
+<span class="sd">      \\([x_{\\pi_k(1)}]_k \\leq ...\\leq [x_{\\pi_k(n)}]_k\\)</span>
 <span class="sd">    </span>
 <span class="sd">    In other words, TrMean removes the \\(f\\) highest values and \\(f\\) </span>
 <span class="sd">    lowers values coordinate-wise, and then applies the average.</span>
@@ -571,7 +571,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
 
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
@@ -774,7 +774,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -885,7 +885,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -1122,7 +1122,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
 
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -1267,7 +1267,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\).</span>
+<span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
 <span class="sd">    idx : int, optional</span>
 <span class="sd">        Index of the vector on which the neighborhood will be computed. The </span>
 <span class="sd">        default is setting \\(\\mathrm{idx}=0\\).</span>
@@ -1377,7 +1377,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
-<span class="sd">        Number of faulty vectors. The default is setting \\(f=0\\)</span>
+<span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
 
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>

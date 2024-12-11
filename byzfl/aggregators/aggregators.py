@@ -157,15 +157,15 @@ class TrMean(object):
 
     .. math::
 
-        \left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\tau_k(j)}\right]_k
+        \left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\pi(j)}\right]_k
     
     where 
     
     - \\([\\cdot]_k\\) refers to the k-th coordinate
 
-    - \\(\\tau_k\\) denote a permutation on \\([n]\\) that sorts the k-th
+    - \\(\\pi\\) denote a permutation on \\([n]\\) that sorts the k-th
       coordinate of the input vectors in non-decreasing order, i.e., 
-      \\([x_{\\tau_k(1)}]_k \\leq ...\\leq [x_{\\tau_k(n)}]_k\\)
+      \\([x_{\\pi_k(1)}]_k \\leq ...\\leq [x_{\\pi_k(n)}]_k\\)
     
     In other words, TrMean removes the \\(f\\) highest values and \\(f\\) 
     lowers values coordinate-wise, and then applies the average.
@@ -173,7 +173,7 @@ class TrMean(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
 
     
     Calling the instance
@@ -370,7 +370,7 @@ class Krum(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
     
     Calling the instance
     --------------------
@@ -478,7 +478,7 @@ class MultiKrum(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
     
     Calling the instance
     --------------------
@@ -709,7 +709,7 @@ class MDA(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
 
     Calling the instance
     --------------------
@@ -851,7 +851,7 @@ class MoNNA(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
     idx : int, optional
         Index of the vector on which the neighborhood will be computed. The 
         default is setting \\(\\mathrm{idx}=0\\).
@@ -958,7 +958,7 @@ class Meamed(object):
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\)
+        Number of faulty vectors. Set to 0 by default.
 
     Calling the instance
     --------------------
