@@ -8,9 +8,6 @@
 
 import os
 import sys
-from sphinx.util.docfields import Field
-from sphinx.ext.autodoc import between
-
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -99,5 +96,3 @@ mathjax_config = {
         }
     }
 }
-
-

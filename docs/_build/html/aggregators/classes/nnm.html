@@ -430,12 +430,11 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.aggregations.preaggregators.</span></span><span class="sig-name descname"><span class="pre">NNM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregations/preaggregators.html#NNM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.aggregations.preaggregators.NNM" title="Link to this definition">#</a></dt>
 <dd><p>Apply the Nearest Neighbor Mixing pre-aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i\in\mathcal{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i\in\mathcal{N}_{n}} x_i \right)\]</div>
-<p>where \(\mathcal{N}_i\) is the set of the \(n − f\) nearest
-neighbors of \(x_i\) in \(\{x_1, \dots , x_n\}\)</p>
+\[\mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i \in \mathit{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i \in \mathit{N}_{n}} x_i \right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathit{N}_{i}\)</span> is the set of the <span class="math notranslate nohighlight">\(n - f\)</span> nearest neighbors of <span class="math notranslate nohighlight">\(x_i\)</span> in <span class="math notranslate nohighlight">\(\{x_1, \dots , x_n\}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. The default is setting \(f=0\).</p>
+<dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
@@ -459,8 +458,8 @@ neighbors of \(x_i\) in \(\{x_1, \dots , x_n\}\)</p>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">array([[2.5 3.5 4.5]</span>
-<span class="go">       [2.5 3.5 4.5]</span>
-<span class="go">       [5.5 6.5 7.5]])</span>
+<span class="go">        [2.5 3.5 4.5]</span>
+<span class="go">        [5.5 6.5 7.5]])</span>
 </pre></div>
 </div>
 <p>Using torch tensors</p>
@@ -481,8 +480,8 @@ neighbors of \(x_i\) in \(\{x_1, \dots , x_n\}\)</p>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">array([[2.5 3.5 4.5]</span>
-<span class="go">       [2.5 3.5 4.5]</span>
-<span class="go">       [5.5 6.5 7.5]])</span>
+<span class="go">        [2.5 3.5 4.5]</span>
+<span class="go">        [5.5 6.5 7.5]])</span>
 </pre></div>
 </div>
 <p>Using list of torch tensors</p>

@@ -435,7 +435,7 @@
 \min\left\{1, \frac{c}{\|x_n\|}\right\} x_n \right)\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>c</strong> (<em>float, optional</em>) – Static clipping threshold. The default is setting \(c=2\).</p>
+<dd class="field-odd"><p><strong>c</strong> (<em>float, optional</em>) – Static clipping threshold. Set to 2 by default.</p>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
@@ -459,8 +459,8 @@
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">array([[0.53452248, 1.06904497, 1.60356745],</span>
-<span class="go">       [0.91168461, 1.13960576, 1.36752692],</span>
-<span class="go">       [1.00514142, 1.14873305, 1.29232469]])</span>
+<span class="go">        [0.91168461, 1.13960576, 1.36752692],</span>
+<span class="go">        [1.00514142, 1.14873305, 1.29232469]])</span>
 </pre></div>
 </div>
 <p>Using torch tensors</p>
@@ -481,8 +481,8 @@
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">array([[0.53452248, 1.06904497, 1.60356745],</span>
-<span class="go">       [0.91168461, 1.13960576, 1.36752692],</span>
-<span class="go">       [1.00514142, 1.14873305, 1.29232469]])</span>
+<span class="go">        [0.91168461, 1.13960576, 1.36752692],</span>
+<span class="go">        [1.00514142, 1.14873305, 1.29232469]])</span>
 </pre></div>
 </div>
 <p>Using list of torch tensors</p>

@@ -489,7 +489,7 @@ class MultiKrum(object):
     ----------------
     vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
         A set of vectors, matrix or tensors.
-        
+
     Returns
     -------
     :numpy.ndarray or torch.Tensor
@@ -497,7 +497,6 @@ class MultiKrum(object):
 
     Examples
     --------
-
         
         >>> import byzfl
         >>> agg = byzfl.MultiKrum(1)
@@ -558,7 +557,6 @@ class MultiKrum(object):
         misc.check_type(self.f, int)
 
         distance = misc.distance_tool(vectors)
-
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-self.f]
         dist = tools.mean(dist, axis = 1)
@@ -1047,4 +1045,3 @@ class Meamed(object):
             a = a.to(indices.device)
         indices = tools.add(indices, a)
         return tools.mean(vectors.take(indices), axis=0)
-

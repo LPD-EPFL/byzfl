@@ -8,16 +8,15 @@ class NNM(object):
 
     .. math::
 
-        \mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i\in\mathcal{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i\in\mathcal{N}_{n}} x_i \right)
+        \mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i \in \mathit{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i \in \mathit{N}_{n}} x_i \right)
         
-    where \\(\\mathcal{N}_i\\) is the set of the \\(n − f\\) nearest 
-    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)
+    where :math:`\mathit{N}_{i}` is the set of the :math:`n - f` nearest neighbors of :math:`x_i` in :math:`\{x_1, \dots , x_n\}`.
 
     
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
     
     Calling the instance
     --------------------
@@ -35,52 +34,52 @@ class NNM(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.NNM(1)
+    >>> import byzfl
+    >>> agg = byzfl.NNM(1)
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([[2.5 3.5 4.5]
-               [2.5 3.5 4.5]
-               [5.5 6.5 7.5]])
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([[2.5 3.5 4.5]
+            [2.5 3.5 4.5]
+            [5.5 6.5 7.5]])
 
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([[2.5000, 3.5000, 4.5000],
-                [2.5000, 3.5000, 4.5000],
-                [5.5000, 6.5000, 7.5000]])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([[2.5000, 3.5000, 4.5000],
+            [2.5000, 3.5000, 4.5000],
+            [5.5000, 6.5000, 7.5000]])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([[2.5 3.5 4.5]
-               [2.5 3.5 4.5]
-               [5.5 6.5 7.5]])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([[2.5 3.5 4.5]
+            [2.5 3.5 4.5]
+            [5.5 6.5 7.5]])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([[2.5000, 3.5000, 4.5000],
-                [2.5000, 3.5000, 4.5000],
-                [5.5000, 6.5000, 7.5000]])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([[2.5000, 3.5000, 4.5000],
+            [2.5000, 3.5000, 4.5000],
+            [5.5000, 6.5000, 7.5000]])
 
 
     References
@@ -124,7 +123,7 @@ class Bucketing(object):
     Initialization parameters
     --------------------------
     s : int, optional
-        Number of vectors per bucket. The default is setting \\(s=1\\).
+        Number of vectors per bucket. Set to 1 by default.
     
     Calling the instance
     --------------------
@@ -142,49 +141,48 @@ class Bucketing(object):
     Examples
     --------
 
+    >>> import byzfl
+    >>> agg = byzfl.Bucketing(2)
+
+    Using numpy arrays
         
-        >>> import byzfl
-        >>> agg = byzfl.Bucketing(2)
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([[4. 5. 6.]
+            [4. 5. 6.]])
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([[4. 5. 6.]
-               [4. 5. 6.]])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([[5.5000, 6.5000, 7.5000],
+            [1.0000, 2.0000, 3.0000]])
 
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([[5.5000, 6.5000, 7.5000],
-                [1.0000, 2.0000, 3.0000]])
+    Using list of numpy arrays
 
-        Using list of numpy arrays
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([[4. 5. 6.]
+            [4. 5. 6.]])
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([[4. 5. 6.]
-               [4. 5. 6.]])
-
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([[5.5000, 6.5000, 7.5000],
-                [1.0000, 2.0000, 3.0000]])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([[5.5000, 6.5000, 7.5000],
+            [1.0000, 2.0000, 3.0000]])
 
         
     Note
@@ -249,7 +247,7 @@ class Clipping(object):
     Initialization parameters
     --------------------------
     c : float, optional
-        Static clipping threshold. The default is setting \\(c=2\\).
+        Static clipping threshold. Set to 2 by default.
     
     Calling the instance
     --------------------
@@ -266,57 +264,56 @@ class Clipping(object):
 
     Examples
     --------
-
         
-        >>> import byzfl
-        >>> agg = byzfl.Clipping(2)
+    >>> import byzfl
+    >>> agg = byzfl.Clipping(2)
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([[0.53452248, 1.06904497, 1.60356745],
-               [0.91168461, 1.13960576, 1.36752692],
-               [1.00514142, 1.14873305, 1.29232469]])
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([[0.53452248, 1.06904497, 1.60356745],
+            [0.91168461, 1.13960576, 1.36752692],
+            [1.00514142, 1.14873305, 1.29232469]])
 
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([[0.5345, 1.0690, 1.6036],
-                [0.9117, 1.1396, 1.3675],
-                [1.0051, 1.1487, 1.2923]])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([[0.5345, 1.0690, 1.6036],
+            [0.9117, 1.1396, 1.3675],
+            [1.0051, 1.1487, 1.2923]])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([[0.53452248, 1.06904497, 1.60356745],
-               [0.91168461, 1.13960576, 1.36752692],
-               [1.00514142, 1.14873305, 1.29232469]])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([[0.53452248, 1.06904497, 1.60356745],
+            [0.91168461, 1.13960576, 1.36752692],
+            [1.00514142, 1.14873305, 1.29232469]])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([[0.5345, 1.0690, 1.6036],
-                [0.9117, 1.1396, 1.3675],
-                [1.0051, 1.1487, 1.2923]])
-
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([[0.5345, 1.0690, 1.6036],
+            [0.9117, 1.1396, 1.3675],
+            [1.0051, 1.1487, 1.2923]])
  
     """
+    
     def __init__(self, c=2):
         self.c = c
     
@@ -332,7 +329,9 @@ class Clipping(object):
             vectors[i] = self._clip_vector(vectors[i])
         return vectors
 
+
 class ARC(object):
+    
     r"""
 
     Apply the Adaptive Robust Clipping pre-aggregation rule [1]_:
@@ -343,12 +342,12 @@ class ARC(object):
         \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  
         \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)
 
-    where :math:`k = \lfloor 2 \frac{f}{n} (n-f)\rfloor` and \\(\\pi\\) is a permutation such that \\( x_{\\pi(1)} \\geq \\dots \\geq x_{\\pi(n)}\\).
+    where :math:`k = \lfloor 2 \frac{f}{n} (n-f)\rfloor` and \\(\\pi\\) is a permutation such that :math:`\|x_{\pi(1)}\|_2 \geq \dots \geq \|x_{\pi(n)}\|_2`.
 
     Initialization parameters
     --------------------------
     f : int, optional
-        Number of faulty vectors. The default is setting \\(f=0\\).
+        Number of faulty vectors. Set to 0 by default.
     
     Calling the instance
     --------------------
@@ -417,7 +416,7 @@ class ARC(object):
     ----------
 
     .. [1] Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
-           The Vital Role of Gradient Clipping in ByzantineResilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/ 2405.14432
+           The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/ 2405.14432
     """
 
     def __init__(self, f=0):
@@ -444,5 +443,3 @@ class ARC(object):
         for _, vector_id in f_largest:
             vectors[vector_id] = self._clip_vector(vectors[vector_id], clipping_threshold)
         return vectors
-
-
