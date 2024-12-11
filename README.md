@@ -1,5 +1,5 @@
 # Framework for Byzantine ML
-This tool facilitates the testing of aggregations and attacks by simulating distributed machine learning environments in a fully configurable manner via the `settings.json` file.
+This tool facilitates the testing of aggregators and attacks by simulating distributed machine learning environments in a fully configurable manner via the `settings.json` file.
 
 # Requirements
 1. Install the dependencies listed in `requirements.txt`.
@@ -47,9 +47,9 @@ This tool facilitates the testing of aggregations and attacks by simulating dist
     - **name**: Name of the aggregation used by the server. Must be one of the **aggregators.py**.
     - **parameters**: Dictionary with the parameters required by the aggregation used.
 
-- **PreAggregators**: List of pre-aggregations in order as they should be applied.
+- **PreAggregators**: List of pre-aggregators in order as they should be applied.
     - **name**: Name of the pre-aggregation used by the server. Must be defined in **preaggregators.py**.
-    - **parameters**: Dictionary with the parameters required by the pre-aggregations used.
+    - **parameters**: Dictionary with the parameters required by the pre-aggregators used.
 
 - **Server**:
     - **batch_norm_momentum**: momentum for the federated batch norm. 
@@ -70,5 +70,5 @@ This tool facilitates the testing of aggregations and attacks by simulating dist
         - **parameters**: Dictionary with the parameters required by the optimizer.
 
 # How to configure settings.json for several settings
-Please note that this library is designed to run multiple settings simultaneously, which is essential for thoroughly exploring aggregations and attacks. To achieve this, you can provide a list of elements in the settings.json file instead of a single element. Below is an example:
+Please note that this library is designed to run multiple settings simultaneously, which is essential for thoroughly exploring aggregators and attacks. To achieve this, you can provide a list of elements in the settings.json file instead of a single element. Below is an example:
 `distribution_parameter: 1.0` -> `distribution_parameter: [1.0, 0.5, 0.0]`

@@ -1,6 +1,5 @@
 Centered Clipping
 ==================
 
-.. autoclass:: byzfl.aggregations.aggregators.CenteredClipping
+.. autoclass:: byzfl.aggregators.CenteredClipping
     :no-members:
-

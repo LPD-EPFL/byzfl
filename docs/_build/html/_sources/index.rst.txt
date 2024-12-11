@@ -32,7 +32,7 @@ compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://nump
 
 ByzFL provides three main tools.
 
-1. Robust aggregations and pre-aggregations.
+1. Robust aggregators and pre-aggregators.
 2. Implementation of attacks.
 3. Pipeline to train and benchmark new methods using ByzFL implemented schemes.
 
@@ -65,7 +65,7 @@ Learn more about ByzFL:
   <div class="column">
     <div class="card">
       <div class="container">
-        <h2>Aggregations</h2>
+        <h2>Aggregators</h2>
         <p>
 
 :ref:`Get Started <aggregations-label>`
@@ -107,4 +107,3 @@ Learn more about ByzFL:
 .. rubric:: Lisence
 
 `MIT <https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt>`_
-

@@ -1,5 +1,4 @@
 import numpy as np
-
 from byzfl.utils.misc import check_vectors_type
 
 class NoAttack(object):

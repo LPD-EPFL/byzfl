@@ -141,7 +141,7 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
-    Aggregations
+    Aggregators
   </a>
 </li>
 
@@ -269,7 +269,7 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
-    Aggregations
+    Aggregators
   </a>
 </li>
 
@@ -404,7 +404,7 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Aggregations</a></li>
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Aggregators</a></li>
     
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Trimmed Mean</span></li>
   </ul>
@@ -426,8 +426,8 @@
   <section id="trimmed-mean">
 <span id="trmean-label"></span><h1>Trimmed Mean<a class="headerlink" href="#trimmed-mean" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.aggregations.aggregators.TrMean">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.aggregations.aggregators.</span></span><span class="sig-name descname"><span class="pre">TrMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregations/aggregators.html#TrMean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.aggregations.aggregators.TrMean" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.aggregators.TrMean">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.aggregators.</span></span><span class="sig-name descname"><span class="pre">TrMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#TrMean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.aggregators.TrMean" title="Link to this definition">#</a></dt>
 <dd><p>Compute the trimmed mean (or truncated mean) along the first axis:</p>
 <div class="math notranslate nohighlight">
 \[\left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\tau_k(j)}\right]_k\]</div>
@@ -546,7 +546,7 @@ lowers values coordinate-wise, and then applies the average.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.aggregations.aggregators.TrMean"><code class="docutils literal notranslate"><span class="pre">TrMean</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.aggregators.TrMean"><code class="docutils literal notranslate"><span class="pre">TrMean</span></code></a></li>
 </ul>
   </nav></div>
 

@@ -3,6 +3,5 @@
 Trimmed Mean
 =============
 
-.. autoclass:: byzfl.aggregations.aggregators.TrMean
+.. autoclass:: byzfl.aggregators.TrMean
     :no-members:
-

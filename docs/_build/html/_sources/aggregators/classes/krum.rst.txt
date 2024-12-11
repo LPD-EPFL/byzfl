@@ -1,6 +1,5 @@
 Krum
 ========
 
-.. autoclass:: byzfl.aggregations.aggregators.Krum
+.. autoclass:: byzfl.aggregators.Krum
     :no-members:
-

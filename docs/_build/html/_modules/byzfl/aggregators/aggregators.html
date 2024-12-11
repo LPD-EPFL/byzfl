@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>byzfl.aggregations.aggregators &#8212; ByzFL</title>
+    <title>byzfl.aggregators.aggregators &#8212; ByzFL</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/aggregations/aggregators';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/aggregators/aggregators';</script>
     <script src="../../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -136,7 +136,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../aggregators/index.html">
-    Aggregations
+    Aggregators
   </a>
 </li>
 
@@ -262,7 +262,7 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../aggregators/index.html">
-    Aggregations
+    Aggregators
   </a>
 </li>
 
@@ -370,7 +370,7 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.aggregations.aggregators</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.aggregators.aggregators</span></li>
   </ul>
 </nav>
 </div>
@@ -387,16 +387,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for byzfl.aggregations.aggregators</h1><div class="highlight"><pre>
+  <h1>Source code for byzfl.aggregators.aggregators</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">itertools</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-
 <span class="kn">from</span> <span class="nn">byzfl.utils</span> <span class="kn">import</span> <span class="n">misc</span>
 
 <div class="viewcode-block" id="Average">
-<a class="viewcode-back" href="../../../aggregators/classes/average.html#byzfl.aggregations.aggregators.Average">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/average.html#byzfl.aggregators.Average">[docs]</a>
 <span class="k">class</span> <span class="nc">Average</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the average along the first axis</span>
@@ -473,7 +471,7 @@
 
 
 <div class="viewcode-block" id="Median">
-<a class="viewcode-back" href="../../../aggregators/classes/median.html#byzfl.aggregations.aggregators.Median">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/median.html#byzfl.aggregators.Median">[docs]</a>
 <span class="k">class</span> <span class="nc">Median</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -550,7 +548,7 @@
 
 
 <div class="viewcode-block" id="TrMean">
-<a class="viewcode-back" href="../../../aggregators/classes/trmean.html#byzfl.aggregations.aggregators.TrMean">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/trmean.html#byzfl.aggregators.TrMean">[docs]</a>
 <span class="k">class</span> <span class="nc">TrMean</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the trimmed mean (or truncated mean) along the first axis:</span>
@@ -651,7 +649,7 @@
 
 
 <div class="viewcode-block" id="GeometricMedian">
-<a class="viewcode-back" href="../../../aggregators/classes/geometric_median.html#byzfl.aggregations.aggregators.GeometricMedian">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/geometric_median.html#byzfl.aggregators.GeometricMedian">[docs]</a>
 <span class="k">class</span> <span class="nc">GeometricMedian</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply the smoothed Weiszfeld algorithm [1]_ to return the</span>
@@ -754,7 +752,7 @@
 
 
 <div class="viewcode-block" id="Krum">
-<a class="viewcode-back" href="../../../aggregators/classes/krum.html#byzfl.aggregations.aggregators.Krum">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/krum.html#byzfl.aggregators.Krum">[docs]</a>
 <span class="k">class</span> <span class="nc">Krum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply the Krum aggregation rule [1]_:</span>
@@ -767,9 +765,9 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathcal{N}_i} \|x_i - x\|^2_2</span>
+<span class="sd">        k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathit{N}_i} \|x_i - x\|^2_2</span>
 
-<span class="sd">    where \\(\\mathcal{N}_i\\) is the set of the \\(n − f\\) nearest </span>
+<span class="sd">    where \\(\\mathit{N}_i\\) is the set of the \\(n − f\\) nearest </span>
 <span class="sd">    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)</span>
 
 <span class="sd">    </span>
@@ -864,7 +862,7 @@
 
 
 <div class="viewcode-block" id="MultiKrum">
-<a class="viewcode-back" href="../../../aggregators/classes/multi_krum.html#byzfl.aggregations.aggregators.MultiKrum">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/multi_krum.html#byzfl.aggregators.MultiKrum">[docs]</a>
 <span class="k">class</span> <span class="nc">MultiKrum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
@@ -878,9 +876,9 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \sum_{x \in \mathcal{N}_{k^\star_1} } \|x_{k^\star_1} - x\|^2_2 \leq \dots \leq \sum_{x \in \mathcal{N}_{k^\star_{n-f}} } \|x_{k^\star_{n-f}} - x\|^2_2 </span>
+<span class="sd">        \sum_{x \in \mathit{N}_{k^\star_1} } \|x_{k^\star_1} - x\|^2_2 \leq \dots \leq \sum_{x \in \mathit{N}_{k^\star_{n-f}} } \|x_{k^\star_{n-f}} - x\|^2_2 </span>
 
-<span class="sd">    where for any \\(i \\in [n], \\mathcal{N}_i\\) is the set of the \\(n − f\\) nearest </span>
+<span class="sd">    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest </span>
 <span class="sd">    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)</span>
 
 <span class="sd">    </span>
@@ -973,7 +971,7 @@
 
 
 <div class="viewcode-block" id="CenteredClipping">
-<a class="viewcode-back" href="../../../aggregators/classes/centered_clipping.html#byzfl.aggregations.aggregators.CenteredClipping">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/centered_clipping.html#byzfl.aggregators.CenteredClipping">[docs]</a>
 <span class="k">class</span> <span class="nc">CenteredClipping</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply the Centered Clipping aggregation rule [1]_:</span>
@@ -1107,7 +1105,7 @@
 
 
 <div class="viewcode-block" id="MDA">
-<a class="viewcode-back" href="../../../aggregators/classes/mda.html#byzfl.aggregations.aggregators.MDA">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/mda.html#byzfl.aggregators.MDA">[docs]</a>
 <span class="k">class</span> <span class="nc">MDA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply the Minimum-Diameter Averaging aggregation rule [1]_:</span>
@@ -1249,7 +1247,9 @@
 <span class="c1">#</span>
 <span class="c1">#         return vectors[tools.asarray(min_subset)].mean(axis=0)</span>
 
-<span class="k">class</span> <span class="nc">Monna</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="MoNNA">
+<a class="viewcode-back" href="../../../aggregators/classes/monna.html#byzfl.aggregators.MoNNA">[docs]</a>
+<span class="k">class</span> <span class="nc">MoNNA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
@@ -1257,9 +1257,9 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathcal{N}_{\mathrm{idx}}} x_{i}</span>
+<span class="sd">        \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}}} x_{i}</span>
 <span class="sd">        </span>
-<span class="sd">    where \\(\\mathcal{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest </span>
+<span class="sd">    where \\(\\mathit{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest </span>
 <span class="sd">    neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\)</span>
 
 
@@ -1360,11 +1360,12 @@
         <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="Meamed">
-<a class="viewcode-back" href="../../../aggregators/classes/meamed.html#byzfl.aggregations.aggregators.Meamed">[docs]</a>
+<a class="viewcode-back" href="../../../aggregators/classes/meamed.html#byzfl.aggregators.Meamed">[docs]</a>
 <span class="k">class</span> <span class="nc">Meamed</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>

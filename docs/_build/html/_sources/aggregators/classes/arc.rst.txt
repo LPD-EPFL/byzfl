@@ -1,7 +1,7 @@
 Adaptive Robust Clipping (ARC)
 =========================
 
-.. autoclass:: byzfl.aggregations.preaggregators.ARC
+.. autoclass:: byzfl.aggregators.ARC
     :members:
     :undoc-members:
     :inherited-members:

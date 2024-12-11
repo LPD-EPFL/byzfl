@@ -1,5 +1,5 @@
 Median
 ========
 
-.. autoclass:: byzfl.aggregations.aggregators.Median
+.. autoclass:: byzfl.aggregators.Median
     :no-members:

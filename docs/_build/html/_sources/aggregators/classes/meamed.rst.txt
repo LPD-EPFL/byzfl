@@ -1,6 +1,5 @@
 Meamed
 =========
 
-.. autoclass:: byzfl.aggregations.aggregators.Meamed
+.. autoclass:: byzfl.aggregators.Meamed
     :no-members:
-

@@ -1,5 +1,5 @@
 MoNNA
 ===========================
 
-.. autoclass:: byzfl.aggregations.aggregators.MoNNA
+.. autoclass:: byzfl.aggregators.MoNNA
     :no-members:
