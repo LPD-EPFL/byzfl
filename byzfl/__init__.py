@@ -1,5 +1,3 @@
-from .aggregators.aggregators import *
-from .aggregators.preaggregators import *
+from .aggregators import *
+from .attacks import *
 from .pipeline.experiment import run_experiment
-from .attacks.attacks import *
-from .attacks.attack_optimizers import *

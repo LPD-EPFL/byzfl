@@ -41,7 +41,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
@@ -367,6 +367,7 @@
  <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
@@ -396,10 +397,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pipeline/byzantine_worker.html#byzfl.pipeline.byzantine_worker.ByzantineWorker.apply_attack">apply_attack() (byzfl.pipeline.byzantine_worker.ByzantineWorker method)</a>
-</li>
-      <li><a href="pipeline/byzantine_worker.html#byzfl.pipeline.byzantine_worker.ByzantineWorker.apply_batch_norm_attack">apply_batch_norm_attack() (byzfl.pipeline.byzantine_worker.ByzantineWorker method)</a>
-</li>
       <li><a href="aggregators/classes/arc.html#byzfl.aggregators.ARC">ARC (class in byzfl.aggregators)</a>
 </li>
       <li><a href="aggregators/classes/average.html#byzfl.aggregators.Average">Average (class in byzfl.aggregators)</a>
@@ -416,8 +413,6 @@
 </li>
       <li><a href="aggregators/classes/bucketing.html#byzfl.aggregators.Bucketing">Bucketing (class in byzfl.aggregators)</a>
 </li>
-      <li><a href="pipeline/byzantine_worker.html#byzfl.pipeline.byzantine_worker.ByzantineWorker">ByzantineWorker (class in byzfl.pipeline.byzantine_worker)</a>
-</li>
       <li>
     byzfl.attacks.attack_optimizers
 
@@ -433,28 +428,21 @@
 </li>
       </ul></li>
       <li>
-    byzfl.pipeline.byzantine_worker
-
-      <ul>
-        <li><a href="pipeline/byzantine_worker.html#module-byzfl.pipeline.byzantine_worker">module</a>
-</li>
-      </ul></li>
-      <li>
     byzfl.pipeline.client
 
       <ul>
         <li><a href="pipeline/client.html#module-byzfl.pipeline.client">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    byzfl.pipeline.compute_cluster
+    byzfl.pipeline.dataset
 
       <ul>
-        <li><a href="pipeline/compute_cluster.html#module-byzfl.pipeline.compute_cluster">module</a>
+        <li><a href="pipeline/dataset.html#module-byzfl.pipeline.dataset">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     byzfl.pipeline.managers
 
@@ -508,25 +496,27 @@
 </li>
       <li><a href="pipeline/models.html#byzfl.pipeline.models.cnn_cifar_old">cnn_cifar_old (class in byzfl.pipeline.models)</a>
 </li>
-      <li><a href="pipeline/models.html#byzfl.pipeline.models.cnn_cifar_old_with_fbn">cnn_cifar_old_with_fbn (class in byzfl.pipeline.models)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pipeline/models.html#byzfl.pipeline.models.cnn_cifar_old_with_fbn">cnn_cifar_old_with_fbn (class in byzfl.pipeline.models)</a>
+</li>
       <li><a href="pipeline/models.html#byzfl.pipeline.models.cnn_mnist">cnn_mnist (class in byzfl.pipeline.models)</a>
 </li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.compute_batch_norm_keys">compute_batch_norm_keys() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-
-      <ul>
-        <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.compute_batch_norm_keys">(byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
+      <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.compute_batch_norm_keys">compute_batch_norm_keys() (byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
 </li>
-      </ul></li>
       <li><a href="pipeline/client.html#byzfl.pipeline.client.Client.compute_gradients">compute_gradients() (byzfl.pipeline.client.Client method)</a>
 </li>
       <li><a href="pipeline/server.html#byzfl.pipeline.server.Server.compute_test_accuracy">compute_test_accuracy() (byzfl.pipeline.server.Server method)</a>
 </li>
       <li><a href="pipeline/server.html#byzfl.pipeline.server.Server.compute_validation_accuracy">compute_validation_accuracy() (byzfl.pipeline.server.Server method)</a>
 </li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster">ComputeCluster (class in byzfl.pipeline.compute_cluster)</a>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.dirichlet_niid_idx">dirichlet_niid_idx() (in module byzfl.pipeline.dataset)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -540,6 +530,10 @@
         <li><a href="pipeline/models.html#byzfl.pipeline.models.Bottleneck.expansion">(byzfl.pipeline.models.Bottleneck attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.extreme_niid_idx">extreme_niid_idx() (in module byzfl.pipeline.dataset)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -594,6 +588,8 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.gamma_niid_idx">gamma_niid_idx() (in module byzfl.pipeline.dataset)</a>
+</li>
       <li><a href="aggregators/classes/geometric_median.html#byzfl.aggregators.GeometricMedian">GeometricMedian (class in byzfl.aggregators)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_aggregator_info">get_aggregator_info() (byzfl.pipeline.managers.ParamsManager method)</a>
@@ -612,12 +608,8 @@
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_batch_norm_momentum">get_batch_norm_momentum() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.get_batch_norm_stats">get_batch_norm_stats() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-
-      <ul>
-        <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_batch_norm_stats">(byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
+      <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_batch_norm_stats">get_batch_norm_stats() (byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
 </li>
-      </ul></li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_batch_size">get_batch_size() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_batch_size_validation">get_batch_size_validation() (byzfl.pipeline.managers.ParamsManager method)</a>
@@ -627,6 +619,8 @@
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_data_distribution_seed">get_data_distribution_seed() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_data_folder">get_data_folder() (byzfl.pipeline.managers.ParamsManager method)</a>
+</li>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.get_dataloaders">get_dataloaders() (in module byzfl.pipeline.dataset)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_dataset_name">get_dataset_name() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
@@ -650,17 +644,15 @@
 </li>
       <li><a href="pipeline/client.html#byzfl.pipeline.client.Client.get_flat_flipped_gradients">get_flat_flipped_gradients() (byzfl.pipeline.client.Client method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_gradients">get_flat_gradients() (byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
 </li>
       <li><a href="pipeline/client.html#byzfl.pipeline.client.Client.get_flat_gradients_with_momentum">get_flat_gradients_with_momentum() (byzfl.pipeline.client.Client method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.get_flat_parameters">get_flat_parameters() (byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_flatten_info">get_flatten_info() (byzfl.pipeline.managers.ParamsManager method)</a>
-</li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.get_gradients">get_gradients() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_learning_rate">get_learning_rate() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
@@ -670,20 +662,14 @@
 </li>
       <li><a href="pipeline/client.html#byzfl.pipeline.client.Client.get_loss_list">get_loss_list() (byzfl.pipeline.client.Client method)</a>
 </li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.get_loss_list_of_clients">get_loss_list_of_clients() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-</li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_milestones">get_milestones() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
       <li><a href="pipeline/server.html#byzfl.pipeline.server.Server.get_model">get_model() (byzfl.pipeline.server.Server method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_model_name">get_model_name() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.get_momentum">get_momentum() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-
-      <ul>
-        <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_momentum">(byzfl.pipeline.managers.ParamsManager method)</a>
+      <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_momentum">get_momentum() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
-      </ul></li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_name_data_distribution">get_name_data_distribution() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_nb_byz">get_nb_byz() (byzfl.pipeline.managers.ParamsManager method)</a>
@@ -710,8 +696,6 @@
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_store_training_loss">get_store_training_loss() (byzfl.pipeline.managers.ParamsManager method)</a>
 </li>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.get_train_acc_of_clients">get_train_acc_of_clients() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-</li>
       <li><a href="pipeline/client.html#byzfl.pipeline.client.Client.get_train_accuracy">get_train_accuracy() (byzfl.pipeline.client.Client method)</a>
 </li>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.ParamsManager.get_training_seed">get_training_seed() (byzfl.pipeline.managers.ParamsManager method)</a>
@@ -723,6 +707,12 @@
 
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.idx_to_dataloaders">idx_to_dataloaders() (in module byzfl.pipeline.dataset)</a>
+</li>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.iid_idx">iid_idx() (in module byzfl.pipeline.dataset)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="attacks/classes/inf.html#byzfl.attacks.Inf">Inf (class in byzfl.attacks)</a>
 
@@ -744,12 +734,8 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="attacks/classes/line_maximize.html#byzfl.attacks.LineMaximize">LineMaximize (class in byzfl.attacks)</a>
-
-      <ul>
-        <li><a href="attacks/attack_optimizers.html#byzfl.attacks.attack_optimizers.LineMaximize">(class in byzfl.attacks.attack_optimizers)</a>
+      <li><a href="attacks/attack_optimizers.html#byzfl.attacks.attack_optimizers.LineMaximize">LineMaximize (class in byzfl.attacks.attack_optimizers)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pipeline/models.html#byzfl.pipeline.models.logreg_mnist">logreg_mnist (class in byzfl.pipeline.models)</a>
@@ -784,11 +770,9 @@
 </li>
         <li><a href="attacks/attacks.html#module-byzfl.attacks.attacks">byzfl.attacks.attacks</a>
 </li>
-        <li><a href="pipeline/byzantine_worker.html#module-byzfl.pipeline.byzantine_worker">byzfl.pipeline.byzantine_worker</a>
-</li>
         <li><a href="pipeline/client.html#module-byzfl.pipeline.client">byzfl.pipeline.client</a>
 </li>
-        <li><a href="pipeline/compute_cluster.html#module-byzfl.pipeline.compute_cluster">byzfl.pipeline.compute_cluster</a>
+        <li><a href="pipeline/dataset.html#module-byzfl.pipeline.dataset">byzfl.pipeline.dataset</a>
 </li>
         <li><a href="pipeline/managers.html#module-byzfl.pipeline.managers">byzfl.pipeline.managers</a>
 </li>
@@ -876,8 +860,6 @@
       <li><a href="pipeline/client.html#byzfl.pipeline.client.Client.set_model_state">set_model_state() (byzfl.pipeline.client.Client method)</a>
 
       <ul>
-        <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.set_model_state">(byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-</li>
         <li><a href="pipeline/model_base_interface.html#byzfl.pipeline.model_base_interface.ModelBaseInterface.set_model_state">(byzfl.pipeline.model_base_interface.ModelBaseInterface method)</a>
 </li>
       </ul></li>
@@ -889,6 +871,8 @@
         <li><a href="attacks/attacks.html#byzfl.attacks.attacks.SignFlipping">(class in byzfl.attacks.attacks)</a>
 </li>
       </ul></li>
+      <li><a href="pipeline/dataset.html#byzfl.pipeline.dataset.split_datasets">split_datasets() (in module byzfl.pipeline.dataset)</a>
+</li>
       <li><a href="pipeline/server.html#byzfl.pipeline.server.Server.step">step() (byzfl.pipeline.server.Server method)</a>
 </li>
   </ul></td>
@@ -896,10 +880,6 @@
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pipeline/compute_cluster.html#byzfl.pipeline.compute_cluster.ComputeCluster.transmit_parameters_to_clients">transmit_parameters_to_clients() (byzfl.pipeline.compute_cluster.ComputeCluster method)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="aggregators/classes/trmean.html#byzfl.aggregators.TrMean">TrMean (class in byzfl.aggregators)</a>
 </li>
@@ -925,12 +905,8 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="attacks/classes/worker_with_max_variance.html#byzfl.attacks.WorkerWithMaxVariance">WorkerWithMaxVariance (class in byzfl.attacks)</a>
-
-      <ul>
-        <li><a href="attacks/attack_optimizers.html#byzfl.attacks.attack_optimizers.WorkerWithMaxVariance">(class in byzfl.attacks.attack_optimizers)</a>
+      <li><a href="attacks/attack_optimizers.html#byzfl.attacks.attack_optimizers.WorkerWithMaxVariance">WorkerWithMaxVariance (class in byzfl.attacks.attack_optimizers)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pipeline/managers.html#byzfl.pipeline.managers.FileManager.write_array_in_file">write_array_in_file() (byzfl.pipeline.managers.FileManager method)</a>
@@ -988,7 +964,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

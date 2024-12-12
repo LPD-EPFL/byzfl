@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -235,10 +235,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -416,104 +412,6 @@
                   
   <section id="line-maximize">
 <h1>Line Maximize<a class="headerlink" href="#line-maximize" title="Link to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzfl.attacks.LineMaximize">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.</span></span><span class="sig-name descname"><span class="pre">LineMaximize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agg_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_agg_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_byz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attack_optimizers.html#LineMaximize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.LineMaximize" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Class to optimize attacks using the Line Maximize method: Best-effort arg-maximize a function: ℝ⁺⟶ ℝ, by mere exploration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param agg_info<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with the keys “name” and “parameters” defined.</p>
-</dd>
-<dt class="field-even">type agg_info<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-<dt class="field-odd">param pre_agg_info<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of dictionaries (one for every pre_agg function)
-where every dictionary have the keys “name” and “parameters” defined.</p>
-</dd>
-<dt class="field-even">type pre_agg_info<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-<dt class="field-odd">param nb_byz<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number ob byzantine nodes</p>
-</dd>
-<dt class="field-even">type nb_byz<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param evals<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Maximum number of evaluations, must be a positive integer</p>
-</dd>
-<dt class="field-even">type evals<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param start<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initial x evaluated, must be a non-negative float</p>
-</dd>
-<dt class="field-even">type start<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-<dt class="field-odd">param delta<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initial step delta, must be a positive float</p>
-</dd>
-<dt class="field-even">type delta<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-<dt class="field-odd">param ratio<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Contraction ratio, must be between 0.5 and 1. (both excluded)</p>
-</dd>
-<dt class="field-even">type ratio<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param —————————-<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">param &gt;&gt;&gt; “attack_optimizer”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt; “attack_optimizer”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-even"><p>“LineMaximize”,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “evals”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “evals”<span class="colon">:</span></dt>
-<dd class="field-even"><p>16,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “start”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “start”<span class="colon">:</span></dt>
-<dd class="field-even"><p>0,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “delta”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “delta”<span class="colon">:</span></dt>
-<dd class="field-even"><p>1,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “ratio”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “ratio”<span class="colon">:</span></dt>
-<dd class="field-even"><p>0.8</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     }<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-</section>
-</dd></dl>
-
 </section>
 
 
@@ -551,24 +449,6 @@ where every dictionary have the keys “name” and “parameters” defined.</p
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.LineMaximize"><code class="docutils literal notranslate"><span class="pre">LineMaximize</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
             
           </div>
           <footer class="bd-footer-content">
@@ -601,7 +481,7 @@ where every dictionary have the keys “name” and “parameters” defined.</p
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
