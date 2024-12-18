@@ -4,8 +4,12 @@ import torch
 from byzfl.utils import misc
 
 class Average(object):
-    """
+    r"""
     Compute the average along the first axis.
+
+    .. math::
+
+        \mathrm{Average} (x_1, \dots, x_n) = \frac{1}{n} \sum_{j = 1}^{n} x_j
         
     Initialization parameters
     -------------------------
@@ -470,7 +474,7 @@ class MultiKrum(object):
 
         \sum_{x \in \mathit{N}_{k^\star_1} } \|x_{k^\star_1} - x\|^2_2 \leq \dots \leq \sum_{x \in \mathit{N}_{k^\star_{n-f}} } \|x_{k^\star_{n-f}} - x\|^2_2 
 
-    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
+    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n - f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
     Initialization parameters
