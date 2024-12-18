@@ -256,11 +256,13 @@ class ALittleIsEnough():
     
     where
 
+    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+
     - :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector.
 
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
-    - :math:`\sigma_{x_1, \dots, x_n}` is the coordinate-wise standard deviation of the input vectors :math:`x_1, \dots, x_n`, i.e., :math:`\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}`.
+    - :math:`\sigma_{x_1, \dots, x_n}` is the coordinate-wise standard deviation of :math:`x_1, \dots, x_n`, i.e., :math:`\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}`.
 
     - :math:`\tau` is the attack factor.
 
@@ -277,7 +279,7 @@ class ALittleIsEnough():
     ----------------
 
     vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
-        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+        A set of vectors, matrix or tensors.
 
     Returns
     -------

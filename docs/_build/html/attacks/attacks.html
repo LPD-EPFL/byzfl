@@ -404,9 +404,10 @@
 \[\text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}\]</div>
 <p>where</p>
 <ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i\)</span> is the mean vector.</p></li>
 <li><p>\(\big[\cdot\big]_k\) refers to the \(k\)-th coordinate.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma_{x_1, \dots, x_n}\)</span> is the coordinate-wise standard deviation of the input vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>, i.e., <span class="math notranslate nohighlight">\(\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_{x_1, \dots, x_n}\)</span> is the coordinate-wise standard deviation of <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>, i.e., <span class="math notranslate nohighlight">\(\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p></li>
 </ul>
 <dl class="field-list simple">
@@ -417,7 +418,7 @@
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
