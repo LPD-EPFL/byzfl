@@ -170,11 +170,11 @@ class TrMean(object):
 
     .. math::
 
-        \left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\pi(j)}\right]_k
+        \big[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\big]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \big[x_{\pi(j)}\big]_k
     
     where 
     
-    - \\([\\cdot]_k\\) refers to the \\(k\\)-th coordinate.
+    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
     - \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the \\(k\\)-th
       coordinate of the input vectors in non-decreasing order, i.e., 
