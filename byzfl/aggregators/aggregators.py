@@ -963,18 +963,19 @@ class Meamed(object):
     Compute the mean around median along the first axis [1]_:
 
     .. math::
-        \left[\mathrm{Meamed}(x_1, \ldots, x_n)\right]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \left[x_{\pi(j)}\right]_k
+        \big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k
     
     where 
     
-    - \\([\\cdot]_k\\) refers to the \\(k\\)-th coordinate.
+    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
-    - \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the input vectors based on their \\(k\\)-th coordinate in non-decreasing order of distance to the median of the \\(k\\)-th coordinate across the input vectors.
+    - :math:`\mathrm{median}` refers to the median of :math:`n` scalars.
+
+    - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the input vectors based on their \\(k\\)-th coordinate in non-decreasing order of distance to the :math:`\mathrm{median}` of the \\(k\\)-th coordinate across the input vectors. This sorting is expressed as: 
     
-    This sorting is expressed as: 
-    :math:`\Big|[x_{\pi_k(1)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big| \leq \ldots \leq \Big|[x_{\pi_k(n)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big|`.
+    :math:`\Big|\big[x_{\pi_k(1)}\big]_k - \mathrm{median}\big(\big[x_1\big]_k, \ldots, \big[x_n\big]_k\big)\Big| \leq \ldots \leq \Big|\big[x_{\pi_k(n)}\big]_k - \mathrm{median}\big(\big[x_1\big]_k, \ldots, \big[x_n\big]_k\big)\Big|`.
     
-    In other words, Meamed computes the average of the \\(n-f\\) closest elements to the median for each dimension \\(k\\).
+    In other words, Meamed computes the average of the \\(n-f\\) closest elements to the :math:`\mathrm{median}` for each dimension \\(k\\).
 
     Initialization parameters
     --------------------------
