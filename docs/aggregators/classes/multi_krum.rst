@@ -1,5 +1,5 @@
 Multi-Krum
 ===========
 
-.. autoclass:: byzfl.aggregators.MultiKrum
+.. autoclass:: byzfl.MultiKrum
     :no-members:

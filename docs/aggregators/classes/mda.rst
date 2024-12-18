@@ -3,5 +3,5 @@
 Minimum-Diameter Averaging
 ===========================
 
-.. autoclass:: byzfl.aggregators.MDA
+.. autoclass:: byzfl.MDA
     :no-members:

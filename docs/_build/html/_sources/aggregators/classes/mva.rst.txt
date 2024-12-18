@@ -1,7 +1,7 @@
 Minimum-Variance Averaging
 ===========================
 
-.. autoclass:: byzfl.aggregators.MVA
+.. autoclass:: byzfl.MVA
     :members:
     :undoc-members:
     :inherited-members:

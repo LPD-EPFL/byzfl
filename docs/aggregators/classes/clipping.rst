@@ -1,5 +1,5 @@
 Static Clipping
 ========================
 
-.. autoclass:: byzfl.aggregators.Clipping
+.. autoclass:: byzfl.Clipping
     :no-members:

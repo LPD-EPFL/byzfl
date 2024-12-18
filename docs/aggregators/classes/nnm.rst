@@ -1,5 +1,5 @@
 Nearest Neighbor Mixing (NNM)
 ========================
 
-.. autoclass:: byzfl.aggregators.NNM
+.. autoclass:: byzfl.NNM
     :no-members:

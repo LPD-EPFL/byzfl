@@ -5,7 +5,7 @@ from byzfl.utils import misc
 
 class Average(object):
     """
-    Compute the average along the first axis
+    Compute the average along the first axis.
         
     Initialization parameters
     -------------------------
@@ -80,7 +80,7 @@ class Average(object):
 class Median(object):
 
     """
-    Compute the coordinate-wise median along the first axis
+    Compute the coordinate-wise median along the first axis.
         
 
     Initialization parameters
@@ -161,11 +161,11 @@ class TrMean(object):
     
     where 
     
-    - \\([\\cdot]_k\\) refers to the k-th coordinate
+    - \\([\\cdot]_k\\) refers to the k-th coordinate.
 
     - \\(\\pi\\) denote a permutation on \\([n]\\) that sorts the k-th
       coordinate of the input vectors in non-decreasing order, i.e., 
-      \\([x_{\\pi_k(1)}]_k \\leq ...\\leq [x_{\\pi_k(n)}]_k\\)
+      \\([x_{\\pi_k(1)}]_k \\leq ...\\leq [x_{\\pi_k(n)}]_k\\).
     
     In other words, TrMean removes the \\(f\\) highest values and \\(f\\) 
     lowers values coordinate-wise, and then applies the average.
@@ -363,8 +363,7 @@ class Krum(object):
 
         k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathit{N}_i} \|x_i - x\|^2_2
 
-    where \\(\\mathit{N}_i\\) is the set of the \\(n − f\\) nearest 
-    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)
+    where \\(\\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
     Initialization parameters
@@ -471,8 +470,7 @@ class MultiKrum(object):
 
         \sum_{x \in \mathit{N}_{k^\star_1} } \|x_{k^\star_1} - x\|^2_2 \leq \dots \leq \sum_{x \in \mathit{N}_{k^\star_{n-f}} } \|x_{k^\star_{n-f}} - x\|^2_2 
 
-    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest 
-    neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\)
+    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
     Initialization parameters
@@ -575,7 +573,7 @@ class CenteredClipping(object):
     .. math::
 
         v_0 &= m \\
-        v_{l+1} &= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}
+        v_{l+1} &= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}.
 
     Initialization parameters
     --------------------------
@@ -705,7 +703,8 @@ class MDA(object):
 
     .. math::
         
-        S^\star \in \argmin_{\substack{S \subset \{1,\dots,n\} \\ |S|=n-f}} \left\{\max_{i,j \in S} \|x_i - x_j\|_2\right\}
+        S^\star \in \argmin_{\substack{S \subset \{1,\dots,n\} \\ |S|=n-f}} \left\{\max_{i,j \in S} \|x_i - x_j\|_2\right\}.
+    
     Initialization parameters
     --------------------------
     f : int, optional
@@ -843,9 +842,7 @@ class MoNNA(object):
 
         \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}}} x_{i}
         
-    where \\(\\mathit{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest 
-    neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\)
-
+    where \\(\\mathit{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
 
     Initialization parameters
@@ -953,7 +950,6 @@ class Meamed(object):
 
     .. math::
 
-        
 
     Initialization parameters
     --------------------------

@@ -1,5 +1,5 @@
 Geometric Median
 =================
 
-.. autoclass:: byzfl.aggregators.GeometricMedian
+.. autoclass:: byzfl.GeometricMedian
     :no-members:

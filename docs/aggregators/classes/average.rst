@@ -1,5 +1,5 @@
 Average
 ========
 
-.. autoclass:: byzfl.aggregators.Average
+.. autoclass:: byzfl.Average
     :no-members:

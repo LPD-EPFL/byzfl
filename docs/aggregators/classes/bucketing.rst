@@ -1,5 +1,5 @@
 Bucketing
 ========================
 
-.. autoclass:: byzfl.aggregators.Bucketing
+.. autoclass:: byzfl.Bucketing
     :no-members:
