@@ -432,9 +432,9 @@
 <p>Apply the Adaptive Robust Clipping pre-aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{ARC}_{f} \ (x_1, \dots, x_n) =
-\left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \
-\min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(k = \lfloor 2 \frac{f}{n} (n-f)\rfloor\)</span> and \(\pi\) is a permutation such that <span class="math notranslate nohighlight">\(\|x_{\pi(1)}\|_2 \geq \dots \geq \|x_{\pi(n)}\|_2\)</span>.</p>
+\left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|_2}\right\} x_1 \ \ , \ \dots \ ,\ \
+\min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|_2}\right\} x_n \right)\]</div>
+<p>where \(k = \lfloor 2 \cdot \frac{f}{n} \cdot (n - f) \rfloor\) and \(\pi\) denotes a permutation on \([n]\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., \(||x_{\pi_k(1)}|| \geq … \geq ||x_{\pi_k(n)}||\).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>

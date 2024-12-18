@@ -428,8 +428,17 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.Meamed">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Meamed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#Meamed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Meamed" title="Link to this definition">#</a></dt>
-<dd><div class="math notranslate nohighlight">
-\[\]</div>
+<dd><p>Compute the mean around median along the first axis <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\left[\mathrm{Meamed}(x_1, \ldots, x_n)\right]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \left[x_{\pi(j)}\right]_k\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p>\([\cdot]_k\) refers to the \(k\)-th coordinate.</p></li>
+<li><p>\(\pi\) denotes a permutation on \([n]\) that sorts the input vectors based on their \(k\)-th coordinate in non-decreasing order of distance to the median of the \(k\)-th coordinate across the input vectors.</p></li>
+</ul>
+<p>This sorting is expressed as:
+<span class="math notranslate nohighlight">\(\Big|[x_{\pi_k(1)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big| \leq \ldots \leq \Big|[x_{\pi_k(n)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big|\)</span>.</p>
+<p>In other words, Meamed computes the average of the \(n-f\) closest elements to the median for each dimension \(k\).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>
@@ -487,9 +496,9 @@
 </div>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>XXXXX</p>
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Xie, C., Koyejo, O., and Gupta, I. Generalized byzantine-tolerant sgd, 2018.</p>
 </aside>
 </aside>
 </dd></dl>

@@ -559,14 +559,14 @@
 <span class="sd">    </span>
 <span class="sd">    where </span>
 <span class="sd">    </span>
-<span class="sd">    - \\([\\cdot]_k\\) refers to the k-th coordinate.</span>
+<span class="sd">    - \\([\\cdot]_k\\) refers to the \\(k\\)-th coordinate.</span>
 
-<span class="sd">    - \\(\\pi\\) denote a permutation on \\([n]\\) that sorts the k-th</span>
+<span class="sd">    - \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the \\(k\\)-th</span>
 <span class="sd">      coordinate of the input vectors in non-decreasing order, i.e., </span>
 <span class="sd">      \\([x_{\\pi_k(1)}]_k \\leq ...\\leq [x_{\\pi_k(n)}]_k\\).</span>
 <span class="sd">    </span>
-<span class="sd">    In other words, TrMean removes the \\(f\\) highest values and \\(f\\) </span>
-<span class="sd">    lowers values coordinate-wise, and then applies the average.</span>
+<span class="sd">    In other words, TrMean removes the \\(f\\) largest and \\(f\\) </span>
+<span class="sd">    smallest coordinates per dimension, and then applies the average over the remaining coordinates.</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -767,7 +767,7 @@
 
 <span class="sd">        k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathit{N}_i} \|x_i - x\|^2_2</span>
 
-<span class="sd">    where \\(\\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
+<span class="sd">    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
 
 <span class="sd">    </span>
 <span class="sd">    Initialization parameters</span>
@@ -1366,9 +1366,21 @@
 <span class="k">class</span> <span class="nc">Meamed</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the mean around median along the first axis [1]_:</span>
 
 <span class="sd">    .. math::</span>
+<span class="sd">        \left[\mathrm{Meamed}(x_1, \ldots, x_n)\right]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \left[x_{\pi(j)}\right]_k</span>
+<span class="sd">    </span>
+<span class="sd">    where </span>
+<span class="sd">    </span>
+<span class="sd">    - \\([\\cdot]_k\\) refers to the \\(k\\)-th coordinate.</span>
 
+<span class="sd">    - \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the input vectors based on their \\(k\\)-th coordinate in non-decreasing order of distance to the median of the \\(k\\)-th coordinate across the input vectors.</span>
+<span class="sd">    </span>
+<span class="sd">    This sorting is expressed as: </span>
+<span class="sd">    :math:`\Big|[x_{\pi_k(1)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big| \leq \ldots \leq \Big|[x_{\pi_k(n)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big|`.</span>
+<span class="sd">    </span>
+<span class="sd">    In other words, Meamed computes the average of the \\(n-f\\) closest elements to the median for each dimension \\(k\\).</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -1435,7 +1447,7 @@
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 
-<span class="sd">    .. [1] XXXXX</span>
+<span class="sd">    .. [1] Xie, C., Koyejo, O., and Gupta, I. Generalized byzantine-tolerant sgd, 2018.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>

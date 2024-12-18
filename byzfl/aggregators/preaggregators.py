@@ -10,7 +10,7 @@ class NNM(object):
 
         \mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i \in \mathit{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i \in \mathit{N}_{n}} x_i \right)
         
-    where :math:`\mathit{N}_{i}` is the set of the :math:`n - f` nearest neighbors of :math:`x_i` in :math:`\{x_1, \dots , x_n\}`.
+    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n-f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
     Initialization parameters
@@ -236,7 +236,7 @@ class Identity(object):
 class Clipping(object):
 
     r"""
-    Apply the static Clipping pre-aggregation rule:
+    Apply the Static Clipping pre-aggregation rule:
 
     .. math::
 
@@ -339,10 +339,11 @@ class ARC(object):
     .. math::
 
         \mathrm{ARC}_{f} \ (x_1, \dots, x_n) = 
-        \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  
-        \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|}\right\} x_n \right)
+        \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|_2}\right\} x_1 \ \ , \ \dots \ ,\ \  
+        \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|_2}\right\} x_n \right)
 
-    where :math:`k = \lfloor 2 \frac{f}{n} (n-f)\rfloor` and \\(\\pi\\) is a permutation such that :math:`\|x_{\pi(1)}\|_2 \geq \dots \geq \|x_{\pi(n)}\|_2`.
+    where \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\) and \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., \\(\||x_{\\pi_k(1)}\|| \\geq ... \\geq \||x_{\\pi_k(n)}\||\\).
+
 
     Initialization parameters
     --------------------------

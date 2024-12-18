@@ -431,7 +431,7 @@
 <dd><p>Apply the Nearest Neighbor Mixing pre-aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i \in \mathit{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i \in \mathit{N}_{n}} x_i \right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathit{N}_{i}\)</span> is the set of the <span class="math notranslate nohighlight">\(n - f\)</span> nearest neighbors of <span class="math notranslate nohighlight">\(x_i\)</span> in <span class="math notranslate nohighlight">\(\{x_1, \dots , x_n\}\)</span>.</p>
+<p>where for any \(i \in [n], \mathit{N}_i\) is the set of the \(n-f\) nearest neighbors of \(x_i\) in \(\{x_1, \dots , x_n\}\).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>

@@ -161,14 +161,14 @@ class TrMean(object):
     
     where 
     
-    - \\([\\cdot]_k\\) refers to the k-th coordinate.
+    - \\([\\cdot]_k\\) refers to the \\(k\\)-th coordinate.
 
-    - \\(\\pi\\) denote a permutation on \\([n]\\) that sorts the k-th
+    - \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the \\(k\\)-th
       coordinate of the input vectors in non-decreasing order, i.e., 
       \\([x_{\\pi_k(1)}]_k \\leq ...\\leq [x_{\\pi_k(n)}]_k\\).
     
-    In other words, TrMean removes the \\(f\\) highest values and \\(f\\) 
-    lowers values coordinate-wise, and then applies the average.
+    In other words, TrMean removes the \\(f\\) largest and \\(f\\) 
+    smallest coordinates per dimension, and then applies the average over the remaining coordinates.
 
     Initialization parameters
     --------------------------
@@ -363,7 +363,7 @@ class Krum(object):
 
         k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathit{N}_i} \|x_i - x\|^2_2
 
-    where \\(\\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
+    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
     Initialization parameters
@@ -947,9 +947,21 @@ class MoNNA(object):
 class Meamed(object):
 
     r"""
+    Compute the mean around median along the first axis [1]_:
 
     .. math::
+        \left[\mathrm{Meamed}(x_1, \ldots, x_n)\right]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \left[x_{\pi(j)}\right]_k
+    
+    where 
+    
+    - \\([\\cdot]_k\\) refers to the \\(k\\)-th coordinate.
 
+    - \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the input vectors based on their \\(k\\)-th coordinate in non-decreasing order of distance to the median of the \\(k\\)-th coordinate across the input vectors.
+    
+    This sorting is expressed as: 
+    :math:`\Big|[x_{\pi_k(1)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big| \leq \ldots \leq \Big|[x_{\pi_k(n)}]_k - \left[\mathrm{Median}(x_1, \ldots, x_n)\right]_k\Big|`.
+    
+    In other words, Meamed computes the average of the \\(n-f\\) closest elements to the median for each dimension \\(k\\).
 
     Initialization parameters
     --------------------------
@@ -1016,7 +1028,7 @@ class Meamed(object):
     References
     ----------
 
-    .. [1] XXXXX
+    .. [1] Xie, C., Koyejo, O., and Gupta, I. Generalized byzantine-tolerant sgd, 2018.
 
     """
     def __init__(self, f=0):

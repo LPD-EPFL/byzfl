@@ -433,13 +433,13 @@
 \[\left[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\right]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \left[x_{\pi(j)}\right]_k\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p>\([\cdot]_k\) refers to the k-th coordinate.</p></li>
-<li><p>\(\pi\) denote a permutation on \([n]\) that sorts the k-th
+<li><p>\([\cdot]_k\) refers to the \(k\)-th coordinate.</p></li>
+<li><p>\(\pi\) denotes a permutation on \([n]\) that sorts the \(k\)-th
 coordinate of the input vectors in non-decreasing order, i.e.,
 \([x_{\pi_k(1)}]_k \leq …\leq [x_{\pi_k(n)}]_k\).</p></li>
 </ul>
-<p>In other words, TrMean removes the \(f\) highest values and \(f\)
-lowers values coordinate-wise, and then applies the average.</p>
+<p>In other words, TrMean removes the \(f\) largest and \(f\)
+smallest coordinates per dimension, and then applies the average over the remaining coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>
