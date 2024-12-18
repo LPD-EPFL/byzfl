@@ -118,7 +118,11 @@ class Bucketing(object):
         \frac{1}{s}\sum_{i=s+1}^{2s} x_{\pi(i)} \ \ , \ \dots \ ,\ \  
         \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)
 
-    where \\(\\pi\\) is a random permutation of  \\([n]\\).
+    where
+
+    - \\(\\pi\\) is a random permutation on \\(\\big[n\\big]\\).
+
+    - \\(s\\) is the bucket size, i.e., the number of vectors per bucket.
 
     Initialization parameters
     --------------------------

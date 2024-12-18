@@ -434,7 +434,11 @@
 \left(\frac{1}{s}\sum_{i=0}^s x_{\pi(i)} \ \ , \ \
 \frac{1}{s}\sum_{i=s+1}^{2s} x_{\pi(i)} \ \ , \ \dots \ ,\ \
 \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)\]</div>
-<p>where \(\pi\) is a random permutation of  \([n]\).</p>
+<p>where</p>
+<ul class="simple">
+<li><p>\(\pi\) is a random permutation on \(\big[n\big]\).</p></li>
+<li><p>\(s\) is the bucket size, i.e., the number of vectors per bucket.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>s</strong> (<em>int, optional</em>) – Number of vectors per bucket. Set to 1 by default.</p>
