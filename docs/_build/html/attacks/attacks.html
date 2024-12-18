@@ -566,7 +566,15 @@ mlr.press/v115/xie20a.html.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id6">
 <h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
-<p>Execute the Infinity attack: generate a vector comprised of positive infinity values.</p>
+<p>Execute the Infinity attack: send  vector <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> comprised of positive infinity values.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> is the dimensionality of the input space, i.e., <span class="math notranslate nohighlight">\(d\)</span> is the number of coordinates of vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>.</p></li>
+<li><p>Every coordinate of <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> is set to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>None</strong></p>
@@ -575,10 +583,10 @@ mlr.press/v115/xie20a.html.</p>
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em></p>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

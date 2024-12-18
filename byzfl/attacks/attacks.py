@@ -450,11 +450,23 @@ class Mimic():
 
 class Inf():
 
-    """
+    r"""
     Description
     -----------
 
-    Execute the Infinity attack: generate a vector comprised of positive infinity values.
+    Execute the Infinity attack: send  vector :math:`\mathbf{v}_{\infty}` comprised of positive infinity values.
+
+    .. math::
+
+        \mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d
+
+    where
+
+    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+
+    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.
+    
+    - Every coordinate of :math:`\mathbf{v}_{\infty}` is set to :math:`+\infty`.
 
     Initialization parameters
     --------------------------
@@ -467,11 +479,13 @@ class Inf():
     Input parameters
     ----------------
 
-    None
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
 
     Returns
     -------
     :numpy.ndarray or torch.Tensor
+        The data type of the output is the same as the input.
 
     Examples
     --------

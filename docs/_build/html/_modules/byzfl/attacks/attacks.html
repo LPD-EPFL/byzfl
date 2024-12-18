@@ -857,11 +857,23 @@
 <a class="viewcode-back" href="../../../attacks/classes/inf.html#byzfl.attacks.attacks.Inf">[docs]</a>
 <span class="k">class</span> <span class="nc">Inf</span><span class="p">():</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the Infinity attack: generate a vector comprised of positive infinity values.</span>
+<span class="sd">    Execute the Infinity attack: send  vector :math:`\mathbf{v}_{\infty}` comprised of positive infinity values.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
+
+<span class="sd">    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.</span>
+<span class="sd">    </span>
+<span class="sd">    - Every coordinate of :math:`\mathbf{v}_{\infty}` is set to :math:`+\infty`.</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -874,11 +886,13 @@
 <span class="sd">    Input parameters</span>
 <span class="sd">    ----------------</span>
 
-<span class="sd">    None</span>
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
