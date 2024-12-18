@@ -180,7 +180,7 @@ class FallOfEmpires:
     ----------------
 
     vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
-        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+        A set of vectors, matrix or tensors.
     
 
     Returns
@@ -364,9 +364,13 @@ class Mimic():
 
     .. math::
 
-        \text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon}
+        \text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}
     
-    where :math:`\epsilon \in \{0, 1, \dots, n-1\}` is the ID of the worker to mimic.
+    where
+
+    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+    
+    - :math:`\epsilon \in \{0, \dots, n-1\}` is the ID of the worker to mimic. In other words, :math:`x_{\epsilon+1}` is the vector sent by the worker with ID :math:`\epsilon`.
 
     Initialization parameters
     --------------------------
@@ -381,7 +385,7 @@ class Mimic():
     ----------------
 
     vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
-        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+        A set of vectors, matrix or tensors.
 
     Returns
     -------

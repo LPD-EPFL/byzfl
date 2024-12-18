@@ -499,7 +499,7 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
@@ -633,8 +633,12 @@ mlr.press/v115/xie20a.html.</p>
 <h2>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
 <p>Execute the Mimic attack <a href="#id15"><span class="problematic" id="id8">[1]_</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
 <div class="math notranslate nohighlight">
-\[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\epsilon \in \{0, 1, \dots, n-1\}\)</span> is the ID of the worker to mimic.</p>
+\[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon \in \{0, \dots, n-1\}\)</span> is the ID of the worker to mimic. In other words, <span class="math notranslate nohighlight">\(x_{\epsilon+1}\)</span> is the vector sent by the worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>epsilon</strong> (<em>int</em>) – ID of the worker whose behavior is to be mimicked. Set to 0 by default.</p>
@@ -643,7 +647,7 @@ mlr.press/v115/xie20a.html.</p>
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
