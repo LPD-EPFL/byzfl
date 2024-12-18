@@ -245,8 +245,14 @@ class Clipping(object):
     .. math::
 
         \mathrm{Clipping}_{c} \ (x_1, \dots, x_n) = 
-        \left( \min\left\{1, \frac{c}{\|x_1\|}\right\} x_1 \ \ , \ \dots \ ,\ \  
-        \min\left\{1, \frac{c}{\|x_n\|}\right\} x_n \right)
+        \left( \min\left\{1, \frac{c}{\big|\big|x_1\big|\big|_2}\right\} x_1 \ \ , \ \dots \ ,\ \  
+        \min\left\{1, \frac{c}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)
+
+    where
+
+    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
+
+    - \\(c\\) is the static clipping threshold. Any input vector with an \\(\\ell_2\\)-norm greater than \\(c\\) will be will be scaled down such that its \\(\\ell_2\\)-norm equals \\(c\\).
 
     Initialization parameters
     --------------------------
@@ -347,8 +353,9 @@ class ARC(object):
         \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)
 
     where 
+        - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
         - \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\).
-        - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., . This sorting is expressed as: :math:`\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2`.
+        - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the \\(\\ell_2\\)-norm of the input vectors in non-increasing order. This sorting is expressed as: :math:`\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2`.
 
 
     Initialization parameters
