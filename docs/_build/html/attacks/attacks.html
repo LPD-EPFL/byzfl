@@ -399,7 +399,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the A Little is Enough (ALIE) attack <a href="#id13"><span class="problematic" id="id1">[1]_</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<p>Execute the A Little is Enough (ALIE) attack <a href="#id13"><span class="problematic" id="id1">[1]_</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}\]</div>
 <p>where</p>
@@ -482,11 +482,15 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id3">
 <h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>Execute the Fall of Empires (FoE) attack <a href="#id14"><span class="problematic" id="id4">[1]_</span></a>: scale the mean vector by the factor <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
+<p>Execute the Fall of Empires (FoE) attack <a href="#id14"><span class="problematic" id="id4">[1]_</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{FoE}_{\tau}(x_1, \dots, x_n) =
 (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
-<p>where <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, and <span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tau</strong> (<em>int or float</em>) – The attack factor <span class="math notranslate nohighlight">\(\tau\)</span> used to adjust the mean vector. Set to 3 by default.</p>

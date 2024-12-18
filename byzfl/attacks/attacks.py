@@ -154,14 +154,18 @@ class FallOfEmpires:
     Description
     -----------
 
-    Execute the Fall of Empires (FoE) attack [1]_: scale the mean vector by the factor :math:`1 - \tau`.
+    Execute the Fall of Empires (FoE) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.
 
     .. math::
 
         \text{FoE}_{\tau}(x_1, \dots, x_n) = 
         (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
 
-    where :math:`x_1, \dots, x_n` are the input vectors, and :math:`\tau` is the attack factor.
+    where 
+
+    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+
+    -  :math:`\tau` is the attack factor.
 
     Initialization parameters
     --------------------------
@@ -252,7 +256,7 @@ class ALittleIsEnough():
     Description
     -----------
 
-    Execute the A Little is Enough (ALIE) attack [1]_: perturb the mean vector using the coordinate-wise standard deviation of the vectors scaled with the attack factor :math:`\tau`.
+    Execute the A Little is Enough (ALIE) attack [1]_: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor :math:`\tau`.
 
     .. math::
 
