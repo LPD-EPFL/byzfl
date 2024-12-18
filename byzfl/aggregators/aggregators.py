@@ -178,10 +178,9 @@ class TrMean(object):
 
     - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the \\(k\\)-th
       coordinate of the input vectors in non-decreasing order, i.e., 
-      \\(\\big[x_{\\pi_k(1)}\\big]_k \\leq ...\\leq \\big[x_{\\pi_k(n)}\\big]_k\\).
+      \\(\\big[x_{\\pi(1)}\\big]_k \\leq ...\\leq \\big[x_{\\pi(n)}\\big]_k\\).
     
-    In other words, TrMean removes the \\(f\\) largest and \\(f\\) 
-    smallest coordinates per dimension, and then applies the average over the remaining coordinates.
+    In other words, TrMean removes the \\(f\\) largest and \\(f\\) smallest coordinates per dimension, and then applies the average over the remaining coordinates.
 
     Initialization parameters
     --------------------------
