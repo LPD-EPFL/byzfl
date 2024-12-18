@@ -477,10 +477,19 @@
 <div class="viewcode-block" id="Median">
 <a class="viewcode-back" href="../../../aggregators/classes/median.html#byzfl.Median">[docs]</a>
 <span class="k">class</span> <span class="nc">Median</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the coordinate-wise median along the first axis.</span>
-<span class="sd">        </span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \big[\mathrm{Median} \ (x_1, \dots, x_n)\big]_k = \mathrm{median} \big(\big[x_1\big]_k, \dots, \big[x_n\big]_k\big)</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
+
+<span class="sd">    - :math:`\mathrm{median}` refers to the median of :math:`n` scalars.</span>
+
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    -------------------------</span>

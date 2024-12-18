@@ -46,6 +46,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'aggregators/classes/median';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -427,6 +429,13 @@
 <dt class="sig sig-object py" id="byzfl.Median">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Median</span></span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#Median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Median" title="Link to this definition">#</a></dt>
 <dd><p>Compute the coordinate-wise median along the first axis.</p>
+<div class="math notranslate nohighlight">
+\[\big[\mathrm{Median} \ (x_1, \dots, x_n)\big]_k = \mathrm{median} \big(\big[x_1\big]_k, \dots, \big[x_n\big]_k\big)\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p>\(\big[\cdot\big]_k\) refers to the \(k\)-th coordinate.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{median}\)</span> refers to the median of <span class="math notranslate nohighlight">\(n\)</span> scalars.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>None</strong></p>

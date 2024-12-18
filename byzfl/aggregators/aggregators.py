@@ -82,10 +82,19 @@ class Average(object):
 
 
 class Median(object):
-
-    """
+    r"""
     Compute the coordinate-wise median along the first axis.
-        
+
+    .. math::
+
+        \big[\mathrm{Median} \ (x_1, \dots, x_n)\big]_k = \mathrm{median} \big(\big[x_1\big]_k, \dots, \big[x_n\big]_k\big)
+
+    where
+
+    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
+
+    - :math:`\mathrm{median}` refers to the median of :math:`n` scalars.
+
 
     Initialization parameters
     -------------------------
