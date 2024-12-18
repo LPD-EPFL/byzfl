@@ -740,10 +740,12 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        \mathrm{ARC}_{f} \ (x_1, \dots, x_n) = </span>
-<span class="sd">        \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|_2}\right\} x_1 \ \ , \ \dots \ ,\ \  </span>
-<span class="sd">        \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|_2}\right\} x_n \right)</span>
+<span class="sd">        \left( \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_1\big|\big|_2}\right\} x_1 \ \ , \ \dots \ ,\ \  </span>
+<span class="sd">        \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)</span>
 
-<span class="sd">    where \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\) and \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., \\(\||x_{\\pi_k(1)}\|| \\geq ... \\geq \||x_{\\pi_k(n)}\||\\).</span>
+<span class="sd">    where </span>
+<span class="sd">        - \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\).</span>
+<span class="sd">        - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., . This sorting is expressed as: :math:`\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2`.</span>
 
 
 <span class="sd">    Initialization parameters</span>

@@ -339,10 +339,12 @@ class ARC(object):
     .. math::
 
         \mathrm{ARC}_{f} \ (x_1, \dots, x_n) = 
-        \left( \min\left\{1, \frac{x_{\pi(k)}}{\|x_1\|_2}\right\} x_1 \ \ , \ \dots \ ,\ \  
-        \min\left\{1, \frac{x_{\pi(k)}}{\|x_n\|_2}\right\} x_n \right)
+        \left( \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_1\big|\big|_2}\right\} x_1 \ \ , \ \dots \ ,\ \  
+        \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)
 
-    where \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\) and \\(\\pi\\) denotes a permutation on \\([n]\\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., \\(\||x_{\\pi_k(1)}\|| \\geq ... \\geq \||x_{\\pi_k(n)}\||\\).
+    where 
+        - \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\).
+        - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the L2-norm of the input vectors in non-increasing order, i.e., . This sorting is expressed as: :math:`\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2`.
 
 
     Initialization parameters
