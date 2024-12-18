@@ -254,7 +254,15 @@ class ALittleIsEnough():
 
         \text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}
     
-    where :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector, :math:`\sigma_{x_1, \dots, x_n} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \mu_{x_1, \dots, x_n})^2}` is the coordinate-wise standard deviation of the input vectors :math:`x_1, \dots, x_n`, and :math:`\tau` is the attack factor.
+    where
+
+    - :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector.
+
+    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
+
+    - :math:`\sigma_{x_1, \dots, x_n}` is the coordinate-wise standard deviation of the input vectors :math:`x_1, \dots, x_n`, i.e., :math:`\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}`.
+
+    - :math:`\tau` is the attack factor.
 
     Initialization parameters
     --------------------------
