@@ -1,7 +1,7 @@
 Sign Flipping 
 =======================
 
-.. autoclass:: byzfl.attacks.SignFlipping
+.. autoclass:: byzfl.SignFlipping
     :members:
     :undoc-members:
     :inherited-members:

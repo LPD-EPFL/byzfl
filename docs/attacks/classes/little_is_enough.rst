@@ -1,7 +1,7 @@
 A Little Is Enough (ALIE)
 =======================
 
-.. autoclass:: byzfl.attacks.ALittleIsEnough
+.. autoclass:: byzfl.ALittleIsEnough
     :members:
     :undoc-members:
     :inherited-members:

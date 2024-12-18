@@ -1,7 +1,7 @@
 Infinity 
 =======================
 
-.. autoclass:: byzfl.attacks.Inf
+.. autoclass:: byzfl.Inf
     :members:
     :undoc-members:
     :inherited-members:

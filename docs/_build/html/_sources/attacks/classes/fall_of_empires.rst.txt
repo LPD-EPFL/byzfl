@@ -1,7 +1,7 @@
 Fall of Empires (FOE)
 =======================
 
-.. autoclass:: byzfl.attacks.FallOfEmpires
+.. autoclass:: byzfl.FallOfEmpires
     :members:
     :undoc-members:
     :inherited-members:

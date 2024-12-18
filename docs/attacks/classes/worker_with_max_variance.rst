@@ -1,7 +1,7 @@
 Maximum variance worker
 =======================
 
-.. autoclass:: byzfl.attacks.WorkerWithMaxVariance
+.. autoclass:: byzfl.WorkerWithMaxVariance
     :members:
     :undoc-members:
     :inherited-members:
