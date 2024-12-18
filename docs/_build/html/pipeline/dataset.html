@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=506f4fd2" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=b8db6181" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -235,6 +235,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -411,8 +415,43 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="dataset-module">
-<h1>dataset module<a class="headerlink" href="#dataset-module" title="Link to this heading">#</a></h1>
+  <section id="module-byzfl.pipeline.dataset">
+<span id="dataset-module"></span><h1>dataset module<a class="headerlink" href="#module-byzfl.pipeline.dataset" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.dirichlet_niid_idx">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">dirichlet_niid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_honest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#dirichlet_niid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.dirichlet_niid_idx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.extreme_niid_idx">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">extreme_niid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_honest</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#extreme_niid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.extreme_niid_idx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.gamma_niid_idx">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">gamma_niid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_honest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#gamma_niid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.gamma_niid_idx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.get_dataloaders">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">get_dataloaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#get_dataloaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.get_dataloaders" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.idx_to_dataloaders">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">idx_to_dataloaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#idx_to_dataloaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.idx_to_dataloaders" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.iid_idx">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">iid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_honest</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#iid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.iid_idx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="byzfl.pipeline.dataset.split_datasets">
+<span class="sig-prename descclassname"><span class="pre">byzfl.pipeline.dataset.</span></span><span class="sig-name descname"><span class="pre">split_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/pipeline/dataset.html#split_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.pipeline.dataset.split_datasets" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -450,6 +489,30 @@
             
             
               
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.dirichlet_niid_idx"><code class="docutils literal notranslate"><span class="pre">dirichlet_niid_idx()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.extreme_niid_idx"><code class="docutils literal notranslate"><span class="pre">extreme_niid_idx()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.gamma_niid_idx"><code class="docutils literal notranslate"><span class="pre">gamma_niid_idx()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.get_dataloaders"><code class="docutils literal notranslate"><span class="pre">get_dataloaders()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.idx_to_dataloaders"><code class="docutils literal notranslate"><span class="pre">idx_to_dataloaders()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.iid_idx"><code class="docutils literal notranslate"><span class="pre">iid_idx()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.pipeline.dataset.split_datasets"><code class="docutils literal notranslate"><span class="pre">split_datasets()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
             
           </div>
           <footer class="bd-footer-content">
@@ -482,7 +545,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
