@@ -62,8 +62,12 @@ class SignFlipping:
 
     .. math::
 
-        \mathrm{SignFlipping} \ (x_1, \dots, x_n) = 
-        - \frac{1}{n}\sum_{i=1}^{n} x_i    
+        \mathrm{SignFlipping} \ (x_1, \dots, x_n) = - \frac{1}{n}\sum_{i=1}^{n} x_i
+
+    where
+
+    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+
     
     Initialization parameters
     --------------------------
@@ -77,7 +81,7 @@ class SignFlipping:
     ----------------
 
     vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
-        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+        A set of vectors, matrix or tensors.
 
     Returns
     -------

@@ -457,8 +457,12 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \mathrm{SignFlipping} \ (x_1, \dots, x_n) = </span>
-<span class="sd">        - \frac{1}{n}\sum_{i=1}^{n} x_i    </span>
+<span class="sd">        \mathrm{SignFlipping} \ (x_1, \dots, x_n) = - \frac{1}{n}\sum_{i=1}^{n} x_i</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
+
 <span class="sd">    </span>
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -472,7 +476,7 @@
 <span class="sd">    ----------------</span>
 
 <span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
-<span class="sd">        A set of vectors, matrix or tensors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
