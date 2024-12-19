@@ -881,15 +881,17 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \mathrm{MultiKrum}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f}\sum_{i = 1}^{n-f} x_{k^\star_i}</span>
+<span class="sd">        \mathrm{MultiKrum}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f}\sum_{i = 1}^{n-f} x_{\pi(i)}</span>
 <span class="sd">        </span>
-<span class="sd">    with</span>
+<span class="sd">    where</span>
 
-<span class="sd">    .. math::</span>
+<span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
-<span class="sd">        \sum_{x \in \mathit{N}_{k^\star_1} } \|x_{k^\star_1} - x\|^2_2 \leq \dots \leq \sum_{x \in \mathit{N}_{k^\star_{n-f}} } \|x_{k^\star_{n-f}} - x\|^2_2 </span>
+<span class="sd">    - For any \\(i \\in \\big[n\\big]\\), \\(\\mathit{N}_i\\) is the set of the \\(n - f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
 
-<span class="sd">    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n - f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
+<span class="sd">    - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the input vectors in non-decreasing order of squared distance to their :math:`n-f` nearest neighbors. This sorting is expressed as:</span>
+
+<span class="sd">    .. math:: \sum_{x \in \mathit{N}_{\pi(1)}} \big|\big|x_{\pi(1)} - x\big|\big|_2^2 \leq \dots \leq \sum_{x \in \mathit{N}_{\pi(n)}} \big|\big|x_{\pi(n)} - x\big|\big|_2^2</span>
 
 <span class="sd">    </span>
 <span class="sd">    Initialization parameters</span>
@@ -1124,11 +1126,11 @@
 
 <span class="sd">        \mathrm{MDA}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i\in S^\star} x_i</span>
 <span class="sd">        </span>
-<span class="sd">    with</span>
+<span class="sd">    where</span>
 
-<span class="sd">    .. math::</span>
-<span class="sd">        </span>
-<span class="sd">        S^\star \in \argmin_{\substack{S \subset \{1,\dots,n\} \\ |S|=n-f}} \left\{\max_{i,j \in S} \|x_i - x_j\|_2\right\}.</span>
+<span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
+
+<span class="sd">    - .. math:: S^\star \in \argmin_{\substack{S \subset \{1,\dots,n\} \\ |S|=n-f}} \left\{\max_{i,j \in S} \big|\big|x_i - x_j\big|\big|_2\right\}.</span>
 <span class="sd">    </span>
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
