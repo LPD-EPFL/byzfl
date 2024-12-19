@@ -114,7 +114,7 @@ class Bucketing(object):
     .. math::
 
         \mathrm{Bucketing}_{s} \ (x_1, \dots, x_n) = 
-        \left(\frac{1}{s}\sum_{i=0}^s x_{\pi(i)} \ \ , \ \ 
+        \left(\frac{1}{s}\sum_{i=1}^s x_{\pi(i)} \ \ , \ \ 
         \frac{1}{s}\sum_{i=s+1}^{2s} x_{\pi(i)} \ \ , \ \dots \ ,\ \  
         \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)
 
