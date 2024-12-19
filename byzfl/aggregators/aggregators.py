@@ -367,15 +367,19 @@ class Krum(object):
 
     .. math::
 
-        \mathrm{Krum}_{f} \ (x_1, \dots, x_n) = x_{k^\star}
+        \mathrm{Krum}_{f} \ (x_1, \dots, x_n) = x_{\lambda}
         
     with
 
     .. math::
 
-        k^\star \in \argmin_{i \in [n]} \sum_{x \in \mathit{N}_i} \|x_i - x\|^2_2
+        \lambda \in \argmin_{i \in \big[n\big]} \sum_{x \in \mathit{N}_i} \big|\big|x_i - x\big|\big|^2_2
 
-    where for any \\(i \\in [n], \\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
+    where
+    
+    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
+    
+    - For any \\(i \\in \\big[n\\big]\\), \\(\\mathit{N}_i\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
     Initialization parameters
