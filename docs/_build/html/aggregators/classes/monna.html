@@ -428,16 +428,20 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.MoNNA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">MoNNA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#MoNNA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.MoNNA" title="Link to this definition">#</a></dt>
-<dd><p>Apply the MoNNA rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<dd><p>Apply the MoNNA aggregator <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}}} x_{i}\]</div>
-<p>where \(\mathit{N}_{\mathrm{idx}}\) is the set of the \(n − f\) nearest neighbors of \(x_{\mathrm{idx}}\) in \(\{x_1, \dots , x_n\}\).</p>
+\[\mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}+1}} x_{i}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p>\(\mathit{N}_{i}\) is the set of the \(n − f\) nearest neighbors of \(x_{i}\) in \(\{x_1, \dots , x_n\}\).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{idx} \in \{0, \dots, n-1\}\)</span> is the ID of the chosen worker/vector for which the neighborhood is computed. In other words, <span class="math notranslate nohighlight">\(x_{\mathrm{idx}+1}\)</span> is the vector sent by the worker with ID <span class="math notranslate nohighlight">\(\mathrm{idx}\)</span>.</p></li>
+</ul>
+<p>Therefore, MoNNA computes the average of the \(n − f\) nearest neighbors of the chosen vector with ID <span class="math notranslate nohighlight">\(\mathrm{idx}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p></li>
-<li><p><strong>idx</strong> (<em>int, optional</em>) – Index of the vector on which the neighborhood will be computed. The
-default is setting \(\mathrm{idx}=0\).</p></li>
+<li><p><strong>idx</strong> (<em>int, optional</em>) – Index of the vector for which the neighborhood is computed. Set to 0 by default.</p></li>
 </ul>
 </dd>
 </dl>
@@ -452,8 +456,7 @@ default is setting \(\mathrm{idx}=0\).</p></li>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>MoNNA is used in peer-to-peer settings where the idx refer to a vectors
-that is known to be correct (i.e. not faulty).</p>
+<p>MoNNA is used in peer-to-peer settings where <span class="math notranslate nohighlight">\(\mathrm{idx}\)</span> corresponds to the ID of a vector that is trusted to be correct (i.e., not faulty).</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>

@@ -861,22 +861,27 @@ class MoNNA(object):
 
 
     r"""
-    Apply the MoNNA rule [1]_:
+    Apply the MoNNA aggregator [1]_:
 
     .. math::
 
-        \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}}} x_{i}
+        \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}+1}} x_{i}
         
-    where \\(\\mathit{N}_{\\mathrm{idx}}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{\\mathrm{idx}}\\) in \\(\\{x_1, \\dots , x_n\\}\\).
+    where
 
+    - \\(\\mathit{N}_{i}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{i}\\) in \\(\\{x_1, \\dots , x_n\\}\\).
+
+    - :math:`\mathrm{idx} \in \{0, \dots, n-1\}` is the ID of the chosen worker/vector for which the neighborhood is computed. In other words, :math:`x_{\mathrm{idx}+1}` is the vector sent by the worker with ID :math:`\mathrm{idx}`.
+
+    Therefore, MoNNA computes the average of the \\(n − f\\) nearest neighbors of the chosen vector with ID :math:`\mathrm{idx}`.
+    
 
     Initialization parameters
     --------------------------
     f : int, optional
         Number of faulty vectors. Set to 0 by default.
     idx : int, optional
-        Index of the vector on which the neighborhood will be computed. The 
-        default is setting \\(\\mathrm{idx}=0\\).
+        Index of the vector for which the neighborhood is computed. Set to 0 by default.
 
     Calling the instance
     --------------------
@@ -895,8 +900,7 @@ class MoNNA(object):
     Note
     ----
 
-    MoNNA is used in peer-to-peer settings where the idx refer to a vectors 
-    that is known to be correct (i.e. not faulty).
+    MoNNA is used in peer-to-peer settings where :math:`\mathrm{idx}` corresponds to the ID of a vector that is trusted to be correct (i.e., not faulty).
 
     Examples
     --------
