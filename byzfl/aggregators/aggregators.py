@@ -263,18 +263,25 @@ class TrMean(object):
 
 class GeometricMedian(object):
     r"""
-    Apply the smoothed Weiszfeld algorithm [1]_ to return the
-    approximate geometric median vector:
+    Apply the smoothed Weiszfeld algorithm [1]_ to obtain the approximate geometric median \\(y\\):
 
     .. math::
 
-        \mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n) \in \argmin_{y}\sum_{i = 1}^{n} \|y - x_i\|_2
-        
+        \mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n) \in \argmin_{y \in \mathbb{R}^d}\sum_{i = 1}^{n} \big|\big|y - x_i\big|\big|_2
+    
+    where
+
+    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
+
+    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.
+
     
     Initialization parameters
     --------------------------
     nu : float, optional
+        Smoothing parameter. Set to 0.1 by default.
     T : int, optional
+         Number of iterations of the smoothed Weiszfeld algorithm. Set to 3 by default.
     
     Calling the instance
     --------------------

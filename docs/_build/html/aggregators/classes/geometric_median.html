@@ -428,15 +428,19 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.GeometricMedian">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">GeometricMedian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#GeometricMedian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.GeometricMedian" title="Link to this definition">#</a></dt>
-<dd><p>Apply the smoothed Weiszfeld algorithm <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> to return the
-approximate geometric median vector:</p>
+<dd><p>Apply the smoothed Weiszfeld algorithm <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> to obtain the approximate geometric median \(y\):</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n) \in \argmin_{y}\sum_{i = 1}^{n} \|y - x_i\|_2\]</div>
+\[\mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n) \in \argmin_{y \in \mathbb{R}^d}\sum_{i = 1}^{n} \big|\big|y - x_i\big|\big|_2\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> is the dimensionality of the input space, i.e., <span class="math notranslate nohighlight">\(d\)</span> is the number of coordinates of vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nu</strong> (<em>float, optional</em>)</p></li>
-<li><p><strong>T</strong> (<em>int, optional</em>)</p></li>
+<li><p><strong>nu</strong> (<em>float, optional</em>) – Smoothing parameter. Set to 0.1 by default.</p></li>
+<li><p><strong>T</strong> (<em>int, optional</em>) – Number of iterations of the smoothed Weiszfeld algorithm. Set to 3 by default.</p></li>
 </ul>
 </dd>
 </dl>
