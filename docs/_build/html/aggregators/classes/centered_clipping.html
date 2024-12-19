@@ -428,18 +428,20 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.CenteredClipping">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">CenteredClipping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#CenteredClipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.CenteredClipping" title="Link to this definition">#</a></dt>
-<dd><p>Apply the Centered Clipping aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<dd><p>Apply the Centered Clipping aggregator <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}\]</div>
-<p>with</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}v_0 &amp;= m \\
-v_{l+1} &amp;= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}.\end{split}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
+<li><p><span class="math notranslate nohighlight">\(v_0 = m\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(v_{l+1} = v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\big|\big|x_i - v_l\big|\big|_2}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}\)</span>.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>m</strong> (<em>numpy.ndarray, torch.Tensor, optional</em>) – Value on which the Center Clipping aggregation starts. Default makes
-it start from a vector with all its coordinates equal to 0.</p></li>
+<li><p><strong>m</strong> (<em>numpy.ndarray, torch.Tensor, optional</em>) – Initial value of the CenteredClipping aggregator.
+Default (None) makes it start from zero, a vector with all its coordinates equal to 0.</p></li>
 <li><p><strong>L</strong> (<em>int, optional</em>) – Number of iterations. Default is set to 1.</p></li>
 <li><p><strong>tau</strong> (<em>float, optional</em>) – Clipping threshold. Default is set to 100.</p></li>
 </ul>
@@ -461,9 +463,9 @@ the next call is equal to the output vector of the previous call.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In case you specify the optional parameter \(m\) when initializing
-the instance, ensure that it has the same type and shape as the input
-vectors \(x_i\) that you will use when calling the instance.</p>
+<p>In case the optional parameter \(m\) is specified when initializing
+the instance, \(m\) has to be of the same type and shape as the input
+vectors \(\{x_1, \dots, x_n\}\) used when calling the instance.</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>

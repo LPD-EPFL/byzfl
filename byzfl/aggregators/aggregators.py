@@ -587,24 +587,25 @@ class MultiKrum(object):
 
 class CenteredClipping(object):
     r"""
-    Apply the Centered Clipping aggregation rule [1]_:
+    Apply the Centered Clipping aggregator [1]_:
 
     .. math::
 
         \mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}
         
-    with
+    where
 
-    .. math::
+    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
-        v_0 &= m \\
-        v_{l+1} &= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}.
+    - :math:`v_0 = m`.
+
+    - :math:`v_{l+1} = v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\big|\big|x_i - v_l\big|\big|_2}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}`.
 
     Initialization parameters
     --------------------------
     m : numpy.ndarray, torch.Tensor, optional
-        Value on which the Center Clipping aggregation starts. Default makes 
-        it start from a vector with all its coordinates equal to 0.
+        Initial value of the CenteredClipping aggregator.
+        Default (None) makes it start from zero, a vector with all its coordinates equal to 0.
     L : int, optional
         Number of iterations. Default is set to 1.
     tau : float, optional
@@ -632,9 +633,9 @@ class CenteredClipping(object):
     Note
     ----
         
-        In case you specify the optional parameter \\(m\\) when initializing 
-        the instance, ensure that it has the same type and shape as the input
-        vectors \\(x_i\\) that you will use when calling the instance.
+        In case the optional parameter \\(m\\) is specified when initializing 
+        the instance, \\(m\\) has to be of the same type and shape as the input
+        vectors \\(\\{x_1, \\dots, x_n\\}\\) used when calling the instance.
 
     Examples
     --------

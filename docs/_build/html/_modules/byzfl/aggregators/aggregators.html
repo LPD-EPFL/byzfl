@@ -997,24 +997,25 @@
 <a class="viewcode-back" href="../../../aggregators/classes/centered_clipping.html#byzfl.CenteredClipping">[docs]</a>
 <span class="k">class</span> <span class="nc">CenteredClipping</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Apply the Centered Clipping aggregation rule [1]_:</span>
+<span class="sd">    Apply the Centered Clipping aggregator [1]_:</span>
 
 <span class="sd">    .. math::</span>
 
 <span class="sd">        \mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}</span>
 <span class="sd">        </span>
-<span class="sd">    with</span>
+<span class="sd">    where</span>
 
-<span class="sd">    .. math::</span>
+<span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
-<span class="sd">        v_0 &amp;= m \\</span>
-<span class="sd">        v_{l+1} &amp;= v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\|x_i - v_l\|}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}.</span>
+<span class="sd">    - :math:`v_0 = m`.</span>
+
+<span class="sd">    - :math:`v_{l+1} = v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\big|\big|x_i - v_l\big|\big|_2}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}`.</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 <span class="sd">    m : numpy.ndarray, torch.Tensor, optional</span>
-<span class="sd">        Value on which the Center Clipping aggregation starts. Default makes </span>
-<span class="sd">        it start from a vector with all its coordinates equal to 0.</span>
+<span class="sd">        Initial value of the CenteredClipping aggregator.</span>
+<span class="sd">        Default (None) makes it start from zero, a vector with all its coordinates equal to 0.</span>
 <span class="sd">    L : int, optional</span>
 <span class="sd">        Number of iterations. Default is set to 1.</span>
 <span class="sd">    tau : float, optional</span>
@@ -1042,9 +1043,9 @@
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
 <span class="sd">        </span>
-<span class="sd">        In case you specify the optional parameter \\(m\\) when initializing </span>
-<span class="sd">        the instance, ensure that it has the same type and shape as the input</span>
-<span class="sd">        vectors \\(x_i\\) that you will use when calling the instance.</span>
+<span class="sd">        In case the optional parameter \\(m\\) is specified when initializing </span>
+<span class="sd">        the instance, \\(m\\) has to be of the same type and shape as the input</span>
+<span class="sd">        vectors \\(\\{x_1, \\dots, x_n\\}\\) used when calling the instance.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
