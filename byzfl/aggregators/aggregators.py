@@ -10,6 +10,11 @@ class Average(object):
     .. math::
 
         \mathrm{Average} (x_1, \dots, x_n) = \frac{1}{n} \sum_{j = 1}^{n} x_j
+
+    where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+
         
     Initialization parameters
     -------------------------
@@ -90,6 +95,8 @@ class Median(object):
         \big[\mathrm{Median} \ (x_1, \dots, x_n)\big]_k = \mathrm{median} \big(\big[x_1\big]_k, \dots, \big[x_n\big]_k\big)
 
     where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
@@ -172,7 +179,9 @@ class TrMean(object):
 
         \big[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\big]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \big[x_{\pi(j)}\big]_k
     
-    where 
+    where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
     
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
@@ -186,7 +195,6 @@ class TrMean(object):
     --------------------------
     f : int, optional
         Number of faulty vectors. Set to 0 by default.
-
     
     Calling the instance
     --------------------
@@ -243,7 +251,6 @@ class TrMean(object):
         >>> agg(x)
         tensor([4., 5., 6.])
 
-
     """
 
     def __init__(self, f=0):
@@ -270,6 +277,8 @@ class GeometricMedian(object):
         \mathrm{GeometricMedian}_{\nu, T} \ (x_1, \dots, x_n) \in \argmin_{y \in \mathbb{R}^d}\sum_{i = 1}^{n} \big|\big|y - x_i\big|\big|_2
     
     where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -298,7 +307,6 @@ class GeometricMedian(object):
 
     Examples
     --------
-
         
         >>> import byzfl
         >>> agg = byzfl.GeometricMedian()
@@ -383,6 +391,8 @@ class Krum(object):
         \lambda \in \argmin_{i \in \big[n\big]} \sum_{x \in \mathit{N}_i} \big|\big|x_i - x\big|\big|^2_2
 
     where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
     
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
     
@@ -409,7 +419,6 @@ class Krum(object):
 
     Examples
     --------
-
         
         >>> import byzfl
         >>> agg = byzfl.Krum(1)
@@ -488,6 +497,8 @@ class MultiKrum(object):
         \mathrm{MultiKrum}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f}\sum_{i = 1}^{n-f} x_{\pi(i)}
         
     where
+    
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -594,6 +605,8 @@ class CenteredClipping(object):
         \mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}
         
     where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -726,6 +739,8 @@ class MDA(object):
         \mathrm{MDA}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i\in S^\star} x_i
         
     where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -869,6 +884,8 @@ class MoNNA(object):
         \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}+1}} x_{i}
         
     where
+    
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - \\(\\mathit{N}_{i}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{i}\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
@@ -983,6 +1000,8 @@ class Meamed(object):
         \big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k
     
     where 
+    
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
     
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 

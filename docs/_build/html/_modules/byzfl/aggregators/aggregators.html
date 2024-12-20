@@ -402,6 +402,11 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        \mathrm{Average} (x_1, \dots, x_n) = \frac{1}{n} \sum_{j = 1}^{n} x_j</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
+
 <span class="sd">        </span>
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    -------------------------</span>
@@ -485,6 +490,8 @@
 <span class="sd">        \big[\mathrm{Median} \ (x_1, \dots, x_n)\big]_k = \mathrm{median} \big(\big[x_1\big]_k, \dots, \big[x_n\big]_k\big)</span>
 
 <span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 
 <span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
 
@@ -570,7 +577,9 @@
 
 <span class="sd">        \big[\mathrm{TrMean}_{f} \ (x_1, \dots, x_n)\big]_k = \frac{1}{n - 2f}\sum_{j = f+1}^{n-f} \big[x_{\pi(j)}\big]_k</span>
 <span class="sd">    </span>
-<span class="sd">    where </span>
+<span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 <span class="sd">    </span>
 <span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
 
@@ -584,7 +593,6 @@
 <span class="sd">    --------------------------</span>
 <span class="sd">    f : int, optional</span>
 <span class="sd">        Number of faulty vectors. Set to 0 by default.</span>
-
 <span class="sd">    </span>
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -641,7 +649,6 @@
 <span class="sd">        &gt;&gt;&gt; agg(x)</span>
 <span class="sd">        tensor([4., 5., 6.])</span>
 
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -672,6 +679,8 @@
 <span class="sd">    </span>
 <span class="sd">    where</span>
 
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
+
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
 <span class="sd">    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.</span>
@@ -699,7 +708,6 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-
 <span class="sd">        </span>
 <span class="sd">        &gt;&gt;&gt; import byzfl</span>
 <span class="sd">        &gt;&gt;&gt; agg = byzfl.GeometricMedian()</span>
@@ -787,6 +795,8 @@
 <span class="sd">        \lambda \in \argmin_{i \in \big[n\big]} \sum_{x \in \mathit{N}_i} \big|\big|x_i - x\big|\big|^2_2</span>
 
 <span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 <span class="sd">    </span>
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 <span class="sd">    </span>
@@ -813,7 +823,6 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-
 <span class="sd">        </span>
 <span class="sd">        &gt;&gt;&gt; import byzfl</span>
 <span class="sd">        &gt;&gt;&gt; agg = byzfl.Krum(1)</span>
@@ -895,6 +904,8 @@
 <span class="sd">        \mathrm{MultiKrum}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f}\sum_{i = 1}^{n-f} x_{\pi(i)}</span>
 <span class="sd">        </span>
 <span class="sd">    where</span>
+<span class="sd">    </span>
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
@@ -1004,6 +1015,8 @@
 <span class="sd">        \mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}</span>
 <span class="sd">        </span>
 <span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
@@ -1139,6 +1152,8 @@
 <span class="sd">        \mathrm{MDA}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i\in S^\star} x_i</span>
 <span class="sd">        </span>
 <span class="sd">    where</span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
@@ -1285,6 +1300,8 @@
 <span class="sd">        \mathrm{MoNNA}_{f, \mathrm{idx}} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i \in \mathit{N}_{\mathrm{idx}+1}} x_{i}</span>
 <span class="sd">        </span>
 <span class="sd">    where</span>
+<span class="sd">    </span>
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 
 <span class="sd">    - \\(\\mathit{N}_{i}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{i}\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
 
@@ -1402,6 +1419,8 @@
 <span class="sd">        \big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k</span>
 <span class="sd">    </span>
 <span class="sd">    where </span>
+<span class="sd">    </span>
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</span>
 <span class="sd">    </span>
 <span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
 

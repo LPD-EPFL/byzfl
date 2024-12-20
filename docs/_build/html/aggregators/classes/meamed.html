@@ -433,6 +433,7 @@
 \[\big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k\]</div>
 <p>where</p>
 <ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</p></li>
 <li><p>\(\big[\cdot\big]_k\) refers to the \(k\)-th coordinate.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathrm{median}\)</span> refers to the median of <span class="math notranslate nohighlight">\(n\)</span> scalars.</p></li>
 <li><p>\(\pi\) denotes a permutation on \(\big[n\big]\) that sorts the input vectors based on their \(k\)-th coordinate in non-decreasing order of distance to the <span class="math notranslate nohighlight">\(\mathrm{median}\)</span> of the \(k\)-th coordinate across the input vectors. This sorting is expressed as:</p></li>
