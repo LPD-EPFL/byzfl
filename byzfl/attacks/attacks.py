@@ -66,8 +66,7 @@ class SignFlipping:
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
-
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.
     
     Initialization parameters
     --------------------------
@@ -163,7 +162,7 @@ class FallOfEmpires:
 
     where 
 
-    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.
 
     -  :math:`\tau` is the attack factor.
 
@@ -264,7 +263,7 @@ class ALittleIsEnough():
     
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.
 
     - :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector.
 
@@ -368,8 +367,8 @@ class Mimic():
     
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
-    
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.
+
     - :math:`\epsilon \in \{0, \dots, n-1\}` is the ID of the worker to mimic. In other words, :math:`x_{\epsilon+1}` is the vector sent by the worker with ID :math:`\epsilon`.
 
     Initialization parameters
@@ -462,7 +461,7 @@ class Inf():
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors. Conceptually, these vectors correspond to correct gradients submitted by honest workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.
 
     - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.
     
