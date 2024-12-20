@@ -434,14 +434,13 @@
 \[\mathrm{ARC}_{f} \ (x_1, \dots, x_n) =
 \left( \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_1\big|\big|_2}\right\} x_1 \ \ , \ \dots \ ,\ \
 \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)\]</div>
-<dl class="simple">
-<dt>where</dt><dd><ul class="simple">
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
 <li><p>\(k = \lfloor 2 \cdot \frac{f}{n} \cdot (n - f) \rfloor\).</p></li>
 <li><p>\(\pi\) denotes a permutation on \(\big[n\big]\) that sorts the \(\ell_2\)-norm of the input vectors in non-increasing order. This sorting is expressed as: <span class="math notranslate nohighlight">\(\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2\)</span>.</p></li>
 </ul>
-</dd>
-</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>

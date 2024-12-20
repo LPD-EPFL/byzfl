@@ -11,7 +11,9 @@ class NNM(object):
         \mathrm{NNM}_{f} \ (x_1, \dots, x_n) = \left(\frac{1}{n-f}\sum_{i \in \mathit{N}_{1}} x_i \ \ , \ \dots \ ,\ \  \frac{1}{n-f}\sum_{i \in \mathit{N}_{n}} x_i \right)
         
     where
-    
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+
     - For any \\(i \\in \\) \\(\\big[n\\big]\\), \\(\\mathit{N}_i\\) is the set of the \\(n-f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     
@@ -121,6 +123,8 @@ class Bucketing(object):
         \frac{1}{s}\sum_{i=\left(\lceil n/s \rceil-1\right)s+1}^{n} x_{\pi(i)} \right)
 
     where
+
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
 
     - \\(\\pi\\) is a random permutation on \\(\\big[n\\big]\\).
 
@@ -252,6 +256,8 @@ class Clipping(object):
 
     where
 
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
     - \\(c\\) is the static clipping threshold. Any input vector with an \\(\\ell_2\\)-norm greater than \\(c\\) will be will be scaled down such that its \\(\\ell_2\\)-norm equals \\(c\\).
@@ -355,10 +361,14 @@ class ARC(object):
         \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)
 
     where 
-        - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
-        - \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\).
-        - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the \\(\\ell_2\\)-norm of the input vectors in non-increasing order. This sorting is expressed as: :math:`\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2`.
 
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+
+    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
+
+    - \\(k = \\lfloor 2 \\cdot \\frac{f}{n} \\cdot (n - f) \\rfloor\\).
+    
+    - \\(\\pi\\) denotes a permutation on \\(\\big[n\\big]\\) that sorts the \\(\\ell_2\\)-norm of the input vectors in non-increasing order. This sorting is expressed as: :math:`\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2`.
 
     Initialization parameters
     --------------------------
