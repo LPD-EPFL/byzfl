@@ -8,6 +8,8 @@ Welcome to the Aggregation module of the library, which provides a comprehensive
 - Aggregators: Combine updates from multiple participants by aggregating their inputs.
 - Pre-aggregators: Perform preliminary computations to transform the data before the main aggregation, enhancing robustness.
 
+Explore the available aggregation methods below:
+
 .. toctree::
    :caption: Aggregators
    :titlesonly:

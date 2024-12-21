@@ -3,7 +3,12 @@
 Attacks
 ========
 
-This is the Byzantine Attacks Module of the library, which implements various attack strategies against machine learning vectors. In this module, you will find two components: the Attack Implementation module, which details how to execute specific attacks on a vector, and the Attack Optimizer module, which features an algorithm designed to identify the best parameters for an attack based on the given settings.
+Welcome to the Byzantine Attacks module of the library, which provides implementations of various attack strategies targeting machine learning vectors, typically gradients. This module consists of two key components:
+
+- Attack Implementation: Details the execution of specific attacks on vectors (or gradients) originating from honest participants.
+- Attack Optimizer: Features an algorithm designed to identify the optimal parameters for an attack based on the given settings.
+
+Explore these components to better understand and experiment with Byzantine attack strategies.
 
 .. toctree::
    :caption: Attacks

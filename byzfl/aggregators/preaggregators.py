@@ -12,7 +12,7 @@ class NNM(object):
         
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - For any \\(i \\in \\) \\(\\big[n\\big]\\), \\(\\mathit{N}_i\\) is the set of the \\(n-f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
@@ -124,7 +124,7 @@ class Bucketing(object):
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - \\(\\pi\\) is a random permutation on \\(\\big[n\\big]\\).
 
@@ -256,7 +256,7 @@ class Clipping(object):
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -362,7 +362,7 @@ class ARC(object):
 
     where 
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 

@@ -404,7 +404,7 @@
 \[\text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i\)</span> is the mean vector.</p></li>
 <li><p>\(\big[\cdot\big]_k\) refers to the \(k\)-th coordinate.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma_{x_1, \dots, x_n}\)</span> is the coordinate-wise standard deviation of <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>, i.e., <span class="math notranslate nohighlight">\(\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}\)</span>.</p></li>
@@ -488,7 +488,7 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p></li>
 </ul>
 <dl class="field-list simple">
@@ -571,7 +571,7 @@ mlr.press/v115/xie20a.html.</p>
 \[\begin{split}\mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(d\)</span> is the dimensionality of the input space, i.e., <span class="math notranslate nohighlight">\(d\)</span> is the number of coordinates of vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>.</p></li>
 <li><p>Every coordinate of <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> is set to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p></li>
 </ul>
@@ -644,7 +644,7 @@ mlr.press/v115/xie20a.html.</p>
 \[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\epsilon \in \{0, \dots, n-1\}\)</span> is the ID of the worker to mimic. In other words, <span class="math notranslate nohighlight">\(x_{\epsilon+1}\)</span> is the vector sent by the worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p></li>
 </ul>
 <dl class="field-list simple">
@@ -731,7 +731,7 @@ mlr.press/v115/xie20a.html.</p>
 \[\mathrm{SignFlipping} \ (x_1, \dots, x_n) = - \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
