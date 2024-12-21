@@ -3,8 +3,10 @@
 Aggregators
 ============
 
-This is the Aggregation Module of the library, which contains all aggregation functionalities. In this module, you will find both aggregators and pre-aggregators. Aggregators combine updates from multiple participants aggregating them, while pre-aggregators perform preliminary calculations to reduce the data before the main aggregation, enhancing efficiency and robustness.
+Welcome to the Aggregation module of the library, which provides a comprehensive suite of aggregation functionalities. This module includes both aggregators and pre-aggregators:
 
+- Aggregators: Combine updates from multiple participants by aggregating their inputs.
+- Pre-aggregators: Perform preliminary computations to transform the data before the main aggregation, enhancing robustness.
 
 .. toctree::
    :caption: Aggregators

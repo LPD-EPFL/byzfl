@@ -13,7 +13,7 @@ class Average(object):
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
         
     Initialization parameters
@@ -96,7 +96,7 @@ class Median(object):
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
@@ -181,7 +181,7 @@ class TrMean(object):
     
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
     
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
@@ -278,7 +278,7 @@ class GeometricMedian(object):
     
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -392,7 +392,7 @@ class Krum(object):
 
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
     
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
     
@@ -498,7 +498,7 @@ class MultiKrum(object):
         
     where
     
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -606,7 +606,7 @@ class CenteredClipping(object):
         
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -740,7 +740,7 @@ class MDA(object):
         
     where
 
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -885,7 +885,7 @@ class MoNNA(object):
         
     where
     
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     - \\(\\mathit{N}_{i}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{i}\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
@@ -1001,7 +1001,7 @@ class Meamed(object):
     
     where 
     
-    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
     
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 

@@ -433,7 +433,7 @@
 \[\mathrm{CenteredClipping}_{m, L, \tau} \ (x_1, \dots, x_n) = v_{L}\]</div>
 <p>where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine workers during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
 <li><p><span class="math notranslate nohighlight">\(v_0 = m\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(v_{l+1} = v_{l} + \frac{1}{n}\sum_{i=1}^{n}(x_i - v_l)\min\left(1, \frac{\tau}{\big|\big|x_i - v_l\big|\big|_2}\right) \ \ ; \ \forall l \in \{0,\dots, L-1\}\)</span>.</p></li>
