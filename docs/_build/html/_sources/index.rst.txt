@@ -21,53 +21,78 @@ ByzFL Documentation
 .. raw:: html
 
    </div>
-Welcome to the official documentation of ByzFL powered by 
-`DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_ and by
+Welcome to the official documentation of ByzFL, developed by 
+`DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_ and
 `WIDE <https://team.inria.fr/wide/>`_ from 
 `INRIA Rennes <https://www.inria.fr/fr/centre-inria-universite-rennes>`_!
 
-ByzFL is a Python Library for Byzantine-resilient Federated Learning 
-compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://numpy.org>`_ arrays.
+What is ByzFL?
+==============
 
-ByzFL provides three main tools.
+ByzFL is a **Python library for Byzantine-resilient Federated Learning**. It is designed to be fully compatible with both `PyTorch <http://pytorch.org>`_  tensors and `NumPy <http://numpy.org>`_ arrays, making it versatile for a wide range of machine learning workflows.
 
-1. Robust aggregators and pre-aggregators.
-2. Implementation of Byzantine attacks.
-3. Pipeline to train and benchmark new methods using ByzFL implemented schemes.
+Key Features
+------------
 
-Our code is available on `Github <https://github.com/LPD-EPFL/byzfl>`_.
+1. **Robust Aggregators and Pre-Aggregators**: Robustly aggregate gradients while mitigating the impact of Byzantine participants.
+2. **Byzantine Attacks**: Simulate and evaluate different attack strategies for testing resilience.
+3. **ML Pipelines**: Train and benchmark robust aggregation schemes and attack implementations seamlessly.
 
 
-.. rubric:: Getting Started
+Installation
+============
 
-You can install the ByzFL module using pip.
+You can install the ByzFL library via pip:
 
-  >>> pip install byzfl
+.. code-block:: bash
 
-The `byzfl` module is then ready to use. For instance, the following is an example using the :ref:`trmean-label` robust aggregator and the :ref:`sf-label` Byzantine attack:
+   pip install byzfl
 
-  >>> import byzfl
-  >>> import numpy as np
-  >>> f = 1                                                 # Number of Byzantine participants
-  >>>
-  >>> honest_vectors = np.array([[1., 2., 3.],              # Honest vectors
-  >>>                            [4., 5., 6.],
-  >>>                            [7., 8., 9.]])
-  >>>
-  >>> attack = byzfl.SignFlipping()                         # Initialize the attack
-  >>> byz_vector = attack(honest_vectors)                   # Generate a single attack vector
-  >>>
-  >>> # Create f identical attack vectors
-  >>> byz_vectors = np.tile(byz_vector, (f, 1))
-  >>>
-  >>> # Concatenate honest and Byzantine vectors
-  >>> all_vectors = np.concatenate((honest_vectors, byz_vectors), axis=0)
-  >>>
-  >>> aggregate = byzfl.Trmean(f=f)
-  >>> aggregate(all_vectors)                                # Perform robust aggregation on all vectors
-  array([2.5 3.5 4.5])
 
-Learn more about ByzFL:
+After installation, the library is ready to use. Here's a quick example of how to use the :ref:`trmean-label` robust aggregator and the :ref:`sf-label` Byzantine attack:
+
+
+Quick Start Example
+------------
+
+.. code-block:: python
+
+   import byzfl
+   import numpy as np
+
+   # Number of Byzantine participants
+   f = 1
+
+   # Honest vectors
+   honest_vectors = np.array([[1., 2., 3.],
+                              [4., 5., 6.],
+                              [7., 8., 9.]])
+
+   # Initialize and apply the attack
+   attack = byzfl.SignFlipping()
+   byz_vector = attack(honest_vectors)
+
+   # Create f identical attack vectors
+   byz_vectors = np.tile(byz_vector, (f, 1))
+
+   # Concatenate honest and Byzantine vectors
+   all_vectors = np.concatenate((honest_vectors, byz_vectors), axis=0)
+
+   # Initialize and perform robust aggregation
+   aggregate = byzfl.Trmean(f=f)
+   result = aggregate(all_vectors)
+   print("Aggregated result:", result)
+
+Output:
+
+.. code-block:: none
+
+   Aggregated result: [2.5 3.5 4.5]
+
+Learn More
+==========
+
+Explore the key components of ByzFL below:
 
 .. raw:: html
 
@@ -114,6 +139,9 @@ Learn more about ByzFL:
   </div>
   </div>
 
-.. rubric:: Lisence
+License
+=======
 
-`MIT <https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt>`_
+ByzFL is open-source and distributed under the `MIT License <https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt>`_.
+
+Our code is hosted on `Github <https://github.com/LPD-EPFL/byzfl>`_. Contributions are welcome!

@@ -236,6 +236,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -368,48 +372,68 @@
 </div>
 <div style="visibility: hidden;height:1px;"><section id="byzfl-documentation">
 <h1>ByzFL Documentation<a class="headerlink" href="#byzfl-documentation" title="Link to this heading">#</a></h1>
-</div><p>Welcome to the official documentation of ByzFL powered by
-<a class="reference external" href="http://dcl.epfl.ch">DCL</a> from <a class="reference external" href="http://epfl.ch">EPFL</a> and by
+</div><p>Welcome to the official documentation of ByzFL, developed by
+<a class="reference external" href="http://dcl.epfl.ch">DCL</a> from <a class="reference external" href="http://epfl.ch">EPFL</a> and
 <a class="reference external" href="https://team.inria.fr/wide/">WIDE</a> from
 <a class="reference external" href="https://www.inria.fr/fr/centre-inria-universite-rennes">INRIA Rennes</a>!</p>
-<p>ByzFL is a Python Library for Byzantine-resilient Federated Learning
-compatible with <a class="reference external" href="http://pytorch.org">PyTorch</a> tensors and  <a class="reference external" href="http://numpy.org">NumPy</a> arrays.</p>
-<p>ByzFL provides three main tools.</p>
+</section>
+<section id="what-is-byzfl">
+<h1>What is ByzFL?<a class="headerlink" href="#what-is-byzfl" title="Link to this heading">#</a></h1>
+<p>ByzFL is a <strong>Python library for Byzantine-resilient Federated Learning</strong>. It is designed to be fully compatible with both <a class="reference external" href="http://pytorch.org">PyTorch</a>  tensors and <a class="reference external" href="http://numpy.org">NumPy</a> arrays, making it versatile for a wide range of machine learning workflows.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Robust aggregators and pre-aggregators.</p></li>
-<li><p>Implementation of Byzantine attacks.</p></li>
-<li><p>Pipeline to train and benchmark new methods using ByzFL implemented schemes.</p></li>
+<li><p><strong>Robust Aggregators and Pre-Aggregators</strong>: Robustly aggregate gradients while mitigating the impact of Byzantine participants.</p></li>
+<li><p><strong>Byzantine Attacks</strong>: Simulate and evaluate different attack strategies for testing resilience.</p></li>
+<li><p><strong>ML Pipelines</strong>: Train and benchmark robust aggregation schemes and attack implementations seamlessly.</p></li>
 </ol>
-<p>Our code is available on <a class="reference external" href="https://github.com/LPD-EPFL/byzfl">Github</a>.</p>
-<p class="rubric">Getting Started</p>
-<p>You can install the ByzFL module using pip.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">byzfl</span>
+</section>
+</section>
+<section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<p>You can install the ByzFL library via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>byzfl
 </pre></div>
 </div>
-<p>The <cite>byzfl</cite> module is then ready to use. For instance, the following is an example using the <a class="reference internal" href="aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> robust aggregator and the <a class="reference internal" href="attacks/classes/sign_flipping.html#sf-label"><span class="std std-ref">Sign Flipping</span></a> Byzantine attack:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>                                                 <span class="c1"># Number of Byzantine participants</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>              <span class="c1"># Honest vectors</span>
-<span class="gp">&gt;&gt;&gt; </span>                           <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>                           <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>                         <span class="c1"># Initialize the attack</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_vector</span> <span class="o">=</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>                   <span class="c1"># Generate a single attack vector</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create f identical attack vectors</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">byz_vector</span><span class="p">,</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Concatenate honest and Byzantine vectors</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">all_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">byz_vectors</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Trmean</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span><span class="p">(</span><span class="n">all_vectors</span><span class="p">)</span>                                <span class="c1"># Perform robust aggregation on all vectors</span>
-<span class="go">array([2.5 3.5 4.5])</span>
+<p>After installation, the library is ready to use. Here’s a quick example of how to use the <a class="reference internal" href="aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> robust aggregator and the <a class="reference internal" href="attacks/classes/sign_flipping.html#sf-label"><span class="std std-ref">Sign Flipping</span></a> Byzantine attack:</p>
+<section id="quick-start-example">
+<h2>Quick Start Example<a class="headerlink" href="#quick-start-example" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Number of Byzantine participants</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Honest vectors</span>
+<span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+
+<span class="c1"># Initialize and apply the attack</span>
+<span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>
+<span class="n">byz_vector</span> <span class="o">=</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+
+<span class="c1"># Create f identical attack vectors</span>
+<span class="n">byz_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">byz_vector</span><span class="p">,</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># Concatenate honest and Byzantine vectors</span>
+<span class="n">all_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">byz_vectors</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Initialize and perform robust aggregation</span>
+<span class="n">aggregate</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Trmean</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">aggregate</span><span class="p">(</span><span class="n">all_vectors</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aggregated result:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Learn more about ByzFL:</p>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Aggregated result: [2.5 3.5 4.5]
+</pre></div>
+</div>
+</section>
+</section>
+<section id="learn-more">
+<h1>Learn More<a class="headerlink" href="#learn-more" title="Link to this heading">#</a></h1>
+<p>Explore the key components of ByzFL below:</p>
 <div class="row">
 <div class="column">
   <div class="card">
@@ -436,8 +460,11 @@ compatible with <a class="reference external" href="http://pytorch.org">PyTorch<
     </div>
   </div>
 </div>
-</div><p class="rubric">Lisence</p>
-<p><a class="reference external" href="https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt">MIT</a></p>
+</div></section>
+<section id="license">
+<h1>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h1>
+<p>ByzFL is open-source and distributed under the <a class="reference external" href="https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt">MIT License</a>.</p>
+<p>Our code is hosted on <a class="reference external" href="https://github.com/LPD-EPFL/byzfl">Github</a>. Contributions are welcome!</p>
 </section>
 
 
@@ -465,6 +492,35 @@ compatible with <a class="reference external" href="http://pytorch.org">PyTorch<
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">ByzFL Documentation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-byzfl">What is ByzFL?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-example">Quick Start Example</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-more">Learn More</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
