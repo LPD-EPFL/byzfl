@@ -483,7 +483,6 @@ class Krum(object):
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.f]
         dist = tools.mean(dist, axis=1)
-        print(dist)
         index = tools.argmin(dist)
         return vectors[index]
 
