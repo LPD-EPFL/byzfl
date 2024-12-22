@@ -20,7 +20,7 @@ Our Team
       <img src="../_static/john_stephan.jpeg" alt="John Stephan" style="width:100%">
       <div class="container">
         <h2>John Stephan</h2>
-        <p class="title">PhD candidate @EPFL</p>
+        <p class="title">PhD @EPFL, Project leader</p>
       </div>
     </div>
   </div>

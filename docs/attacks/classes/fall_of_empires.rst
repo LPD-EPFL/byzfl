@@ -1,3 +1,5 @@
+.. _foe-label:
+
 Fall of Empires (FOE)
 =======================
 

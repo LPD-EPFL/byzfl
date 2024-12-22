@@ -1,3 +1,5 @@
+.. _sf-label:
+
 Sign Flipping 
 =======================
 

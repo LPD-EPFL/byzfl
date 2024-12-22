@@ -32,28 +32,39 @@ compatible with `PyTorch <http://pytorch.org>`_ tensors and  `NumPy <http://nump
 ByzFL provides three main tools.
 
 1. Robust aggregators and pre-aggregators.
-2. Implementation of attacks.
+2. Implementation of Byzantine attacks.
 3. Pipeline to train and benchmark new methods using ByzFL implemented schemes.
 
-Our code is available on `Github <https://github.com/LPD-EPFL/byzfl>`_
+Our code is available on `Github <https://github.com/LPD-EPFL/byzfl>`_.
 
 
 .. rubric:: Getting Started
 
-You can install the ByzFL module with pip command.
+You can install the ByzFL module using pip.
 
   >>> pip install byzfl
 
-The `byzfl` module is then ready to use. For instance, to use the :ref:`mda-label` robust aggregation:
+The `byzfl` module is then ready to use. For instance, the following is an example using the :ref:`trmean-label` robust aggregator and the :ref:`sf-label` Byzantine attack:
 
   >>> import byzfl
   >>> import numpy as np
-  >>> 
-  >>> agg = byzfl.MDA(1)
-  >>> x = np.array([[1., 2., 3.],       # np.ndarray
-  >>>               [4., 5., 6.],
-  >>>               [7., 8., 9.]])
-  >>> agg(x)
+  >>> f = 1                                                 # Number of Byzantine participants
+  >>>
+  >>> honest_vectors = np.array([[1., 2., 3.],              # Honest vectors
+  >>>                            [4., 5., 6.],
+  >>>                            [7., 8., 9.]])
+  >>>
+  >>> attack = byzfl.SignFlipping()                         # Initialize the attack
+  >>> byz_vector = attack(honest_vectors)                   # Generate a single attack vector
+  >>>
+  >>> # Create f identical attack vectors
+  >>> byz_vectors = np.tile(byz_vector, (f, 1))
+  >>>
+  >>> # Concatenate honest and Byzantine vectors
+  >>> all_vectors = np.concatenate((honest_vectors, byz_vectors), axis=0)
+  >>>
+  >>> aggregate = byzfl.Trmean(f=f)
+  >>> aggregate(all_vectors)                                # Perform robust aggregation on all vectors
   array([2.5 3.5 4.5])
 
 Learn more about ByzFL:

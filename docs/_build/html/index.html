@@ -377,24 +377,35 @@ compatible with <a class="reference external" href="http://pytorch.org">PyTorch<
 <p>ByzFL provides three main tools.</p>
 <ol class="arabic simple">
 <li><p>Robust aggregators and pre-aggregators.</p></li>
-<li><p>Implementation of attacks.</p></li>
+<li><p>Implementation of Byzantine attacks.</p></li>
 <li><p>Pipeline to train and benchmark new methods using ByzFL implemented schemes.</p></li>
 </ol>
-<p>Our code is available on <a class="reference external" href="https://github.com/LPD-EPFL/byzfl">Github</a></p>
+<p>Our code is available on <a class="reference external" href="https://github.com/LPD-EPFL/byzfl">Github</a>.</p>
 <p class="rubric">Getting Started</p>
-<p>You can install the ByzFL module with pip command.</p>
+<p>You can install the ByzFL module using pip.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">byzfl</span>
 </pre></div>
 </div>
-<p>The <cite>byzfl</cite> module is then ready to use. For instance, to use the <a class="reference internal" href="aggregators/classes/mda.html#mda-label"><span class="std std-ref">Minimum-Diameter Averaging</span></a> robust aggregation:</p>
+<p>The <cite>byzfl</cite> module is then ready to use. For instance, the following is an example using the <a class="reference internal" href="aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> robust aggregator and the <a class="reference internal" href="attacks/classes/sign_flipping.html#sf-label"><span class="std std-ref">Sign Flipping</span></a> Byzantine attack:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>                                                 <span class="c1"># Number of Byzantine participants</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">MDA</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>              <span class="c1"># Honest vectors</span>
+<span class="gp">&gt;&gt;&gt; </span>                           <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                           <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>                         <span class="c1"># Initialize the attack</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_vector</span> <span class="o">=</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>                   <span class="c1"># Generate a single attack vector</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create f identical attack vectors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">byz_vector</span><span class="p">,</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Concatenate honest and Byzantine vectors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">byz_vectors</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Trmean</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span><span class="p">(</span><span class="n">all_vectors</span><span class="p">)</span>                                <span class="c1"># Perform robust aggregation on all vectors</span>
 <span class="go">array([2.5 3.5 4.5])</span>
 </pre></div>
 </div>
