@@ -589,7 +589,7 @@
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; import byzfl</span>
-<span class="sd">    &gt;&gt;&gt; attack = byzfl.FallofEmpires(3)</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.FallOfEmpires(3)</span>
 
 <span class="sd">    Using numpy arrays</span>
 <span class="sd">        </span>
@@ -751,7 +751,7 @@
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">attack_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-                <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">attack_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attack_factor</span><span class="p">))</span></div>
+                <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">attack_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">))</span></div>
 
 
 
@@ -937,7 +937,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span> 
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
     
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>

@@ -191,7 +191,7 @@ class FallOfEmpires:
     --------
 
     >>> import byzfl
-    >>> attack = byzfl.FallofEmpires(3)
+    >>> attack = byzfl.FallOfEmpires(3)
 
     Using numpy arrays
         
@@ -350,7 +350,7 @@ class ALittleIsEnough():
         tools, honest_vectors = check_vectors_type(honest_vectors)
         attack_vector = tools.sqrt(tools.var(honest_vectors, axis=0, ddof=1))
         return tools.add(tools.mean(honest_vectors, axis=0),
-                tools.multiply(attack_vector, self.attack_factor))
+                tools.multiply(attack_vector, self.tau))
 
 
 class Mimic():
@@ -530,7 +530,7 @@ class Inf():
 
     """ 
 
-    def __init__():
+    def __init__(self):
         pass
     
     def __call__(self, honest_vectors):
