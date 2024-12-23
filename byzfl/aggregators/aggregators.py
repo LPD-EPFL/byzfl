@@ -5,7 +5,7 @@ from byzfl.utils import misc
 
 class Average(object):
     r"""
-    Compute the average along the first axis.
+    Compute the average along the first axis:
 
     .. math::
 
@@ -87,8 +87,9 @@ class Average(object):
 
 
 class Median(object):
+    
     r"""
-    Compute the coordinate-wise median along the first axis.
+    Compute the coordinate-wise median along the first axis [1]_:
 
     .. math::
 
@@ -162,7 +163,15 @@ class Median(object):
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
         tensor([4., 5., 6.])
+
+     References
+    ----------
+
+    .. [1] Dong Yin, Yudong Chen, Ramchandran Kannan, and Peter Bartlett. Byzantine-robust distributed
+           learning: Towards optimal statistical rates. In International Conference on Machine Learning, pp.5650–5659. PMLR, 2018.
+
     """
+
     def __init__(self):
         pass
 
@@ -173,7 +182,7 @@ class Median(object):
 
 class TrMean(object):
     r"""
-    Compute the trimmed mean [1]_ (or truncated mean) along the first axis:
+    Compute the trimmed mean (or truncated mean) along the first axis [1]_:
 
     .. math::
 
