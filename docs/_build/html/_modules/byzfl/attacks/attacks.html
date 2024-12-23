@@ -391,62 +391,6 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span>
 
-<div class="viewcode-block" id="NoAttack">
-<a class="viewcode-back" href="../../../attacks/attacks.html#byzfl.attacks.attacks.NoAttack">[docs]</a>
-<span class="k">class</span> <span class="nc">NoAttack</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    Class representing an attack which behaves like an honest node.</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    ---------</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span> 
-    
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the arithmetic mean along axis = 0.</span>
-<span class="sd">        Returns the average of the array elements.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype</span>
-<span class="sd">            Matrix containing arrays whose mean is desired.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        mean_vector : ndarray or torch.tensor</span>
-<span class="sd">            The mean vector of the input. The dtype of the outputs is the same as the input.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        With numpy arrays:</span>
-<span class="sd">            &gt;&gt;&gt; matrix = np.array([[1., 2., 3.], </span>
-<span class="sd">            &gt;&gt;&gt;                    [4., 5., 6.], </span>
-<span class="sd">            &gt;&gt;&gt;                    [7., 8., 9.]])</span>
-<span class="sd">            &gt;&gt;&gt; attack = NoAttack()</span>
-<span class="sd">            &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">            &gt;&gt;&gt; print(result)</span>
-<span class="sd">            ndarray([4. 5. 6.])</span>
-<span class="sd">        With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):</span>
-<span class="sd">            &gt;&gt;&gt; matrix = torch.stack([torch.tensor([1., 2., 3.]),</span>
-<span class="sd">            &gt;&gt;&gt;                       torch.tensor([4., 5., 6.]), </span>
-<span class="sd">            &gt;&gt;&gt;                       torch.tensor([7., 8., 9.])])</span>
-<span class="sd">            &gt;&gt;&gt; attack = NoAttack()</span>
-<span class="sd">            &gt;&gt;&gt; result = attack.get_malicious_vector(matrix)</span>
-<span class="sd">            &gt;&gt;&gt; print(result)</span>
-<span class="sd">            tensor([4., 5., 6.])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
-        <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">mean_vector</span></div>
-
-
-
 <div class="viewcode-block" id="SignFlipping">
 <a class="viewcode-back" href="../../../attacks/classes/sign_flipping.html#byzfl.attacks.attacks.SignFlipping">[docs]</a>
 <span class="k">class</span> <span class="nc">SignFlipping</span><span class="p">:</span>

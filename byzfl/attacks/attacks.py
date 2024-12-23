@@ -1,59 +1,6 @@
 import numpy as np
 from byzfl.utils.misc import check_vectors_type
 
-class NoAttack(object):
-
-    """
-    Description
-    -----------
-    Class representing an attack which behaves like an honest node.
-
-    Methods
-    ---------
-    """
-    def __init__(self):
-        pass 
-    
-    def __call__(self, honest_vectors):
-        """
-        Compute the arithmetic mean along axis = 0.
-        Returns the average of the array elements.
-
-        Parameters
-        ----------
-        honest_vectors : 2D ndarray or 2D torch.tensor with floating point or complex dtype
-            Matrix containing arrays whose mean is desired.
-
-        Returns
-        -------
-        mean_vector : ndarray or torch.tensor
-            The mean vector of the input. The dtype of the outputs is the same as the input.
-
-        Examples
-        --------
-        With numpy arrays:
-            >>> matrix = np.array([[1., 2., 3.], 
-            >>>                    [4., 5., 6.], 
-            >>>                    [7., 8., 9.]])
-            >>> attack = NoAttack()
-            >>> result = attack.get_malicious_vector(matrix)
-            >>> print(result)
-            ndarray([4. 5. 6.])
-        With torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
-            >>> matrix = torch.stack([torch.tensor([1., 2., 3.]),
-            >>>                       torch.tensor([4., 5., 6.]), 
-            >>>                       torch.tensor([7., 8., 9.])])
-            >>> attack = NoAttack()
-            >>> result = attack.get_malicious_vector(matrix)
-            >>> print(result)
-            tensor([4., 5., 6.])
-        """
-
-        tools, honest_vectors = check_vectors_type(honest_vectors)
-        mean_vector = tools.mean(honest_vectors, axis=0)
-        return mean_vector
-
-
 class SignFlipping:
     
     r"""
