@@ -173,7 +173,7 @@ class Median(object):
 
 class TrMean(object):
     r"""
-    Compute the trimmed mean (or truncated mean) along the first axis:
+    Compute the trimmed mean [1]_ (or truncated mean) along the first axis:
 
     .. math::
 
@@ -250,6 +250,13 @@ class TrMean(object):
         >>>      torch.tensor([7., 8., 9.])]
         >>> agg(x)
         tensor([4., 5., 6.])
+    
+
+    References
+    ----------
+
+    .. [1] Dong Yin, Yudong Chen, Ramchandran Kannan, and Peter Bartlett. Byzantine-robust distributed
+           learning: Towards optimal statistical rates. In International Conference on Machine Learning, pp.5650–5659. PMLR, 2018.
 
     """
 
