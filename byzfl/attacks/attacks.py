@@ -100,11 +100,11 @@ class FallOfEmpires:
     Description
     -----------
 
-    Execute the Fall of Empires (FoE) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.
+    Execute the Fall of Empires (FOE) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.
 
     .. math::
 
-        \text{FoE}_{\tau}(x_1, \dots, x_n) = 
+        \text{FOE}_{\tau}(x_1, \dots, x_n) = 
         (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
 
     where 
