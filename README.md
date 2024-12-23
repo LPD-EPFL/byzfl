@@ -17,6 +17,8 @@ ByzFL is a **Python library for Byzantine-resilient Federated Learning**. It is 
 3. **Machine Learning Pipelines**: 
    - Train and benchmark robust aggregation schemes and attack implementations seamlessly.
 
+The exact implementations of these modules (`aggregators`, `attacks`, and `pipeline`) can be found in the `byzfl/` directory.
+
 ---
 
 ## Installation
