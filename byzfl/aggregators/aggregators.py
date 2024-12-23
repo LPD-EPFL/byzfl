@@ -394,7 +394,7 @@ class GeometricMedian(object):
 
 class Krum(object):
     r"""
-    Apply the Krum aggregation rule [1]_:
+    Apply the Krum aggregator [1]_:
 
     .. math::
 
@@ -505,7 +505,7 @@ class Krum(object):
 class MultiKrum(object):
 
     r"""
-    Apply the Multi-Krum aggregation rule [1]_:
+    Apply the Multi-Krum aggregator [1]_:
 
     .. math::
 
@@ -747,7 +747,7 @@ class CenteredClipping(object):
 
 class MDA(object):
     r"""
-    Apply the Minimum-Diameter Averaging aggregation rule [1]_:
+    Apply the Minimum-Diameter Averaging aggregator [1]_:
 
     .. math::
 
