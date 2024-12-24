@@ -26,7 +26,7 @@ Pre-aggregators perform preliminary computations to refine the input data before
 
 ## Usage
 
-To utilize an aggregator or pre-aggregator, first import the desired class from the `aggregators` module and then apply it to your set of input vectors. Here's an example using the Trimmed Mean aggregator:
+To utilize an aggregator or pre-aggregator, first import the desired class from the `byzfl` module and then apply it to your set of input vectors. Here's an example using the Trimmed Mean aggregator:
 
 ```python
 from byzfl import TrMean
