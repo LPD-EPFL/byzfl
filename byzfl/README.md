@@ -37,7 +37,7 @@ honest_vectors = np.array([
 ])
 
 # Initialize and apply a Byzantine attack (e.g., Sign Flipping)
-attack = byzfl.attacks.SignFlipping()
+attack = byzfl.SignFlipping()
 byz_vector = attack(honest_vectors)
 
 # Create f identical attack vectors
@@ -47,7 +47,7 @@ byz_vectors = np.tile(byz_vector, (f, 1))
 all_vectors = np.concatenate((honest_vectors, byz_vectors), axis=0)
 
 # Initialize and perform robust aggregation using Trimmed Mean
-aggregator = byzfl.aggregators.Trmean(f=f)
+aggregator = byzfl.TrMean(f=f)
 result = aggregator(all_vectors)
 print("Aggregated result:", result)
 ```
