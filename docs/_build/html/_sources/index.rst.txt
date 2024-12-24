@@ -79,7 +79,7 @@ Quick Start Example
    all_vectors = np.concatenate((honest_vectors, byz_vectors), axis=0)
 
    # Initialize and perform robust aggregation
-   aggregate = byzfl.Trmean(f=f)
+   aggregate = byzfl.TrMean(f=f)
    result = aggregate(all_vectors)
    print("Aggregated result:", result)
 
