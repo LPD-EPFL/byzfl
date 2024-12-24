@@ -7,9 +7,9 @@ The `aggregators` module in ByzFL provides a suite of robust aggregation and pre
 - **Average**: Computes the standard arithmetic mean of the input vectors.
 - **Median**: Calculates the coordinate-wise median, offering resilience against outliers.
 - **Trimmed Mean**: Excludes a specified fraction of the highest and lowest values before computing the mean, enhancing robustness.
-- **Geometric Median**: Determines the point minimizing the sum of Euclidean distances to all input vectors, providing strong robustness properties.
+- **Geometric Median**: Determines the vector minimizing the sum of Euclidean distances to all input vectors, providing strong robustness properties.
 - **Krum**: Selects the vector closest to its neighbors, effectively filtering out outliers.
-- **Multi-Krum**: An extension of Krum that selects multiple vectors to compute the aggregate, balancing robustness and convergence speed.
+- **Multi-Krum**: An extension of Krum that selects multiple vectors to compute the aggregate for improved robustness.
 - **Centered Clipping**: Clips the input vectors to a central value to limit the influence of outliers.
 - **MDA (Minimum Diameter Averaging)**: Averages a subset of vectors with smallest diameter for enhanced robustness against Byzantine faults.
 - **MONNA**: Averages the closest vectors to a trusted vector for improved resilience.
