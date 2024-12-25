@@ -274,4 +274,3 @@ class WorkerWithMaxVariance():
             parameter = tools.argmax(dot_products)
 
         attack.set_attack_parameters(parameter)
-

@@ -20,7 +20,7 @@ pip install byzfl
 
 ## Usage
 
-Here's an example of how to use the `byzfl` module to perform a robust aggregation using the `Trmean` aggregator, when the `SignFlipping` attack is executed by the Byzantine participants.
+Here's an example of how to use the `byzfl` module to perform a robust aggregation using the `TrMean` aggregator, when the `SignFlipping` attack is executed by the Byzantine participants.
 
 ```python
 import byzfl

@@ -29,7 +29,7 @@ Install the ByzFL library using pip:
 pip install byzfl
 ```
 
-After installation, the library is ready to use. Here’s a quick example of how to use the `Trmean` robust aggregator and the `SignFlipping` Byzantine attack:
+After installation, the library is ready to use. Here’s a quick example of how to use the `TrMean` robust aggregator and the `SignFlipping` Byzantine attack:
 
 ---
 
@@ -58,7 +58,7 @@ byz_vectors = np.tile(byz_vector, (f, 1))
 all_vectors = np.concatenate((honest_vectors, byz_vectors), axis=0)
 
 # Initialize and perform robust aggregation
-aggregate = byzfl.Trmean(f=f)
+aggregate = byzfl.TrMean(f=f)
 result = aggregate(all_vectors)
 print("Aggregated result:", result)
 ```
