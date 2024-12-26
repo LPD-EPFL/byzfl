@@ -399,7 +399,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the A Little is Enough (ALIE) attack <a href="#id12"><span class="problematic" id="id1">[1]_</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<p>Execute the A Little is Enough (ALIE) attack <a href="#id13"><span class="problematic" id="id1">[1]_</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}\]</div>
 <p>where</p>
@@ -482,7 +482,7 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id3">
 <h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>Execute the Fall of Empires (FOE) attack <a href="#id13"><span class="problematic" id="id4">[1]_</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
+<p>Execute the Fall of Empires (FOE) attack <a href="#id14"><span class="problematic" id="id4">[1]_</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{FOE}_{\tau}(x_1, \dots, x_n) =
 (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
@@ -561,11 +561,89 @@ mlr.press/v115/xie20a.html.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.attacks.attacks.Inf">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.attacks.</span></span><span class="sig-name descname"><span class="pre">Inf</span></span><a class="reference internal" href="../_modules/byzfl/attacks/attacks.html#Inf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.attacks.Inf" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.attacks.attacks.Gaussian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.attacks.</span></span><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacks/attacks.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.attacks.Gaussian" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id6">
 <h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{Gaussian} \sim \mathit{N}(\mu, \sigma^2 I)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathit{N}\)</span> is the Gaussian distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> is the mean and of the Gaussian distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the standard deviation of the Gaussian distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I\)</span> is the identity matrix.</p></li>
+<li><p>The dimensionality of the generated vector matches the input vectors.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>float, optional (default=0.0)</em>) – Mean of the Gaussian distribution.</p></li>
+<li><p><strong>sigma</strong> (<em>float, optional (default=1.0)</em>) – Standard deviation of the Gaussian distribution.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Calling the instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Input parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([-0.08982162  0.07237574  0.55886579])</span>
+</pre></div>
+</div>
+<p>Using torch tensors</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>   <span class="c1"># torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([ 0.9791,  0.0266, -1.0112])</span>
+</pre></div>
+</div>
+<p>Using list of numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([-0.08982162  0.07237574  0.55886579])</span>
+</pre></div>
+</div>
+<p>Using list of torch tensors</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([ 0.9791,  0.0266, -1.0112])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.attacks.attacks.Inf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.attacks.</span></span><span class="sig-name descname"><span class="pre">Inf</span></span><a class="reference internal" href="../_modules/byzfl/attacks/attacks.html#Inf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.attacks.Inf" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="id7">
+<h2>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
 <p>Execute the Infinity attack: send  vector <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> comprised of positive infinity values.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
@@ -637,9 +715,9 @@ mlr.press/v115/xie20a.html.</p>
 <dt class="sig sig-object py" id="byzfl.attacks.attacks.Mimic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.attacks.</span></span><span class="sig-name descname"><span class="pre">Mimic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/byzfl/attacks/attacks.html#Mimic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.attacks.Mimic" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="id7">
-<h2>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
-<p>Execute the Mimic attack <a href="#id14"><span class="problematic" id="id8">[1]_</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
+<section id="id8">
+<h2>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<p>Execute the Mimic attack <a href="#id15"><span class="problematic" id="id9">[1]_</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
 <div class="math notranslate nohighlight">
 \[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}\]</div>
 <p>where</p>
@@ -704,7 +782,7 @@ mlr.press/v115/xie20a.html.</p>
 </div>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id9" role="doc-footnote">
+<aside class="footnote brackets" id="id10" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <p>Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Byzantine-robust learning on heterogeneous datasets via bucketing. In International Conference on Learning Representations, 2022.</p>
 </aside>
@@ -716,7 +794,7 @@ mlr.press/v115/xie20a.html.</p>
 <dt class="sig sig-object py" id="byzfl.attacks.attacks.SignFlipping">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.attacks.</span></span><span class="sig-name descname"><span class="pre">SignFlipping</span></span><a class="reference internal" href="../_modules/byzfl/attacks/attacks.html#SignFlipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.attacks.SignFlipping" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Execute the Sign Flipping attack <a href="#id15"><span class="problematic" id="id10">[1]_</span></a>: send the opposite of the mean vector.</p>
+<p>Execute the Sign Flipping attack <a href="#id16"><span class="problematic" id="id11">[1]_</span></a>: send the opposite of the mean vector.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{SignFlipping} \ (x_1, \dots, x_n) = - \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
 <p>where</p>
@@ -780,7 +858,7 @@ mlr.press/v115/xie20a.html.</p>
 </div>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id11" role="doc-footnote">
+<aside class="footnote brackets" id="id12" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <p>Zeyuan Allen-Zhu, Faeze Ebrahimianghazani, Jerry Li, and Dan Alistarh. Byzantine-resilient non-convex stochastic gradient descent.
 In International Conference on Learning Representations, 2020</p>
@@ -821,6 +899,7 @@ In International Conference on Learning Representations, 2020</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.attacks.ALittleIsEnough"><code class="docutils literal notranslate"><span class="pre">ALittleIsEnough</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.attacks.FallOfEmpires"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.attacks.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.attacks.Inf"><code class="docutils literal notranslate"><span class="pre">Inf</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.attacks.Mimic"><code class="docutils literal notranslate"><span class="pre">Mimic</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.attacks.attacks.SignFlipping"><code class="docutils literal notranslate"><span class="pre">SignFlipping</span></code></a></li>

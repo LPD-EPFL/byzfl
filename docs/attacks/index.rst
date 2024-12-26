@@ -19,6 +19,7 @@ Explore these components to better understand and experiment with Byzantine atta
    classes/little_is_enough
    classes/mimic
    classes/inf
+   classes/gaussian
 
 .. toctree::
    :caption: Attack optimizers

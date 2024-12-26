@@ -9,6 +9,7 @@ The `attacks` module in ByzFL provides a comprehensive suite of Byzantine attack
 - **A Little Is Enough (ALIE)**: Introduces subtle yet effective perturbations to gradients, proportional to the standard deviation of the input vectors.
 - **Infinity (Inf)**: Generates vectors with extreme values, effectively disrupting the learning process.
 - **Mimic**: Subtle attack strategy where the Byzantine participants aim to mimic the behavior of honest participants, instead of generating obvious outliers.
+- **Gaussian**: Generates gradients sampled from a Gaussian distribution, introducing randomness and potential divergence
 
 ## Usage
 

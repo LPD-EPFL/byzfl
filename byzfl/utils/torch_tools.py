@@ -1,6 +1,4 @@
-import numpy as np
 import torch
-import torch.linalg as linalg
 
 def mean(vectors, axis=0):
 	return torch.mean(vectors, axis=axis)
@@ -25,7 +23,6 @@ def sum(vectors, axis=0):
 	return torch.sum(vectors, axis=axis)
 
 def array(vectors):
-	#return vectors.clone().detach()
 	return torch.stack(vectors)
 
 def argmin(vectors, axis=0):

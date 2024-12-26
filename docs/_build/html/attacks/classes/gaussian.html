@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Mimic &#8212; ByzFL</title>
+    <title>Gaussian &#8212; ByzFL</title>
   
   
   
@@ -48,13 +48,13 @@
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/mimic';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/gaussian';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Infinity" href="inf.html" />
-    <link rel="prev" title="A Little Is Enough (ALIE)" href="little_is_enough.html" />
+    <link rel="next" title="Line Maximize" href="line_maximize.html" />
+    <link rel="prev" title="Infinity" href="inf.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -354,9 +354,9 @@
 <li class="toctree-l1"><a class="reference internal" href="fall_of_empires.html">Fall of Empires (FOE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sign_flipping.html">Sign Flipping</a></li>
 <li class="toctree-l1"><a class="reference internal" href="little_is_enough.html">A Little Is Enough (ALIE)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Mimic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gaussian.html">Gaussian</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Gaussian</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Attack optimizers</span></p>
 <ul class="nav bd-sidenav">
@@ -400,7 +400,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Attacks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Mimic</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Gaussian</span></li>
   </ul>
 </nav>
 </div>
@@ -417,25 +417,31 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="mimic">
-<h1>Mimic<a class="headerlink" href="#mimic" title="Link to this heading">#</a></h1>
+  <section id="gaussian">
+<span id="gaussian-label"></span><h1>Gaussian<a class="headerlink" href="#gaussian" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.Mimic">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Mimic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#Mimic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Mimic" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.Gaussian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Gaussian" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the Mimic attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
+<p>Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.</p>
 <div class="math notranslate nohighlight">
-\[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}\]</div>
-<p>where</p>
+\[\mathrm{Gaussian} \sim \mathit{N}(\mu, \sigma^2 I)\]</div>
+<p>where:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\epsilon \in \{0, \dots, n-1\}\)</span> is the ID of the worker to mimic. In other words, <span class="math notranslate nohighlight">\(x_{\epsilon+1}\)</span> is the vector sent by the worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathit{N}\)</span> is the Gaussian distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> is the mean and of the Gaussian distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the standard deviation of the Gaussian distribution.</p></li>
+<li><p><span class="math notranslate nohighlight">\(I\)</span> is the identity matrix.</p></li>
+<li><p>The dimensionality of the generated vector matches the input vectors.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>epsilon</strong> (<em>int</em>) – ID of the worker whose behavior is to be mimicked. Set to 0 by default.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>float, optional (default=0.0)</em>) – Mean of the Gaussian distribution.</p></li>
+<li><p><strong>sigma</strong> (<em>float, optional (default=1.0)</em>) – Standard deviation of the Gaussian distribution.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
@@ -449,25 +455,25 @@
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Mimic</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using numpy arrays:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numppy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+<p>Using numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([1. 2. 3.])</span>
+<span class="go">array([-0.08982162  0.07237574  0.55886579])</span>
 </pre></div>
 </div>
-<p>Using torch tensors:</p>
+<p>Using torch tensors</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>   <span class="c1"># torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([1., 2., 3.])</span>
+<span class="go">tensor([ 0.9791,  0.0266, -1.0112])</span>
 </pre></div>
 </div>
 <p>Using list of numpy arrays</p>
@@ -476,25 +482,18 @@
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([1.  2. 3.])</span>
+<span class="go">array([-0.08982162  0.07237574  0.55886579])</span>
 </pre></div>
 </div>
-<p>Using list of torch tensors:</p>
+<p>Using list of torch tensors</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([1., 2., 3.])</span>
+<span class="go">tensor([ 0.9791,  0.0266, -1.0112])</span>
 </pre></div>
 </div>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Byzantine-robust learning on heterogeneous datasets via bucketing. In International Conference on Learning Representations, 2022.</p>
-</aside>
-</aside>
 </section>
 </dd></dl>
 
@@ -511,20 +510,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="little_is_enough.html"
+       href="inf.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">A Little Is Enough (ALIE)</p>
+        <p class="prev-next-title">Infinity</p>
       </div>
     </a>
     <a class="right-next"
-       href="inf.html"
+       href="line_maximize.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Infinity</p>
+        <p class="prev-next-title">Line Maximize</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -547,7 +546,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Mimic"><code class="docutils literal notranslate"><span class="pre">Mimic</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a></li>
 </ul>
   </nav></div>
 

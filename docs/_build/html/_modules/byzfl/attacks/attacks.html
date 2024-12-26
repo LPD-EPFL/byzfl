@@ -594,7 +594,7 @@
 
 <div class="viewcode-block" id="ALittleIsEnough">
 <a class="viewcode-back" href="../../../attacks/classes/little_is_enough.html#byzfl.attacks.attacks.ALittleIsEnough">[docs]</a>
-<span class="k">class</span> <span class="nc">ALittleIsEnough</span><span class="p">():</span>
+<span class="k">class</span> <span class="nc">ALittleIsEnough</span><span class="p">:</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -701,7 +701,7 @@
 
 <div class="viewcode-block" id="Mimic">
 <a class="viewcode-back" href="../../../attacks/classes/mimic.html#byzfl.attacks.attacks.Mimic">[docs]</a>
-<span class="k">class</span> <span class="nc">Mimic</span><span class="p">():</span>
+<span class="k">class</span> <span class="nc">Mimic</span><span class="p">:</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -798,7 +798,7 @@
 
 <div class="viewcode-block" id="Inf">
 <a class="viewcode-back" href="../../../attacks/classes/inf.html#byzfl.attacks.attacks.Inf">[docs]</a>
-<span class="k">class</span> <span class="nc">Inf</span><span class="p">():</span>
+<span class="k">class</span> <span class="nc">Inf</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -887,6 +887,109 @@
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Gaussian">
+<a class="viewcode-back" href="../../../attacks/classes/gaussian.html#byzfl.attacks.attacks.Gaussian">[docs]</a>
+<span class="k">class</span> <span class="nc">Gaussian</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+
+<span class="sd">    Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{Gaussian} \sim \mathit{N}(\mu, \sigma^2 I)</span>
+
+<span class="sd">    where:</span>
+
+<span class="sd">    - :math:`\mathit{N}` is the Gaussian distribution.</span>
+<span class="sd">    - :math:`\mu` is the mean and of the Gaussian distribution.</span>
+<span class="sd">    - :math:`\sigma` is the standard deviation of the Gaussian distribution.</span>
+<span class="sd">    - :math:`I` is the identity matrix.</span>
+<span class="sd">    - The dimensionality of the generated vector matches the input vectors.</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    mu: float, optional (default=0.0)</span>
+<span class="sd">        Mean of the Gaussian distribution.</span>
+<span class="sd">    sigma: float, optional (default=1.0)</span>
+<span class="sd">        Standard deviation of the Gaussian distribution.</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">        &gt;&gt;&gt; import byzfl</span>
+<span class="sd">        &gt;&gt;&gt; attack = byzfl.Gaussian(mu=0.0, sigma=1.0)</span>
+
+<span class="sd">        Using numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        array([-0.08982162  0.07237574  0.55886579])</span>
+<span class="sd">                </span>
+<span class="sd">        Using torch tensors</span>
+
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        tensor([ 0.9791,  0.0266, -1.0112])</span>
+<span class="sd">        </span>
+<span class="sd">        Using list of numpy arrays</span>
+
+<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        array([-0.08982162  0.07237574  0.55886579])</span>
+
+<span class="sd">        Using list of torch tensors</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; import torch</span>
+<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">        &gt;&gt;&gt; attack(x)</span>
+<span class="sd">        tensor([ 0.9791,  0.0266, -1.0112])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">honest_vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tools</span> <span class="o">==</span> <span class="n">np</span><span class="p">:</span>
+            <span class="n">gaussian_noise</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">torch</span>
+            <span class="n">gaussian_noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span>
+        <span class="k">return</span> <span class="n">gaussian_noise</span></div>
 
 </pre></div>
 

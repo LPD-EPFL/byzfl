@@ -196,7 +196,7 @@ class FallOfEmpires:
         return tools.multiply(mean_vector, 1 - self.tau)
 
 
-class ALittleIsEnough():
+class ALittleIsEnough:
     
     r"""
     Description
@@ -300,7 +300,7 @@ class ALittleIsEnough():
                 tools.multiply(attack_vector, self.tau))
 
 
-class Mimic():
+class Mimic:
     
     r"""
     Description
@@ -394,7 +394,7 @@ class Mimic():
         return honest_vectors[self.epsilon]
 
 
-class Inf():
+class Inf:
 
     r"""
     Description
@@ -483,3 +483,103 @@ class Inf():
     def __call__(self, honest_vectors):
         tools, honest_vectors = check_vectors_type(honest_vectors)
         return tools.full_like(honest_vectors[0], float('inf'), dtype=np.float64)
+
+
+class Gaussian:
+    r"""
+    Description
+    -----------
+
+    Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.
+
+    .. math::
+
+        \mathrm{Gaussian} \sim \mathit{N}(\mu, \sigma^2 I)
+
+    where:
+
+    - :math:`\mathit{N}` is the Gaussian distribution.
+    - :math:`\mu` is the mean and of the Gaussian distribution.
+    - :math:`\sigma` is the standard deviation of the Gaussian distribution.
+    - :math:`I` is the identity matrix.
+    - The dimensionality of the generated vector matches the input vectors.
+
+    Initialization parameters
+    --------------------------
+
+    mu: float, optional (default=0.0)
+        Mean of the Gaussian distribution.
+    sigma: float, optional (default=1.0)
+        Standard deviation of the Gaussian distribution.
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output is the same as the input.
+
+    Examples
+    --------
+
+        >>> import byzfl
+        >>> attack = byzfl.Gaussian(mu=0.0, sigma=1.0)
+
+        Using numpy arrays
+
+        >>> import numpy as np
+        >>> x = np.array([[1., 2., 3.],       # np.ndarray
+        >>>               [4., 5., 6.], 
+        >>>               [7., 8., 9.]])
+        >>> attack(x)
+        array([-0.08982162  0.07237574  0.55886579])
+                
+        Using torch tensors
+
+        >>> import torch
+        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+        >>>                   [4., 5., 6.], 
+        >>>                   [7., 8., 9.]])
+        >>> attack(x)
+        tensor([ 0.9791,  0.0266, -1.0112])
+        
+        Using list of numpy arrays
+
+        >>> import numppy as np
+        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+        >>>      np.array([4., 5., 6.]), 
+        >>>      np.array([7., 8., 9.])]
+        >>> attack(x)
+        array([-0.08982162  0.07237574  0.55886579])
+
+        Using list of torch tensors
+            
+        >>> import torch
+        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+        >>>      torch.tensor([4., 5., 6.]), 
+        >>>      torch.tensor([7., 8., 9.])]
+        >>> attack(x)
+        tensor([ 0.9791,  0.0266, -1.0112])
+
+    """
+
+    def __init__(self, mu=0.0, sigma=1.0):
+        self.mu = mu
+        self.sigma = sigma
+
+    def __call__(self, honest_vectors):
+        tools, honest_vectors = check_vectors_type(honest_vectors)
+        shape = honest_vectors.shape[1]
+        if tools == np:
+            gaussian_noise = tools.random.normal(loc=self.mu, scale=self.sigma, size=shape)
+        else:
+            import torch
+            gaussian_noise = torch.randn(shape) * self.sigma + self.mu
+        return gaussian_noise
