@@ -22,7 +22,7 @@ Explore these components to better understand and experiment with Byzantine atta
    classes/gaussian
 
 .. toctree::
-   :caption: Attack optimizers
+   :caption: Attack Optimizers
    :titlesonly:
 
    classes/line_maximize

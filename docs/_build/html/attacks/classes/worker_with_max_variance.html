@@ -235,6 +235,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -352,7 +356,7 @@
 <li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gaussian.html">Gaussian</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Attack optimizers</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Attack Optimizers</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="line_maximize.html">Line Maximize</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Maximum variance worker</a></li>
@@ -413,6 +417,37 @@
                   
   <section id="maximum-variance-worker">
 <h1>Maximum variance worker<a class="headerlink" href="#maximum-variance-worker" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.WorkerWithMaxVariance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">WorkerWithMaxVariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps_to_learn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attack_optimizers.html#WorkerWithMaxVariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.WorkerWithMaxVariance" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>Class to optimize attacks that need to focus on the worker
+with maximum variance. This clase evaluates the honest vectors
+and sets the attack to focus on the worker with maximum variance.</p>
+</section>
+<section id="how-to-use-it-in-experiments">
+<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack_optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkerWithMaxVariance&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;steps_to_learn&quot;</span><span class="p">:</span> <span class="mi">20</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">param steps_to_learn<span class="colon">:</span></dt>
+<dd class="field-odd"><p>How many steps we are computing which worker to mimic.</p>
+</dd>
+<dt class="field-even">type steps_to_learn<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
 </section>
 
 
@@ -449,6 +484,24 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.WorkerWithMaxVariance"><code class="docutils literal notranslate"><span class="pre">WorkerWithMaxVariance</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

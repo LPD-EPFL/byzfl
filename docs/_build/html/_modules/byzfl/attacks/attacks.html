@@ -389,12 +389,11 @@
                   
   <h1>Source code for byzfl.attacks.attacks</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span><span class="p">,</span> <span class="n">random_tool</span>
 
 <div class="viewcode-block" id="SignFlipping">
 <a class="viewcode-back" href="../../../attacks/classes/sign_flipping.html#byzfl.attacks.attacks.SignFlipping">[docs]</a>
 <span class="k">class</span> <span class="nc">SignFlipping</span><span class="p">:</span>
-<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
 <span class="sd">    Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.</span>
@@ -982,14 +981,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">random</span> <span class="o">=</span> <span class="n">random_tool</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">honest_vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">tools</span> <span class="o">==</span> <span class="n">np</span><span class="p">:</span>
-            <span class="n">gaussian_noise</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">torch</span>
-            <span class="n">gaussian_noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span>
-        <span class="k">return</span> <span class="n">gaussian_noise</span></div>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span></div>
 
 </pre></div>
 
