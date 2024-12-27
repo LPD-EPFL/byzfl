@@ -398,93 +398,32 @@
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Class to optimize attacks using the Line Maximize method: Best-effort arg-maximize a function: ℝ⁺⟶ ℝ, by mere exploration.</p>
+</section>
+<section id="how-to-use-it-in-experiments">
+<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack_optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;LineMaximize&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;evals&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="s2">&quot;ratio&quot;</span><span class="p">:</span> <span class="mf">0.8</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">param agg_info<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with the keys “name” and “parameters” defined.</p>
+<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agg_info</strong> (<em>dict</em>) – Dictionary with the keys “name” and “parameters” defined.</p></li>
+<li><p><strong>pre_agg_info</strong> (<em>list</em>) – List of dictionaries (one for every pre_agg function) where every dictionary have the keys “name” and “parameters” defined.</p></li>
+<li><p><strong>nb_byz</strong> (<em>int</em>) – Number of byzantine participants</p></li>
+<li><p><strong>evals</strong> (<em>int</em>) – Maximum number of evaluations, must be a positive integer</p></li>
+<li><p><strong>start</strong> (<em>float</em>) – Initial x evaluated, must be a non-negative float</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – Initial step delta, must be a positive float</p></li>
+<li><p><strong>ratio</strong> (<em>float</em>) – Contraction ratio, must be between 0.5 and 1. (both excluded)</p></li>
+</ul>
 </dd>
-<dt class="field-even">type agg_info<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-<dt class="field-odd">param pre_agg_info<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of dictionaries (one for every pre_agg function)
-where every dictionary have the keys “name” and “parameters” defined.</p>
-</dd>
-<dt class="field-even">type pre_agg_info<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-<dt class="field-odd">param nb_byz<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number ob byzantine nodes</p>
-</dd>
-<dt class="field-even">type nb_byz<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param evals<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Maximum number of evaluations, must be a positive integer</p>
-</dd>
-<dt class="field-even">type evals<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param start<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initial x evaluated, must be a non-negative float</p>
-</dd>
-<dt class="field-even">type start<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-<dt class="field-odd">param delta<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initial step delta, must be a positive float</p>
-</dd>
-<dt class="field-even">type delta<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-<dt class="field-odd">param ratio<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Contraction ratio, must be between 0.5 and 1. (both excluded)</p>
-</dd>
-<dt class="field-even">type ratio<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-<dt class="field-odd">param How to use it in experiments<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param —————————-<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">param &gt;&gt;&gt; “attack_optimizer”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt; “attack_optimizer”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “name”<span class="colon">:</span></dt>
-<dd class="field-even"><p>“LineMaximize”,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;     “parameters”<span class="colon">:</span></dt>
-<dd class="field-even"><p>{</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “evals”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “evals”<span class="colon">:</span></dt>
-<dd class="field-even"><p>16,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “start”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “start”<span class="colon">:</span></dt>
-<dd class="field-even"><p>0,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “delta”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “delta”<span class="colon">:</span></dt>
-<dd class="field-even"><p>1,</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;         “ratio”<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">type &gt;&gt;&gt;         “ratio”<span class="colon">:</span></dt>
-<dd class="field-even"><p>0.8</p>
-</dd>
-<dt class="field-odd">param &gt;&gt;&gt;     }<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">param &gt;&gt;&gt; }<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
 </dl>
 </section>
 </dd></dl>
@@ -499,8 +438,8 @@ where every dictionary have the keys “name” and “parameters” defined.</p
 with maximum variance. This clase evaluates the honest vectors
 and sets the attack to focus on the worker with maximum variance.</p>
 </section>
-<section id="how-to-use-it-in-experiments">
-<h2>How to use it in experiments<a class="headerlink" href="#how-to-use-it-in-experiments" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h2>How to use it in experiments<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;attack_optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;WorkerWithMaxVariance&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>

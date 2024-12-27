@@ -7,24 +7,6 @@ class LineMaximize():
     -----------
     Class to optimize attacks using the Line Maximize method: Best-effort arg-maximize a function: ℝ⁺⟶ ℝ, by mere exploration.
 
-    Parameters
-    ----------
-    agg_info : dict 
-        Dictionary with the keys "name" and "parameters" defined.
-    pre_agg_info : list
-        List of dictionaries (one for every pre_agg function)
-        where every dictionary have the keys "name" and "parameters" defined.
-    nb_byz : int
-        Number ob byzantine nodes
-    evals : int
-        Maximum number of evaluations, must be a positive integer
-    start : float
-        Initial x evaluated, must be a non-negative float
-    delta : float
-        Initial step delta, must be a positive float
-    ratio : float
-        Contraction ratio, must be between 0.5 and 1. (both excluded)
-
     How to use it in experiments
     ----------------------------
     >>> "attack_optimizer": {
@@ -36,6 +18,24 @@ class LineMaximize():
     >>>         "ratio": 0.8
     >>>     }
     >>> }
+
+    Initialization parameters
+    --------------------------
+
+    agg_info : dict
+        Dictionary with the keys "name" and "parameters" defined. 
+    pre_agg_info : list
+        List of dictionaries (one for every pre_agg function) where every dictionary have the keys "name" and "parameters" defined.
+    nb_byz : int
+        Number of byzantine participants
+    evals : int
+        Maximum number of evaluations, must be a positive integer
+    start : float
+        Initial x evaluated, must be a non-negative float
+    delta : float
+        Initial step delta, must be a positive float
+    ratio : float
+        Contraction ratio, must be between 0.5 and 1. (both excluded)
 
     Methods
     -------                        

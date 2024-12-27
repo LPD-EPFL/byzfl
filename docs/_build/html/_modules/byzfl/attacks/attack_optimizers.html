@@ -399,24 +399,6 @@
 <span class="sd">    -----------</span>
 <span class="sd">    Class to optimize attacks using the Line Maximize method: Best-effort arg-maximize a function: ℝ⁺⟶ ℝ, by mere exploration.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    agg_info : dict </span>
-<span class="sd">        Dictionary with the keys &quot;name&quot; and &quot;parameters&quot; defined.</span>
-<span class="sd">    pre_agg_info : list</span>
-<span class="sd">        List of dictionaries (one for every pre_agg function)</span>
-<span class="sd">        where every dictionary have the keys &quot;name&quot; and &quot;parameters&quot; defined.</span>
-<span class="sd">    nb_byz : int</span>
-<span class="sd">        Number ob byzantine nodes</span>
-<span class="sd">    evals : int</span>
-<span class="sd">        Maximum number of evaluations, must be a positive integer</span>
-<span class="sd">    start : float</span>
-<span class="sd">        Initial x evaluated, must be a non-negative float</span>
-<span class="sd">    delta : float</span>
-<span class="sd">        Initial step delta, must be a positive float</span>
-<span class="sd">    ratio : float</span>
-<span class="sd">        Contraction ratio, must be between 0.5 and 1. (both excluded)</span>
-
 <span class="sd">    How to use it in experiments</span>
 <span class="sd">    ----------------------------</span>
 <span class="sd">    &gt;&gt;&gt; &quot;attack_optimizer&quot;: {</span>
@@ -428,6 +410,24 @@
 <span class="sd">    &gt;&gt;&gt;         &quot;ratio&quot;: 0.8</span>
 <span class="sd">    &gt;&gt;&gt;     }</span>
 <span class="sd">    &gt;&gt;&gt; }</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    agg_info : dict</span>
+<span class="sd">        Dictionary with the keys &quot;name&quot; and &quot;parameters&quot; defined. </span>
+<span class="sd">    pre_agg_info : list</span>
+<span class="sd">        List of dictionaries (one for every pre_agg function) where every dictionary have the keys &quot;name&quot; and &quot;parameters&quot; defined.</span>
+<span class="sd">    nb_byz : int</span>
+<span class="sd">        Number of byzantine participants</span>
+<span class="sd">    evals : int</span>
+<span class="sd">        Maximum number of evaluations, must be a positive integer</span>
+<span class="sd">    start : float</span>
+<span class="sd">        Initial x evaluated, must be a non-negative float</span>
+<span class="sd">    delta : float</span>
+<span class="sd">        Initial step delta, must be a positive float</span>
+<span class="sd">    ratio : float</span>
+<span class="sd">        Contraction ratio, must be between 0.5 and 1. (both excluded)</span>
 
 <span class="sd">    Methods</span>
 <span class="sd">    -------                        </span>
