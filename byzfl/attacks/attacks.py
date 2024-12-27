@@ -181,8 +181,7 @@ class FallOfEmpires:
     .. [1] Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-tolerant
             sgd by inner product manipulation. In Ryan P. Adams and Vibhav Gogate (eds.), Proceedings of
             The 35th Uncertainty in Artificial Intelligence Conference, volume 115 of Proceedings of Machine
-            Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL https://proceedings.
-            mlr.press/v115/xie20a.html.
+            Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL https://proceedings.mlr.press/v115/xie20a.html.
 
     """
 
