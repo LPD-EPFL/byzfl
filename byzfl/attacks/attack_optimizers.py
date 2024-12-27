@@ -188,11 +188,12 @@ class WorkerWithMaxVariance():
     >>>     }
     >>> }
 
-    Parameters
-    ----------
-    steps_to_learn : int
-        How many steps we are computing which worker to mimic.
+    Initialization parameters
+    --------------------------
 
+    steps_to_learn : int
+        Number of steps over which we learn the optimal participant to mimic.
+    
     Methods
     -------          
     """
