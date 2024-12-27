@@ -197,7 +197,7 @@ class WorkerWithMaxVariance():
     Methods
     -------          
     """
-    def __init__(self, steps_to_learn=None, **kwargs):
+    def __init__(self, steps_to_learn=None):
         self.z = None
         self.mu = None
         self.steps_to_learn = steps_to_learn
