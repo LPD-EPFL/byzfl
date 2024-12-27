@@ -399,7 +399,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the A Little is Enough (ALIE) attack <a href="#id13"><span class="problematic" id="id1">[1]_</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<p>Execute the A Little is Enough (ALIE) attack <a href="#id14"><span class="problematic" id="id1">[1]_</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}\]</div>
 <p>where</p>
@@ -482,7 +482,7 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id3">
 <h2>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>Execute the Fall of Empires (FOE) attack <a href="#id14"><span class="problematic" id="id4">[1]_</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
+<p>Execute the Fall of Empires (FOE) attack <a href="#id15"><span class="problematic" id="id4">[1]_</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{FOE}_{\tau}(x_1, \dots, x_n) =
 (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
@@ -716,7 +716,7 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id8">
 <h2>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
-<p>Execute the Mimic attack <a href="#id15"><span class="problematic" id="id9">[1]_</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
+<p>Execute the Mimic attack <a href="#id16"><span class="problematic" id="id9">[1]_</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
 <div class="math notranslate nohighlight">
 \[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}\]</div>
 <p>where</p>
@@ -793,7 +793,9 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dt class="sig sig-object py" id="byzfl.attacks.attacks.SignFlipping">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.attacks.attacks.</span></span><span class="sig-name descname"><span class="pre">SignFlipping</span></span><a class="reference internal" href="../_modules/byzfl/attacks/attacks.html#SignFlipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.attacks.attacks.SignFlipping" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Execute the Sign Flipping attack <a href="#id16"><span class="problematic" id="id11">[1]_</span></a>: send the opposite of the mean vector.</p>
+<section id="id11">
+<h2>Description<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<p>Execute the Sign Flipping attack <a href="#id17"><span class="problematic" id="id12">[1]_</span></a>: send the opposite of the mean vector.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{SignFlipping} \ (x_1, \dots, x_n) = - \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
 <p>where</p>
@@ -857,12 +859,13 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 </div>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id12" role="doc-footnote">
+<aside class="footnote brackets" id="id13" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <p>Zeyuan Allen-Zhu, Faeze Ebrahimianghazani, Jerry Li, and Dan Alistarh. Byzantine-resilient non-convex stochastic gradient descent.
 In International Conference on Learning Representations, 2020</p>
 </aside>
 </aside>
+</section>
 </dd></dl>
 
 </section>

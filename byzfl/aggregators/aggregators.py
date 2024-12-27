@@ -5,6 +5,9 @@ from byzfl.utils import misc
 
 class Average(object):
     r"""
+    Description
+    -----------
+
     Compute the average along the first axis:
 
     .. math::
@@ -89,6 +92,9 @@ class Average(object):
 class Median(object):
     
     r"""
+    Description
+    -----------
+
     Compute the coordinate-wise median along the first axis [1]_:
 
     .. math::
@@ -182,6 +188,9 @@ class Median(object):
 
 class TrMean(object):
     r"""
+    Description
+    -----------
+
     Compute the trimmed mean (or truncated mean) along the first axis [1]_:
 
     .. math::
@@ -286,6 +295,9 @@ class TrMean(object):
 
 class GeometricMedian(object):
     r"""
+    Description
+    -----------
+
     Apply the smoothed Weiszfeld algorithm [1]_ to obtain the approximate geometric median \\(y\\):
 
     .. math::
@@ -394,6 +406,9 @@ class GeometricMedian(object):
 
 class Krum(object):
     r"""
+    Description
+    -----------
+
     Apply the Krum aggregator [1]_:
 
     .. math::
@@ -505,6 +520,9 @@ class Krum(object):
 class MultiKrum(object):
 
     r"""
+    Description
+    -----------
+
     Apply the Multi-Krum aggregator [1]_:
 
     .. math::
@@ -613,6 +631,9 @@ class MultiKrum(object):
 
 class CenteredClipping(object):
     r"""
+    Description
+    -----------
+
     Apply the Centered Clipping aggregator [1]_:
 
     .. math::
@@ -747,6 +768,9 @@ class CenteredClipping(object):
 
 class MDA(object):
     r"""
+    Description
+    -----------
+
     Apply the Minimum-Diameter Averaging aggregator [1]_:
 
     .. math::
@@ -890,8 +914,10 @@ class MDA(object):
 
 class MoNNA(object):
 
-
     r"""
+    Description
+    -----------
+
     Apply the MoNNA aggregator [1]_:
 
     .. math::
@@ -1009,6 +1035,9 @@ class MoNNA(object):
 class Meamed(object):
 
     r"""
+    Description
+    -----------
+
     Compute the mean around median along the first axis [1]_:
 
     .. math::

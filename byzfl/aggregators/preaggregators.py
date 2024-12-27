@@ -4,6 +4,9 @@ import byzfl.utils.misc as misc
 class NNM(object):
 
     r"""
+    Description
+    -----------
+
     Apply the Nearest Neighbor Mixing pre-aggregation rule [1]_:
 
     .. math::
@@ -113,6 +116,9 @@ class NNM(object):
 class Bucketing(object):
 
     r"""
+    Description
+    -----------
+
     Apply the Bucketing pre-aggregation rule [1]_:
 
     .. math::
@@ -246,6 +252,9 @@ class Identity(object):
 class Clipping(object):
 
     r"""
+    Description
+    -----------
+
     Apply the Static Clipping pre-aggregation rule:
 
     .. math::
@@ -351,6 +360,8 @@ class Clipping(object):
 class ARC(object):
     
     r"""
+    Description
+    -----------
 
     Apply the Adaptive Robust Clipping pre-aggregation rule [1]_:
 
@@ -391,58 +402,59 @@ class ARC(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.ARC(1)
+    >>> import byzfl
+    >>> agg = byzfl.ARC(1)
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([[1.        , 2.        , 3.        ],
-               [4.        , 5.        , 6.        ],
-               [4.41004009, 5.04004582, 5.67005155]])
-
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([[1.0000, 2.0000, 3.0000],
-                [4.0000, 5.0000, 6.0000],
-                [4.4100, 5.0400, 5.6701]])
+    Using numpy arrays
         
-        Using list of numpy arrays
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([[1.        , 2.        , 3.        ],
+            [4.        , 5.        , 6.        ],
+            [4.41004009, 5.04004582, 5.67005155]])
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([[1.        , 2.        , 3.        ],
-               [4.        , 5.        , 6.        ],
-               [4.41004009, 5.04004582, 5.67005155]])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([[1.0000, 2.0000, 3.0000],
+            [4.0000, 5.0000, 6.0000],
+            [4.4100, 5.0400, 5.6701]])
+    
+    Using list of numpy arrays
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([[1.0000, 2.0000, 3.0000],
-                [4.0000, 5.0000, 6.0000],
-                [4.4100, 5.0400, 5.6701]])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([[1.        , 2.        , 3.        ],
+            [4.        , 5.        , 6.        ],
+            [4.41004009, 5.04004582, 5.67005155]])
+
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([[1.0000, 2.0000, 3.0000],
+            [4.0000, 5.0000, 6.0000],
+            [4.4100, 5.0400, 5.6701]])
 
     References
     ----------
 
     .. [1] Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
-           The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/ 2405.14432
+           The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/2405.14432.
+ 
     """
 
     def __init__(self, f=0):

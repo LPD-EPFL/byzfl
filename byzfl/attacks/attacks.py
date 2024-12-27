@@ -3,6 +3,8 @@ from byzfl.utils.misc import check_vectors_type, random_tool
 
 class SignFlipping:
     r"""
+    Description
+    -----------
     
     Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.
 

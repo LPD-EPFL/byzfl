@@ -429,6 +429,8 @@
 <dt class="sig sig-object py" id="byzfl.ARC">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ARC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/preaggregators.html#ARC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ARC" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Apply the Adaptive Robust Clipping pre-aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{ARC}_{f} \ (x_1, \dots, x_n) =
@@ -467,8 +469,8 @@
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">array([[1.        , 2.        , 3.        ],</span>
-<span class="go">       [4.        , 5.        , 6.        ],</span>
-<span class="go">       [4.41004009, 5.04004582, 5.67005155]])</span>
+<span class="go">        [4.        , 5.        , 6.        ],</span>
+<span class="go">        [4.41004009, 5.04004582, 5.67005155]])</span>
 </pre></div>
 </div>
 <p>Using torch tensors</p>
@@ -489,8 +491,8 @@
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">array([[1.        , 2.        , 3.        ],</span>
-<span class="go">       [4.        , 5.        , 6.        ],</span>
-<span class="go">       [4.41004009, 5.04004582, 5.67005155]])</span>
+<span class="go">        [4.        , 5.        , 6.        ],</span>
+<span class="go">        [4.41004009, 5.04004582, 5.67005155]])</span>
 </pre></div>
 </div>
 <p>Using list of torch tensors</p>
@@ -509,9 +511,10 @@
 <aside class="footnote brackets" id="id2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
-The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/ 2405.14432</p>
+The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/2405.14432.</p>
 </aside>
 </aside>
+</section>
 </dd></dl>
 
 </section>
