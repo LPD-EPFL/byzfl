@@ -1,8 +1,7 @@
 import numpy as np
-from byzfl.utils.misc import check_vectors_type
+from byzfl.utils.misc import check_vectors_type, random_tool
 
 class SignFlipping:
-    
     r"""
     
     Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.
@@ -575,11 +574,7 @@ class Gaussian:
         self.sigma = sigma
 
     def __call__(self, honest_vectors):
-        tools, honest_vectors = check_vectors_type(honest_vectors)
+        _, honest_vectors = check_vectors_type(honest_vectors)
+        random = random_tool(honest_vectors)
         shape = honest_vectors.shape[1]
-        if tools == np:
-            gaussian_noise = tools.random.normal(loc=self.mu, scale=self.sigma, size=shape)
-        else:
-            import torch
-            gaussian_noise = torch.randn(shape) * self.sigma + self.mu
-        return gaussian_noise
+        return random.normal(loc=self.mu, scale=self.sigma, size=shape)
