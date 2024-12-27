@@ -901,15 +901,22 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \mathrm{Gaussian} \sim \mathit{N}(\mu, \sigma^2 I)</span>
+<span class="sd">        \mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) \sim \mathit{N}(\mu, \sigma^2 I)</span>
 
 <span class="sd">    where:</span>
 
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</span>
+
+<span class="sd">    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.</span>
+
 <span class="sd">    - :math:`\mathit{N}` is the Gaussian distribution.</span>
-<span class="sd">    - :math:`\mu` is the mean and of the Gaussian distribution.</span>
-<span class="sd">    - :math:`\sigma` is the standard deviation of the Gaussian distribution.</span>
-<span class="sd">    - :math:`I` is the identity matrix.</span>
-<span class="sd">    - The dimensionality of the generated vector matches the input vectors.</span>
+
+<span class="sd">    - :math:`\mu \in \mathbb{R}^d` is the mean of the Gaussian distribution.</span>
+
+<span class="sd">    - :math:`\sigma \geq 0` is the standard deviation of the Gaussian distribution.</span>
+
+<span class="sd">    - :math:`I` is the :math:`d \times d` identity matrix.</span>
+
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>

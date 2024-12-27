@@ -494,15 +494,22 @@ class Gaussian:
 
     .. math::
 
-        \mathrm{Gaussian} \sim \mathit{N}(\mu, \sigma^2 I)
+        \mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) \sim \mathit{N}(\mu, \sigma^2 I)
 
     where:
 
+    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.
+
+    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.
+
     - :math:`\mathit{N}` is the Gaussian distribution.
-    - :math:`\mu` is the mean and of the Gaussian distribution.
-    - :math:`\sigma` is the standard deviation of the Gaussian distribution.
-    - :math:`I` is the identity matrix.
-    - The dimensionality of the generated vector matches the input vectors.
+
+    - :math:`\mu \in \mathbb{R}^d` is the mean of the Gaussian distribution.
+
+    - :math:`\sigma \geq 0` is the standard deviation of the Gaussian distribution.
+
+    - :math:`I` is the :math:`d \times d` identity matrix.
+
 
     Initialization parameters
     --------------------------
