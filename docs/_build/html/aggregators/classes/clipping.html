@@ -427,7 +427,7 @@
 <h1>Static Clipping<a class="headerlink" href="#static-clipping" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.Clipping">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Clipping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/preaggregators.html#Clipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Clipping" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Clipping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/preaggregators.html#Clipping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Clipping" title="Link to this definition">#</a></dt>
 <dd><section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Apply the Static Clipping pre-aggregation rule:</p>
@@ -439,11 +439,11 @@
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
-<li><p>\(c\) is the static clipping threshold. Any input vector with an \(\ell_2\)-norm greater than \(c\) will be will be scaled down such that its \(\ell_2\)-norm equals \(c\).</p></li>
+<li><p>\(c \geq 0\) is the static clipping threshold. Any input vector with an \(\ell_2\)-norm greater than \(c\) will be will be scaled down such that its \(\ell_2\)-norm equals \(c\).</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>c</strong> (<em>float, optional</em>) – Static clipping threshold. Set to 2 by default.</p>
+<dd class="field-odd"><p><strong>c</strong> (<em>float, optional</em>) – Static clipping threshold. Set to 2.0 by default.</p>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
@@ -457,7 +457,7 @@
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Clipping</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Clipping</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>

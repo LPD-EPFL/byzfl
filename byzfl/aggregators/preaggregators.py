@@ -102,18 +102,20 @@ class NNM(object):
     """
 
     def __init__(self, f=0):
+        misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
+        misc.check_smaller_than_value(self.f, "f", len(vectors))
 
         distance = misc.distance_tool(vectors)
-
         dist = distance.cdist(vectors, vectors)
         k = len(vectors) - self.f
         indices = tools.argpartition(dist, k-1, axis = 1)[:,:k]
         return tools.mean(vectors[indices], axis = 1)
+
 
 class Bucketing(object):
 
@@ -136,7 +138,7 @@ class Bucketing(object):
 
     - \\(\\pi\\) is a random permutation on \\(\\big[n\\big]\\).
 
-    - \\(s\\) is the bucket size, i.e., the number of vectors per bucket.
+    - \\(s > 0\\) is the bucket size, i.e., the number of vectors per bucket.
 
     Initialization parameters
     --------------------------
@@ -219,14 +221,13 @@ class Bucketing(object):
     """
 
     def __init__(self, s=1):
+        misc.check_type(s, int)
+        misc.check_greater_than_value(s, "s", 0)
         self.s = s
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.s, int)
-
         random = misc.random_tool(vectors)
-
         vectors = random.permutation(vectors)
         nb_buckets = int(math.floor(len(vectors) / self.s))
         buckets = vectors[:nb_buckets * self.s]
@@ -271,12 +272,12 @@ class Clipping(object):
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
-    - \\(c\\) is the static clipping threshold. Any input vector with an \\(\\ell_2\\)-norm greater than \\(c\\) will be will be scaled down such that its \\(\\ell_2\\)-norm equals \\(c\\).
+    - \\(c \\geq 0\\) is the static clipping threshold. Any input vector with an \\(\\ell_2\\)-norm greater than \\(c\\) will be will be scaled down such that its \\(\\ell_2\\)-norm equals \\(c\\).
 
     Initialization parameters
     --------------------------
     c : float, optional
-        Static clipping threshold. Set to 2 by default.
+        Static clipping threshold. Set to 2.0 by default.
     
     Calling the instance
     --------------------
@@ -295,7 +296,7 @@ class Clipping(object):
     --------
         
     >>> import byzfl
-    >>> agg = byzfl.Clipping(2)
+    >>> agg = byzfl.Clipping(2.0)
 
     Using numpy arrays
         
@@ -343,7 +344,9 @@ class Clipping(object):
  
     """
     
-    def __init__(self, c=2):
+    def __init__(self, c=2.0):
+        misc.check_type(c, float)
+        misc.check_greater_than_or_equal_value(c, "c", 0.0)
         self.c = c
     
     def _clip_vector(self, vector):
@@ -462,20 +465,22 @@ class ARC(object):
     """
 
     def __init__(self, f=0):
+        misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
-    
+
     def _clip_vector(self, vector, clip_threshold):
         tools, vector = misc.check_vectors_type(vector)
         vector_norm = tools.linalg.norm(vector)
-
         if vector_norm > clip_threshold:
             vector = tools.multiply(vector, (clip_threshold / vector_norm))
         return vector
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        magnitudes = [(tools.linalg.norm(vector), vector_id) 
-                      for vector_id, vector in enumerate(vectors)]
+        misc.check_smaller_than_value(self.f, "f", len(vectors)+1)
+
+        magnitudes = [(tools.linalg.norm(vector), vector_id) for vector_id, vector in enumerate(vectors)]
         magnitudes.sort(key=lambda x:x[0])
         nb_vectors = len(vectors)
         nb_clipped = int((2 * self.f / nb_vectors) * (nb_vectors - self.f))
