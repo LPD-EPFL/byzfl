@@ -389,7 +389,7 @@
                   
   <h1>Source code for byzfl.attacks.attacks</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span><span class="p">,</span> <span class="n">random_tool</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span><span class="p">,</span> <span class="n">random_tool</span><span class="p">,</span> <span class="n">check_type</span><span class="p">,</span> <span class="n">check_smaller_than_value</span><span class="p">,</span> <span class="n">check_greater_than_or_equal_value</span>
 
 <div class="viewcode-block" id="SignFlipping">
 <a class="viewcode-back" href="../../../attacks/classes/sign_flipping.html#byzfl.attacks.attacks.SignFlipping">[docs]</a>
@@ -513,8 +513,8 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 
-<span class="sd">    tau : int or float</span>
-<span class="sd">        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3 by default.</span>
+<span class="sd">    tau : float, optional</span>
+<span class="sd">        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3.0 by default.</span>
 
 <span class="sd">    Calling the instance</span>
 <span class="sd">    --------------------</span>
@@ -583,13 +583,14 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">3.0</span><span class="p">):</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">mean_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">mean_vector</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">mean_vector</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span></div>
 
 
 
@@ -622,7 +623,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 
-<span class="sd">    tau : int or float</span>
+<span class="sd">    tau : float, optional</span>
 <span class="sd">        The attack factor :math:`\tau` used to adjust the mean vector. Set to 1.5 by default.</span>
 
 <span class="sd">    Calling the instance</span>
@@ -690,13 +691,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
-    
+
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">attack_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-                <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">attack_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">attack_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">))</span></div>
 
 
 
@@ -723,7 +724,7 @@
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
 
-<span class="sd">    epsilon : int</span>
+<span class="sd">    epsilon : int, optional</span>
 <span class="sd">        ID of the worker whose behavior is to be mimicked. Set to 0 by default.</span>
 
 <span class="sd">    Calling the instance</span>
@@ -790,9 +791,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
-    
+
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span> <span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">honest_vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">]</span></div>
 
 
@@ -892,6 +896,7 @@
 <div class="viewcode-block" id="Gaussian">
 <a class="viewcode-back" href="../../../attacks/classes/gaussian.html#byzfl.attacks.attacks.Gaussian">[docs]</a>
 <span class="k">class</span> <span class="nc">Gaussian</span><span class="p">:</span>
+
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -984,7 +989,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>

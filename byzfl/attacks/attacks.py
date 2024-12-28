@@ -1,5 +1,5 @@
 import numpy as np
-from byzfl.utils.misc import check_vectors_type, random_tool
+from byzfl.utils.misc import check_vectors_type, random_tool, check_type, check_smaller_than_value, check_greater_than_or_equal_value
 
 class SignFlipping:
     
@@ -118,8 +118,8 @@ class FallOfEmpires:
     Initialization parameters
     --------------------------
 
-    tau : int or float
-        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3 by default.
+    tau : float, optional
+        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3.0 by default.
 
     Calling the instance
     --------------------
@@ -188,13 +188,14 @@ class FallOfEmpires:
 
     """
 
-    def __init__(self, tau=3):
+    def __init__(self, tau=3.0):
+        check_type(tau, float)
         self.tau = tau
 
     def __call__(self, honest_vectors):
         tools, honest_vectors = check_vectors_type(honest_vectors)
         mean_vector = tools.mean(honest_vectors, axis=0)
-        return tools.multiply(mean_vector, 1 - self.tau)
+        return tools.multiply(mean_vector, 1.0 - self.tau)
 
 
 class ALittleIsEnough:
@@ -224,7 +225,7 @@ class ALittleIsEnough:
     Initialization parameters
     --------------------------
 
-    tau : int or float
+    tau : float, optional
         The attack factor :math:`\tau` used to adjust the mean vector. Set to 1.5 by default.
 
     Calling the instance
@@ -292,13 +293,13 @@ class ALittleIsEnough:
     """
 
     def __init__(self, tau=1.5):
+        check_type(tau, float)
         self.tau = tau
-    
+
     def __call__(self, honest_vectors):
         tools, honest_vectors = check_vectors_type(honest_vectors)
         attack_vector = tools.sqrt(tools.var(honest_vectors, axis=0, ddof=1))
-        return tools.add(tools.mean(honest_vectors, axis=0),
-                tools.multiply(attack_vector, self.tau))
+        return tools.add(tools.mean(honest_vectors, axis=0), tools.multiply(attack_vector, self.tau))
 
 
 class Mimic:
@@ -322,7 +323,7 @@ class Mimic:
     Initialization parameters
     --------------------------
 
-    epsilon : int
+    epsilon : int, optional
         ID of the worker whose behavior is to be mimicked. Set to 0 by default.
 
     Calling the instance
@@ -389,9 +390,12 @@ class Mimic:
     """
 
     def __init__(self, epsilon=0):
+        check_type(epsilon, int)
+        check_greater_than_or_equal_value(epsilon, "epsilon", 0)
         self.epsilon = epsilon
-    
+
     def __call__(self, honest_vectors):
+        check_smaller_than_value(self.epsilon, "epsilon", len(honest_vectors))
         return honest_vectors[self.epsilon]
 
 
@@ -485,6 +489,7 @@ class Inf:
 
 
 class Gaussian:
+
     r"""
     Description
     -----------
@@ -577,7 +582,10 @@ class Gaussian:
     """
 
     def __init__(self, mu=0.0, sigma=1.0):
+        check_type(mu, float)
         self.mu = mu
+        check_type(sigma, float)
+        check_greater_than_or_equal_value(sigma, "sigma", 0)
         self.sigma = sigma
 
     def __call__(self, honest_vectors):
