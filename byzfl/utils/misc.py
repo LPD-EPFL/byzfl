@@ -1,9 +1,7 @@
 import numpy as np
 import torch
 from scipy.spatial import distance
-
 from byzfl.utils import torch_tools
-
 
 def check_vectors_type(vectors):
     if isinstance(vectors, list) and isinstance(vectors[0], np.ndarray):
@@ -55,3 +53,21 @@ def check_type(element, t):
         s = "'" + t.__name__+ "'"
     if not isinstance(element, t):
         raise TypeError("Expected type" + s + " but got '" + type(element).__name__ + "'")
+
+
+#JS
+def check_greater_than_value(element, element_name, value):
+    if element <= value:
+        raise ValueError("Expected value greater than " + str(value) + " for " + element_name)
+
+
+#JS
+def check_greater_than_or_equal_value(element, element_name, value):
+    if element < value:
+        raise ValueError("Expected value greater than or equal to " + str(value) + " for " + element_name)
+
+
+#JS
+def check_smaller_than_value(element, element_name, value):
+    if element >= value:
+        raise ValueError("Expected value smaller than " + str(value) + " for " + element_name)
