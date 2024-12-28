@@ -408,7 +408,7 @@
 <li><p><span class="math notranslate nohighlight">\(\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i\)</span> is the mean vector.</p></li>
 <li><p>\(\big[\cdot\big]_k\) refers to the \(k\)-th coordinate.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma_{x_1, \dots, x_n}\)</span> is the coordinate-wise standard deviation of <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>, i.e., <span class="math notranslate nohighlight">\(\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau \in \mathbb{R}\)</span> is the attack factor.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
@@ -489,7 +489,7 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\tau\)</span> is the attack factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau \in \mathbb{R}\)</span> is the attack factor.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
@@ -565,7 +565,7 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id6">
 <h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
-<p>Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.</p>
+<p>Generate a random vector sampled from a Gaussian distribution.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) \sim \mathit{N}(\mu, \sigma^2 I)\]</div>
 <p>where:</p>
@@ -644,14 +644,13 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id7">
 <h2>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
-<p>Execute the Infinity attack: send  vector <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> comprised of positive infinity values.</p>
+<p>Generate extreme vector comprised of positive infinity values.</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
+\[\begin{split}\mathrm{Inf}(x_1, \dots, x_n) = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(d\)</span> is the dimensionality of the input space, i.e., <span class="math notranslate nohighlight">\(d\)</span> is the number of coordinates of vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>.</p></li>
-<li><p>Every coordinate of <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> is set to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
@@ -717,7 +716,7 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id8">
 <h2>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
-<p>Execute the Mimic attack <a href="#id16"><span class="problematic" id="id9">[1]_</span></a>: the attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker.</p>
+<p>The attacker mimics the behavior of worker with ID <span class="math notranslate nohighlight">\(\epsilon\)</span> by sending the same vector as that worker <a href="#id16"><span class="problematic" id="id9">[1]_</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\text{Mimic}_{\epsilon}(x_1, \dots, x_n) = x_{\epsilon+1}\]</div>
 <p>where</p>
@@ -796,7 +795,7 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id11">
 <h2>Description<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
-<p>Execute the Sign Flipping attack <a href="#id17"><span class="problematic" id="id12">[1]_</span></a>: send the opposite of the mean vector.</p>
+<p>Send the opposite of the mean vector <a href="#id17"><span class="problematic" id="id12">[1]_</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{SignFlipping} \ (x_1, \dots, x_n) = - \frac{1}{n}\sum_{i=1}^{n} x_i\]</div>
 <p>where</p>

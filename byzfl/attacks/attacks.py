@@ -2,11 +2,12 @@ import numpy as np
 from byzfl.utils.misc import check_vectors_type, random_tool
 
 class SignFlipping:
+    
     r"""
     Description
     -----------
     
-    Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.
+    Send the opposite of the mean vector [1]_.
 
     .. math::
 
@@ -112,7 +113,7 @@ class FallOfEmpires:
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.
 
-    -  :math:`\tau` is the attack factor.
+    -  :math:`\tau \in \mathbb{R}` is the attack factor.
 
     Initialization parameters
     --------------------------
@@ -218,7 +219,7 @@ class ALittleIsEnough:
 
     - :math:`\sigma_{x_1, \dots, x_n}` is the coordinate-wise standard deviation of :math:`x_1, \dots, x_n`, i.e., :math:`\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}`.
 
-    - :math:`\tau` is the attack factor.
+    - :math:`\tau \in \mathbb{R}` is the attack factor.
 
     Initialization parameters
     --------------------------
@@ -306,7 +307,7 @@ class Mimic:
     Description
     -----------
 
-    Execute the Mimic attack [1]_: the attacker mimics the behavior of worker with ID :math:`\epsilon` by sending the same vector as that worker.
+    The attacker mimics the behavior of worker with ID :math:`\epsilon` by sending the same vector as that worker [1]_.
 
     .. math::
 
@@ -400,19 +401,17 @@ class Inf:
     Description
     -----------
 
-    Execute the Infinity attack: send  vector :math:`\mathbf{v}_{\infty}` comprised of positive infinity values.
+    Generate extreme vector comprised of positive infinity values.
 
     .. math::
 
-        \mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d
+        \mathrm{Inf}(x_1, \dots, x_n) = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d
 
     where
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.
 
     - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.
-    
-    - Every coordinate of :math:`\mathbf{v}_{\infty}` is set to :math:`+\infty`.
 
     Initialization parameters
     --------------------------
@@ -490,7 +489,7 @@ class Gaussian:
     Description
     -----------
 
-    Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.
+    Generate a random vector sampled from a Gaussian distribution.
 
     .. math::
 

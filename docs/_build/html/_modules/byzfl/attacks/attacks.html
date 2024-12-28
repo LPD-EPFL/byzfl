@@ -394,11 +394,12 @@
 <div class="viewcode-block" id="SignFlipping">
 <a class="viewcode-back" href="../../../attacks/classes/sign_flipping.html#byzfl.attacks.attacks.SignFlipping">[docs]</a>
 <span class="k">class</span> <span class="nc">SignFlipping</span><span class="p">:</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 <span class="sd">    </span>
-<span class="sd">    Execute the Sign Flipping attack [1]_: send the opposite of the mean vector.</span>
+<span class="sd">    Send the opposite of the mean vector [1]_.</span>
 
 <span class="sd">    .. math::</span>
 
@@ -507,7 +508,7 @@
 
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</span>
 
-<span class="sd">    -  :math:`\tau` is the attack factor.</span>
+<span class="sd">    -  :math:`\tau \in \mathbb{R}` is the attack factor.</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -616,7 +617,7 @@
 
 <span class="sd">    - :math:`\sigma_{x_1, \dots, x_n}` is the coordinate-wise standard deviation of :math:`x_1, \dots, x_n`, i.e., :math:`\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}`.</span>
 
-<span class="sd">    - :math:`\tau` is the attack factor.</span>
+<span class="sd">    - :math:`\tau \in \mathbb{R}` is the attack factor.</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -707,7 +708,7 @@
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the Mimic attack [1]_: the attacker mimics the behavior of worker with ID :math:`\epsilon` by sending the same vector as that worker.</span>
+<span class="sd">    The attacker mimics the behavior of worker with ID :math:`\epsilon` by sending the same vector as that worker [1]_.</span>
 
 <span class="sd">    .. math::</span>
 
@@ -804,19 +805,17 @@
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the Infinity attack: send  vector :math:`\mathbf{v}_{\infty}` comprised of positive infinity values.</span>
+<span class="sd">    Generate extreme vector comprised of positive infinity values.</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d</span>
+<span class="sd">        \mathrm{Inf}(x_1, \dots, x_n) = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d</span>
 
 <span class="sd">    where</span>
 
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</span>
 
 <span class="sd">    - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.</span>
-<span class="sd">    </span>
-<span class="sd">    - Every coordinate of :math:`\mathbf{v}_{\infty}` is set to :math:`+\infty`.</span>
 
 <span class="sd">    Initialization parameters</span>
 <span class="sd">    --------------------------</span>
@@ -897,7 +896,7 @@
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the Gaussian attack: generate a random vector sampled from a Gaussian distribution.</span>
+<span class="sd">    Generate a random vector sampled from a Gaussian distribution.</span>
 
 <span class="sd">    .. math::</span>
 

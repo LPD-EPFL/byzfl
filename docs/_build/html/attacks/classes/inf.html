@@ -351,8 +351,8 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Attacks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="fall_of_empires.html">Fall of Empires (FOE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sign_flipping.html">Sign Flipping</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fall_of_empires.html">Fall of Empires (FOE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="little_is_enough.html">A Little Is Enough (ALIE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Infinity</a></li>
@@ -425,14 +425,13 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the Infinity attack: send  vector <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> comprised of positive infinity values.</p>
+<p>Generate extreme vector comprised of positive infinity values.</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{v}_{\infty} = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
+\[\begin{split}\mathrm{Inf}(x_1, \dots, x_n) = \begin{bmatrix} +\infty \\ +\infty \\ \vdots \\ +\infty \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(d\)</span> is the dimensionality of the input space, i.e., <span class="math notranslate nohighlight">\(d\)</span> is the number of coordinates of vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>.</p></li>
-<li><p>Every coordinate of <span class="math notranslate nohighlight">\(\mathbf{v}_{\infty}\)</span> is set to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
