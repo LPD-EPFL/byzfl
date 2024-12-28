@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from byzfl.utils import misc
 
+
 class Average(object):
     r"""
     Description
@@ -282,16 +283,14 @@ class TrMean(object):
     """
 
     def __init__(self, f=0):
+        misc.check_type(f, int)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
-
         if self.f == 0:
             avg = Average()
             return avg(vectors)
-
         selected_vectors = tools.sort(vectors, axis=0)[self.f:-self.f]
         return tools.mean(selected_vectors, axis=0)
 
@@ -390,14 +389,13 @@ class GeometricMedian(object):
     """
 
     def __init__(self, nu=0.1, T=3):
+        misc.check_type(nu, float)
+        misc.check_type(T, int)
         self.nu = nu
         self.T = T
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.nu, float)
-        misc.check_type(self.T, int)
-
         z = tools.zeros_like(vectors[0])
         filtered_vectors = vectors[~tools.any(tools.isinf(vectors), axis = 1)]
         alpha = 1/len(vectors)
@@ -407,6 +405,7 @@ class GeometricMedian(object):
             betas = (alpha/betas)[:, None]
             z = tools.sum((filtered_vectors*betas), axis=0) / tools.sum(betas)
         return z
+
 
 class Krum(object):
     
@@ -510,19 +509,18 @@ class Krum(object):
     """
 
     def __init__(self, f=0):
+        misc.check_type(f, int)
         self.f = f
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
-
         distance = misc.distance_tool(vectors)
-
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.f]
         dist = tools.mean(dist, axis=1)
         index = tools.argmin(dist)
         return vectors[index]
+
 
 class MultiKrum(object):
 
@@ -624,12 +622,11 @@ class MultiKrum(object):
     """
 
     def __init__(self, f = 0):
+        misc.check_type(f, int)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
-
         distance = misc.distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-self.f]
@@ -637,6 +634,7 @@ class MultiKrum(object):
         k = len(vectors) - self.f
         indices = tools.argpartition(dist, k-1)[:k]
         return tools.mean(vectors[indices], axis=0)
+
 
 class CenteredClipping(object):
     
@@ -738,7 +736,6 @@ class CenteredClipping(object):
     >>> agg(x)
     tensor([4., 5., 6.])
 
-
     References
     ----------
 
@@ -748,31 +745,26 @@ class CenteredClipping(object):
     """
 
     def __init__(self, m=None, L=1, tau=100):
+        if m is not None:
+            misc.check_type(self.m, (np.ndarray, torch.Tensor))
+        misc.check_type(L, int)
+        misc.check_type(tau, int)
         self.m = m
         self.L = L
         self.tau = tau
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-
         if self.m is None:
             self.m = tools.zeros_like(vectors[0])
-
-        misc.check_type(self.m, (np.ndarray, torch.Tensor))
-        misc.check_type(self.L, int)
-        misc.check_type(self.tau, int)
-
         v = self.m
-
         for _ in range(self.L):
             differences = vectors - v
             clip_factor = self.tau / tools.linalg.norm(differences, axis = 1)
             clip_factor = tools.minimum(tools.ones_like(clip_factor), clip_factor)
             differences = tools.multiply(differences, clip_factor.reshape(-1,1))
             v = tools.add(v, tools.mean(differences, axis=0))
-        
         self.m = v
-
         return v
 
 
@@ -870,22 +862,19 @@ class MDA(object):
     """
 
     def __init__(self, f=0):
-        self.f = f        
+        misc.check_type(f, int)
+        self.f = f
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
 
         distance = misc.distance_tool(vectors)
-
         dist = distance.cdist(vectors, vectors)
-        
         n = len(vectors)
         k = n - self.f
 
         min_diameter = np.inf
         min_subset = np.arange(k)
-
         all_subsets = list(itertools.combinations(range(n), k))
         for subset in all_subsets:
             vector_indices = list(itertools.combinations(subset, 2))
@@ -895,35 +884,6 @@ class MDA(object):
                 min_diameter = diameter
         return vectors[tools.asarray(min_subset)].mean(axis=0)
 
-
-# class MVA(object):
-#
-#     def __init__(self, nb_byz):
-#         self.nb_byz = nb_byz
-#
-#     def __call__(self, vectors):
-#         tools, vectors = misc.check_vectors_type(vectors)
-#         misc.check_type(self.nb_byz, int)
-#
-#         distance = misc.distance_tool(vectors)
-#
-#         dist = distance.cdist(vectors, vectors)**2
-#
-#         n = len(vectors)
-#         k = n - self.nb_byz
-#
-#         min_diameter = np.inf
-#         min_subset = np.arange(k)
-#
-#         all_subsets = list(itertools.combinations(range(n), k))
-#         for subset in all_subsets:
-#             vector_indices = list(itertools.combinations(subset, 2))
-#             diameter = tools.sum(dist[tuple(zip(*vector_indices))])
-#             if diameter < min_diameter:
-#                 min_subset = subset
-#                 min_diameter = diameter
-#
-#         return vectors[tools.asarray(min_subset)].mean(axis=0)
 
 class MoNNA(object):
 
@@ -1029,16 +989,14 @@ class MoNNA(object):
     """
     
     def __init__(self, f=0, idx=0):
+        misc.check_type(f, int)
+        misc.check_type(idx, int)
         self.f = f
         self.idx = idx
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
-        misc.check_type(self.idx, int)
-
         distance = misc.distance_tool(vectors)
-
         dist = distance.cdist(vectors, vectors[self.idx].reshape(1,-1))
         k = len(vectors) - self.f
         indices = tools.argpartition(dist.reshape(-1), k-1)[:k]
@@ -1140,13 +1098,14 @@ class Meamed(object):
     .. [1] Xie, C., Koyejo, O., and Gupta, I. Generalized byzantine-tolerant sgd, 2018.
 
     """
+
     def __init__(self, f=0):
+        misc.check_type(f, int)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_type(self.f, int)
-
+        
         d = len(vectors[0])
         k = len(vectors) - self.f
 

@@ -52,6 +52,6 @@ def check_type(element, t):
             if i < len(t)-1:
                 s = s + " or "
     else:
-        s = "'"+t.__name__+"'"
+        s = "'" + t.__name__+ "'"
     if not isinstance(element, t):
-        raise TypeError("Expected "+s+" but got '"+type(element).__name__+"'")
+        raise TypeError("Expected type" + s + " but got '" + type(element).__name__ + "'")
