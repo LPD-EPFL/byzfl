@@ -62,7 +62,7 @@ class SignFlipping:
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -162,7 +162,7 @@ class FallOfEmpires:
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -250,8 +250,8 @@ class ALittleIsEnough:
 
     Using numpy arrays:
 
-    >>> import numppy as np
-    >>> x = np.array([[1., 2., 3.], 
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
     >>>               [4., 5., 6.], 
     >>>               [7., 8., 9.]])
     >>> attack(x)
@@ -260,15 +260,15 @@ class ALittleIsEnough:
     Using torch tensors (Warning: We need the tensor to be either a floating point or complex dtype):
     
     >>> import torch
-    >>> x = torch.stack([torch.tensor([1., 2., 3.]),
-    >>>                  torch.tensor([4., 5., 6.]), 
-    >>>                  torch.tensor([7., 8., 9.])])
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
     >>> attack(x)
     tensor([ 8.5000,  9.5000, 10.5000])
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -348,8 +348,8 @@ class Mimic:
 
     Using numpy arrays:
 
-    >>> import numppy as np
-    >>> x = np.array([[1., 2., 3.], 
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
     >>>               [4., 5., 6.], 
     >>>               [7., 8., 9.]])
     >>> attack(x)
@@ -358,15 +358,15 @@ class Mimic:
     Using torch tensors:
 
     >>> import torch
-    >>> x = torch.stack([torch.tensor([1., 2., 3.]),
-    >>>                  torch.tensor([4., 5., 6.]), 
-    >>>                  torch.tensor([7., 8., 9.])])
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
     >>> attack(x)
     tensor([1., 2., 3.])
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -444,8 +444,8 @@ class Inf:
 
     Using numpy arrays:
 
-    >>> import numppy as np
-    >>> x = np.array([[1., 2., 3.], 
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
     >>>               [4., 5., 6.], 
     >>>               [7., 8., 9.]])
     >>> attack(x)
@@ -454,15 +454,15 @@ class Inf:
     Using torch tensors:
 
     >>> import torch
-    >>> x = torch.stack([torch.tensor([1., 2., 3.]),
-    >>>                  torch.tensor([4., 5., 6.]), 
-    >>>                  torch.tensor([7., 8., 9.])])
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
     >>> attack(x)
     tensor([inf, inf, inf])
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -559,7 +559,7 @@ class Gaussian:
     
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]

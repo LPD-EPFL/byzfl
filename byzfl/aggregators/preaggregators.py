@@ -70,7 +70,7 @@ class NNM(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -186,7 +186,7 @@ class Bucketing(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -322,7 +322,7 @@ class Clipping(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -436,7 +436,7 @@ class ARC(object):
     
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]

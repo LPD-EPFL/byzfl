@@ -65,7 +65,7 @@ class Average(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -156,7 +156,7 @@ class Median(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -258,7 +258,7 @@ class TrMean(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -365,7 +365,7 @@ class GeometricMedian(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -484,7 +484,7 @@ class Krum(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
@@ -600,7 +600,7 @@ class MultiKrum(object):
 
     Using list of numpy arrays
 
-    >>> import numppy as np
+    >>> import numpy as np
     >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
