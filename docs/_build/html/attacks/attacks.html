@@ -565,17 +565,15 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="id6">
 <h2>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
-<p>Generate a random vector sampled from a Gaussian distribution.</p>
+<p>Generate a random vector where each coordinate is independently sampled from a Gaussian distribution.</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) \sim \mathit{N}(\mu, \sigma^2 I)\]</div>
+\[\begin{split}\mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) = \begin{bmatrix} g_1 \\ g_2 \\ \vdots \\ g_d \end{bmatrix} \in \mathbb{R}^d\end{split}\]</div>
 <p>where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
 <li><p><span class="math notranslate nohighlight">\(d\)</span> is the dimensionality of the input space, i.e., <span class="math notranslate nohighlight">\(d\)</span> is the number of coordinates of vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathit{N}\)</span> is the Gaussian distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mu \in \mathbb{R}^d\)</span> is the mean of the Gaussian distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma \geq 0\)</span> is the standard deviation of the Gaussian distribution.</p></li>
-<li><p><span class="math notranslate nohighlight">\(I\)</span> is the <span class="math notranslate nohighlight">\(d \times d\)</span> identity matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathit{N}(\mu, \sigma^2)\)</span> is the Gaussian distribution of mean <span class="math notranslate nohighlight">\(\mu \in \mathbb{R}\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma \geq 0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(g_i  \sim \mathit{N}(\mu, \sigma^2)\)</span> for all <span class="math notranslate nohighlight">\(i  \in \{1, \dots, d\}\)</span>.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>

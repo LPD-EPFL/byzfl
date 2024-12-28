@@ -494,25 +494,21 @@ class Gaussian:
     Description
     -----------
 
-    Generate a random vector sampled from a Gaussian distribution.
+    Generate a random vector where each coordinate is independently sampled from a Gaussian distribution.
 
     .. math::
 
-        \mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) \sim \mathit{N}(\mu, \sigma^2 I)
-
+        \mathrm{Gaussian}_{\mu, \sigma}(x_1, \dots, x_n) = \begin{bmatrix} g_1 \\ g_2 \\ \vdots \\ g_d \end{bmatrix} \in \mathbb{R}^d
+        
     where:
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.
 
     - :math:`d` is the dimensionality of the input space, i.e., :math:`d` is the number of coordinates of vectors :math:`x_1, \dots, x_n`.
 
-    - :math:`\mathit{N}` is the Gaussian distribution.
+    - :math:`\mathit{N}(\mu, \sigma^2)` is the Gaussian distribution of mean :math:`\mu \in \mathbb{R}` and standard deviation :math:`\sigma \geq 0`.
 
-    - :math:`\mu \in \mathbb{R}^d` is the mean of the Gaussian distribution.
-
-    - :math:`\sigma \geq 0` is the standard deviation of the Gaussian distribution.
-
-    - :math:`I` is the :math:`d \times d` identity matrix.
+    - :math:`g_i  \sim \mathit{N}(\mu, \sigma^2)` for all :math:`i  \in \{1, \dots, d\}`.
 
 
     Initialization parameters
