@@ -5,6 +5,7 @@ from byzfl.utils import misc
 
 
 class Average(object):
+
     r"""
     Description
     -----------
@@ -284,10 +285,12 @@ class TrMean(object):
 
     def __init__(self, f=0):
         misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_smaller_than_value(self.f, "f", len(vectors)/2)
         if self.f == 0:
             avg = Average()
             return avg(vectors)
@@ -390,8 +393,9 @@ class GeometricMedian(object):
 
     def __init__(self, nu=0.1, T=3):
         misc.check_type(nu, float)
-        misc.check_type(T, int)
         self.nu = nu
+        misc.check_type(T, int)
+        misc.check_greater_than_or_equal_value(T, "T", 0)
         self.T = T
 
     def __call__(self, vectors):
@@ -510,10 +514,13 @@ class Krum(object):
 
     def __init__(self, f=0):
         misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_smaller_than_value(self.f, "f", len(vectors)-1)
+
         distance = misc.distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.f]
@@ -623,10 +630,13 @@ class MultiKrum(object):
 
     def __init__(self, f = 0):
         misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_smaller_than_value(self.f, "f", len(vectors)-1)
+
         distance = misc.distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-self.f]
@@ -666,7 +676,7 @@ class CenteredClipping(object):
     L : int, optional
         Number of iterations. Default is set to 1.
     tau : float, optional
-          Clipping threshold. Default is set to 100.
+          Clipping threshold. Default is set to 100.0.
 
     Calling the instance
     --------------------
@@ -744,13 +754,15 @@ class CenteredClipping(object):
            International Conference on Machine Learning (ICML), 2021.
     """
 
-    def __init__(self, m=None, L=1, tau=100):
+    def __init__(self, m=None, L=1, tau=100.0):
         if m is not None:
             misc.check_type(self.m, (np.ndarray, torch.Tensor))
-        misc.check_type(L, int)
-        misc.check_type(tau, int)
         self.m = m
+        misc.check_type(L, int)
+        misc.check_greater_than_or_equal_value(L, "L", 0)
         self.L = L
+        misc.check_type(tau, float)
+        misc.check_greater_than_or_equal_value(tau, "tau", 0.0)
         self.tau = tau
     
     def __call__(self, vectors):
@@ -863,10 +875,12 @@ class MDA(object):
 
     def __init__(self, f=0):
         misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_smaller_than_value(self.f, "f", len(vectors))
 
         distance = misc.distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)
@@ -990,12 +1004,17 @@ class MoNNA(object):
     
     def __init__(self, f=0, idx=0):
         misc.check_type(f, int)
-        misc.check_type(idx, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
+        misc.check_type(idx, int)
+        misc.check_greater_than_or_equal_value(idx, "idx", 0)
         self.idx = idx
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_smaller_than_value(self.f, "f", len(vectors))
+        misc.check_smaller_than_value(self.idx, "idx", len(vectors))
+
         distance = misc.distance_tool(vectors)
         dist = distance.cdist(vectors, vectors[self.idx].reshape(1,-1))
         k = len(vectors) - self.f
@@ -1101,14 +1120,15 @@ class Meamed(object):
 
     def __init__(self, f=0):
         misc.check_type(f, int)
+        misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        misc.check_smaller_than_value(self.f, "f", len(vectors))
         
         d = len(vectors[0])
         k = len(vectors) - self.f
-
         median = tools.median(vectors, axis=0)
         abs_diff = tools.abs((vectors - median))
 
