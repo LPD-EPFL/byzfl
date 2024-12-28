@@ -38,44 +38,44 @@ class SignFlipping:
     Examples
     --------
 
-        >>> import byzfl
-        >>> attack = byzfl.SignFlipping()
+    >>> import byzfl
+    >>> attack = byzfl.SignFlipping()
 
-        Using numpy arrays
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> attack(x)
+    array([-4. -5. -6.])
             
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> attack(x)
-        array([-4. -5. -6.])
-                
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> attack(x)
-        tensor([-4., -5., -6.])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> attack(x)
+    tensor([-4., -5., -6.])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> attack(x)
-        array([-4., -5., -6.])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> attack(x)
+    array([-4., -5., -6.])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> attack(x)
-        tensor([-4., -5., -6.])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> attack(x)
+    tensor([-4., -5., -6.])
 
 
     References
@@ -536,44 +536,44 @@ class Gaussian:
     Examples
     --------
 
-        >>> import byzfl
-        >>> attack = byzfl.Gaussian(mu=0.0, sigma=1.0)
+    >>> import byzfl
+    >>> attack = byzfl.Gaussian(mu=0.0, sigma=1.0)
 
-        Using numpy arrays
+    Using numpy arrays
 
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> attack(x)
-        array([-0.08982162  0.07237574  0.55886579])
-                
-        Using torch tensors
-
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> attack(x)
-        tensor([ 0.9791,  0.0266, -1.0112])
-        
-        Using list of numpy arrays
-
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> attack(x)
-        array([-0.08982162  0.07237574  0.55886579])
-
-        Using list of torch tensors
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> attack(x)
+    array([-0.08982162  0.07237574  0.55886579])
             
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> attack(x)
-        tensor([ 0.9791,  0.0266, -1.0112])
+    Using torch tensors
+
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> attack(x)
+    tensor([ 0.9791,  0.0266, -1.0112])
+    
+    Using list of numpy arrays
+
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> attack(x)
+    array([-0.08982162  0.07237574  0.55886579])
+
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> attack(x)
+    tensor([ 0.9791,  0.0266, -1.0112])
 
     """
 

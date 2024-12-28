@@ -431,48 +431,48 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.Average()</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.Average()</span>
+
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4. 5. 6.])</span>
 <span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4. 5. 6.])</span>
-<span class="sd">                </span>
-<span class="sd">        Using torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4., 5., 6.])</span>
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4., 5., 6.])</span>
 
-<span class="sd">        Using list of torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
-
-<span class="sd">        ---------</span>
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>        
     
@@ -526,44 +526,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.Median()</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.Median()</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4. 5. 6.])</span>
 <span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4. 5. 6.])</span>
-<span class="sd">                </span>
-<span class="sd">        Using torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4., 5., 6.])</span>
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4., 5., 6.])</span>
 
-<span class="sd">        Using list of torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
 <span class="sd">     References</span>
 <span class="sd">    ----------</span>
@@ -585,6 +585,7 @@
 <div class="viewcode-block" id="TrMean">
 <a class="viewcode-back" href="../../../aggregators/classes/trmean.html#byzfl.TrMean">[docs]</a>
 <span class="k">class</span> <span class="nc">TrMean</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -598,6 +599,8 @@
 <span class="sd">    where</span>
 
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
+
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
 <span class="sd">    </span>
 <span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
 
@@ -628,45 +631,45 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.TrMean(1)</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.TrMean(1)</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4. 5. 6.])</span>
 <span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4. 5. 6.])</span>
-<span class="sd">                </span>
-<span class="sd">        Using torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4., 5., 6.])</span>
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4., 5., 6.])</span>
 
-<span class="sd">        Using list of torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
-<span class="sd">    </span>
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
+
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -695,6 +698,7 @@
 <div class="viewcode-block" id="GeometricMedian">
 <a class="viewcode-back" href="../../../aggregators/classes/geometric_median.html#byzfl.GeometricMedian">[docs]</a>
 <span class="k">class</span> <span class="nc">GeometricMedian</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -737,44 +741,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.GeometricMedian()</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.GeometricMedian()</span>
 
-<span class="sd">        Using numpy arrays</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([3.78788764 4.78788764 5.78788764])</span>
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([3.78788764 4.78788764 5.78788764])</span>
 
-<span class="sd">        Using torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([3.7879, 4.7879, 5.7879])</span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([3.7879, 4.7879, 5.7879])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([3.78788764 4.78788764 5.78788764])</span>
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([3.78788764 4.78788764 5.78788764])</span>
 
-<span class="sd">        Using list of torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([3.7879, 4.7879, 5.7879])</span>
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([3.7879, 4.7879, 5.7879])</span>
 
 
 <span class="sd">    References</span>
@@ -809,6 +813,7 @@
 <div class="viewcode-block" id="Krum">
 <a class="viewcode-back" href="../../../aggregators/classes/krum.html#byzfl.Krum">[docs]</a>
 <span class="k">class</span> <span class="nc">Krum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -828,6 +833,8 @@
 <span class="sd">    where</span>
 
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
+
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
 <span class="sd">    </span>
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 <span class="sd">    </span>
@@ -855,44 +862,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.Krum(1)</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.Krum(1)</span>
 
-<span class="sd">        Using numpy arrays</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([1. 2. 3.])</span>
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([1. 2. 3.])</span>
 
-<span class="sd">        Using torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([1., 2., 3.])</span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([1., 2., 3.])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([1. 2. 3.])</span>
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([1. 2. 3.])</span>
 
-<span class="sd">        Using list of torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([1., 2., 3.])</span>
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([1., 2., 3.])</span>
 
 
 <span class="sd">    References</span>
@@ -940,6 +947,8 @@
 <span class="sd">    </span>
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
 
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
+
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
 <span class="sd">    - For any \\(i \\in \\big[n\\big]\\), \\(\\mathit{N}_i\\) is the set of the \\(n - f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
@@ -970,44 +979,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.MultiKrum(1)</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.MultiKrum(1)</span>
 
-<span class="sd">        Using numpy arrays</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5 3.5 4.5])</span>
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5 3.5 4.5])</span>
 
-<span class="sd">        Using torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numppy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5 3.5 4.5])</span>
+<span class="sd">    &gt;&gt;&gt; import numppy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5 3.5 4.5])</span>
 
-<span class="sd">        Using list of torch tensors</span>
-<span class="sd">            </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
 
 <span class="sd">    References</span>
@@ -1040,6 +1049,7 @@
 <div class="viewcode-block" id="CenteredClipping">
 <a class="viewcode-back" href="../../../aggregators/classes/centered_clipping.html#byzfl.CenteredClipping">[docs]</a>
 <span class="k">class</span> <span class="nc">CenteredClipping</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -1099,44 +1109,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.CenteredClipping()</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.CenteredClipping()</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    Using numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4., 5., 6.])</span>
-<span class="sd">        </span>
-<span class="sd">        Using torch tensors</span>
-<span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4., 5., 6.])</span>
+<span class="sd">    </span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([4., 5., 6.])</span>
-<span class="sd">        </span>
-<span class="sd">        Using list of torch tensors</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([4., 5., 6.])</span>
+<span class="sd">    </span>
+<span class="sd">    Using list of torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([4., 5., 6.])</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([4., 5., 6.])</span>
 
 
 <span class="sd">    References</span>
@@ -1180,6 +1190,7 @@
 <div class="viewcode-block" id="MDA">
 <a class="viewcode-back" href="../../../aggregators/classes/mda.html#byzfl.MDA">[docs]</a>
 <span class="k">class</span> <span class="nc">MDA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
@@ -1193,6 +1204,8 @@
 <span class="sd">    where</span>
 
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
+
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
 
 <span class="sd">    - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.</span>
 
@@ -1219,44 +1232,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.MDA(1)</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.MDA(1)</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    Using numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5, 3.5, 4.5])</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5, 3.5, 4.5])</span>
 
-<span class="sd">        Using torch tensors</span>
+<span class="sd">    Using torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5, 3.5, 4.5])</span>
-<span class="sd">        </span>
-<span class="sd">        Using list of torch tensors</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5, 3.5, 4.5])</span>
+<span class="sd">    </span>
+<span class="sd">    Using list of torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
 
 <span class="sd">    References</span>
@@ -1344,6 +1357,8 @@
 <span class="sd">    </span>
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
 
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
+
 <span class="sd">    - \\(\\mathit{N}_{i}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{i}\\) in \\(\\{x_1, \\dots , x_n\\}\\).</span>
 
 <span class="sd">    - :math:`\mathrm{idx} \in \{0, \dots, n-1\}` is the ID of the chosen worker/vector for which the neighborhood is computed. In other words, :math:`x_{\mathrm{idx}+1}` is the vector sent by the worker with ID :math:`\mathrm{idx}`.</span>
@@ -1380,45 +1395,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.MoNNA(1, 1)</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.MoNNA(1, 1)</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    Using numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5, 3.5, 4.5])</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5, 3.5, 4.5])</span>
 
-<span class="sd">        Using torch tensors</span>
+<span class="sd">    Using torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5, 3.5, 4.5])</span>
-<span class="sd">        </span>
-<span class="sd">        Using list of torch tensors</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5, 3.5, 4.5])</span>
+<span class="sd">    </span>
+<span class="sd">    Using list of torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
-
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -1429,7 +1443,6 @@
 <span class="sd">           Learning (pp. 9761-9813). PMLR. </span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
@@ -1460,11 +1473,13 @@
 <span class="sd">    Compute the mean around median along the first axis [1]_:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k</span>
+<span class="sd">        \big[\mathrm{Meamed}_{f}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k</span>
 <span class="sd">    </span>
 <span class="sd">    where </span>
 <span class="sd">    </span>
 <span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
+
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
 <span class="sd">    </span>
 <span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
 
@@ -1498,44 +1513,44 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">        </span>
-<span class="sd">        &gt;&gt;&gt; import byzfl</span>
-<span class="sd">        &gt;&gt;&gt; agg = byzfl.Meamed(1)</span>
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.Meamed(1)</span>
 
-<span class="sd">        Using numpy arrays</span>
+<span class="sd">    Using numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">        &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5, 3.5, 4.5])</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5, 3.5, 4.5])</span>
 
-<span class="sd">        Using torch tensors</span>
+<span class="sd">    Using torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">        &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
-<span class="sd">        Using list of numpy arrays</span>
+<span class="sd">    Using list of numpy arrays</span>
 
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        array([2.5, 3.5, 4.5])</span>
-<span class="sd">        </span>
-<span class="sd">        Using list of torch tensors</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    array([2.5, 3.5, 4.5])</span>
+<span class="sd">    </span>
+<span class="sd">    Using list of torch tensors</span>
 
-<span class="sd">        &gt;&gt;&gt; import torch</span>
-<span class="sd">        &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">        &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">        &gt;&gt;&gt; agg(x)</span>
-<span class="sd">        tensor([2.5000, 3.5000, 4.5000])</span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; agg(x)</span>
+<span class="sd">    tensor([2.5000, 3.5000, 4.5000])</span>
 
 
 <span class="sd">    References</span>

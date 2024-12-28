@@ -39,48 +39,48 @@ class Average(object):
 
     Examples
     --------
-        >>> import byzfl
-        >>> agg = byzfl.Average()
 
-        Using numpy arrays
+    >>> import byzfl
+    >>> agg = byzfl.Average()
+
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([4. 5. 6.])
             
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([4. 5. 6.])
-                
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([4., 5., 6.])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([4., 5., 6.])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([4., 5., 6.])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([4., 5., 6.])
-
-        ---------
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
     """
+
     def __init__(self):
         pass        
     
@@ -131,44 +131,44 @@ class Median(object):
     Examples
     --------
 
-        >>> import byzfl
-        >>> agg = byzfl.Median()
+    >>> import byzfl
+    >>> agg = byzfl.Median()
 
-        Using numpy arrays
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([4. 5. 6.])
             
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([4. 5. 6.])
-                
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([4., 5., 6.])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([4., 5., 6.])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([4., 5., 6.])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([4., 5., 6.])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
      References
     ----------
@@ -187,6 +187,7 @@ class Median(object):
 
 
 class TrMean(object):
+    
     r"""
     Description
     -----------
@@ -200,6 +201,8 @@ class TrMean(object):
     where
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
+
+    - :math:`f` conceptually represents the expected number of Byzantine vectors.
     
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
@@ -230,45 +233,45 @@ class TrMean(object):
     Examples
     --------
 
-        >>> import byzfl
-        >>> agg = byzfl.TrMean(1)
+    >>> import byzfl
+    >>> agg = byzfl.TrMean(1)
 
-        Using numpy arrays
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([4. 5. 6.])
             
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([4. 5. 6.])
-                
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([4., 5., 6.])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([4., 5., 6.])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([4., 5., 6.])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([4., 5., 6.])
-    
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([4., 5., 6.])
+
 
     References
     ----------
@@ -294,6 +297,7 @@ class TrMean(object):
 
 
 class GeometricMedian(object):
+    
     r"""
     Description
     -----------
@@ -336,44 +340,44 @@ class GeometricMedian(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.GeometricMedian()
+    >>> import byzfl
+    >>> agg = byzfl.GeometricMedian()
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([3.78788764 4.78788764 5.78788764])
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([3.78788764 4.78788764 5.78788764])
 
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([3.7879, 4.7879, 5.7879])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([3.7879, 4.7879, 5.7879])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([3.78788764 4.78788764 5.78788764])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([3.78788764 4.78788764 5.78788764])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([3.7879, 4.7879, 5.7879])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([3.7879, 4.7879, 5.7879])
 
 
     References
@@ -405,6 +409,7 @@ class GeometricMedian(object):
         return z
 
 class Krum(object):
+    
     r"""
     Description
     -----------
@@ -424,6 +429,8 @@ class Krum(object):
     where
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
+
+    - :math:`f` conceptually represents the expected number of Byzantine vectors.
     
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
     
@@ -451,44 +458,44 @@ class Krum(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.Krum(1)
+    >>> import byzfl
+    >>> agg = byzfl.Krum(1)
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([1. 2. 3.])
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([1. 2. 3.])
 
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([1., 2., 3.])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([1., 2., 3.])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([1. 2. 3.])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([1. 2. 3.])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([1., 2., 3.])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of  torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([1., 2., 3.])
 
 
     References
@@ -533,6 +540,8 @@ class MultiKrum(object):
     
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
+    - :math:`f` conceptually represents the expected number of Byzantine vectors.
+
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
     - For any \\(i \\in \\big[n\\big]\\), \\(\\mathit{N}_i\\) is the set of the \\(n - f\\) nearest neighbors of \\(x_i\\) in \\(\\{x_1, \\dots , x_n\\}\\).
@@ -563,44 +572,44 @@ class MultiKrum(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.MultiKrum(1)
+    >>> import byzfl
+    >>> agg = byzfl.MultiKrum(1)
 
-        Using numpy arrays
-            
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([2.5 3.5 4.5])
+    Using numpy arrays
+        
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([2.5 3.5 4.5])
 
-        Using torch tensors
-            
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    Using torch tensors
+        
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numppy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([2.5 3.5 4.5])
+    >>> import numppy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([2.5 3.5 4.5])
 
-        Using list of torch tensors
-            
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    Using list of torch tensors
+        
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
 
     References
@@ -630,6 +639,7 @@ class MultiKrum(object):
         return tools.mean(vectors[indices], axis=0)
 
 class CenteredClipping(object):
+    
     r"""
     Description
     -----------
@@ -689,44 +699,44 @@ class CenteredClipping(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.CenteredClipping()
+    >>> import byzfl
+    >>> agg = byzfl.CenteredClipping()
 
-        Using numpy arrays
+    Using numpy arrays
 
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([4., 5., 6.])
-        
-        Using torch tensors
-        
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([4., 5., 6.])
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([4., 5., 6.])
+    
+    Using torch tensors
+    
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numpy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([4., 5., 6.])
-        
-        Using list of torch tensors
+    >>> import numpy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([4., 5., 6.])
+    
+    Using list of torch tensors
 
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([4., 5., 6.])
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([4., 5., 6.])
 
 
     References
@@ -767,6 +777,7 @@ class CenteredClipping(object):
 
 
 class MDA(object):
+    
     r"""
     Description
     -----------
@@ -780,6 +791,8 @@ class MDA(object):
     where
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
+
+    - :math:`f` conceptually represents the expected number of Byzantine vectors.
 
     - :math:`\big|\big|.\big|\big|_2` denotes the \\(\\ell_2\\)-norm.
 
@@ -806,44 +819,44 @@ class MDA(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.MDA(1)
+    >>> import byzfl
+    >>> agg = byzfl.MDA(1)
 
-        Using numpy arrays
+    Using numpy arrays
 
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([2.5, 3.5, 4.5])
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
 
-        Using torch tensors
+    Using torch tensors
 
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numpy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([2.5, 3.5, 4.5])
-        
-        Using list of torch tensors
+    >>> import numpy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
+    
+    Using list of torch tensors
 
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
 
     References
@@ -928,6 +941,8 @@ class MoNNA(object):
     
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
+    - :math:`f` conceptually represents the expected number of Byzantine vectors.
+
     - \\(\\mathit{N}_{i}\\) is the set of the \\(n − f\\) nearest neighbors of \\(x_{i}\\) in \\(\\{x_1, \\dots , x_n\\}\\).
 
     - :math:`\mathrm{idx} \in \{0, \dots, n-1\}` is the ID of the chosen worker/vector for which the neighborhood is computed. In other words, :math:`x_{\mathrm{idx}+1}` is the vector sent by the worker with ID :math:`\mathrm{idx}`.
@@ -964,45 +979,44 @@ class MoNNA(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.MoNNA(1, 1)
+    >>> import byzfl
+    >>> agg = byzfl.MoNNA(1, 1)
 
-        Using numpy arrays
+    Using numpy arrays
 
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([2.5, 3.5, 4.5])
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
 
-        Using torch tensors
+    Using torch tensors
 
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numpy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([2.5, 3.5, 4.5])
-        
-        Using list of torch tensors
+    >>> import numpy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
+    
+    Using list of torch tensors
 
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
-
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
     References
     ----------
@@ -1013,7 +1027,6 @@ class MoNNA(object):
            Learning (pp. 9761-9813). PMLR. 
 
     """
-
     
     def __init__(self, f=0, idx=0):
         self.f = f
@@ -1041,11 +1054,13 @@ class Meamed(object):
     Compute the mean around median along the first axis [1]_:
 
     .. math::
-        \big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k
+        \big[\mathrm{Meamed}_{f}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k
     
     where 
     
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
+
+    - :math:`f` conceptually represents the expected number of Byzantine vectors.
     
     - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.
 
@@ -1079,44 +1094,44 @@ class Meamed(object):
     Examples
     --------
         
-        >>> import byzfl
-        >>> agg = byzfl.Meamed(1)
+    >>> import byzfl
+    >>> agg = byzfl.Meamed(1)
 
-        Using numpy arrays
+    Using numpy arrays
 
-        >>> import numpy as np
-        >>> x = np.array([[1., 2., 3.],       # np.ndarray
-        >>>               [4., 5., 6.], 
-        >>>               [7., 8., 9.]])
-        >>> agg(x)
-        array([2.5, 3.5, 4.5])
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
 
-        Using torch tensors
+    Using torch tensors
 
-        >>> import torch
-        >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-        >>>                   [4., 5., 6.], 
-        >>>                   [7., 8., 9.]])
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
-        Using list of numpy arrays
+    Using list of numpy arrays
 
-        >>> import numpy as np
-        >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-        >>>      np.array([4., 5., 6.]), 
-        >>>      np.array([7., 8., 9.])]
-        >>> agg(x)
-        array([2.5, 3.5, 4.5])
-        
-        Using list of torch tensors
+    >>> import numpy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
+    
+    Using list of torch tensors
 
-        >>> import torch
-        >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-        >>>      torch.tensor([4., 5., 6.]), 
-        >>>      torch.tensor([7., 8., 9.])]
-        >>> agg(x)
-        tensor([2.5000, 3.5000, 4.5000])
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
 
 
     References

@@ -436,6 +436,7 @@
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f\)</span> conceptually represents the expected number of Byzantine vectors.</p></li>
 <li><p>\(\mathit{N}_{i}\) is the set of the \(n − f\) nearest neighbors of \(x_{i}\) in \(\{x_1, \dots , x_n\}\).</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathrm{idx} \in \{0, \dots, n-1\}\)</span> is the ID of the chosen worker/vector for which the neighborhood is computed. In other words, <span class="math notranslate nohighlight">\(x_{\mathrm{idx}+1}\)</span> is the vector sent by the worker with ID <span class="math notranslate nohighlight">\(\mathrm{idx}\)</span>.</p></li>
 </ul>

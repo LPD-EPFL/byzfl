@@ -432,10 +432,11 @@
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Compute the mean around median along the first axis <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
-\[\big[\mathrm{Meamed}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k\]</div>
+\[\big[\mathrm{Meamed}_{f}(x_1, \ldots, x_n)\big]_k = \frac{1}{n-f} \sum_{j=1}^{n-f} \big[x_{\pi(j)}\big]_k\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f\)</span> conceptually represents the expected number of Byzantine vectors.</p></li>
 <li><p>\(\big[\cdot\big]_k\) refers to the \(k\)-th coordinate.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathrm{median}\)</span> refers to the median of <span class="math notranslate nohighlight">\(n\)</span> scalars.</p></li>
 <li><p>\(\pi\) denotes a permutation on \(\big[n\big]\) that sorts the input vectors based on their \(k\)-th coordinate in non-decreasing order of distance to the <span class="math notranslate nohighlight">\(\mathrm{median}\)</span> of the \(k\)-th coordinate across the input vectors. This sorting is expressed as:</p></li>
