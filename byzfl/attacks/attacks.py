@@ -102,24 +102,23 @@ class InnerProductManipulation:
     Description
     -----------
 
-    Execute the Inner Product Manipulation (IPM) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.
+    Execute the Inner Product Manipulation (IPM) attack [1]_: multiplicatively scale the mean vector by :math:`- \tau`.
 
     .. math::
 
-        \text{IPM}_{\tau}(x_1, \dots, x_n) = 
-        (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
+        \text{IPM}_{\tau}(x_1, \dots, x_n) = - \tau \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
 
     where 
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.
 
-    -  :math:`\tau \in \mathbb{R}` is the attack factor.
+    -  :math:`\tau > 0` is the attack factor.
 
     Initialization parameters
     --------------------------
 
     tau : float, optional
-        The attack factor :math:`\tau` used to adjust the mean vector. Set to 3.0 by default.
+        The attack factor :math:`\tau` used to adjust the mean vector. Set to 2.0 by default.
 
     Calling the instance
     --------------------
@@ -140,7 +139,7 @@ class InnerProductManipulation:
     --------
 
     >>> import byzfl
-    >>> attack = byzfl.InnerProductManipulation(3)
+    >>> attack = byzfl.InnerProductManipulation(2.0)
 
     Using numpy arrays
         
@@ -188,14 +187,14 @@ class InnerProductManipulation:
 
     """
 
-    def __init__(self, tau=3.0):
+    def __init__(self, tau=2.0):
         check_type(tau, float)
         self.tau = tau
 
     def __call__(self, honest_vectors):
         tools, honest_vectors = check_vectors_type(honest_vectors)
         mean_vector = tools.mean(honest_vectors, axis=0)
-        return tools.multiply(mean_vector, 1.0 - self.tau)
+        return tools.multiply(mean_vector, - self.tau)
 
 
 class ALittleIsEnough:
