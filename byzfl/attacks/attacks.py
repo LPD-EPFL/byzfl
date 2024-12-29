@@ -96,17 +96,17 @@ class SignFlipping:
         return tools.multiply(mean_vector, -1)
 
 
-class FallOfEmpires:
+class InnerProductManipulation:
     
     r"""
     Description
     -----------
 
-    Execute the Fall of Empires (FOE) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.
+    Execute the Inner Product Manipulation (IPM) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.
 
     .. math::
 
-        \text{FOE}_{\tau}(x_1, \dots, x_n) = 
+        \text{IPM}_{\tau}(x_1, \dots, x_n) = 
         (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i
 
     where 
@@ -140,7 +140,7 @@ class FallOfEmpires:
     --------
 
     >>> import byzfl
-    >>> attack = byzfl.FallOfEmpires(3)
+    >>> attack = byzfl.InnerProductManipulation(3)
 
     Using numpy arrays
         

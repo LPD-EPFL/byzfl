@@ -489,19 +489,19 @@
 
 
 
-<div class="viewcode-block" id="FallOfEmpires">
-<a class="viewcode-back" href="../../../attacks/classes/fall_of_empires.html#byzfl.attacks.attacks.FallOfEmpires">[docs]</a>
-<span class="k">class</span> <span class="nc">FallOfEmpires</span><span class="p">:</span>
+<div class="viewcode-block" id="InnerProductManipulation">
+<a class="viewcode-back" href="../../../attacks/classes/inner_product_manipulation.html#byzfl.attacks.attacks.InnerProductManipulation">[docs]</a>
+<span class="k">class</span> <span class="nc">InnerProductManipulation</span><span class="p">:</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the Fall of Empires (FOE) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.</span>
+<span class="sd">    Execute the Inner Product Manipulation (IPM) attack [1]_: multiplicatively scale the mean vector by :math:`1 - \tau`.</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \text{FOE}_{\tau}(x_1, \dots, x_n) = </span>
+<span class="sd">        \text{IPM}_{\tau}(x_1, \dots, x_n) = </span>
 <span class="sd">        (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i</span>
 
 <span class="sd">    where </span>
@@ -535,7 +535,7 @@
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; import byzfl</span>
-<span class="sd">    &gt;&gt;&gt; attack = byzfl.FallOfEmpires(3)</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.InnerProductManipulation(3)</span>
 
 <span class="sd">    Using numpy arrays</span>
 <span class="sd">        </span>

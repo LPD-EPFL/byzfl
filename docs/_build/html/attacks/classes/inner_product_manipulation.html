@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Fall of Empires (FOE) &#8212; ByzFL</title>
+    <title>Inner Product Manipulation (IPM) &#8212; ByzFL</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/fall_of_empires';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/inner_product_manipulation';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -352,7 +352,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Attacks</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="sign_flipping.html">Sign Flipping</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Fall of Empires (FOE)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Inner Product Manipulation (IPM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="little_is_enough.html">A Little Is Enough (ALIE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity</a></li>
@@ -400,7 +400,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Attacks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Fall of Empires (FOE)</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Inner Product Manipulation (IPM)</span></li>
   </ul>
 </nav>
 </div>
@@ -417,17 +417,17 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="fall-of-empires-foe">
-<span id="foe-label"></span><h1>Fall of Empires (FOE)<a class="headerlink" href="#fall-of-empires-foe" title="Link to this heading">#</a></h1>
+  <section id="inner-product-manipulation-ipm">
+<span id="foe-label"></span><h1>Inner Product Manipulation (IPM)<a class="headerlink" href="#inner-product-manipulation-ipm" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.FallOfEmpires">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">FallOfEmpires</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#FallOfEmpires"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.FallOfEmpires" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.InnerProductManipulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">InnerProductManipulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#InnerProductManipulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.InnerProductManipulation" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the Fall of Empires (FOE) attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
+<p>Execute the Inner Product Manipulation (IPM) attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(1 - \tau\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[\text{FOE}_{\tau}(x_1, \dots, x_n) =
+\[\text{IPM}_{\tau}(x_1, \dots, x_n) =
 (1 - \tau) \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
 <p>where</p>
 <ul class="simple">
@@ -450,7 +450,7 @@
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">FallOfEmpires</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">InnerProductManipulation</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>
@@ -551,7 +551,7 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.FallOfEmpires"><code class="docutils literal notranslate"><span class="pre">FallOfEmpires</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.InnerProductManipulation"><code class="docutils literal notranslate"><span class="pre">InnerProductManipulation</span></code></a></li>
 </ul>
   </nav></div>
 

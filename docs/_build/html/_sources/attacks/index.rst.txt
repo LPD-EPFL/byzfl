@@ -15,7 +15,7 @@ Explore these components to better understand and experiment with Byzantine atta
    :titlesonly:
 
    classes/sign_flipping
-   classes/fall_of_empires
+   classes/inner_product_manipulation
    classes/little_is_enough
    classes/mimic
    classes/inf
