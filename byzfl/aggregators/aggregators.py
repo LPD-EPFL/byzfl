@@ -401,10 +401,12 @@ class GeometricMedian(object):
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
         z = tools.zeros_like(vectors[0])
+        linalg = misc.linalg_tool(vectors)
+
         filtered_vectors = vectors[~tools.any(tools.isinf(vectors), axis = 1)]
         alpha = 1/len(vectors)
         for _ in range(self.T):
-            betas = tools.linalg.norm(filtered_vectors - z, axis = 1)
+            betas = linalg.norm(filtered_vectors - z, axis = 1)
             betas[betas<self.nu] = self.nu
             betas = (alpha/betas)[:, None]
             z = tools.sum((filtered_vectors*betas), axis=0) / tools.sum(betas)
@@ -767,12 +769,14 @@ class CenteredClipping(object):
     
     def __call__(self, vectors):
         tools, vectors = misc.check_vectors_type(vectors)
+        linalg = misc.linalg_tool(vectors)
+
         if self.m is None:
             self.m = tools.zeros_like(vectors[0])
         v = self.m
         for _ in range(self.L):
             differences = vectors - v
-            clip_factor = self.tau / tools.linalg.norm(differences, axis = 1)
+            clip_factor = self.tau / linalg.norm(differences, axis = 1)
             clip_factor = tools.minimum(tools.ones_like(clip_factor), clip_factor)
             differences = tools.multiply(differences, clip_factor.reshape(-1,1))
             v = tools.add(v, tools.mean(differences, axis=0))

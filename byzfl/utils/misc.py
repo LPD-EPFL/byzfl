@@ -42,6 +42,16 @@ def distance_tool(vectors):
     return tools
 
 
+def linalg_tool(vectors):
+    if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or
+        isinstance(vectors, np.ndarray)):
+        tools = np.linalg
+    elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
+          isinstance(vectors, torch.Tensor)):
+        tools = torch.linalg
+    return tools
+
+
 def check_type(element, t):
     if isinstance(t, tuple):
         s = "" 

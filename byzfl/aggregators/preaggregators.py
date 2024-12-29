@@ -343,7 +343,7 @@ class Clipping(object):
             [1.0051, 1.1487, 1.2923]])
  
     """
-    
+
     def __init__(self, c=2.0):
         misc.check_type(c, float)
         misc.check_greater_than_or_equal_value(c, "c", 0.0)
@@ -351,7 +351,9 @@ class Clipping(object):
     
     def _clip_vector(self, vector):
         tools, vector = misc.check_vectors_type(vector)
-        vector_norm = tools.linalg.norm(vector)
+        linalg = misc.linalg_tool(vector)
+
+        vector_norm = linalg.norm(vector)
         if vector_norm > self.c:
             vector = tools.multiply(vector, self.c / vector_norm)
         return vector
@@ -363,7 +365,7 @@ class Clipping(object):
 
 
 class ARC(object):
-    
+
     r"""
     Description
     -----------
@@ -471,16 +473,19 @@ class ARC(object):
 
     def _clip_vector(self, vector, clip_threshold):
         tools, vector = misc.check_vectors_type(vector)
-        vector_norm = tools.linalg.norm(vector)
+        linalg_tool = misc.linalg_tool(vector)
+
+        vector_norm = linalg_tool.norm(vector)
         if vector_norm > clip_threshold:
             vector = tools.multiply(vector, (clip_threshold / vector_norm))
         return vector
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
+        _, vectors = misc.check_vectors_type(vectors)
         misc.check_smaller_than_value(self.f, "f", len(vectors)+1)
+        linalg_tool = misc.linalg_tool(vectors)
 
-        magnitudes = [(tools.linalg.norm(vector), vector_id) for vector_id, vector in enumerate(vectors)]
+        magnitudes = [(linalg_tool.norm(vector), vector_id) for vector_id, vector in enumerate(vectors)]
         magnitudes.sort(key=lambda x:x[0])
         nb_vectors = len(vectors)
         nb_clipped = int((2 * self.f / nb_vectors) * (nb_vectors - self.f))
