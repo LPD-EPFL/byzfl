@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Inner Product Manipulation (IPM) &#8212; ByzFL</title>
+    <title>Optimal Inner Product Manipulation (Opt-IPM) &#8212; ByzFL</title>
   
   
   
@@ -48,13 +48,13 @@
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/inner_product_manipulation';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/optimal_ipm';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Optimal Inner Product Manipulation (Opt-IPM)" href="optimal_ipm.html" />
-    <link rel="prev" title="Sign Flipping" href="sign_flipping.html" />
+    <link rel="next" title="A Little Is Enough (ALIE)" href="little_is_enough.html" />
+    <link rel="prev" title="Inner Product Manipulation (IPM)" href="inner_product_manipulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -352,8 +352,8 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Attacks</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="sign_flipping.html">Sign Flipping</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Inner Product Manipulation (IPM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="optimal_ipm.html">Optimal Inner Product Manipulation (Opt-IPM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inner_product_manipulation.html">Inner Product Manipulation (IPM)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Optimal Inner Product Manipulation (Opt-IPM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="little_is_enough.html">A Little Is Enough (ALIE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity</a></li>
@@ -401,7 +401,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Attacks</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Inner Product Manipulation (IPM)</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Optimal Inner Product Manipulation (Opt-IPM)</span></li>
   </ul>
 </nav>
 </div>
@@ -418,25 +418,40 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="inner-product-manipulation-ipm">
-<span id="ipm-label"></span><h1>Inner Product Manipulation (IPM)<a class="headerlink" href="#inner-product-manipulation-ipm" title="Link to this heading">#</a></h1>
+  <section id="optimal-inner-product-manipulation-opt-ipm">
+<span id="opt-ipm-label"></span><h1>Optimal Inner Product Manipulation (Opt-IPM)<a class="headerlink" href="#optimal-inner-product-manipulation-opt-ipm" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.InnerProductManipulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">InnerProductManipulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#InnerProductManipulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.InnerProductManipulation" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.Optimal_InnerProductManipulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Optimal_InnerProductManipulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_agg_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#Optimal_InnerProductManipulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Optimal_InnerProductManipulation" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the Inner Product Manipulation (IPM) attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: multiplicatively scale the mean vector by <span class="math notranslate nohighlight">\(- \tau\)</span>.</p>
+<p>Generalization of the Inner Product Manipulation (IPM) attack <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> by optimizing the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[\text{IPM}_{\tau}(x_1, \dots, x_n) = - \tau \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
+\[\text{Opt-IPM}_{\textit{agg}, \textit{pre_agg_list}, f}(x_1, \dots, x_n) = - \tau_{opt} \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\tau &gt; 0\)</span> is the attack factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\textit{agg}\)</span> is the robust aggregator to be used to aggregate the vectors during the training.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\textit{pre_agg_list}\)</span> is the list of robust pre-aggregators to be used to transform the vectors during the training.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f\)</span> conceptually represents the expected number of Byzantine vectors.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau_{opt} \in \mathbb{R}\)</span> is the optimal attack factor found using a line-search optimization method.</p></li>
 </ul>
+<p>This attack is designed to optimize the attack factor <span class="math notranslate nohighlight">\(\tau\)</span> of the IPM attack by maximizing a specific function.
+The function quantifies the effect of the attack, in particular the \(\ell_2\)-norm of the distance between the aggregated vectors (including Byzantine vectors) and the average of honest vectors.
+The goal is to find the attack factor that results in the maximum disruption.</p>
+<p>This attack, developed by the ByzFL team, draws inspiration from the IPM attack and has been utilized in <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tau</strong> (<em>float, optional</em>) – The attack factor <span class="math notranslate nohighlight">\(\tau\)</span> used to adjust the mean vector. Set to 2.0 by default.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agg</strong> (<em>object</em>) – An instance of a robust aggregator that will be used to aggregate the vectors during the optimization process.</p></li>
+<li><p><strong>pre_agg_list</strong> (<em>list, optional (default: [])</em>) – A list of pre-aggregation functions, where each element is an object representing a pre-aggregation method.</p></li>
+<li><p><strong>f</strong> (<em>int, optional (default: 0)</em>) – The number of Byzantine participants. Must be a non-negative integer.</p></li>
+<li><p><strong>evals</strong> (<em>int, optional (default: 16)</em>) – The maximum number of evaluations during the optimization process. Must be a positive integer.</p></li>
+<li><p><strong>start</strong> (<em>float, optional (default: 0.0)</em>) – The initial attack factor to evaluate. Must be a non-negative float.</p></li>
+<li><p><strong>delta</strong> (<em>float, optional (default: 1.0)</em>) – The initial step size for the optimization process. Must be a positive float.</p></li>
+<li><p><strong>ratio</strong> (<em>float, optional (default: 0.8)</em>) – The contraction ratio used to reduce the step size during the contraction phase. Must be between 0.5 and 1 (both excluded).</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
@@ -450,7 +465,12 @@
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">InnerProductManipulation</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate the robust aggregator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">TrMean</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate the list of pre-aggregators</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">byzfl</span><span class="o">.</span><span class="n">NNM</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Clipping</span><span class="p">()]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate the attack</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Optimal_InnerProductManipulation</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>
@@ -459,7 +479,7 @@
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([ -8. -10. -12.])</span>
+<span class="go">array([-2.98949673 -3.73687091 -4.48424509])</span>
 </pre></div>
 </div>
 <p>Using torch tensors</p>
@@ -468,7 +488,7 @@
 <span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([-8., -10., -12.])</span>
+<span class="go">tensor([-2.9895, -3.7369, -4.4842])</span>
 </pre></div>
 </div>
 <p>Using list of numpy arrays</p>
@@ -477,7 +497,7 @@
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([ -8. -10. -12.])</span>
+<span class="go">array([-2.98949673 -3.73687091 -4.48424509])</span>
 </pre></div>
 </div>
 <p>Using list of torch tensors</p>
@@ -486,17 +506,24 @@
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([-8., -10., -12.])</span>
+<span class="go">tensor([-2.9895, -3.7369, -4.4842])</span>
 </pre></div>
 </div>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id2" role="doc-footnote">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-tolerant
 sgd by inner product manipulation. In Ryan P. Adams and Vibhav Gogate (eds.), Proceedings of
 The 35th Uncertainty in Artificial Intelligence Conference, volume 115 of Proceedings of Machine
 Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="reference external" href="https://proceedings.mlr.press/v115/xie20a.html">https://proceedings.mlr.press/v115/xie20a.html</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Allouah, Y., Farhadkhani, S., Guerraoui, R., Gupta, N., Pinot, R.,
+&amp; Stephan, J. (2023, April). Fixing by mixing: A recipe for optimal
+byzantine ml under heterogeneity. In International Conference on
+Artificial Intelligence and Statistics (pp. 1232-1300). PMLR.</p>
 </aside>
 </aside>
 </section>
@@ -515,20 +542,20 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="sign_flipping.html"
+       href="inner_product_manipulation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sign Flipping</p>
+        <p class="prev-next-title">Inner Product Manipulation (IPM)</p>
       </div>
     </a>
     <a class="right-next"
-       href="optimal_ipm.html"
+       href="little_is_enough.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Optimal Inner Product Manipulation (Opt-IPM)</p>
+        <p class="prev-next-title">A Little Is Enough (ALIE)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -551,7 +578,7 @@ Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="referenc
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.InnerProductManipulation"><code class="docutils literal notranslate"><span class="pre">InnerProductManipulation</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Optimal_InnerProductManipulation"><code class="docutils literal notranslate"><span class="pre">Optimal_InnerProductManipulation</span></code></a></li>
 </ul>
   </nav></div>
 

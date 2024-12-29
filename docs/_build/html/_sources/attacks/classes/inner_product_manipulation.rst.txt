@@ -1,4 +1,4 @@
-.. _foe-label:
+.. _ipm-label:
 
 Inner Product Manipulation (IPM)
 ================================

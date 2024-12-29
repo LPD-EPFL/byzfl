@@ -16,6 +16,7 @@ Explore these components to better understand and experiment with Byzantine atta
 
    classes/sign_flipping
    classes/inner_product_manipulation
+   classes/optimal_ipm
    classes/little_is_enough
    classes/mimic
    classes/inf
