@@ -81,3 +81,8 @@ def check_greater_than_or_equal_value(element, element_name, value):
 def check_smaller_than_value(element, element_name, value):
     if element >= value:
         raise ValueError("Expected value smaller than " + str(value) + " for " + element_name)
+    
+#JS
+def check_different_from_value(element, element_name, value):
+    if element == value:
+        raise ValueError("Expected value different from " + str(value) + " for " + element_name)

@@ -1,5 +1,6 @@
 import numpy as np
-from byzfl.utils.misc import check_vectors_type, random_tool, check_type, check_smaller_than_value, check_greater_than_or_equal_value, linalg_tool
+from byzfl.utils.misc import *
+from byzfl.aggregators import *
 
 class SignFlipping:
     
@@ -112,7 +113,7 @@ class InnerProductManipulation:
 
     - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.
 
-    -  :math:`\tau > 0` is the attack factor.
+    - :math:`\tau > 0` is the attack factor.
 
     Initialization parameters
     --------------------------
@@ -229,23 +230,23 @@ class Optimal_InnerProductManipulation:
     Initialization parameters
     --------------------------
 
-    agg : object
+    agg : object, optional (default: Average)
         An instance of a robust aggregator that will be used to aggregate the vectors during the optimization process.
 
-    pre_agg_list : list, optional (default: [])
+    pre_agg_list : list, optional (default: [Clipping])
         A list of pre-aggregation functions, where each element is an object representing a pre-aggregation method.
 
-    f : int, optional (default: 0)
+    f : int, optional (default: 1)
         The number of Byzantine participants. Must be a non-negative integer.
 
-    evals : int, optional (default: 16)
+    evals : int, optional (default: 20)
         The maximum number of evaluations during the optimization process. Must be a positive integer.
 
     start : float, optional (default: 0.0)
-        The initial attack factor to evaluate. Must be a non-negative float.
+        The initial attack factor to evaluate. Must be a float.
 
-    delta : float, optional (default: 1.0)
-        The initial step size for the optimization process. Must be a positive float.
+    delta : float, optional (default: 10.0)
+        The initial step size for the optimization process. Must be a non-zero float.
 
     ratio : float, optional (default: 0.8)
         The contraction ratio used to reduce the step size during the contraction phase. Must be between 0.5 and 1 (both excluded).
@@ -263,7 +264,7 @@ class Optimal_InnerProductManipulation:
     -------
     :numpy.ndarray or torch.Tensor
         The data type of the output is the same as the input.
-    
+
     Examples
     --------
 
@@ -326,13 +327,35 @@ class Optimal_InnerProductManipulation:
 
     """
 
-    def __init__(self, agg, pre_agg_list=[], f=0, evals=16, start=0.0, delta=1.0, ratio=0.8):
+    def __init__(self, agg=Average(), pre_agg_list=[Clipping()], f=1, evals=20, start=0.0, delta=10.0, ratio=0.8):
+
+        # List of valid aggregator classes
+        valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
+        check_type(agg, valid_agg_classes)
         self.agg = agg
+
+        # List of valid pre-aggregator classes
+        check_type(pre_agg_list, list)
+        valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
+        for pre_agg in pre_agg_list:
+            check_type(pre_agg, valid_pre_agg_classes)
         self.pre_agg_list = pre_agg_list
+
+        check_type(f, int)
+        check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
+        check_type(evals, int)
+        check_greater_than_value(evals, "evals", 0)
         self.evals = evals
+        check_type(start, float)
         self.start = start
+        check_type(delta, float)
+        check_different_from_value(delta, "delta", 0.0)
         self.delta = delta
+        check_type(ratio, float)
+        check_greater_than_value(ratio, "ratio", 0.5)
+        check_smaller_than_value(ratio, "ratio", 1.0)
+        
         self.ratio = ratio
 
     def _evaluate(self, honest_vectors, avg_honest_vector, current_tau):
@@ -401,14 +424,15 @@ class Optimal_InnerProductManipulation:
         return best_x, best_y, delta, remaining_evals
 
     def _contraction_phase(self, honest_vectors, avg_honest_vector, best_x, best_y, delta, remaining_evals):
-        
+
         """
         Performs the contraction phase of the optimization.
         This phase refines the search by reducing the step size (delta) and searching around the current best value.
         """
+
         while remaining_evals > 0:
             # Continue reducing the step size until no significant improvements are found or evaluations are exhausted.
-            prop_x = max(0, best_x + delta if delta > 0 else best_x - delta)
+            prop_x = best_x + delta
             prop_y = self._evaluate(honest_vectors, avg_honest_vector, prop_x)
             remaining_evals -= 1
 
@@ -421,6 +445,7 @@ class Optimal_InnerProductManipulation:
         return best_x
 
     def __call__(self, honest_vectors):
+
         """
         Iteratively computes the best attack factor tau and executes the corresponding IPM attack.
 
