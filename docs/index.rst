@@ -90,7 +90,7 @@ Output:
    Aggregated result: tensor([2.5000, 3.5000, 4.5000])
 
 
-Quick Start Example - Using Numpy Arrays
+Quick Start Example - Using NumPy Arrays
 ----------------------------------------
 
 .. code-block:: python
