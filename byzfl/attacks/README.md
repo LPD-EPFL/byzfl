@@ -20,27 +20,38 @@ To employ an attack, import the desired class from the `byzfl` module and apply 
 ```python
 from byzfl import SignFlipping
 import numpy as np
+import torch
 
-# Honest vectors
-honest_vectors = np.array([
+# Honest vectors - NumPy Array
+honest_vectors_np = np.array([
     [1., 2., 3.],
     [4., 5., 6.],
     [7., 8., 9.]
 ])
 
+# Honest vectors - PyTorch Tensor
+honest_vectors_torch = torch.tensor([[1., 2., 3.],
+                                     [4., 5., 6.],
+                                     [7., 8., 9.]])
+
 # Initialize the Sign Flipping attack
 attack = SignFlipping()
 
-# Generate the attack vector
-byz_vector = attack(honest_vectors)
+# Generate the attack vector - NumPy Array
+byz_vector_np = attack(honest_vectors_np)
 
-print("Byzantine vector:", byz_vector)
+# Generate the attack vector - PyTorch Tensor
+byz_vector_torch = attack(honest_vectors_torch)
+
+print("Byzantine vector - NumPy Array:", byz_vector_np)
+print("Byzantine vector - PyTorch Tensor:", byz_vector_torch)
 ```
 
 **Output:**
 
 ```
-Byzantine vector: [-4. -5. -6.]
+Byzantine vector - NumPy Array: [-4. -5. -6.]
+Byzantine vector - Torch Tensor: tensor([-4., -5., -6.])
 ```
 
 ## Extending Attacks
