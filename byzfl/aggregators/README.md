@@ -26,10 +26,10 @@ Pre-aggregators perform preliminary computations to refine the input data before
 
 ## Usage
 
-To utilize an aggregator or pre-aggregator, first import the desired class from the `byzfl` module and then apply it to your set of input vectors. Here's an example using the Trimmed Mean aggregator:
+To utilize an aggregator or pre-aggregator, first import the desired class from the `byzfl` module and then apply it to your set of input vectors. Here's an example using the Trimmed Mean aggregator and the Nearest Neighbor Mixing (NNM) pre-aggregator:
 
 ```python
-from byzfl import TrMean
+from byzfl import TrMean, NNM
 import numpy as np
 
 # Number of Byzantine participants
@@ -42,6 +42,13 @@ vectors = np.array([
     [7., 8., 9.]
 ])
 
+# Initialize the NNM pre-aggregator
+pre_aggregator = NNM(f=f)
+
+# Perform pre-aggregation
+vectors = pre_aggregator(vectors)
+print("Transformed vectors:", vectors)
+
 # Initialize the Trimmed Mean aggregator
 aggregator = TrMean(f=f)
 
@@ -53,7 +60,10 @@ print("Aggregated result:", result)
 **Output:**
 
 ```
-Aggregated result: [4. 5. 6.]
+Transformed vectors: [[2.5 3.5 4.5]
+ [2.5 3.5 4.5]
+ [5.5 6.5 7.5]]
+Aggregated result: [2.5 3.5 4.5]
 ```
 
 ## Extending Aggregators and Pre-Aggregators
