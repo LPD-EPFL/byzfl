@@ -31,12 +31,20 @@ To utilize an aggregator or pre-aggregator, first import the desired class from 
 ```python
 from byzfl import TrMean, NNM
 import numpy as np
+import torch
 
 # Number of Byzantine participants
 f = 1
 
-# Input vectors
-vectors = np.array([
+# Input vectors - NumPy Array
+vectors_np = np.array([
+    [1., 2., 3.],
+    [4., 5., 6.],
+    [7., 8., 9.]
+])
+
+# Input vectors - PyTorch Tensor
+vectors_torch = torch.tensor([
     [1., 2., 3.],
     [4., 5., 6.],
     [7., 8., 9.]
@@ -46,24 +54,33 @@ vectors = np.array([
 pre_aggregator = NNM(f=f)
 
 # Perform pre-aggregation
-vectors = pre_aggregator(vectors)
-print("Transformed vectors:", vectors)
+vectors_np = pre_aggregator(vectors_np)
+vectors_torch = pre_aggregator(vectors_torch)
+print("Transformed vectors - NumPy Array:", vectors_np)
+print("Transformed vectors - PyTorch Tensor:", vectors_torch)
 
 # Initialize the Trimmed Mean aggregator
 aggregator = TrMean(f=f)
 
 # Perform aggregation
-result = aggregator(vectors)
-print("Aggregated result:", result)
+result_np = aggregator(vectors_np)
+result_torch = aggregator(vectors_torch)
+print("Aggregated result - NumPy Array:", result_np)
+print("Aggregated result - PyTorch Tensor:", result_torch)
 ```
 
 **Output:**
 
 ```
-Transformed vectors: [[2.5 3.5 4.5]
+Transformed vectors - NumPy Array: [[2.5 3.5 4.5]
  [2.5 3.5 4.5]
  [5.5 6.5 7.5]]
-Aggregated result: [2.5 3.5 4.5]
+Transformed vectors - PyTorch Tensor: tensor([[2.5000, 3.5000, 4.5000],
+        [2.5000, 3.5000, 4.5000],
+        [5.5000, 6.5000, 7.5000]])
+
+Aggregated result - NumPy Array: [2.5 3.5 4.5]
+Aggregated result - PyTorch Tensor: tensor([2.5000, 3.5000, 4.5000])
 ```
 
 ## Extending Aggregators and Pre-Aggregators

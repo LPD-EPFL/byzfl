@@ -30,9 +30,11 @@ honest_vectors_np = np.array([
 ])
 
 # Honest vectors - PyTorch Tensor
-honest_vectors_torch = torch.tensor([[1., 2., 3.],
-                                     [4., 5., 6.],
-                                     [7., 8., 9.]])
+honest_vectors_torch = torch.tensor([
+    [1., 2., 3.],
+    [4., 5., 6.],
+    [7., 8., 9.]
+])
 
 # Initialize the Sign Flipping attack
 attack = SignFlipping()
@@ -51,7 +53,7 @@ print("Byzantine vector - PyTorch Tensor:", byz_vector_torch)
 
 ```
 Byzantine vector - NumPy Array: [-4. -5. -6.]
-Byzantine vector - Torch Tensor: tensor([-4., -5., -6.])
+Byzantine vector - PyTorch Tensor: tensor([-4., -5., -6.])
 ```
 
 ## Extending Attacks
