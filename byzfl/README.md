@@ -22,6 +22,44 @@ pip install byzfl
 
 Here's an example of how to use the `byzfl` module to perform a robust aggregation using the `TrMean` aggregator, when the `SignFlipping` attack is executed by the Byzantine participants.
 
+### Using PyTorch Tensors
+
+```python
+import byzfl
+import torch
+
+# Number of Byzantine participants
+f = 1
+
+# Honest vectors
+honest_vectors = torch.tensor([[1., 2., 3.],
+                               [4., 5., 6.],
+                               [7., 8., 9.]])
+
+# Initialize and apply a Byzantine attack (e.g., Sign Flipping)
+attack = byzfl.SignFlipping()
+byz_vector = attack(honest_vectors)
+
+# Create f identical attack vectors
+byz_vectors = byz_vector.repeat(f, 1)
+
+# Concatenate honest and Byzantine vectors
+all_vectors = torch.cat((honest_vectors, byz_vectors), dim=0)
+
+# Initialize and perform robust aggregation using Trimmed Mean
+aggregate = byzfl.TrMean(f=f)
+result = aggregate(all_vectors)
+print("Aggregated result:", result)
+```
+
+**Output:**
+
+```
+Aggregated result: tensor([2.5000, 3.5000, 4.5000])
+```
+
+### Using NumPy Arrays
+
 ```python
 import byzfl
 import numpy as np
