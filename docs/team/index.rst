@@ -10,7 +10,7 @@ Our Team
       <img src="../_static/geovani_rizk.jpeg" alt="Geovani Rizk" style="width:100%">
       <div class="container">
         <h2>Geovani Rizk</h2>
-        <p class="title">Postdoc @EPFL, Project leader</p>
+        <p class="title">Postdoc @EPFL</p>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@ Our Team
       <img src="../_static/john_stephan.jpeg" alt="John Stephan" style="width:100%">
       <div class="container">
         <h2>John Stephan</h2>
-        <p class="title">PhD @EPFL, Project leader</p>
+        <p class="title">PhD @EPFL</p>
       </div>
     </div>
   </div>
