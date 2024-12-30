@@ -3,12 +3,9 @@
 Attacks
 ========
 
-Welcome to the Byzantine Attacks module of the library, which provides implementations of various attack strategies targeting machine learning vectors, typically gradients. This module consists of two key components:
+Welcome to the Byzantine Attacks module of the library, which provides implementations of various attack strategies targeting machine learning vectors, typically gradients. This module focuses on the execution of specific attacks designed to manipulate or disrupt the aggregation process of vectors (or gradients) submitted by honest participants.
 
-- Attack Implementation: Details the execution of specific attacks on vectors (or gradients) originating from honest participants.
-- Attack Optimizer: Features an algorithm designed to identify the optimal parameters for an attack based on the given settings.
-
-Explore these components to better understand and experiment with Byzantine attack strategies.
+Explore this module to understand and experiment with a variety of Byzantine attack strategies, enhancing the robustness of your machine learning systems.
 
 .. toctree::
    :caption: Attacks
@@ -22,10 +19,3 @@ Explore these components to better understand and experiment with Byzantine atta
    classes/mimic
    classes/inf
    classes/gaussian
-
-.. toctree::
-   :caption: Attack Optimizers
-   :titlesonly:
-
-   classes/line_maximize
-   classes/worker_with_max_variance
