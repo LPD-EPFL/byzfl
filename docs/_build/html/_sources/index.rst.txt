@@ -52,8 +52,46 @@ You can install the ByzFL library via pip:
 After installation, the library is ready to use. Here's a quick example of how to use the :ref:`trmean-label` robust aggregator and the :ref:`sf-label` Byzantine attack:
 
 
-Quick Start Example
-------------
+Quick Start Example - Using PyTorch Tensors
+-------------------------------------------
+
+.. code-block:: python
+
+  import byzfl
+  import torch
+
+  # Number of Byzantine participants
+  f = 1
+
+  # Honest vectors
+  honest_vectors = torch.tensor([[1., 2., 3.],
+                                 [4., 5., 6.],
+                                 [7., 8., 9.]])
+
+  # Initialize and apply the attack
+  attack = byzfl.SignFlipping()
+  byz_vector = attack(honest_vectors)
+
+  # Create f identical attack vectors
+  byz_vectors = byz_vector.repeat(f, 1)
+
+  # Concatenate honest and Byzantine vectors
+  all_vectors = torch.cat((honest_vectors, byz_vectors), dim=0)
+
+  # Initialize and perform robust aggregation
+  aggregate = byzfl.TrMean(f=f)
+  result = aggregate(all_vectors)
+  print("Aggregated result:", result)
+
+Output:
+
+.. code-block:: none
+
+   Aggregated result: tensor([2.5000, 3.5000, 4.5000])
+
+
+Quick Start Example - Using Numpy Arrays
+----------------------------------------
 
 .. code-block:: python
 

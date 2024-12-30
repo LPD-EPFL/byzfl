@@ -396,8 +396,42 @@
 </pre></div>
 </div>
 <p>After installation, the library is ready to use. Here’s a quick example of how to use the <a class="reference internal" href="aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> robust aggregator and the <a class="reference internal" href="attacks/classes/sign_flipping.html#sf-label"><span class="std std-ref">Sign Flipping</span></a> Byzantine attack:</p>
-<section id="quick-start-example">
-<h2>Quick Start Example<a class="headerlink" href="#quick-start-example" title="Link to this heading">#</a></h2>
+<section id="quick-start-example-using-pytorch-tensors">
+<h2>Quick Start Example - Using PyTorch Tensors<a class="headerlink" href="#quick-start-example-using-pytorch-tensors" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># Number of Byzantine participants</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Honest vectors</span>
+<span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+
+<span class="c1"># Initialize and apply the attack</span>
+<span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">SignFlipping</span><span class="p">()</span>
+<span class="n">byz_vector</span> <span class="o">=</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+
+<span class="c1"># Create f identical attack vectors</span>
+<span class="n">byz_vectors</span> <span class="o">=</span> <span class="n">byz_vector</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Concatenate honest and Byzantine vectors</span>
+<span class="n">all_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">byz_vectors</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Initialize and perform robust aggregation</span>
+<span class="n">aggregate</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">TrMean</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">aggregate</span><span class="p">(</span><span class="n">all_vectors</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aggregated result:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Aggregated result: tensor([2.5000, 3.5000, 4.5000])
+</pre></div>
+</div>
+</section>
+<section id="quick-start-example-using-numpy-arrays">
+<h2>Quick Start Example - Using Numpy Arrays<a class="headerlink" href="#quick-start-example-using-numpy-arrays" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">byzfl</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -511,7 +545,8 @@
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-example">Quick Start Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-example-using-pytorch-tensors">Quick Start Example - Using PyTorch Tensors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-example-using-numpy-arrays">Quick Start Example - Using Numpy Arrays</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-more">Learn More</a></li>
