@@ -601,7 +601,7 @@
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Generalization of the Inner Product Manipulation (IPM) attack [1]_ by optimizing the attack factor :math:`\tau`.</span>
+<span class="sd">    Generalization of the :ref:`ipm-label` attack [1]_ by optimizing the attack factor :math:`\tau`.</span>
 
 <span class="sd">    .. math::</span>
 
@@ -791,7 +791,7 @@
 
         <span class="c1">#Return distance between aggregate vector and mean of honest vectors</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">aggregated_vector</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_expansion_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">):</span>
 <span class="w">        </span>
@@ -874,7 +874,7 @@
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
 
-<span class="sd">    Execute the A Little is Enough (ALIE) attack [1]_: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor :math:`\tau`.</span>
+<span class="sd">    Execute the A Little Is Enough (ALIE) attack [1]_: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor :math:`\tau`.</span>
 
 <span class="sd">    .. math::</span>
 
@@ -970,6 +970,281 @@
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">attack_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">attack_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Optimal_ALittleIsEnough">
+<a class="viewcode-back" href="../../../attacks/classes/optimal_alie.html#byzfl.attacks.attacks.Optimal_ALittleIsEnough">[docs]</a>
+<span class="k">class</span> <span class="nc">Optimal_ALittleIsEnough</span><span class="p">:</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+
+<span class="sd">    Generalization of the :ref:`alie-label` attack [1]_ by optimizing the attack factor :math:`\tau`. </span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \text{Opt-ALIE}_{\textit{agg}, \textit{pre_agg_list}, f}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau_{opt} \cdot \sigma_{x_1, ..., x_n}</span>
+
+<span class="sd">    where </span>
+
+<span class="sd">    - :math:`x_1, \dots, x_n` are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</span>
+
+<span class="sd">    - :math:`\textit{agg}` is the robust aggregator to be used to aggregate the vectors during the training.</span>
+
+<span class="sd">    - :math:`\textit{pre_agg_list}` is the list of robust pre-aggregators to be used to transform the vectors during the training.</span>
+
+<span class="sd">    - :math:`f` conceptually represents the expected number of Byzantine vectors.</span>
+
+<span class="sd">    - :math:`\tau_{opt} \in \mathbb{R}` is the optimal attack factor found using a line-search optimization method.</span>
+
+<span class="sd">    - :math:`\mu_{x_1, \dots, x_n} = \frac{1}{n}\sum_{i=1}^{n}x_i` is the mean vector.</span>
+
+<span class="sd">    - \\(\\big[\\cdot\\big]_k\\) refers to the \\(k\\)-th coordinate.</span>
+
+<span class="sd">    - :math:`\sigma_{x_1, \dots, x_n}` is the coordinate-wise standard deviation of :math:`x_1, \dots, x_n`, i.e., :math:`\big[\sigma_{x_1, \dots, x_n}\big]_k = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(\big[x_i\big]_k - \big[\mu_{x_1, \dots, x_n}\big]_k)^2}`.</span>
+
+<span class="sd">    This attack is designed to optimize the attack factor :math:`\tau` of the ALIE attack by maximizing a specific function.</span>
+<span class="sd">    The function quantifies the effect of the attack, in particular the \\(\\ell_2\\)-norm of the distance between the aggregated vectors (including Byzantine vectors) and the average of honest vectors.</span>
+<span class="sd">    The goal is to find the attack factor that results in the maximum disruption.</span>
+
+<span class="sd">    This attack, developed by the ByzFL team, draws inspiration from the ALIE attack and has been utilized in [2]_.</span>
+
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    --------------------------</span>
+
+<span class="sd">    agg : object, optional (default: Average)</span>
+<span class="sd">        An instance of a robust aggregator that will be used to aggregate the vectors during the optimization process.</span>
+
+<span class="sd">    pre_agg_list : list, optional (default: [Clipping])</span>
+<span class="sd">        A list of pre-aggregation functions, where each element is an object representing a pre-aggregation method.</span>
+
+<span class="sd">    f : int, optional (default: 1)</span>
+<span class="sd">        The number of Byzantine participants. Must be a non-negative integer.</span>
+
+<span class="sd">    evals : int, optional (default: 20)</span>
+<span class="sd">        The maximum number of evaluations during the optimization process. Must be a positive integer.</span>
+
+<span class="sd">    start : float, optional (default: 0.0)</span>
+<span class="sd">        The initial attack factor to evaluate. Must be a float.</span>
+
+<span class="sd">    delta : float, optional (default: 10.0)</span>
+<span class="sd">        The initial step size for the optimization process. Must be a non-zero float.</span>
+
+<span class="sd">    ratio : float, optional (default: 0.8)</span>
+<span class="sd">        The contraction ratio used to reduce the step size during the contraction phase. Must be between 0.5 and 1 (both excluded).</span>
+
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
+
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output is the same as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import byzfl</span>
+<span class="sd">    &gt;&gt;&gt; # Instantiate the robust aggregator</span>
+<span class="sd">    &gt;&gt;&gt; agg = byzfl.TrMean(f=1)</span>
+<span class="sd">    &gt;&gt;&gt; # Instantiate the list of pre-aggregators</span>
+<span class="sd">    &gt;&gt;&gt; pre_agg_list = [byzfl.NNM(f=1), byzfl.Clipping()]</span>
+<span class="sd">    &gt;&gt;&gt; # Instantiate the attack</span>
+<span class="sd">    &gt;&gt;&gt; attack = byzfl.Optimal_ALittleIsEnough(agg, pre_agg_list=pre_agg_list, f=1)</span>
+
+<span class="sd">    Using numpy arrays</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([6.0615843 7.0615843 8.0615843])</span>
+<span class="sd">            </span>
+<span class="sd">    Using torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([6.0616, 7.0616, 8.0616])</span>
+
+<span class="sd">    Using list of numpy arrays</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray  </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    array([6.0615843 7.0615843 8.0615843])</span>
+
+<span class="sd">    Using list of torch tensors</span>
+<span class="sd">        </span>
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; attack(x)</span>
+<span class="sd">    tensor([6.0616, 7.0616, 8.0616])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [1] Baruch, M., Baruch, G., and Goldberg, Y. A little is enough: Circumventing defenses for distributed learning.</span>
+<span class="sd">           In Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, 8-14 December 2019, Long Beach, CA, USA, 2019.</span>
+<span class="sd">    </span>
+<span class="sd">    .. [2] Allouah, Y., Farhadkhani, S., Guerraoui, R., Gupta, N., Pinot, R.,</span>
+<span class="sd">           &amp; Stephan, J. (2023, April). Fixing by mixing: A recipe for optimal</span>
+<span class="sd">           byzantine ml under heterogeneity. In International Conference on </span>
+<span class="sd">           Artificial Intelligence and Statistics (pp. 1232-1300). PMLR.  </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agg</span><span class="o">=</span><span class="n">Average</span><span class="p">(),</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="p">[</span><span class="n">Clipping</span><span class="p">()],</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">evals</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+
+        <span class="c1"># List of valid aggregator classes</span>
+        <span class="n">valid_agg_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">Average</span><span class="p">,</span> <span class="n">Median</span><span class="p">,</span> <span class="n">TrMean</span><span class="p">,</span> <span class="n">GeometricMedian</span><span class="p">,</span> <span class="n">Krum</span><span class="p">,</span> <span class="n">MultiKrum</span><span class="p">,</span> <span class="n">CenteredClipping</span><span class="p">,</span> <span class="n">MDA</span><span class="p">,</span> <span class="n">MoNNA</span><span class="p">,</span> <span class="n">Meamed</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="n">valid_agg_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg</span> <span class="o">=</span> <span class="n">agg</span>
+
+        <span class="c1"># List of valid pre-aggregator classes</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="n">valid_pre_agg_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">NNM</span><span class="p">,</span> <span class="n">Bucketing</span><span class="p">,</span> <span class="n">Clipping</span><span class="p">,</span> <span class="n">ARC</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">,</span> <span class="n">valid_pre_agg_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="n">pre_agg_list</span>
+
+        <span class="n">check_type</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="s2">&quot;evals&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="n">evals</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_different_from_value</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
+
+    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">current_tau</span><span class="p">):</span>
+<span class="w">       </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the norm of the distance between the aggregated vector (including Byzantine vectors) and the average of honest vectors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : ndarray or torch.tensor</span>
+<span class="sd">            Honest node vectors (2D).</span>
+<span class="sd">        avg_honest_vector : ndarray or torch.tensor</span>
+<span class="sd">            Average of honest_vectors (1D).</span>
+<span class="sd">        current_tau : float</span>
+<span class="sd">            Current attack factor considered in the attack.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            Norm of the distance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+
+        <span class="c1">#Compute Byzantine vector</span>
+        <span class="n">attack</span> <span class="o">=</span> <span class="n">ALittleIsEnough</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="n">current_tau</span><span class="p">)</span>
+        <span class="n">byzantine_vector</span> <span class="o">=</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">byzantine_vectors</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">byzantine_vector</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="c1">#Aggregate vectors with current Byzantine vectors</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">byzantine_vectors</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="p">:</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="n">pre_agg</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="n">aggregated_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+
+        <span class="c1">#Return distance between aggregate vector and mean of honest vectors</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">aggregated_vector</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_expansion_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">):</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs the expansion phase of the optimization.</span>
+<span class="sd">        This phase explores the search space aggressively by increasing the step size (delta) when a better value is found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">best_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="n">best_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">best_x</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span>
+        <span class="n">remaining_evals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">while</span> <span class="n">remaining_evals</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">prop_x</span> <span class="o">=</span> <span class="n">best_x</span> <span class="o">+</span> <span class="n">delta</span>
+            <span class="n">prop_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">prop_x</span><span class="p">)</span>
+            <span class="n">remaining_evals</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">prop_y</span> <span class="o">&gt;</span> <span class="n">best_y</span><span class="p">:</span>
+                <span class="c1"># If the new value is better: Update best_x, double the step size (delta *= 2), and continue exploring.</span>
+                <span class="n">best_x</span><span class="p">,</span> <span class="n">best_y</span> <span class="o">=</span> <span class="n">prop_x</span><span class="p">,</span> <span class="n">prop_y</span>
+                <span class="n">delta</span> <span class="o">*=</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If the new value is worse: Stop the expansion phase and proceed to contraction.</span>
+                <span class="n">delta</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">best_x</span><span class="p">,</span> <span class="n">best_y</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">remaining_evals</span>
+
+    <span class="k">def</span> <span class="nf">_contraction_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">best_x</span><span class="p">,</span> <span class="n">best_y</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">remaining_evals</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs the contraction phase of the optimization.</span>
+<span class="sd">        This phase refines the search by reducing the step size (delta) and searching around the current best value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">remaining_evals</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Continue reducing the step size until no significant improvements are found or evaluations are exhausted.</span>
+            <span class="n">prop_x</span> <span class="o">=</span> <span class="n">best_x</span> <span class="o">+</span> <span class="n">delta</span>
+            <span class="n">prop_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">prop_x</span><span class="p">)</span>
+            <span class="n">remaining_evals</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">prop_y</span> <span class="o">&gt;</span> <span class="n">best_y</span><span class="p">:</span>
+                <span class="c1"># If a better value is found: Update best_x and best_y.</span>
+                <span class="n">best_x</span><span class="p">,</span> <span class="n">best_y</span> <span class="o">=</span> <span class="n">prop_x</span><span class="p">,</span> <span class="n">prop_y</span>
+
+            <span class="n">delta</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span>
+
+        <span class="k">return</span> <span class="n">best_x</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iteratively computes the best attack factor tau and executes the corresponding IPM attack.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        honest_vectors : ndarray or torch.tensor</span>
+<span class="sd">            Honest node vectors (2D).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+        <span class="n">avg_honest_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Expansion Phase</span>
+        <span class="n">best_tau</span><span class="p">,</span> <span class="n">largest_distance</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">remaining_evals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expansion_phase</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">)</span>
+
+        <span class="c1"># Contraction Phase</span>
+        <span class="n">best_tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction_phase</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">best_tau</span><span class="p">,</span> <span class="n">largest_distance</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">remaining_evals</span><span class="p">)</span>
+
+        <span class="c1"># Set the best attack factor and execute IPM</span>
+        <span class="n">attack</span> <span class="o">=</span> <span class="n">ALittleIsEnough</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="n">best_tau</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span></div>
 
 
 

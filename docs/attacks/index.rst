@@ -18,6 +18,7 @@ Explore these components to better understand and experiment with Byzantine atta
    classes/inner_product_manipulation
    classes/optimal_ipm
    classes/little_is_enough
+   classes/optimal_alie
    classes/mimic
    classes/inf
    classes/gaussian

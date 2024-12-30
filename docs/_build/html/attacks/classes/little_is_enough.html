@@ -53,7 +53,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Mimic" href="mimic.html" />
+    <link rel="next" title="Optimal A Little Is Enough (Opt-ALIE)" href="optimal_alie.html" />
     <link rel="prev" title="Optimal Inner Product Manipulation (Opt-IPM)" href="optimal_ipm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -355,6 +355,7 @@
 <li class="toctree-l1"><a class="reference internal" href="inner_product_manipulation.html">Inner Product Manipulation (IPM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="optimal_ipm.html">Optimal Inner Product Manipulation (Opt-IPM)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">A Little Is Enough (ALIE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimal_alie.html">Optimal A Little Is Enough (Opt-ALIE)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mimic.html">Mimic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inf.html">Infinity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gaussian.html">Gaussian</a></li>
@@ -419,14 +420,14 @@
                 <article class="bd-article">
                   
   <section id="a-little-is-enough-alie">
-<h1>A Little Is Enough (ALIE)<a class="headerlink" href="#a-little-is-enough-alie" title="Link to this heading">#</a></h1>
+<span id="alie-label"></span><h1>A Little Is Enough (ALIE)<a class="headerlink" href="#a-little-is-enough-alie" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ALittleIsEnough">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ALittleIsEnough</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#ALittleIsEnough"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ALittleIsEnough" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Execute the A Little is Enough (ALIE) attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<p>Execute the A Little Is Enough (ALIE) attack <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: perturb the mean vector using the coordinate-wise standard deviation of the vectors multiplicatively scaled with the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\text{ALIE}_{\tau}(x_1, \dots, x_n) = \mu_{x_1, ..., x_n} + \tau \cdot \sigma_{x_1, ..., x_n}\]</div>
 <p>where</p>
@@ -525,11 +526,11 @@ In Advances in Neural Information Processing Systems 32: Annual Conference on Ne
       </div>
     </a>
     <a class="right-next"
-       href="mimic.html"
+       href="optimal_alie.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Mimic</p>
+        <p class="prev-next-title">Optimal A Little Is Enough (Opt-ALIE)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

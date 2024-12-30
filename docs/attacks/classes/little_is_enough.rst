@@ -1,3 +1,5 @@
+.. _alie-label:
+
 A Little Is Enough (ALIE)
 =======================
 

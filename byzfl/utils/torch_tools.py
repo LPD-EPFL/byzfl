@@ -99,12 +99,7 @@ def dot(vector1, vector2):
 	return torch.matmul(vector1, vector2)
 
 def rand(vector):
-	return torch.rand(
-    	vector.size(),
-    	dtype=vector.dtype,
-    	layout=vector.layout,
-    	device=vector.device
-	)
+	return torch.rand(vector.size(), dtype=vector.dtype, layout=vector.layout, device=vector.device)
 
 def subtract(vector1, vector2):
 	return torch.subtract(vector1, vector2)
