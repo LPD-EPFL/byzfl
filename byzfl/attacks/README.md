@@ -5,8 +5,10 @@ The `attacks` module in ByzFL provides a comprehensive suite of Byzantine attack
 ## Available Attacks
 
 - **Sign Flipping**: Reverses the sign of gradients to hinder model convergence.
-- **Fall of Empires (FOE)**: Generalisation of Sign Flipping, effectively steering the model away from optimal convergence.
+- **Inner Product Manipulation (IPM)**: Alters gradients to manipulate inner products, effectively steering the model away from optimal convergence.
+- **Optimal Inner Product Manipulation (Opt-IPM)**: Generalization of the IPM attack, where the attack factor is optimally determined using a line-search optimization method.
 - **A Little Is Enough (ALIE)**: Introduces subtle yet effective perturbations to gradients, proportional to the standard deviation of the input vectors.
+- **Optimal A Little Is Enough (Opt-ALIE)**: Generalization of the ALIE attack, where the attack factor is optimally determined using a line-search optimization method.
 - **Infinity (Inf)**: Generates vectors with extreme values, effectively disrupting the learning process.
 - **Mimic**: Subtle attack strategy where the Byzantine participants aim to mimic the behavior of honest participants, instead of generating obvious outliers.
 - **Gaussian**: Generates gradients sampled from a Gaussian distribution, introducing randomness and potential divergence
