@@ -3,6 +3,7 @@ import torch
 from scipy.spatial import distance
 from byzfl.utils import torch_tools
 
+
 def check_vectors_type(vectors):
     if isinstance(vectors, list) and isinstance(vectors[0], np.ndarray):
         tools = np
@@ -21,6 +22,7 @@ def check_vectors_type(vectors):
                         " or 'torch.Tensor'")
     return tools, vectors
 
+
 def random_tool(vectors):
     if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or
         isinstance(vectors, np.ndarray)):
@@ -31,6 +33,7 @@ def random_tool(vectors):
 
     return tools
 
+
 def distance_tool(vectors):
     if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or
         isinstance(vectors, np.ndarray)):
@@ -39,16 +42,6 @@ def distance_tool(vectors):
           isinstance(vectors, torch.Tensor)):
         tools = torch_tools
 
-    return tools
-
-
-def linalg_tool(vectors):
-    if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or
-        isinstance(vectors, np.ndarray)):
-        tools = np.linalg
-    elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
-          isinstance(vectors, torch.Tensor)):
-        tools = torch.linalg
     return tools
 
 

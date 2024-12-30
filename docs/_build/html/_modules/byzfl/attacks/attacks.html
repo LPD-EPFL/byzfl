@@ -776,10 +776,9 @@
 <span class="sd">            Norm of the distance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1">#Compute Byzantine vector</span>
         <span class="n">tools</span><span class="p">,</span> <span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
-        <span class="n">linalg</span> <span class="o">=</span> <span class="n">linalg_tool</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
 
+        <span class="c1">#Compute Byzantine vector</span>
         <span class="n">attack</span> <span class="o">=</span> <span class="n">InnerProductManipulation</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="n">current_tau</span><span class="p">)</span>
         <span class="n">byzantine_vector</span> <span class="o">=</span> <span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
         <span class="n">byzantine_vectors</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">byzantine_vector</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
@@ -792,7 +791,7 @@
 
         <span class="c1">#Return distance between aggregate vector and mean of honest vectors</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">aggregated_vector</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_expansion_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">):</span>
 <span class="w">        </span>

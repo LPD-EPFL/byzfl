@@ -1,4 +1,5 @@
 import torch
+import torch.linalg as linalg
 
 def mean(vectors, axis=0):
 	return torch.mean(vectors, axis=axis)

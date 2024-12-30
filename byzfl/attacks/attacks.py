@@ -378,10 +378,9 @@ class Optimal_InnerProductManipulation:
             Norm of the distance.
         """
 
-        #Compute Byzantine vector
         tools, honest_vectors = check_vectors_type(honest_vectors)
-        linalg = linalg_tool(honest_vectors)
 
+        #Compute Byzantine vector
         attack = InnerProductManipulation(tau=current_tau)
         byzantine_vector = attack(honest_vectors)
         byzantine_vectors = tools.array([byzantine_vector] * self.f)
@@ -394,7 +393,7 @@ class Optimal_InnerProductManipulation:
 
         #Return distance between aggregate vector and mean of honest vectors
         distance = tools.subtract(aggregated_vector, avg_honest_vector)
-        return linalg.norm(distance)
+        return tools.linalg.norm(distance)
 
     def _expansion_phase(self, honest_vectors, avg_honest_vector):
         
