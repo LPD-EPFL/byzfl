@@ -4,30 +4,43 @@ from byzfl.aggregators import preaggregators
 import byzfl.attacks as attacks
 
 class RobustAggregator:
-
     """
     Description
     -----------
-    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors. This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.
+    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.
+    This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.
 
     Features
     --------
-    - **Pre-Aggregation**: Allows the application of multiple pre-aggregation techniques sequentially, such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors.
-    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute an output vector resilient to Byzantine inputs.
-    - Compatible with both NumPy and PyTorch tensors, as well as lists of these data types.
+    - **Pre-Aggregation**: Enables the application of multiple pre-aggregation steps in a sequential manner, 
+      such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors before aggregation.
+    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute 
+      an output vector resilient to Byzantine inputs.
+    - **Compatibility**: Works seamlessly with NumPy arrays, PyTorch tensors, and lists of these data types.
 
     Initialization Parameters
     -------------------------
     aggregator_info : dict 
-        Specifies the aggregation method and its parameters.
+        A dictionary specifying the aggregation method and its parameters.
+
         - **Keys**:
-            - `"name"`: Name of the aggregation method (e.g., `"TrMean"`).
-            - `"parameters"`: Dictionary of parameters required by the specified aggregation method.
-    pre_agg_list : list (default: [])
+            - `"name"`: str
+                Name of the aggregation method (e.g., `"TrMean"`).
+            - `"parameters"`: dict
+                A dictionary of parameters required by the specified aggregation method.
+    pre_agg_list : list, optional (default: [])
         A list of dictionaries, each specifying a pre-aggregation method and its parameters.
+
         - **Keys**:
-            - `"name"`: Name of the pre-aggregation method (e.g., `"NNM"`).
-            - `"parameters"`: Dictionary of parameters required by the specified pre-aggregation method.
+            - `"name"`: str
+                Name of the pre-aggregation method (e.g., `"NNM"`).
+            - `"parameters"`: dict
+                A dictionary of parameters required by the specified pre-aggregation method.
+
+    Methods
+    -------
+    aggregate_vectors(vectors)
+        Applies the specified pre-aggregation and aggregation methods to the input vectors, returning the aggregated result.
 
     Calling the Instance
     --------------------
@@ -35,8 +48,7 @@ class RobustAggregator:
     ----------------
     vectors : numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor
         A collection of input vectors, matrices, or tensors to process.
-        Conceptually, these vectors correspond to gradients submitted by honest and Byzantine participants during a training iteration.
-
+        These vectors conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.
 
     Returns
     -------
@@ -60,79 +72,85 @@ class RobustAggregator:
 
     Apply the RobustAggregator to various types of input data:
 
-    Using numpy arrays:
+    Using NumPy arrays:
 
     >>> import numpy as np
-    >>> x = np.array([[1., 2., 3.],       # np.ndarray
-    >>>               [4., 5., 6.], 
-    >>>               [7., 8., 9.]])
-    >>> rob_agg(x)
+    >>> vectors = np.array([[1., 2., 3.], [4., 5., 6.], [7., 8., 9.]])
+    >>> rob_agg.aggregate_vectors(vectors)
     array([0.95841302, 1.14416941, 1.3299258])
 
-    Using torch tensors:
+    Using PyTorch tensors:
 
     >>> import torch
-    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
-    >>>                   [4., 5., 6.], 
-    >>>                   [7., 8., 9.]])
-    >>> rob_agg(x)
+    >>> vectors = torch.tensor([[1., 2., 3.], [4., 5., 6.], [7., 8., 9.]])
+    >>> rob_agg.aggregate_vectors(vectors)
     tensor([0.9584, 1.1442, 1.3299])
 
-    Using a list of numpy arrays:
+    Using a list of NumPy arrays:
 
     >>> import numpy as np
-    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray 
-    >>>      np.array([4., 5., 6.]), 
-    >>>      np.array([7., 8., 9.])]
-    >>> rob_agg(x)
+    >>> vectors = [np.array([1., 2., 3.]), np.array([4., 5., 6.]), np.array([7., 8., 9.])]
+    >>> rob_agg.aggregate_vectors(vectors)
     array([0.95841302, 1.14416941, 1.3299258])
 
-    Using a list of torch tensors:
+    Using a list of PyTorch tensors:
 
     >>> import torch
-    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
-    >>>      torch.tensor([4., 5., 6.]), 
-    >>>      torch.tensor([7., 8., 9.])]
-    >>> rob_agg(x)
+    >>> vectors = [torch.tensor([1., 2., 3.]), torch.tensor([4., 5., 6.]), torch.tensor([7., 8., 9.])]
+    >>> rob_agg.aggregate_vectors(vectors)
     tensor([0.9584, 1.1442, 1.3299])
 
     Notes
     -----
-    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.
     - Pre-aggregations are applied in the order they are listed in `pre_agg_list`.
-
+    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.
     """
 
     def __init__(self, aggregator_info, pre_agg_list=[]):
+        """
+        Initializes the RobustAggregator with the specified pre-aggregation and aggregation configurations.
 
+        Parameters
+        ----------
+        aggregator_info : dict
+            Dictionary specifying the aggregation method and its parameters.
+        pre_agg_list : list, optional
+            List of dictionaries specifying pre-aggregation methods and their parameters.
+        """
         self.aggregator = getattr(aggregators, aggregator_info["name"])
         signature_agg = inspect.signature(self.aggregator.__init__)
-        agg_parameters = {}
-        for parameter in signature_agg.parameters.values():
-            param_name = parameter.name
-            if param_name in aggregator_info["parameters"]:
-                agg_parameters[param_name] = aggregator_info["parameters"][param_name]
+        agg_parameters = {
+            param.name: aggregator_info["parameters"].get(param.name, param.default)
+            for param in signature_agg.parameters.values()
+            if param.name in aggregator_info["parameters"]
+        }
         self.aggregator = self.aggregator(**agg_parameters)
 
         self.pre_agg_list = []
         for pre_agg_info in pre_agg_list:
             pre_agg = getattr(preaggregators, pre_agg_info["name"])
             signature_pre_agg = inspect.signature(pre_agg.__init__)
-            pre_agg_parameters = {}
-            for parameter in signature_pre_agg.parameters.values():
-                param_name = parameter.name
-                if param_name in pre_agg_info["parameters"]:
-                    pre_agg_parameters[param_name] = pre_agg_info["parameters"][param_name]
-            pre_agg = pre_agg(**pre_agg_parameters)
-            self.pre_agg_list.append(pre_agg)
+            pre_agg_parameters = {
+                param.name: pre_agg_info["parameters"].get(param.name, param.default)
+                for param in signature_pre_agg.parameters.values()
+                if param.name in pre_agg_info["parameters"]
+            }
+            self.pre_agg_list.append(pre_agg(**pre_agg_parameters))
 
-    def __call__(self, vectors):
+    def aggregate_vectors(self, vectors):
         """
-        Description
-        -----------
-        Apply pre-aggregations and aggregations to the vectors
-        """
+        Applies the configured pre-aggregations and robust aggregation method to the input vectors.
 
+        Parameters
+        ----------
+        vectors : numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor
+            A collection of input vectors to process.
+
+        Returns
+        -------
+        numpy.ndarray or torch.Tensor
+            The aggregated output vector with the same data type as the input.
+        """
         for pre_agg in self.pre_agg_list:
             vectors = pre_agg(vectors)
         return self.aggregator(vectors)
@@ -179,7 +197,7 @@ class ByzantineWorker:
     Returns
     -------
     list
-        A list containing `f` faulty vectors generated by the Byzantine attack.
+        A list containing `f` faulty vectors generated by the Byzantine attack, each with the same data type as the input.
 
     Examples
     --------
@@ -209,12 +227,14 @@ class ByzantineWorker:
 
     Using a list of numpy arrays:
 
+    >>> import numpy as np
     >>> honest_vectors = [np.array([1., 2., 3.]), np.array([4., 5., 6.]), np.array([7., 8., 9.])]
     >>> byz_worker.apply_attack(honest_vectors)
     [array([-12., -15., -18.]), array([-12., -15., -18.]), array([-12., -15., -18.])]
 
     Using a list of torch tensors:
 
+    >>> import torch
     >>> honest_vectors = [torch.tensor([1., 2., 3.]), torch.tensor([4., 5., 6.]), torch.tensor([7., 8., 9.])]
     >>> byz_worker.apply_attack(honest_vectors)
     [tensor([-12., -15., -18.]), tensor([-12., -15., -18.]), tensor([-12., -15., -18.])]
@@ -254,7 +274,7 @@ class ByzantineWorker:
         Returns
         -------
         list
-            A list containing `f` faulty (Byzantine) vectors generated by the attack.
+            A list containing `f` faulty (Byzantine) vectors generated by the attack, each with the same data type as the input.
             If `f = 0`, an empty list is returned.
         """
         if self.f == 0:

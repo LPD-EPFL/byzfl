@@ -396,30 +396,43 @@
 <div class="viewcode-block" id="RobustAggregator">
 <a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
 <span class="k">class</span> <span class="nc">RobustAggregator</span><span class="p">:</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors. This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</span>
+<span class="sd">    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.</span>
+<span class="sd">    This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</span>
 
 <span class="sd">    Features</span>
 <span class="sd">    --------</span>
-<span class="sd">    - **Pre-Aggregation**: Allows the application of multiple pre-aggregation techniques sequentially, such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors.</span>
-<span class="sd">    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute an output vector resilient to Byzantine inputs.</span>
-<span class="sd">    - Compatible with both NumPy and PyTorch tensors, as well as lists of these data types.</span>
+<span class="sd">    - **Pre-Aggregation**: Enables the application of multiple pre-aggregation steps in a sequential manner, </span>
+<span class="sd">      such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors before aggregation.</span>
+<span class="sd">    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute </span>
+<span class="sd">      an output vector resilient to Byzantine inputs.</span>
+<span class="sd">    - **Compatibility**: Works seamlessly with NumPy arrays, PyTorch tensors, and lists of these data types.</span>
 
 <span class="sd">    Initialization Parameters</span>
 <span class="sd">    -------------------------</span>
 <span class="sd">    aggregator_info : dict </span>
-<span class="sd">        Specifies the aggregation method and its parameters.</span>
+<span class="sd">        A dictionary specifying the aggregation method and its parameters.</span>
+
 <span class="sd">        - **Keys**:</span>
-<span class="sd">            - `&quot;name&quot;`: Name of the aggregation method (e.g., `&quot;TrMean&quot;`).</span>
-<span class="sd">            - `&quot;parameters&quot;`: Dictionary of parameters required by the specified aggregation method.</span>
-<span class="sd">    pre_agg_list : list (default: [])</span>
+<span class="sd">            - `&quot;name&quot;`: str</span>
+<span class="sd">                Name of the aggregation method (e.g., `&quot;TrMean&quot;`).</span>
+<span class="sd">            - `&quot;parameters&quot;`: dict</span>
+<span class="sd">                A dictionary of parameters required by the specified aggregation method.</span>
+<span class="sd">    pre_agg_list : list, optional (default: [])</span>
 <span class="sd">        A list of dictionaries, each specifying a pre-aggregation method and its parameters.</span>
+
 <span class="sd">        - **Keys**:</span>
-<span class="sd">            - `&quot;name&quot;`: Name of the pre-aggregation method (e.g., `&quot;NNM&quot;`).</span>
-<span class="sd">            - `&quot;parameters&quot;`: Dictionary of parameters required by the specified pre-aggregation method.</span>
+<span class="sd">            - `&quot;name&quot;`: str</span>
+<span class="sd">                Name of the pre-aggregation method (e.g., `&quot;NNM&quot;`).</span>
+<span class="sd">            - `&quot;parameters&quot;`: dict</span>
+<span class="sd">                A dictionary of parameters required by the specified pre-aggregation method.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    aggregate_vectors(vectors)</span>
+<span class="sd">        Applies the specified pre-aggregation and aggregation methods to the input vectors, returning the aggregated result.</span>
 
 <span class="sd">    Calling the Instance</span>
 <span class="sd">    --------------------</span>
@@ -427,8 +440,7 @@
 <span class="sd">    ----------------</span>
 <span class="sd">    vectors : numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor</span>
 <span class="sd">        A collection of input vectors, matrices, or tensors to process.</span>
-<span class="sd">        Conceptually, these vectors correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
-
+<span class="sd">        These vectors conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -452,82 +464,91 @@
 
 <span class="sd">    Apply the RobustAggregator to various types of input data:</span>
 
-<span class="sd">    Using numpy arrays:</span>
+<span class="sd">    Using NumPy arrays:</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
-<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
-<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
-<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    &gt;&gt;&gt; vectors = np.array([[1., 2., 3.], [4., 5., 6.], [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg.aggregate_vectors(vectors)</span>
 <span class="sd">    array([0.95841302, 1.14416941, 1.3299258])</span>
 
-<span class="sd">    Using torch tensors:</span>
+<span class="sd">    Using PyTorch tensors:</span>
 
 <span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
-<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
-<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
-<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    &gt;&gt;&gt; vectors = torch.tensor([[1., 2., 3.], [4., 5., 6.], [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg.aggregate_vectors(vectors)</span>
 <span class="sd">    tensor([0.9584, 1.1442, 1.3299])</span>
 
-<span class="sd">    Using a list of numpy arrays:</span>
+<span class="sd">    Using a list of NumPy arrays:</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
-<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
-<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
-<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    &gt;&gt;&gt; vectors = [np.array([1., 2., 3.]), np.array([4., 5., 6.]), np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg.aggregate_vectors(vectors)</span>
 <span class="sd">    array([0.95841302, 1.14416941, 1.3299258])</span>
 
-<span class="sd">    Using a list of torch tensors:</span>
+<span class="sd">    Using a list of PyTorch tensors:</span>
 
 <span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
-<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
-<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
-<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    &gt;&gt;&gt; vectors = [torch.tensor([1., 2., 3.]), torch.tensor([4., 5., 6.]), torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg.aggregate_vectors(vectors)</span>
 <span class="sd">    tensor([0.9584, 1.1442, 1.3299])</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.</span>
 <span class="sd">    - Pre-aggregations are applied in the order they are listed in `pre_agg_list`.</span>
-
+<span class="sd">    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the RobustAggregator with the specified pre-aggregation and aggregation configurations.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        aggregator_info : dict</span>
+<span class="sd">            Dictionary specifying the aggregation method and its parameters.</span>
+<span class="sd">        pre_agg_list : list, optional</span>
+<span class="sd">            List of dictionaries specifying pre-aggregation methods and their parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">aggregators</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
         <span class="n">signature_agg</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
-        <span class="n">agg_parameters</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">signature_agg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">param_name</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span>
-            <span class="k">if</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]:</span>
-                <span class="n">agg_parameters</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">][</span><span class="n">param_name</span><span class="p">]</span>
+        <span class="n">agg_parameters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">signature_agg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="p">(</span><span class="o">**</span><span class="n">agg_parameters</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">pre_agg_info</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
             <span class="n">pre_agg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">preaggregators</span><span class="p">,</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
             <span class="n">signature_pre_agg</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">pre_agg</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
-            <span class="n">pre_agg_parameters</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">signature_pre_agg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">param_name</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span>
-                <span class="k">if</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]:</span>
-                    <span class="n">pre_agg_parameters</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">][</span><span class="n">param_name</span><span class="p">]</span>
-            <span class="n">pre_agg</span> <span class="o">=</span> <span class="n">pre_agg</span><span class="p">(</span><span class="o">**</span><span class="n">pre_agg_parameters</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">)</span>
+            <span class="n">pre_agg_parameters</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">signature_pre_agg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">(</span><span class="o">**</span><span class="n">pre_agg_parameters</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+<div class="viewcode-block" id="RobustAggregator.aggregate_vectors">
+<a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator.aggregate_vectors">[docs]</a>
+    <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Description</span>
-<span class="sd">        -----------</span>
-<span class="sd">        Apply pre-aggregations and aggregations to the vectors</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        Applies the configured pre-aggregations and robust aggregation method to the input vectors.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vectors : numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor</span>
+<span class="sd">            A collection of input vectors to process.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray or torch.Tensor</span>
+<span class="sd">            The aggregated output vector with the same data type as the input.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="p">:</span>
             <span class="n">vectors</span> <span class="o">=</span> <span class="n">pre_agg</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
+</div>
 
 
 
@@ -574,7 +595,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    list</span>
-<span class="sd">        A list containing `f` faulty vectors generated by the Byzantine attack.</span>
+<span class="sd">        A list containing `f` faulty vectors generated by the Byzantine attack, each with the same data type as the input.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -604,12 +625,14 @@
 
 <span class="sd">    Using a list of numpy arrays:</span>
 
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; honest_vectors = [np.array([1., 2., 3.]), np.array([4., 5., 6.]), np.array([7., 8., 9.])]</span>
 <span class="sd">    &gt;&gt;&gt; byz_worker.apply_attack(honest_vectors)</span>
 <span class="sd">    [array([-12., -15., -18.]), array([-12., -15., -18.]), array([-12., -15., -18.])]</span>
 
 <span class="sd">    Using a list of torch tensors:</span>
 
+<span class="sd">    &gt;&gt;&gt; import torch</span>
 <span class="sd">    &gt;&gt;&gt; honest_vectors = [torch.tensor([1., 2., 3.]), torch.tensor([4., 5., 6.]), torch.tensor([7., 8., 9.])]</span>
 <span class="sd">    &gt;&gt;&gt; byz_worker.apply_attack(honest_vectors)</span>
 <span class="sd">    [tensor([-12., -15., -18.]), tensor([-12., -15., -18.]), tensor([-12., -15., -18.])]</span>
@@ -651,7 +674,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">            A list containing `f` faulty (Byzantine) vectors generated by the attack.</span>
+<span class="sd">            A list containing `f` faulty (Byzantine) vectors generated by the attack, each with the same data type as the input.</span>
 <span class="sd">            If `f = 0`, an empty list is returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
