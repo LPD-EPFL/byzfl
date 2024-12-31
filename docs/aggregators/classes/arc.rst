@@ -1,5 +1,5 @@
 Adaptive Robust Clipping (ARC)
-=========================
+==============================
 
 .. autoclass:: byzfl.ARC
     :members:

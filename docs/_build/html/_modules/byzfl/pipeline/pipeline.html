@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>byzfl.pipeline.robust_aggregators &#8212; ByzFL</title>
+    <title>byzfl.pipeline.pipeline &#8212; ByzFL</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/pipeline/robust_aggregators';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/pipeline/pipeline';</script>
     <script src="../../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -370,7 +370,7 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.pipeline.robust_aggregators</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.pipeline.pipeline</span></li>
   </ul>
 </nav>
 </div>
@@ -387,33 +387,42 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for byzfl.pipeline.robust_aggregators</h1><div class="highlight"><pre>
+  <h1>Source code for byzfl.pipeline.pipeline</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
-
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">aggregators</span>
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">preaggregators</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils</span> <span class="kn">import</span> <span class="n">misc</span>
 
 <div class="viewcode-block" id="RobustAggregator">
-<a class="viewcode-back" href="../../../pipeline/robust_aggregators.html#byzfl.pipeline.robust_aggregators.RobustAggregator">[docs]</a>
-<span class="k">class</span> <span class="nc">RobustAggregator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
+<span class="k">class</span> <span class="nc">RobustAggregator</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    Class to apply all the pre-aggregations and the aggregation</span>
-<span class="sd">    to the vectors.</span>
+<span class="sd">    Class to apply all the pre-aggregations and the aggregation to the vectors.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
+<span class="sd">    Initialization parameters</span>
+<span class="sd">    -------------------------</span>
 <span class="sd">    aggregator-info : dict </span>
-<span class="sd">        Dictionary with the keys &quot;name&quot; and &quot;parameters&quot; </span>
-<span class="sd">        of the aggregation defined.</span>
+<span class="sd">        Dictionary with the keys &quot;name&quot; and &quot;parameters&quot; of the aggregation defined.</span>
 <span class="sd">    pre-agg-info : list</span>
-<span class="sd">        List of dictionaries (one for every pre_agg function)</span>
-<span class="sd">        where every dictionary have the keys &quot;name&quot; and &quot;parameters&quot; defined.</span>
+<span class="sd">        List of dictionaries (one for every pre_agg function) where every dictionary has the keys &quot;name&quot; and &quot;parameters&quot; defined.</span>
+<span class="sd">    </span>
+<span class="sd">    Calling the instance</span>
+<span class="sd">    --------------------</span>
 
-<span class="sd">    Methods</span>
+<span class="sd">    Input parameters</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
+<span class="sd">        A set of vectors, matrix or tensors.</span>
+
+<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    :numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The data type of the output will be the same as the input.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="p">[]):</span>
@@ -430,18 +439,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">pre_agg_info</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
             <span class="n">pre_agg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">preaggregators</span><span class="p">,</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-
             <span class="n">signature_pre_agg</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">pre_agg</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
-
             <span class="n">pre_agg_parameters</span> <span class="o">=</span> <span class="p">{}</span>
-
             <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">signature_pre_agg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                 <span class="n">param_name</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span>
                 <span class="k">if</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]:</span>
                     <span class="n">pre_agg_parameters</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">][</span><span class="n">param_name</span><span class="p">]</span>
-
             <span class="n">pre_agg</span> <span class="o">=</span> <span class="n">pre_agg</span><span class="p">(</span><span class="o">**</span><span class="n">pre_agg_parameters</span><span class="p">)</span>
-
             <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
@@ -449,24 +453,11 @@
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
 <span class="sd">        Apply pre-aggregations and aggregations to the vectors</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vectors : (list or np.ndarray or torch.Tensor)</span>
-<span class="sd">            A list of vectors or a matrix (2D array/tensor) where each</span>
-<span class="sd">            row represents a vector.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray or torch.Tensor</span>
-<span class="sd">            Returns a vector with the pre_aggreagtions and the aggregation applied to the input vectors</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="p">:</span>
             <span class="n">vectors</span> <span class="o">=</span> <span class="n">pre_agg</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-
-        <span class="n">aggregate_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>  
-
-        <span class="k">return</span> <span class="n">aggregate_vector</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
 </pre></div>
 
