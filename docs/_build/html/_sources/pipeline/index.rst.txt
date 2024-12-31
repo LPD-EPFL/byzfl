@@ -10,3 +10,4 @@ The Pipeline Module integrates the functionalities of the Aggregation and Attack
    :titlesonly:
 
    classes/robust_aggregators
+   classes/byzantine_worker

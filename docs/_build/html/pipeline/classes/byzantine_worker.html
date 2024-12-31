@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Robust Aggregator &#8212; ByzFL</title>
+    <title>Byzantine Worker &#8212; ByzFL</title>
   
   
   
@@ -46,13 +46,13 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/classes/robust_aggregators';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/classes/byzantine_worker';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Byzantine Worker" href="byzantine_worker.html" />
-    <link rel="prev" title="Pipeline" href="../index.html" />
+    <link rel="next" title="Our Team" href="../../team/index.html" />
+    <link rel="prev" title="Robust Aggregator" href="robust_aggregators.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -349,8 +349,8 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Pipeline</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Robust Aggregator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="byzantine_worker.html">Byzantine Worker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robust_aggregators.html">Robust Aggregator</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Byzantine Worker</a></li>
 </ul>
 </div>
 </nav></div>
@@ -389,7 +389,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Pipeline</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Robust Aggregator</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Byzantine Worker</span></li>
   </ul>
 </nav>
 </div>
@@ -406,113 +406,114 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="robust-aggregator">
-<span id="robust-aggregator-label"></span><h1>Robust Aggregator<a class="headerlink" href="#robust-aggregator" title="Link to this heading">#</a></h1>
+  <section id="byzantine-worker">
+<span id="byzantine-worker-label"></span><h1>Byzantine Worker<a class="headerlink" href="#byzantine-worker" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.RobustAggregator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">RobustAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregator_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_agg_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#RobustAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.RobustAggregator" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.ByzantineWorker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ByzantineWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineWorker" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>The <cite>RobustAggregator</cite> class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors. This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</p>
+<p>The <cite>ByzantineWorker</cite> class is responsible for simulating Byzantine behavior in distributed machine learning
+by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors)
+submitted by honest participants and generates multiple faulty (Byzantine) vectors.</p>
 </section>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Pre-Aggregation</strong>: Allows the application of multiple pre-aggregation techniques sequentially, such as <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a> or <a class="reference internal" href="../../aggregators/classes/nnm.html#nnm-label"><span class="std std-ref">Nearest Neighbor Mixing (NNM)</span></a>, to refine input vectors.</p></li>
-<li><p><strong>Robust Aggregation</strong>: Integrates robust aggregation methods like <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> (TrMean) to compute an output vector resilient to Byzantine inputs.</p></li>
+<li><p>Supports various Byzantine attack strategies through dynamic initialization.</p></li>
+<li><p>Allows customization of attack parameters and the number of faulty nodes.</p></li>
 <li><p>Compatible with both NumPy and PyTorch tensors, as well as lists of these data types.</p></li>
 </ul>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul>
-<li><p><strong>aggregator_info</strong> (<em>dict</em>) – Specifies the aggregation method and its parameters.
-- <strong>Keys</strong>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><cite>“name”</cite>: Name of the aggregation method (e.g., <cite>“TrMean”</cite>).</p></li>
-<li><p><cite>“parameters”</cite>: Dictionary of parameters required by the specified aggregation method.</p></li>
-</ul>
-</div></blockquote>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Byzantine attack. Must include:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><cite>“f”</cite>: int</dt><dd><p>The number of faulty (Byzantine) vectors to generate.</p>
+</dd>
+</dl>
 </li>
-<li><p><strong>pre_agg_list</strong> (<em>list (default: [])</em>) – A list of dictionaries, each specifying a pre-aggregation method and its parameters.
-- <strong>Keys</strong>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><cite>“name”</cite>: Name of the pre-aggregation method (e.g., <cite>“NNM”</cite>).</p></li>
-<li><p><cite>“parameters”</cite>: Dictionary of parameters required by the specified pre-aggregation method.</p></li>
-</ul>
-</div></blockquote>
+<li><dl class="simple">
+<dt><cite>“name”</cite>: str</dt><dd><p>The name of the attack to be executed (e.g., <cite>“InnerProductManipulation”</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>“parameters”</cite>: dict</dt><dd><p>A dictionary of parameters for the specified attack, where keys are parameter names and values are their corresponding values.</p>
+</dd>
+</dl>
 </li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ByzantineWorker.apply_attack">
+<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineWorker.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineWorker.apply_attack" title="Link to this definition">#</a></dt>
+<dd><p>Applies the specified Byzantine attack to the input vectors and returns a list of faulty vectors.</p>
+</dd></dl>
+
 <p class="rubric">Calling the Instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor</em>) – A collection of input vectors, matrices, or tensors to process.
-Conceptually, these vectors correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor</em>) – A collection of input vectors, matrices, or tensors representing gradients submitted by honest participants.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>numpy.ndarray or torch.Tensor</strong> – The aggregated output vector with the same data type as the input.</p>
+<dd class="field-even"><p><strong>list</strong> – A list containing <cite>f</cite> faulty vectors generated by the Byzantine attack.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Initialize the <cite>RobustAggregator</cite> with both pre-aggregation and aggregation methods:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">RobustAggregator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define pre-aggregation methods</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pre_aggregators</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Clipping&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}},</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NNM&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define an aggregation method</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aggregator_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TrMean&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create the RobustAggregator instance</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rob_agg</span> <span class="o">=</span> <span class="n">RobustAggregator</span><span class="p">(</span><span class="n">aggregator_info</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="n">pre_aggregators</span><span class="p">)</span>
+<p>Initialize the <cite>ByzantineWorker</cite> with a specific attack and apply it to input vectors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">ByzantineWorker</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;InnerProductManipulation&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tau&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span> <span class="o">=</span> <span class="n">ByzantineWorker</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Apply the RobustAggregator to various types of input data:</p>
 <p>Using numpy arrays:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rob_agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([0.95841302, 1.14416941, 1.3299258])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[array([-12., -15., -18.]), array([-12., -15., -18.]), array([-12., -15., -18.])]</span>
 </pre></div>
 </div>
 <p>Using torch tensors:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>   <span class="c1"># torch.tensor</span>
-<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rob_agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([0.9584, 1.1442, 1.3299])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[tensor([-12., -15., -18.]), tensor([-12., -15., -18.]), tensor([-12., -15., -18.])]</span>
 </pre></div>
 </div>
 <p>Using a list of numpy arrays:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rob_agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([0.95841302, 1.14416941, 1.3299258])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[array([-12., -15., -18.]), array([-12., -15., -18.]), array([-12., -15., -18.])]</span>
 </pre></div>
 </div>
 <p>Using a list of torch tensors:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rob_agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([0.9584, 1.1442, 1.3299])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[tensor([-12., -15., -18.]), tensor([-12., -15., -18.]), tensor([-12., -15., -18.])]</span>
 </pre></div>
 </div>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.</p></li>
-<li><p>Pre-aggregations are applied in the order they are listed in <cite>pre_agg_list</cite>.</p></li>
-</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineWorker.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>Applies the specified Byzantine attack to the input vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>numpy.ndarray</em><em>, </em><em>torch.Tensor</em><em>, </em><em>list</em><em> of </em><em>numpy.ndarray</em><em>, or </em><em>list</em><em> of </em><em>torch.Tensor</em>) – A collection of input vectors, matrices, or tensors representing gradients submitted by honest participants.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong> – A list containing <cite>f</cite> faulty (Byzantine) vectors generated by the attack.
+If <cite>f = 0</cite>, an empty list is returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </dd></dl>
 
@@ -529,20 +530,20 @@ Conceptually, these vectors correspond to gradients submitted by honest and Byza
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="robust_aggregators.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Pipeline</p>
+        <p class="prev-next-title">Robust Aggregator</p>
       </div>
     </a>
     <a class="right-next"
-       href="byzantine_worker.html"
+       href="../../team/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Byzantine Worker</p>
+        <p class="prev-next-title">Our Team</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -565,7 +566,11 @@ Conceptually, these vectors correspond to gradients submitted by honest and Byza
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineWorker"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineWorker.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_attack()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_attack()</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

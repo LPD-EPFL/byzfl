@@ -1,12 +1,10 @@
 .. _robust-aggregator-label:
 
-RobustAggregator
-================
+Robust Aggregator
+=================
 
 .. autoclass:: byzfl.RobustAggregator
    :members:
    :undoc-members:
    :inherited-members:
    :show-inheritance:
-
-.. _gaussian-label:
