@@ -30,7 +30,6 @@ def random_tool(vectors):
     elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
           isinstance(vectors, torch.Tensor)):
         tools = torch_tools
-
     return tools
 
 
@@ -41,11 +40,10 @@ def distance_tool(vectors):
     elif (isinstance(vectors, list) and isinstance(vectors[0], torch.Tensor) or
           isinstance(vectors, torch.Tensor)):
         tools = torch_tools
-
     return tools
 
 
-def check_type(element, t):
+def check_type(element, element_name, t):
     if isinstance(t, tuple):
         s = "" 
         for i in range(len(t)):
@@ -55,7 +53,7 @@ def check_type(element, t):
     else:
         s = "'" + t.__name__+ "'"
     if not isinstance(element, t):
-        raise TypeError("Expected type" + s + " but got '" + type(element).__name__ + "'")
+        raise TypeError("Expected type " + s + " for " + str(element_name) + " but got '" + type(element).__name__ + "'")
 
 
 #JS

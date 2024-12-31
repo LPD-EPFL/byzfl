@@ -419,26 +419,17 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="p">[]):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">aggregators</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-
         <span class="n">signature_agg</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
-
         <span class="n">agg_parameters</span> <span class="o">=</span> <span class="p">{}</span>
-
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">signature_agg</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">param_name</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span>
             <span class="k">if</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]:</span>
                 <span class="n">agg_parameters</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">][</span><span class="n">param_name</span><span class="p">]</span>
-        
         <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="p">(</span><span class="o">**</span><span class="n">agg_parameters</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="p">[]</span>
-
         <span class="k">for</span> <span class="n">pre_agg_info</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
-
-            <span class="n">pre_agg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                <span class="n">preaggregators</span><span class="p">,</span> 
-                <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">pre_agg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">preaggregators</span><span class="p">,</span> <span class="n">pre_agg_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
 
             <span class="n">signature_pre_agg</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">pre_agg</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
 

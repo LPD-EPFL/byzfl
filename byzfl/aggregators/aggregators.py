@@ -284,7 +284,7 @@ class TrMean(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
@@ -392,9 +392,9 @@ class GeometricMedian(object):
     """
 
     def __init__(self, nu=0.1, T=3):
-        misc.check_type(nu, float)
+        misc.check_type(nu, "nu", float)
         self.nu = nu
-        misc.check_type(T, int)
+        misc.check_type(T, "T", int)
         misc.check_greater_than_or_equal_value(T, "T", 0)
         self.T = T
 
@@ -514,7 +514,7 @@ class Krum(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
     
@@ -630,7 +630,7 @@ class MultiKrum(object):
     """
 
     def __init__(self, f = 0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
@@ -757,12 +757,12 @@ class CenteredClipping(object):
 
     def __init__(self, m=None, L=1, tau=100.0):
         if m is not None:
-            misc.check_type(self.m, (np.ndarray, torch.Tensor))
+            misc.check_type(m, "m", (np.ndarray, torch.Tensor))
         self.m = m
-        misc.check_type(L, int)
+        misc.check_type(L, "L", int)
         misc.check_greater_than_or_equal_value(L, "L", 0)
         self.L = L
-        misc.check_type(tau, float)
+        misc.check_type(tau, "tau", float)
         misc.check_greater_than_or_equal_value(tau, "tau", 0.0)
         self.tau = tau
 
@@ -876,7 +876,7 @@ class MDA(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
     
@@ -1005,10 +1005,10 @@ class MoNNA(object):
     """
     
     def __init__(self, f=0, idx=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
-        misc.check_type(idx, int)
+        misc.check_type(idx, "idx", int)
         misc.check_greater_than_or_equal_value(idx, "idx", 0)
         self.idx = idx
     
@@ -1121,7 +1121,7 @@ class Meamed(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 

@@ -189,7 +189,7 @@ class InnerProductManipulation:
     """
 
     def __init__(self, tau=2.0):
-        check_type(tau, float)
+        check_type(tau, "tau", float)
         self.tau = tau
 
     def __call__(self, honest_vectors):
@@ -331,28 +331,28 @@ class Optimal_InnerProductManipulation:
 
         # List of valid aggregator classes
         valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
-        check_type(agg, valid_agg_classes)
+        check_type(agg, "agg", valid_agg_classes)
         self.agg = agg
 
         # List of valid pre-aggregator classes
-        check_type(pre_agg_list, list)
+        check_type(pre_agg_list, "pre_agg_list", list)
         valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
         for pre_agg in pre_agg_list:
-            check_type(pre_agg, valid_pre_agg_classes)
+            check_type(pre_agg, "pre_agg", valid_pre_agg_classes)
         self.pre_agg_list = pre_agg_list
 
-        check_type(f, int)
+        check_type(f, "f", int)
         check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
-        check_type(evals, int)
+        check_type(evals, "evals", int)
         check_greater_than_value(evals, "evals", 0)
         self.evals = evals
-        check_type(start, float)
+        check_type(start, "start", float)
         self.start = start
-        check_type(delta, float)
+        check_type(delta, "delta", float)
         check_different_from_value(delta, "delta", 0.0)
         self.delta = delta
-        check_type(ratio, float)
+        check_type(ratio, "ratio", float)
         check_greater_than_value(ratio, "ratio", 0.5)
         check_smaller_than_value(ratio, "ratio", 1.0)
         
@@ -562,7 +562,7 @@ class ALittleIsEnough:
     """
 
     def __init__(self, tau=1.5):
-        check_type(tau, float)
+        check_type(tau, "tau", float)
         self.tau = tau
 
     def __call__(self, honest_vectors):
@@ -708,28 +708,28 @@ class Optimal_ALittleIsEnough:
 
         # List of valid aggregator classes
         valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
-        check_type(agg, valid_agg_classes)
+        check_type(agg, "agg", valid_agg_classes)
         self.agg = agg
 
         # List of valid pre-aggregator classes
-        check_type(pre_agg_list, list)
+        check_type(pre_agg_list, "pre_agg_list", list)
         valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
         for pre_agg in pre_agg_list:
-            check_type(pre_agg, valid_pre_agg_classes)
+            check_type(pre_agg, "pre_agg", valid_pre_agg_classes)
         self.pre_agg_list = pre_agg_list
 
-        check_type(f, int)
+        check_type(f, "f", int)
         check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
-        check_type(evals, int)
+        check_type(evals, "evals", int)
         check_greater_than_value(evals, "evals", 0)
         self.evals = evals
-        check_type(start, float)
+        check_type(start, "start", float)
         self.start = start
-        check_type(delta, float)
+        check_type(delta, "delta", float)
         check_different_from_value(delta, "delta", 0.0)
         self.delta = delta
-        check_type(ratio, float)
+        check_type(ratio, "ratio", float)
         check_greater_than_value(ratio, "ratio", 0.5)
         check_smaller_than_value(ratio, "ratio", 1.0)
         
@@ -931,7 +931,7 @@ class Mimic:
     """
 
     def __init__(self, epsilon=0):
-        check_type(epsilon, int)
+        check_type(epsilon, "epsilon", int)
         check_greater_than_or_equal_value(epsilon, "epsilon", 0)
         self.epsilon = epsilon
 
@@ -1119,9 +1119,9 @@ class Gaussian:
     """
 
     def __init__(self, mu=0.0, sigma=1.0):
-        check_type(mu, float)
+        check_type(mu, "mu", float)
         self.mu = mu
-        check_type(sigma, float)
+        check_type(sigma, "sigma", float)
         check_greater_than_or_equal_value(sigma, "sigma", 0)
         self.sigma = sigma
 

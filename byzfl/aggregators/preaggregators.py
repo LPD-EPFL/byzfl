@@ -102,7 +102,7 @@ class NNM(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
@@ -221,7 +221,7 @@ class Bucketing(object):
     """
 
     def __init__(self, s=1):
-        misc.check_type(s, int)
+        misc.check_type(s, "s", int)
         misc.check_greater_than_value(s, "s", 0)
         self.s = s
 
@@ -345,7 +345,7 @@ class Clipping(object):
     """
 
     def __init__(self, c=2.0):
-        misc.check_type(c, float)
+        misc.check_type(c, "c", float)
         misc.check_greater_than_or_equal_value(c, "c", 0.0)
         self.c = c
 
@@ -465,7 +465,7 @@ class ARC(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, int)
+        misc.check_type(f, "f", int)
         misc.check_greater_than_or_equal_value(f, "f", 0)
         self.f = f
 
