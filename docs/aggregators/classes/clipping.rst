@@ -1,3 +1,5 @@
+.. _clipping-label:
+
 Static Clipping
 ========================
 

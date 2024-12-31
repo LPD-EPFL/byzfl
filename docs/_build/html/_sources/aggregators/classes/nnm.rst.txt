@@ -1,3 +1,5 @@
+.. _nnm-label:
+
 Nearest Neighbor Mixing (NNM)
 ========================
 

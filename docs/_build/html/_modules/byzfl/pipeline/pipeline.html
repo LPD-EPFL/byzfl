@@ -391,7 +391,6 @@
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">aggregators</span>
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">preaggregators</span>
-<span class="kn">from</span> <span class="nn">byzfl.utils</span> <span class="kn">import</span> <span class="n">misc</span>
 
 <div class="viewcode-block" id="RobustAggregator">
 <a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
@@ -400,28 +399,95 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    Class to apply all the pre-aggregations and the aggregation to the vectors.</span>
+<span class="sd">    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors. This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</span>
 
-<span class="sd">    Initialization parameters</span>
+<span class="sd">    Features</span>
+<span class="sd">    --------</span>
+<span class="sd">    - **Pre-Aggregation**: Allows the application of multiple pre-aggregation techniques sequentially, such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors.</span>
+<span class="sd">    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute an output vector resilient to Byzantine inputs.</span>
+
+<span class="sd">    Initialization Parameters</span>
 <span class="sd">    -------------------------</span>
-<span class="sd">    aggregator-info : dict </span>
-<span class="sd">        Dictionary with the keys &quot;name&quot; and &quot;parameters&quot; of the aggregation defined.</span>
-<span class="sd">    pre-agg-info : list</span>
-<span class="sd">        List of dictionaries (one for every pre_agg function) where every dictionary has the keys &quot;name&quot; and &quot;parameters&quot; defined.</span>
-<span class="sd">    </span>
-<span class="sd">    Calling the instance</span>
+<span class="sd">    aggregator_info : dict </span>
+<span class="sd">        Specifies the aggregation method and its parameters.</span>
+<span class="sd">        - **Keys**:</span>
+<span class="sd">            - `&quot;name&quot;`: Name of the aggregation method (e.g., `&quot;TrMean&quot;`).</span>
+<span class="sd">            - `&quot;parameters&quot;`: Dictionary of parameters required by the specified aggregation method.</span>
+<span class="sd">    pre_agg_list : list (default: [])</span>
+<span class="sd">        A list of dictionaries, each specifying a pre-aggregation method and its parameters.</span>
+<span class="sd">        - **Keys**:</span>
+<span class="sd">            - `&quot;name&quot;`: Name of the pre-aggregation method (e.g., `&quot;NNM&quot;`).</span>
+<span class="sd">            - `&quot;parameters&quot;`: Dictionary of parameters required by the specified pre-aggregation method.</span>
+
+<span class="sd">    Calling the Instance</span>
 <span class="sd">    --------------------</span>
-
-<span class="sd">    Input parameters</span>
+<span class="sd">    Input Parameters</span>
 <span class="sd">    ----------------</span>
-
-<span class="sd">    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</span>
-<span class="sd">        A set of vectors, matrix or tensors.</span>
+<span class="sd">    vectors : numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor</span>
+<span class="sd">        A collection of input vectors, matrices, or tensors to process.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :numpy.ndarray or torch.Tensor</span>
-<span class="sd">        The data type of the output will be the same as the input.</span>
+<span class="sd">    numpy.ndarray or torch.Tensor</span>
+<span class="sd">        The aggregated output vector with the same data type as the input.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Initialize the `RobustAggregator` with both pre-aggregation and aggregation methods:</span>
+
+<span class="sd">    &gt;&gt;&gt; from byzfl import RobustAggregator</span>
+<span class="sd">    &gt;&gt;&gt; # Define pre-aggregation methods</span>
+<span class="sd">    &gt;&gt;&gt; pre_aggregators = [</span>
+<span class="sd">    &gt;&gt;&gt;     {&quot;name&quot;: &quot;Clipping&quot;, &quot;parameters&quot;: {&quot;c&quot;: 2.0}},</span>
+<span class="sd">    &gt;&gt;&gt;     {&quot;name&quot;: &quot;NNM&quot;, &quot;parameters&quot;: {&quot;f&quot;: 1}},</span>
+<span class="sd">    &gt;&gt;&gt; ]</span>
+<span class="sd">    &gt;&gt;&gt; # Define an aggregation method</span>
+<span class="sd">    &gt;&gt;&gt; aggregator_info = {&quot;name&quot;: &quot;TrMean&quot;, &quot;parameters&quot;: {&quot;f&quot;: 1}}</span>
+<span class="sd">    &gt;&gt;&gt; # Create the RobustAggregator instance</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg = RobustAggregator(aggregator_info, pre_agg_list=pre_aggregators)</span>
+
+<span class="sd">    Apply the RobustAggregator to various types of input data:</span>
+
+<span class="sd">    Using numpy arrays:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = np.array([[1., 2., 3.],       # np.ndarray</span>
+<span class="sd">    &gt;&gt;&gt;               [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;               [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    array([0.95841302, 1.14416941, 1.3299258])</span>
+
+<span class="sd">    Using torch tensors:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = torch.tensor([[1., 2., 3.],   # torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;                   [4., 5., 6.], </span>
+<span class="sd">    &gt;&gt;&gt;                   [7., 8., 9.]])</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    tensor([0.9584, 1.1442, 1.3299])</span>
+
+<span class="sd">    Using a list of numpy arrays:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; x = [np.array([1., 2., 3.]),      # list of np.ndarray </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      np.array([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    array([0.95841302, 1.14416941, 1.3299258])</span>
+
+<span class="sd">    Using a list of torch tensors:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([4., 5., 6.]), </span>
+<span class="sd">    &gt;&gt;&gt;      torch.tensor([7., 8., 9.])]</span>
+<span class="sd">    &gt;&gt;&gt; rob_agg(x)</span>
+<span class="sd">    tensor([0.9584, 1.1442, 1.3299])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.</span>
+<span class="sd">    - Pre-aggregations are applied in the order they are listed in `pre_agg_list`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

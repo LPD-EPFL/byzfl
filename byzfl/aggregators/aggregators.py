@@ -73,7 +73,7 @@ class Average(object):
     array([4., 5., 6.])
 
     Using list of torch tensors
-        
+
     >>> import torch
     >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
     >>>      torch.tensor([4., 5., 6.]), 
