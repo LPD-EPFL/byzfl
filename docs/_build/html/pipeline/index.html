@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Pipeline &#8212; ByzFL</title>
+    <title>Federated Learning Framework &#8212; ByzFL</title>
   
   
   
@@ -51,7 +51,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Client" href="classes/client.html" />
+    <link rel="next" title="Federated Learning Simulation" href="classes/fed_learning_sim.html" />
     <link rel="prev" title="Gaussian" href="../attacks/classes/gaussian.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -153,7 +153,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    Pipeline
+    Federated Learning Framework
   </a>
 </li>
 
@@ -235,6 +235,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -277,7 +281,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    Pipeline
+    Federated Learning Framework
   </a>
 </li>
 
@@ -343,14 +347,14 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Pipeline</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning Framework</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="classes/fed_learning_sim.html">Federated Learning Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/robust_aggregators.html">Robust Aggregator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/byzantine_client.html">Byzantine Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/server.html">Server</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes/training.html">Federated Learning Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes/robust_aggregators.html">Robust Aggregator</a></li>
 </ul>
 </div>
 </nav></div>
@@ -386,7 +390,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Pipeline</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Federated Learning Framework</span></li>
   </ul>
 </nav>
 </div>
@@ -403,20 +407,33 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="pipeline">
-<span id="pipeline-label"></span><h1>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">#</a></h1>
-<p>The Pipeline Module integrates the functionalities of the Aggregation and Attacker modules, providing a comprehensive framework for testing aggregations in a systematic and thorough manner. This module allows users to evaluate aggregation strategies easily, simulating scenarios with varying numbers of attackers and different levels of dataset heterogeneity across clients. By leveraging this pipeline, researchers can gain valuable insights into the robustness and effectiveness of their aggregation methods against Byzantine attacks.</p>
+  <section id="federated-learning-framework">
+<span id="federated-learning-framework-label"></span><h1>Federated Learning Framework<a class="headerlink" href="#federated-learning-framework" title="Link to this heading">#</a></h1>
+<p>The <strong>Federated Learning Framework</strong> provides a comprehensive environment for simulating and evaluating federated learning workflows. It integrates core components like <code class="docutils literal notranslate"><span class="pre">Client</span></code>, <code class="docutils literal notranslate"><span class="pre">Server</span></code>, <code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code>, <code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code>, and various <code class="docutils literal notranslate"><span class="pre">Models</span></code> to facilitate systematic experimentation and testing in distributed machine learning settings.</p>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Simulate Real-World Federated Learning</strong>: Recreate distributed learning scenarios involving multiple clients, a central server, and potential adversarial (Byzantine) participants.</p></li>
+<li><p><strong>Robust Aggregation</strong>: Evaluate and compare aggregation strategies, incorporating pre-aggregation techniques such as <code class="docutils literal notranslate"><span class="pre">Clipping</span></code> and <code class="docutils literal notranslate"><span class="pre">NNM</span></code> with robust aggregators like <code class="docutils literal notranslate"><span class="pre">TrMean</span></code>.</p></li>
+<li><p><strong>Byzantine Resilience</strong>: Analyze the robustness of aggregation methods against malicious gradients introduced by Byzantine clients.</p></li>
+<li><p><strong>Flexibility and Extensibility</strong>: Easily adapt to different datasets, models, and attack strategies, enabling extensive research and experimentation.</p></li>
+</ul>
+</section>
+<section id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Link to this heading">#</a></h2>
+<p>By leveraging this framework, researchers can gain valuable insights into the performance and resilience of aggregation methods under varying levels of dataset heterogeneity, numbers of adversaries, and other federated learning challenges. It serves as a powerful tool for advancing research in robust distributed machine learning.</p>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pipeline</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning Framework</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="classes/fed_learning_sim.html">Federated Learning Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/robust_aggregators.html">Robust Aggregator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/byzantine_client.html">Byzantine Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/server.html">Server</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes/training.html">Federated Learning Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/models.html">Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="classes/robust_aggregators.html">Robust Aggregator</a></li>
 </ul>
 </div>
+</section>
 </section>
 
 
@@ -439,11 +456,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="classes/client.html"
+       href="classes/fed_learning_sim.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Client</p>
+        <p class="prev-next-title">Federated Learning Simulation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -453,6 +470,25 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose">Purpose</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

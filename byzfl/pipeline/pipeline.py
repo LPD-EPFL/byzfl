@@ -12,7 +12,7 @@ class ModelBaseInterface(object):
     """
     Description
     -----------
-    This class serves as an abstract interface that defines the methods 
+    The ``ModelBaseInterface`` class serves as an abstract interface that defines the methods 
     required for classes that encapsulate a model. All subclasses that 
     contain a model should inherit from this class to ensure they implement 
     the necessary methods for handling model-related operations and information 
@@ -155,7 +155,7 @@ class Client(ModelBaseInterface):
     """
     Description
     -----------
-    The `Client` class simulates a single honest node capable of training its local model, 
+    The ``Client`` class simulates a single honest node capable of training its local model, 
     sending gradients, and receiving the global model in every training round.
 
     Features
@@ -383,7 +383,7 @@ class RobustAggregator:
     """
     Description
     -----------
-    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.
+    The ``RobustAggregator`` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.
     This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.
 
     Features
@@ -536,7 +536,7 @@ class ByzantineClient:
     """
     Description
     -----------
-    The `ByzantineClient` class is responsible for simulating Byzantine behavior in distributed machine learning 
+    The ``ByzantineClient`` class is responsible for simulating Byzantine behavior in distributed machine learning 
     by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors) 
     submitted by honest participants and generates multiple faulty (Byzantine) vectors.
 
@@ -667,7 +667,7 @@ class Server(ModelBaseInterface):
     """
     Description
     -----------
-    The `Server` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.
+    The ``Server`` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.
 
     Features
     --------

@@ -150,7 +150,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../pipeline/index.html">
-    Pipeline
+    Federated Learning Framework
   </a>
 </li>
 
@@ -276,7 +276,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../pipeline/index.html">
-    Pipeline
+    Federated Learning Framework
   </a>
 </li>
 
@@ -402,7 +402,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    This class serves as an abstract interface that defines the methods </span>
+<span class="sd">    The ``ModelBaseInterface`` class serves as an abstract interface that defines the methods </span>
 <span class="sd">    required for classes that encapsulate a model. All subclasses that </span>
 <span class="sd">    contain a model should inherit from this class to ensure they implement </span>
 <span class="sd">    the necessary methods for handling model-related operations and information </span>
@@ -547,7 +547,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    The `Client` class simulates a single honest node capable of training its local model, </span>
+<span class="sd">    The ``Client`` class simulates a single honest node capable of training its local model, </span>
 <span class="sd">    sending gradients, and receiving the global model in every training round.</span>
 
 <span class="sd">    Features</span>
@@ -796,7 +796,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    The `RobustAggregator` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.</span>
+<span class="sd">    The ``RobustAggregator`` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.</span>
 <span class="sd">    This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</span>
 
 <span class="sd">    Features</span>
@@ -955,7 +955,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    The `ByzantineClient` class is responsible for simulating Byzantine behavior in distributed machine learning </span>
+<span class="sd">    The ``ByzantineClient`` class is responsible for simulating Byzantine behavior in distributed machine learning </span>
 <span class="sd">    by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors) </span>
 <span class="sd">    submitted by honest participants and generates multiple faulty (Byzantine) vectors.</span>
 
@@ -1092,7 +1092,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    The `Server` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.</span>
+<span class="sd">    The ``Server`` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.</span>
 
 <span class="sd">    Features</span>
 <span class="sd">    --------</span>

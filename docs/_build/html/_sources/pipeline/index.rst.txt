@@ -1,17 +1,31 @@
-.. _pipeline-label:
+.. _federated-learning-framework-label:
 
-Pipeline
-========
+Federated Learning Framework
+============================
 
-The Pipeline Module integrates the functionalities of the Aggregation and Attacker modules, providing a comprehensive framework for testing aggregations in a systematic and thorough manner. This module allows users to evaluate aggregation strategies easily, simulating scenarios with varying numbers of attackers and different levels of dataset heterogeneity across clients. By leveraging this pipeline, researchers can gain valuable insights into the robustness and effectiveness of their aggregation methods against Byzantine attacks.
+The **Federated Learning Framework** provides a comprehensive environment for simulating and evaluating federated learning workflows. It integrates core components like ``Client``, ``Server``, ``ByzantineClient``, ``RobustAggregator``, and various ``Models`` to facilitate systematic experimentation and testing in distributed machine learning settings.
+
+Features
+--------
+
+- **Simulate Real-World Federated Learning**: Recreate distributed learning scenarios involving multiple clients, a central server, and potential adversarial (Byzantine) participants.
+- **Robust Aggregation**: Evaluate and compare aggregation strategies, incorporating pre-aggregation techniques such as ``Clipping`` and ``NNM`` with robust aggregators like ``TrMean``.
+- **Byzantine Resilience**: Analyze the robustness of aggregation methods against malicious gradients introduced by Byzantine clients.
+- **Flexibility and Extensibility**: Easily adapt to different datasets, models, and attack strategies, enabling extensive research and experimentation.
+
+Purpose
+-------
+
+By leveraging this framework, researchers can gain valuable insights into the performance and resilience of aggregation methods under varying levels of dataset heterogeneity, numbers of adversaries, and other federated learning challenges. It serves as a powerful tool for advancing research in robust distributed machine learning.
+
 
 .. toctree::
-   :caption: Pipeline
+   :caption: Federated Learning Framework
    :titlesonly:
 
+   classes/fed_learning_sim
+   classes/robust_aggregators
    classes/client
    classes/byzantine_client
    classes/server
-   classes/training
    classes/models
-   classes/robust_aggregators

@@ -168,7 +168,7 @@ Explore the key components of ByzFL below:
       <div class="container">
         <h2>Pipeline</h2>
 
-:ref:`Get Started <pipeline-label>`
+:ref:`Get Started <_federated-learning-framework-label>`
 
 .. raw:: html
 
