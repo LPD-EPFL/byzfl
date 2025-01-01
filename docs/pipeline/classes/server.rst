@@ -1,9 +1,9 @@
-.. _client-label:
+.. _server-label:
 
-Client
+Server
 =======
 
-.. autoclass:: byzfl.Client
+.. autoclass:: byzfl.Server
    :members:
    :undoc-members:
    :no-inherited-members:

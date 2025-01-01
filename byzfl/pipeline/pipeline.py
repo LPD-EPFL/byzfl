@@ -54,9 +54,6 @@ class ModelBaseInterface(object):
             gamma = params["learning_rate_decay"]
         )
 
-        self.batch_norm_keys = []
-        self.running_mean_key_list = []
-        self.running_var_key_list = []
     
     def get_flat_parameters(self):
         """
@@ -111,40 +108,6 @@ class ModelBaseInterface(object):
             new_dict[key] = value.grad
         return new_dict
     
-    def get_batch_norm_stats(self):
-        """
-        Description
-        ------------
-        Get the batch norm stats of the model in a dictionary.
-
-        Returns
-        -------
-        Dicctionary where the keys are the name of the parameters
-        of batch norm stats and their values.
-        """
-        running_mean_stats = collections.OrderedDict()
-        state_dict = self.model.state_dict()
-        for key in self.running_mean_key_list:
-            running_mean_stats[key] = state_dict[key].clone()
-
-        running_var_stats = collections.OrderedDict()
-        for key in self.running_var_key_list:
-            running_var_stats[key] = state_dict[key].clone()
-        return running_mean_stats, running_var_stats
-
-    def get_flat_batch_norm_stats(self):
-        """
-        Description
-        ------------
-        Get the batch norm stats of the model in a flatten array.
-
-        Returns
-        -------
-        Array with the values of the batch norm stats.
-        """
-        running_mean_stats, running_var_stats = self.get_batch_norm_stats()
-        return flatten_dict(running_mean_stats), flatten_dict(running_var_stats)
-    
     def set_parameters(self, flat_vector):
         """
         Description
@@ -187,33 +150,7 @@ class ModelBaseInterface(object):
         """
         self.model.load_state_dict(state_dict)
 
-    def compute_batch_norm_keys(self):
-        """
-        Description
-        -----------
-        Compute batch normalization keys.
-
-        """
-        for key in self.model.state_dict().keys():
-            if "running_mean" in key:
-                self.running_mean_key_list.append(key)
-                self.batch_norm_keys.append(key.split(".")[0])
-            elif "running_var" in key:
-                self.running_var_key_list.append(key)            
     
-    def use_batch_norm(self):
-        """
-        Description
-        -----------
-        Getter to determine whether the model is using Batch Normalization.
-
-        Returns
-        -------
-        bool
-            A boolean indicating whether the model is utilizing Batch Normalization.
-        """
-        return len(self.batch_norm_keys) > 0
-
 class Client(ModelBaseInterface):
     """
     Description
@@ -334,7 +271,6 @@ class Client(ModelBaseInterface):
             "weight_decay": params["weight_decay"],
             "milestones": params["milestones"],
             "learning_rate_decay": params["learning_rate_decay"],
-            "nb_workers": params.get("nb_workers", 1)
         })
 
         self.criterion = getattr(torch.nn, params["loss_name"])()
@@ -725,3 +661,211 @@ class ByzantineClient:
 
         # Return a list of the same Byzantine vector repeated `f` times
         return [byz_vector] * self.f
+
+
+class Server(ModelBaseInterface):
+    """
+    Description
+    -----------
+    The `Server` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.
+
+    Features
+    --------
+    - **Gradient Aggregation**: Supports robust aggregation of client gradients using pre-aggregators and aggregators like :ref:`trmean-label`.
+    - **Model Updates**: Aggregates gradients from clients and updates the global model accordingly.
+    - **Performance Evaluation**: Computes accuracy on validation and test datasets.
+    - **Integration**: Works in conjunction with `Client` and `ByzantineClient` classes to simulate realistic federated learning scenarios.
+
+    Initialization Parameters
+    -------------------------
+    params : dict
+        A dictionary containing the configuration for the Server. Must include:
+
+        - `"model_name"`: str
+            Name of the model to be used. Refer to :ref:`models-label` for available models.
+        - `"device"`: str
+            Name of the device to be used for computations (e.g., `"cpu"`, `"cuda"`).
+        - `"learning_rate"`: float
+            Learning rate for the global model optimizer.
+        - `"weight_decay"`: float
+            Weight decay (L2 regularization) for the optimizer.
+        - `"milestones"`: list
+            List of epochs at which the learning rate decay is applied.
+        - `"learning_rate_decay"`: float
+            Factor by which the learning rate is reduced at each milestone.
+        - `"aggregator_info"`: dict
+            Dictionary specifying the aggregation method and its parameters:
+            - `"name"`: str, name of the aggregator (e.g., `"TrMean"`).
+            - `"parameters"`: dict, parameters for the aggregator.
+        - `"pre_agg_list"`: list
+            List of dictionaries specifying pre-aggregation methods and their parameters:
+            - `"name"`: str, name of the pre-aggregator (e.g., `"Clipping"`).
+            - `"parameters"`: dict, parameters for the pre-aggregator.
+        - `"test_loader"`: DataLoader
+            DataLoader for the test dataset to evaluate the global model.
+        - `"validation_loader"`: DataLoader (optional)
+            DataLoader for the validation dataset to monitor training performance.
+    
+    Methods
+    -------
+    aggregate(vectors)
+        Aggregates input vectors using the configured robust aggregator.
+    update_model(gradients)
+        Updates the global model using aggregated gradients.
+    step()
+        Executes a single optimization step for the global model.
+    get_model()
+        Returns the current global model.
+    compute_validation_accuracy()
+        Computes accuracy on the validation dataset.
+    compute_test_accuracy()
+        Computes accuracy on the test dataset.
+
+    Examples
+    --------
+
+    Initialize MNIST test data loader:
+
+    >>> import torch
+    >>> from torch.utils.data import DataLoader
+    >>> from torchvision import datasets, transforms
+    >>> from byzfl import Client, Server, ByzantineClient
+    >>> # Define data loader using MNIST
+    >>> transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+    >>> test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
+    >>> test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+
+    Initialize the Server class:
+
+    >>> # Define pre-aggregators and aggregator
+    >>> pre_aggregators = [{"name": "Clipping", "parameters": {"c": 2.0}}, {"name": "NNM", "parameters": {"f": 1}}]
+    >>> aggregator_info = {"name": "TrMean", "parameters": {"f": 1}}
+    >>> # Define server parameters
+    >>> server_params = {
+    >>>     "device": "cpu",
+    >>>     "model_name": "cnn_mnist",
+    >>>     "test_loader": test_loader,
+    >>>     "validation_loader": None,
+    >>>     "learning_rate": 0.01,
+    >>>     "weight_decay": 0.0005,
+    >>>     "milestones": [10, 20],
+    >>>     "learning_rate_decay": 0.5,
+    >>>     "aggregator_info": aggregator_info,
+    >>>     "pre_agg_list": pre_aggregators,
+    >>> }
+    >>> # Initialize the Server
+    >>> server = Server(server_params)
+
+    Aggregation and model update:
+
+    >>> # Perform aggregation and model updates
+    >>> gradients = [...]  # Collect gradients from clients
+    >>> server.update_model(gradients)
+    >>> print("Test Accuracy:", server.compute_test_accuracy())
+    
+    """
+
+    def __init__(self, params):
+        super().__init__({
+            "device": params["device"],
+            "model_name": params["model_name"],
+            "learning_rate": params["learning_rate"],
+            "weight_decay": params["weight_decay"],
+            "milestones": params["milestones"],
+            "learning_rate_decay": params["learning_rate_decay"],
+        })
+        self.robust_aggregator = RobustAggregator(params["aggregator_info"], params["pre_agg_list"])
+        self.test_loader = params["test_loader"]
+        self.validation_loader = params["validation_loader"]
+        self.model.eval()
+
+    def aggregate(self, vectors):
+        """
+        Description
+        -----------
+        Aggregates input vectors using the configured robust aggregator.
+
+        Parameters
+        ----------
+        vectors : list or np.ndarray or torch.Tensor
+            A collection of input vectors.
+
+        Returns
+        -------
+        Aggregated output vector.
+        """
+        return self.robust_aggregator.aggregate_vectors(vectors)
+
+    def update_model(self, gradients):
+        """
+        Description
+        -----------
+        Updates the global model by aggregating gradients and performing an optimization step.
+
+        Parameters
+        ----------
+        gradients : list
+            List of gradients to aggregate and apply.
+        """
+        aggregate_gradient = self.aggregate(gradients)
+        self.set_gradients(aggregate_gradient)
+        self.step()
+
+    def step(self):
+        """
+        Description
+        -----------
+        Performs a single optimization step for the global model.
+        """
+        self.optimizer.step()
+        self.scheduler.step()
+
+    def get_model(self):
+        """
+        Description
+        -----------
+        Retrieves the current global model.
+
+        Returns
+        -------
+        torch.nn.Module
+            The current global model.
+        """
+        return self.model
+
+    def _compute_accuracy(self, data_loader):
+        total = 0
+        correct = 0
+        for inputs, targets in data_loader:
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
+            outputs = self.model(inputs)
+            _, predicted = torch.max(outputs.data, 1)
+            total += targets.size(0)
+            correct += (predicted == targets).sum().item()
+        return correct / total
+
+    def compute_validation_accuracy(self):
+        """
+        Description
+        -----------
+        Computes the accuracy of the global model on the validation dataset.
+
+        Returns
+        -------
+        float
+            Validation accuracy.
+        """
+        return self._compute_accuracy(self.validation_loader)
+
+    def compute_test_accuracy(self):
+        """
+        Description
+        -----------
+        Computes the accuracy of the global model on the test dataset.
+
+        Returns
+        -------
+        float
+            Test accuracy.
+        """
+        return self._compute_accuracy(self.test_loader)

@@ -1,4 +1,4 @@
-.. _honest-worker-label:
+.. _client-label:
 
 Client
 =======
