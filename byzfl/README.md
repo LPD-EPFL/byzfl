@@ -6,7 +6,7 @@ The `byzfl` module is the core component of the ByzFL library, providing functio
 
 - **aggregators/**: Contains implementations of robust aggregation methods to mitigate the impact of Byzantine participants.
 - **attacks/**: Includes various Byzantine attack strategies for testing and evaluation.
-- **pipeline/**: Provides tools and scripts for training and benchmarking aggregators and attacks.
+- **fed_framework/**: Provides tools and scripts for training and benchmarking aggregators and attacks in simulated federated learning environments.
 - **utils/**: Utility functions and helpers used across the module.
 - **__init__.py**: Initializes the `byzfl` module, making its components accessible when imported.
 
