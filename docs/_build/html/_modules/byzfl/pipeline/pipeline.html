@@ -388,10 +388,471 @@
                 <article class="bd-article">
                   
   <h1>Source code for byzfl.pipeline.pipeline</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">aggregators</span>
+<span></span><span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">aggregators</span>
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">preaggregators</span>
 <span class="kn">import</span> <span class="nn">byzfl.attacks</span> <span class="k">as</span> <span class="nn">attacks</span>
+<span class="kn">import</span> <span class="nn">byzfl.pipeline.models</span> <span class="k">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils.conversion</span> <span class="kn">import</span> <span class="n">flatten_dict</span><span class="p">,</span> <span class="n">unflatten_dict</span><span class="p">,</span> <span class="n">unflatten_generator</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="k">class</span> <span class="nc">ModelBaseInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    This class serves as an abstract interface that defines the methods </span>
+<span class="sd">    required for classes that encapsulate a model. All subclasses that </span>
+<span class="sd">    contain a model should inherit from this class to ensure they implement </span>
+<span class="sd">    the necessary methods for handling model-related operations and information </span>
+<span class="sd">    exchange.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        All these parameters should be passed in a dictionary that contains the following keys.</span>
+<span class="sd">    model-name : str </span>
+<span class="sd">        Indicates the model to be used</span>
+<span class="sd">    device : str</span>
+<span class="sd">        Name of the device used</span>
+<span class="sd">    learning-rate : float </span>
+<span class="sd">        Learning rate</span>
+<span class="sd">    weight-decay : float </span>
+<span class="sd">        Regularization used</span>
+<span class="sd">    milestones : list </span>
+<span class="sd">        List of the milestones, where the learning rate decay should be applied</span>
+<span class="sd">    learning-rate-decay : float </span>
+<span class="sd">        Rate decreases over time during training</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    --------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="n">model_name</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> 
+            <span class="n">lr</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span> 
+            <span class="n">weight_decay</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">MultiStepLR</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+            <span class="n">milestones</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_mean_key_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_var_key_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span> <span class="nf">get_flat_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Get the gradients of the model in a flat array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List of the gradients</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">flatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+    
+    <span class="k">def</span> <span class="nf">get_flat_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Get the gradients of the model in a flat array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List of the gradients</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">flatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dict_gradients</span><span class="p">())</span>
+    
+    <span class="k">def</span> <span class="nf">get_dict_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        ------------</span>
+<span class="sd">        Get the gradients of the model in a dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dicctionary where the keys are the name of the parameters</span>
+<span class="sd">        and de values are the gradients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_dict_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        ------------</span>
+<span class="sd">        Get the gradients of the model in a dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dicctionary where the keys are the name of the parameters</span>
+<span class="sd">        and the values are the gradients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+            <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">grad</span>
+        <span class="k">return</span> <span class="n">new_dict</span>
+    
+    <span class="k">def</span> <span class="nf">get_batch_norm_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        ------------</span>
+<span class="sd">        Get the batch norm stats of the model in a dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dicctionary where the keys are the name of the parameters</span>
+<span class="sd">        of batch norm stats and their values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">running_mean_stats</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_mean_key_list</span><span class="p">:</span>
+            <span class="n">running_mean_stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+        <span class="n">running_var_stats</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_var_key_list</span><span class="p">:</span>
+            <span class="n">running_var_stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">running_mean_stats</span><span class="p">,</span> <span class="n">running_var_stats</span>
+
+    <span class="k">def</span> <span class="nf">get_flat_batch_norm_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        ------------</span>
+<span class="sd">        Get the batch norm stats of the model in a flatten array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Array with the values of the batch norm stats.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">running_mean_stats</span><span class="p">,</span> <span class="n">running_var_stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_batch_norm_stats</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">flatten_dict</span><span class="p">(</span><span class="n">running_mean_stats</span><span class="p">),</span> <span class="n">flatten_dict</span><span class="p">(</span><span class="n">running_var_stats</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">set_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat_vector</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Sets the model parameters given a flat vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        flat_vector : list </span>
+<span class="sd">            Flat list with the parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="n">unflatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">flat_vector</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">new_dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat_vector</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Sets the model gradients given a flat vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        flat_vector : list</span>
+<span class="sd">            Flat list with the parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="n">unflatten_generator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(),</span> <span class="n">flat_vector</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">new_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">set_model_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Sets the state_dict of the model for the state_dict given by parameter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state_dict : dict </span>
+<span class="sd">            State_dict from a model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">compute_batch_norm_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Compute batch normalization keys.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;running_mean&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_mean_key_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="s2">&quot;running_var&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_var_key_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>            
+    
+    <span class="k">def</span> <span class="nf">use_batch_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Getter to determine whether the model is using Batch Normalization.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            A boolean indicating whether the model is utilizing Batch Normalization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_norm_keys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Client">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client">[docs]</a>
+<span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description</span>
+<span class="sd">    -----------</span>
+<span class="sd">    The `Client` class simulates a single honest node capable of training its local model, </span>
+<span class="sd">    sending gradients, and receiving the global model in every training round.</span>
+
+<span class="sd">    Features</span>
+<span class="sd">    --------</span>
+<span class="sd">    - **Local Training**: Performs training on a local dataset using a specified model and optimizer.</span>
+<span class="sd">    - **Gradient Computation**: Computes gradients for the local dataset.</span>
+<span class="sd">    - **Momentum Support**: Supports momentum for gradient updates.</span>
+<span class="sd">    - **Label Flipping Attack**: Optionally applies a label flipping attack during training.</span>
+
+<span class="sd">    Initialization Parameters</span>
+<span class="sd">    -------------------------</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        A dictionary containing the configuration for the Client. Must include:</span>
+
+<span class="sd">        - `&quot;model_name&quot;`: str</span>
+<span class="sd">            Name of the model to be used.</span>
+<span class="sd">        - `&quot;device&quot;`: str</span>
+<span class="sd">            Device for computation (e.g., &#39;cpu&#39; or &#39;cuda&#39;).</span>
+<span class="sd">        - `&quot;learning_rate&quot;`: float</span>
+<span class="sd">            Learning rate for the optimizer.</span>
+<span class="sd">        - `&quot;loss_name&quot;`: str</span>
+<span class="sd">            Loss function name (e.g., &#39;CrossEntropyLoss&#39;).</span>
+<span class="sd">        - `&quot;weight_decay&quot;`: float</span>
+<span class="sd">            Weight decay for regularization.</span>
+<span class="sd">        - `&quot;milestones&quot;`: list</span>
+<span class="sd">            Milestones for learning rate decay.</span>
+<span class="sd">        - `&quot;learning_rate_decay&quot;`: float</span>
+<span class="sd">            Learning rate decay factor.</span>
+<span class="sd">        - `&quot;LabelFlipping&quot;`: bool</span>
+<span class="sd">            A boolean flag that, when set to True, enables the LabelFlipping attack. This attack flips the class labels of the training data to their opposing classes.</span>
+<span class="sd">        - `&quot;momentum&quot;`: float</span>
+<span class="sd">            Momentum for the optimizer.</span>
+<span class="sd">        - `&quot;training_dataloader&quot;`: DataLoader</span>
+<span class="sd">            DataLoader for the training data.</span>
+<span class="sd">        - `&quot;nb_labels&quot;`: int</span>
+<span class="sd">            Number of labels in the dataset.</span>
+<span class="sd">        - `&quot;nb_steps&quot;`: int</span>
+<span class="sd">            Number of training steps.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    compute_gradients</span>
+<span class="sd">        Computes gradients for the local dataset.</span>
+<span class="sd">    get_flat_flipped_gradients</span>
+<span class="sd">        Returns the gradients of the model with flipped targets in a flat array.</span>
+<span class="sd">    get_flat_gradients_with_momentum</span>
+<span class="sd">        Returns flattened gradients with momentum applied.</span>
+<span class="sd">    get_loss_list</span>
+<span class="sd">        Returns the list of training losses.</span>
+<span class="sd">    get_train_accuracy</span>
+<span class="sd">        Returns the training accuracy per batch.</span>
+<span class="sd">    set_model_state(state_dict)</span>
+<span class="sd">        Updates the model&#39;s state dictionary.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Initialize the `Client` class with an MNIST data loader:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; from torch.utils.data import DataLoader</span>
+<span class="sd">    &gt;&gt;&gt; from torchvision import datasets, transforms</span>
+<span class="sd">    &gt;&gt;&gt; from byzfl.pipeline import Client</span>
+
+<span class="sd">    &gt;&gt;&gt; # Fix the random seed of torch</span>
+<span class="sd">    &gt;&gt;&gt; SEED = 42</span>
+<span class="sd">    &gt;&gt;&gt; torch.manual_seed(SEED)</span>
+<span class="sd">    &gt;&gt;&gt; torch.cuda.manual_seed(SEED)</span>
+<span class="sd">    &gt;&gt;&gt; torch.backends.cudnn.deterministic = True</span>
+<span class="sd">    &gt;&gt;&gt; torch.backends.cudnn.benchmark = False</span>
+<span class="sd">    &gt;&gt;&gt; # Define the training data loader using MNIST</span>
+<span class="sd">    &gt;&gt;&gt; transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])</span>
+<span class="sd">    &gt;&gt;&gt; train_dataset = datasets.MNIST(root=&quot;./data&quot;, train=True, download=True, transform=transform)</span>
+<span class="sd">    &gt;&gt;&gt; train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)</span>
+
+<span class="sd">    &gt;&gt;&gt; # Define client parameters</span>
+<span class="sd">    &gt;&gt;&gt; client_params = {</span>
+<span class="sd">    &gt;&gt;&gt;     &quot;model_name&quot;: &quot;cnn_mnist&quot;, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;device&quot;: &quot;cpu&quot;, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;learning_rate&quot;: 0.01, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;loss_name&quot;: &quot;CrossEntropyLoss&quot;, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;weight_decay&quot;: 0.0005, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;milestones&quot;: [10, 20], </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;learning_rate_decay&quot;: 0.5, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;LabelFlipping&quot;: True, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;momentum&quot;: 0.9, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;training_dataloader&quot;: train_loader, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;nb_labels&quot;: 10, </span>
+<span class="sd">    &gt;&gt;&gt;     &quot;nb_steps&quot;: len(train_loader)</span>
+<span class="sd">    &gt;&gt;&gt; }</span>
+
+<span class="sd">    &gt;&gt;&gt; # Initialize the Client</span>
+<span class="sd">    &gt;&gt;&gt; client = Client(client_params)</span>
+
+<span class="sd">    Compute gradients for the current training batch:</span>
+
+<span class="sd">    &gt;&gt;&gt; # Compute first gradient</span>
+<span class="sd">    &gt;&gt;&gt; client.compute_gradients()</span>
+<span class="sd">    &gt;&gt;&gt; # Initial train accuracy</span>
+<span class="sd">    &gt;&gt;&gt; client.get_train_accuracy()[0]</span>
+<span class="sd">    &gt;&gt;&gt; # Get first flipped gradient</span>
+<span class="sd">    &gt;&gt;&gt; client.get_flat_flipped_gradients()</span>
+<span class="sd">    tensor([-0.0005,  0.0008,  0.0027,  ...,  0.0732,  0.0722, -0.0281])</span>
+<span class="sd">    0.171875</span>
+<span class="sd">    tensor([-0.0002, -0.0027, -0.0032,  ..., -0.0675, -0.0215, -0.0125])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
+            <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;nb_workers&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nb_workers&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;loss_name&quot;</span><span class="p">])()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_LF</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labelflipping</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;LabelFlipping&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_labels</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_labels&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;momentum&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
+                <span class="k">for</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+            <span class="p">)),</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training_dataloader</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;training_dataloader&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_dataloader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_steps&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_steps&quot;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">SGD_step</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_sample_train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private function to get the next data from the dataloader.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_dataloader</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Client.compute_gradients">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.compute_gradients">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the gradients of the local model loss function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_train_batch</span><span class="p">()</span>
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">targets</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelflipping</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">targets_flipped</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_labels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets_flipped</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gradient_LF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dict_gradients</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">SGD_step</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+        <span class="c1"># Compute train accuracy</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">SGD_step</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">SGD_step</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="Client.get_flat_flipped_gradients">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_flat_flipped_gradients">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_flat_flipped_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the gradients of the model with flipped targets in a flat array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">flatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_LF</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Client.get_flat_gradients_with_momentum">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_flat_gradients_with_momentum">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_flat_gradients_with_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the gradients with momentum applied in a flat array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span><span class="o">.</span><span class="n">mul_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">momentum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_flat_gradients</span><span class="p">(),</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span></div>
+
+
+<div class="viewcode-block" id="Client.get_loss_list">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_loss_list">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_loss_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of computed losses over training.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span></div>
+
+
+<div class="viewcode-block" id="Client.get_train_accuracy">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_train_accuracy">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_train_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the training accuracy per batch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span></div>
+
+
+<div class="viewcode-block" id="Client.set_model_state">
+<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.set_model_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_model_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the model state with the provided state dictionary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state_dict : dict</span>
+<span class="sd">            The state dictionary of a model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span></div>
+</div>
+
+
 
 <div class="viewcode-block" id="RobustAggregator">
 <a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
