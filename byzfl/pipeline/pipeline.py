@@ -234,7 +234,7 @@ class Client(ModelBaseInterface):
         A dictionary containing the configuration for the Client. Must include:
 
         - `"model_name"`: str
-            Name of the model to be used.
+            Name of the model to be used. For a complete list of available models within the pipeline, refer to :ref:`models-label`.
         - `"device"`: str
             Device for computation (e.g., 'cpu' or 'cuda').
         - `"learning_rate"`: float
