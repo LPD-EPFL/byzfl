@@ -596,11 +596,11 @@ class RobustAggregator:
         return self.aggregator(vectors)
 
 
-class ByzantineWorker:
+class ByzantineClient:
     """
     Description
     -----------
-    The `ByzantineWorker` class is responsible for simulating Byzantine behavior in distributed machine learning 
+    The `ByzantineClient` class is responsible for simulating Byzantine behavior in distributed machine learning 
     by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors) 
     submitted by honest participants and generates multiple faulty (Byzantine) vectors.
 
@@ -641,15 +641,15 @@ class ByzantineWorker:
 
     Examples
     --------
-    Initialize the `ByzantineWorker` with a specific attack and apply it to input vectors:
+    Initialize the `ByzantineClient` with a specific attack and apply it to input vectors:
 
-    >>> from byzfl import ByzantineWorker
+    >>> from byzfl import ByzantineClient
     >>> attack = {
     >>>     "name": "InnerProductManipulation",
     >>>     "f": 3,
     >>>     "parameters": {"tau": 3.0},
     >>> }
-    >>> byz_worker = ByzantineWorker(attack)
+    >>> byz_worker = ByzantineClient(attack)
 
     Using numpy arrays:
 
@@ -683,7 +683,7 @@ class ByzantineWorker:
 
     def __init__(self, params):
         """
-        Initializes the ByzantineWorker with the specified attack configuration.
+        Initializes the ByzantineClient with the specified attack configuration.
 
         Parameters
         ----------

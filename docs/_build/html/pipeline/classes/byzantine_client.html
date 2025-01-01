@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Byzantine Worker &#8212; ByzFL</title>
+    <title>Byzantine Client &#8212; ByzFL</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/classes/byzantine_worker';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/classes/byzantine_client';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -351,7 +351,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="robust_aggregators.html">Robust Aggregator</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Byzantine Worker</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Byzantine Client</a></li>
 </ul>
 </div>
 </nav></div>
@@ -390,7 +390,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Pipeline</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Byzantine Worker</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Byzantine Client</span></li>
   </ul>
 </nav>
 </div>
@@ -407,15 +407,15 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="byzantine-worker">
-<span id="byzantine-worker-label"></span><h1>Byzantine Worker<a class="headerlink" href="#byzantine-worker" title="Link to this heading">#</a></h1>
+  <section id="byzantine-client">
+<span id="byzantine-client-label"></span><h1>Byzantine Client<a class="headerlink" href="#byzantine-client" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.ByzantineWorker">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ByzantineWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineWorker" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.ByzantineClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ByzantineClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineClient" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>The <cite>ByzantineWorker</cite> class is responsible for simulating Byzantine behavior in distributed machine learning
+<p>The <cite>ByzantineClient</cite> class is responsible for simulating Byzantine behavior in distributed machine learning
 by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors)
 submitted by honest participants and generates multiple faulty (Byzantine) vectors.</p>
 </section>
@@ -449,8 +449,8 @@ submitted by honest participants and generates multiple faulty (Byzantine) vecto
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ByzantineWorker.apply_attack">
-<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineWorker.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineWorker.apply_attack" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="byzfl.ByzantineClient.apply_attack">
+<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineClient.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineClient.apply_attack" title="Link to this definition">#</a></dt>
 <dd><p>Applies the specified Byzantine attack to the input vectors and returns a list of faulty vectors.</p>
 </dd></dl>
 
@@ -464,14 +464,14 @@ submitted by honest participants and generates multiple faulty (Byzantine) vecto
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Initialize the <cite>ByzantineWorker</cite> with a specific attack and apply it to input vectors:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">ByzantineWorker</span>
+<p>Initialize the <cite>ByzantineClient</cite> with a specific attack and apply it to input vectors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">ByzantineClient</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="p">{</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;InnerProductManipulation&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tau&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">},</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span> <span class="o">=</span> <span class="n">ByzantineWorker</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span> <span class="o">=</span> <span class="n">ByzantineClient</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using numpy arrays:</p>
@@ -504,7 +504,7 @@ submitted by honest participants and generates multiple faulty (Byzantine) vecto
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineWorker.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/pipeline.html#ByzantineClient.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
 <dd><p>Applies the specified Byzantine attack to the input vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -569,9 +569,9 @@ If <cite>f = 0</cite>, an empty list is returned.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineWorker"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineWorker.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_attack()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ByzantineWorker.apply_attack()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient"><code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
 </ul>
 </li>
 </ul>

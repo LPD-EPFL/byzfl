@@ -1013,13 +1013,13 @@
 
 
 
-<div class="viewcode-block" id="ByzantineWorker">
-<a class="viewcode-back" href="../../../pipeline/classes/byzantine_worker.html#byzfl.ByzantineWorker">[docs]</a>
-<span class="k">class</span> <span class="nc">ByzantineWorker</span><span class="p">:</span>
+<div class="viewcode-block" id="ByzantineClient">
+<a class="viewcode-back" href="../../../pipeline/classes/byzantine_client.html#byzfl.ByzantineClient">[docs]</a>
+<span class="k">class</span> <span class="nc">ByzantineClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
 <span class="sd">    -----------</span>
-<span class="sd">    The `ByzantineWorker` class is responsible for simulating Byzantine behavior in distributed machine learning </span>
+<span class="sd">    The `ByzantineClient` class is responsible for simulating Byzantine behavior in distributed machine learning </span>
 <span class="sd">    by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors) </span>
 <span class="sd">    submitted by honest participants and generates multiple faulty (Byzantine) vectors.</span>
 
@@ -1060,15 +1060,15 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    Initialize the `ByzantineWorker` with a specific attack and apply it to input vectors:</span>
+<span class="sd">    Initialize the `ByzantineClient` with a specific attack and apply it to input vectors:</span>
 
-<span class="sd">    &gt;&gt;&gt; from byzfl import ByzantineWorker</span>
+<span class="sd">    &gt;&gt;&gt; from byzfl import ByzantineClient</span>
 <span class="sd">    &gt;&gt;&gt; attack = {</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;name&quot;: &quot;InnerProductManipulation&quot;,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;f&quot;: 3,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;parameters&quot;: {&quot;tau&quot;: 3.0},</span>
 <span class="sd">    &gt;&gt;&gt; }</span>
-<span class="sd">    &gt;&gt;&gt; byz_worker = ByzantineWorker(attack)</span>
+<span class="sd">    &gt;&gt;&gt; byz_worker = ByzantineClient(attack)</span>
 
 <span class="sd">    Using numpy arrays:</span>
 
@@ -1102,7 +1102,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes the ByzantineWorker with the specified attack configuration.</span>
+<span class="sd">        Initializes the ByzantineClient with the specified attack configuration.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1121,8 +1121,8 @@
             <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="p">)(</span><span class="o">**</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">])</span>
 
-<div class="viewcode-block" id="ByzantineWorker.apply_attack">
-<a class="viewcode-back" href="../../../pipeline/classes/byzantine_worker.html#byzfl.ByzantineWorker.apply_attack">[docs]</a>
+<div class="viewcode-block" id="ByzantineClient.apply_attack">
+<a class="viewcode-back" href="../../../pipeline/classes/byzantine_client.html#byzfl.ByzantineClient.apply_attack">[docs]</a>
     <span class="k">def</span> <span class="nf">apply_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the specified Byzantine attack to the input vectors.</span>

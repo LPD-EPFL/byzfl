@@ -1,9 +1,9 @@
-.. _byzantine-worker-label:
+.. _byzantine-client-label:
 
-Byzantine Worker
+Byzantine Client
 ================
 
-.. autoclass:: byzfl.ByzantineWorker
+.. autoclass:: byzfl.ByzantineClient
    :members:
    :undoc-members:
    :inherited-members:
