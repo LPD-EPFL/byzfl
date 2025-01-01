@@ -14,10 +14,10 @@ ByzFL is a **Python library for Byzantine-resilient Federated Learning**. It is 
    - Aggregate gradients robustly while mitigating the impact of Byzantine participants.
 2. **Byzantine Attacks**: 
    - Simulate and evaluate different attack strategies to test resilience.
-3. **Machine Learning Pipelines**: 
-   - Train and benchmark robust aggregation schemes and attack implementations seamlessly.
+3. **Federated Learning Framework**: 
+    - Provides an end-to-end simulation environment for federated learning, integrating clients (honest and Byzantine), a central server, and robust aggregation mechanisms. This framework supports testing and benchmarking the robustness of various aggregation strategies against adversarial attacks in a distributed learning setup.
 
-The exact implementations of these modules (`aggregators`, `attacks`, and `pipeline`) can be found in the `byzfl/` directory.
+The exact implementations of these modules (`aggregators`, `attacks`, and `fed_framework`) can be found in the `byzfl/` directory.
 
 ---
 
@@ -29,9 +29,92 @@ Install the ByzFL library using pip:
 pip install byzfl
 ```
 
-After installation, the library is ready to use. Here’s a quick example of how to use the `TrMean` robust aggregator and the `SignFlipping` Byzantine attack:
+After installation, the library is ready to use.
 
 ---
+
+
+## Federated Learning Simulation Example
+
+Below is an example of how to simulate federated learning using this framework:
+
+```python
+import torch
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
+from byzfl import Client, Server, ByzantineClient
+
+# Fix the random seed
+SEED = 42
+torch.manual_seed(SEED)
+torch.cuda.manual_seed(SEED)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+
+# Define data loaders
+transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+train_dataset = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
+test_loader = DataLoader(test_dataset, batch_size=64, shuffle=True)
+
+# Client parameters
+client_params = {
+    "model_name": "cnn_mnist",
+    "device": "cpu",
+    "learning_rate": 0.01,
+    "loss_name": "CrossEntropyLoss",
+    "weight_decay": 0.0005,
+    "milestones": [10, 20],
+    "learning_rate_decay": 0.5,
+    "LabelFlipping": True,
+    "momentum": 0.9,
+    "training_dataloader": train_loader,
+    "nb_labels": 10,
+    "nb_steps": len(train_loader)
+}
+
+# Server parameters
+server_params = {
+    "device": "cpu",
+    "model_name": "cnn_mnist",
+    "test_loader": test_loader,
+    "validation_loader": None,
+    "learning_rate": 0.01,
+    "weight_decay": 0.0005,
+    "milestones": [10, 20],
+    "learning_rate_decay": 0.5,
+    "aggregator_info": {"name": "TrMean", "parameters": {"f": 1}},
+    "pre_agg_list": [{"name": "Clipping", "parameters": {"c": 2.0}}]
+}
+
+# Initialize Server and Clients
+server = Server(server_params)
+clients = [Client(client_params) for _ in range(3)]
+byz_worker = ByzantineClient({"name": "InnerProductManipulation", "f": 1, "parameters": {"tau": 3.0}})
+
+# Simulate federated learning
+for epoch in range(2):  # Example: 2 epochs
+    for client in clients:
+        client.compute_gradients()
+
+    honest_gradients = [client.get_flat_gradients() for client in clients]
+    byz_vector = byz_worker.apply_attack(honest_gradients)
+    gradients = honest_gradients + byz_vector
+    server.update_model(gradients)
+    print(f"Epoch {epoch + 1}")
+    print("Test Accuracy:", server.compute_test_accuracy())
+```
+
+## Output
+```plaintext
+Epoch 1
+Test Accuracy: 0.1015
+Epoch 2
+Test Accuracy: 0.1016
+```
+
+Here are quick examples of how to use the `TrMean` robust aggregator and the `SignFlipping` Byzantine attack:
 
 ## Quick Start Example - Using PyTorch Tensors
 
@@ -117,7 +200,7 @@ Explore the key components of ByzFL:
   Learn about robust aggregation methods.
 - [Attacks](https://byzfl.epfl.ch/attacks/index.html)  
   Discover Byzantine attack implementations.
-- [Pipeline](https://byzfl.epfl.ch/pipeline/index.html)  
+- [Federated Learning Framework](https://byzfl.epfl.ch/fed_framework/index.html)  
   Build and benchmark your models.
 
 ---
