@@ -46,7 +46,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pipeline/classes/models';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'fed_framework/classes/models';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -412,7 +412,7 @@
                   
   <section id="models">
 <span id="models-label"></span><h1>Models<a class="headerlink" href="#models" title="Link to this heading">#</a></h1>
-<p>The Models module provides a collection of neural network architectures for use with the <cite>Client</cite> class in the Pipeline. These models include fully connected networks, convolutional networks, logistic regression, and ResNet architectures, tailored for datasets such as MNIST, CIFAR-10, CIFAR-100, and ImageNet.</p>
+<p>The Models module provides a collection of neural network architectures for use with the <code class="docutils literal notranslate"><span class="pre">Client</span></code> and <code class="docutils literal notranslate"><span class="pre">Server</span></code> classes in the Federated Learning Framework. These models include fully connected networks, convolutional networks, logistic regression, and ResNet architectures, tailored for datasets such as MNIST, CIFAR-10, CIFAR-100, and ImageNet.</p>
 <section id="available-models">
 <h2>Available Models<a class="headerlink" href="#available-models" title="Link to this heading">#</a></h2>
 <section id="mnist-models">
@@ -442,7 +442,7 @@
 </section>
 <section id="usage-examples">
 <h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading">#</a></h2>
-<p>Each model can be easily imported and used in your training pipeline. For instance:</p>
+<p>Each model can be easily imported and used in your training framework. For instance:</p>
 <p>Using <cite>ResNet18</cite> for CIFAR-10:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">ResNet18</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">ResNet18</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -464,7 +464,7 @@
 <h2>API Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.fc_mnist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">fc_mnist</span></span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#fc_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.fc_mnist" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">fc_mnist</span></span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#fc_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.fc_mnist" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Fully Connected Network for MNIST.</p>
 <section id="description">
@@ -483,7 +483,7 @@ two fully connected layers with ReLU activation and softmax output.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.fc_mnist.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#fc_mnist.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.fc_mnist.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#fc_mnist.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.fc_mnist.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -492,7 +492,7 @@ two fully connected layers with ReLU activation and softmax output.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.cnn_mnist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">cnn_mnist</span></span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#cnn_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_mnist" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">cnn_mnist</span></span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#cnn_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_mnist" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Convolutional Neural Network for MNIST.</p>
 <section id="id1">
@@ -512,7 +512,7 @@ fully connected layers.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.cnn_mnist.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#cnn_mnist.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_mnist.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#cnn_mnist.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_mnist.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -521,7 +521,7 @@ fully connected layers.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.logreg_mnist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">logreg_mnist</span></span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#logreg_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.logreg_mnist" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">logreg_mnist</span></span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#logreg_mnist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.logreg_mnist" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Logistic Regression Model for MNIST.</p>
 <section id="id3">
@@ -540,7 +540,7 @@ a single linear layer.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.logreg_mnist.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#logreg_mnist.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.logreg_mnist.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#logreg_mnist.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.logreg_mnist.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -549,7 +549,7 @@ a single linear layer.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.cnn_cifar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">cnn_cifar</span></span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#cnn_cifar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_cifar" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">cnn_cifar</span></span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#cnn_cifar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_cifar" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Convolutional Neural Network for CIFAR.</p>
 <section id="id5">
@@ -569,7 +569,7 @@ fully connected layers.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.cnn_cifar.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#cnn_cifar.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_cifar.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#cnn_cifar.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.cnn_cifar.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -578,7 +578,7 @@ fully connected layers.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ResNet18">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet18</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet18"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet18" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet18</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet18"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet18" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <section id="id7">
 <h3>Description:<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
@@ -604,7 +604,7 @@ connections for efficient gradient flow.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.ResNet18.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet18.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet18.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet18.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet18.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -613,7 +613,7 @@ connections for efficient gradient flow.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ResNet34">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet34</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet34"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet34" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet34</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet34"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet34" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <section id="id9">
 <h3>Description:<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
@@ -638,7 +638,7 @@ It uses residual connections to improve gradient flow and enable training of ver
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.ResNet34.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet34.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet34.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet34.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet34.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -647,7 +647,7 @@ It uses residual connections to improve gradient flow and enable training of ver
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ResNet50">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet50</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet50"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet50" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet50</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet50"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet50" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <section id="id12">
 <h3>Description:<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
@@ -673,7 +673,7 @@ and more complex tasks.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.ResNet50.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet50.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet50.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet50.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet50.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -682,7 +682,7 @@ and more complex tasks.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ResNet101">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet101</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet101"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet101" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet101</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet101"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet101" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <section id="id15">
 <h3>Description:<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
@@ -707,7 +707,7 @@ It leverages Bottleneck blocks to maintain performance while keeping computation
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.ResNet101.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet101.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet101.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet101.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet101.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 
@@ -716,7 +716,7 @@ It leverages Bottleneck blocks to maintain performance while keeping computation
 
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ResNet152">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet152</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet152"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet152" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ResNet152</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet152"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet152" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <section id="id18">
 <h3>Description:<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
@@ -742,7 +742,7 @@ The model achieves a balance between depth and computational feasibility using B
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.ResNet152.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/pipeline/models.html#ResNet152.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet152.forward" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/models.html#ResNet152.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ResNet152.forward" title="Link to this definition">#</a></dt>
 <dd><p>Perform a forward pass through the model.</p>
 </dd></dl>
 

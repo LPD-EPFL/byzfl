@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>byzfl.pipeline.pipeline &#8212; ByzFL</title>
+    <title>byzfl.fed_framework.framework &#8212; ByzFL</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/pipeline/pipeline';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/fed_framework/framework';</script>
     <script src="../../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -149,7 +149,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../pipeline/index.html">
+  <a class="nav-link nav-internal" href="../../../fed_framework/index.html">
     Federated Learning Framework
   </a>
 </li>
@@ -275,7 +275,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../pipeline/index.html">
+  <a class="nav-link nav-internal" href="../../../fed_framework/index.html">
     Federated Learning Framework
   </a>
 </li>
@@ -370,7 +370,7 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.pipeline.pipeline</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.fed_framework.framework</span></li>
   </ul>
 </nav>
 </div>
@@ -387,11 +387,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for byzfl.pipeline.pipeline</h1><div class="highlight"><pre>
+  <h1>Source code for byzfl.fed_framework.framework</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">aggregators</span>
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">preaggregators</span>
 <span class="kn">import</span> <span class="nn">byzfl.attacks</span> <span class="k">as</span> <span class="nn">attacks</span>
-<span class="kn">import</span> <span class="nn">byzfl.pipeline.models</span> <span class="k">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">byzfl.fed_framework.models</span> <span class="k">as</span> <span class="nn">models</span>
 <span class="kn">from</span> <span class="nn">byzfl.utils.conversion</span> <span class="kn">import</span> <span class="n">flatten_dict</span><span class="p">,</span> <span class="n">unflatten_dict</span><span class="p">,</span> <span class="n">unflatten_generator</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -542,7 +542,7 @@
 
     
 <div class="viewcode-block" id="Client">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client">[docs]</a>
 <span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -563,7 +563,7 @@
 <span class="sd">        A dictionary containing the configuration for the Client. Must include:</span>
 
 <span class="sd">        - `&quot;model_name&quot;`: str</span>
-<span class="sd">            Name of the model to be used. For a complete list of available models within the pipeline, refer to :ref:`models-label`.</span>
+<span class="sd">            Name of the model to be used. For a complete list of available models within the framework, refer to :ref:`models-label`.</span>
 <span class="sd">        - `&quot;device&quot;`: str</span>
 <span class="sd">            Device for computation (e.g., &#39;cpu&#39; or &#39;cuda&#39;).</span>
 <span class="sd">        - `&quot;learning_rate&quot;`: float</span>
@@ -609,7 +609,7 @@
 <span class="sd">    &gt;&gt;&gt; import torch</span>
 <span class="sd">    &gt;&gt;&gt; from torch.utils.data import DataLoader</span>
 <span class="sd">    &gt;&gt;&gt; from torchvision import datasets, transforms</span>
-<span class="sd">    &gt;&gt;&gt; from byzfl.pipeline import Client</span>
+<span class="sd">    &gt;&gt;&gt; from byzfl import Client</span>
 
 <span class="sd">    &gt;&gt;&gt; # Fix the random seed of torch</span>
 <span class="sd">    &gt;&gt;&gt; SEED = 42</span>
@@ -698,7 +698,7 @@
 
 
 <div class="viewcode-block" id="Client.compute_gradients">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.compute_gradients">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.compute_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the gradients of the local model loss function.</span>
@@ -733,7 +733,7 @@
 
 
 <div class="viewcode-block" id="Client.get_flat_flipped_gradients">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_flat_flipped_gradients">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_flat_flipped_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_flipped_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the gradients of the model with flipped targets in a flat array.</span>
@@ -742,7 +742,7 @@
 
 
 <div class="viewcode-block" id="Client.get_flat_gradients_with_momentum">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_flat_gradients_with_momentum">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_flat_gradients_with_momentum">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_gradients_with_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the gradients with momentum applied in a flat array.</span>
@@ -757,7 +757,7 @@
 
 
 <div class="viewcode-block" id="Client.get_loss_list">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_loss_list">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_loss_list">[docs]</a>
     <span class="k">def</span> <span class="nf">get_loss_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the list of computed losses over training.</span>
@@ -766,7 +766,7 @@
 
 
 <div class="viewcode-block" id="Client.get_train_accuracy">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.get_train_accuracy">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_train_accuracy">[docs]</a>
     <span class="k">def</span> <span class="nf">get_train_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the training accuracy per batch.</span>
@@ -775,7 +775,7 @@
 
 
 <div class="viewcode-block" id="Client.set_model_state">
-<a class="viewcode-back" href="../../../pipeline/classes/client.html#byzfl.Client.set_model_state">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.set_model_state">[docs]</a>
     <span class="k">def</span> <span class="nf">set_model_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates the model state with the provided state dictionary.</span>
@@ -791,7 +791,7 @@
 
 
 <div class="viewcode-block" id="RobustAggregator">
-<a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
 <span class="k">class</span> <span class="nc">RobustAggregator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -927,7 +927,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">(</span><span class="o">**</span><span class="n">pre_agg_parameters</span><span class="p">))</span>
 
 <div class="viewcode-block" id="RobustAggregator.aggregate_vectors">
-<a class="viewcode-back" href="../../../pipeline/classes/robust_aggregators.html#byzfl.RobustAggregator.aggregate_vectors">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/robust_aggregators.html#byzfl.RobustAggregator.aggregate_vectors">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the configured pre-aggregations and robust aggregation method to the input vectors.</span>
@@ -950,7 +950,7 @@
 
 
 <div class="viewcode-block" id="ByzantineClient">
-<a class="viewcode-back" href="../../../pipeline/classes/byzantine_client.html#byzfl.ByzantineClient">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/byzantine_client.html#byzfl.ByzantineClient">[docs]</a>
 <span class="k">class</span> <span class="nc">ByzantineClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -1058,7 +1058,7 @@
         <span class="p">)(</span><span class="o">**</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="ByzantineClient.apply_attack">
-<a class="viewcode-back" href="../../../pipeline/classes/byzantine_client.html#byzfl.ByzantineClient.apply_attack">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/byzantine_client.html#byzfl.ByzantineClient.apply_attack">[docs]</a>
     <span class="k">def</span> <span class="nf">apply_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies the specified Byzantine attack to the input vectors.</span>
@@ -1087,7 +1087,7 @@
 
 
 <div class="viewcode-block" id="Server">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server">[docs]</a>
 <span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description</span>
@@ -1205,7 +1205,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Server.aggregate">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server.aggregate">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.aggregate">[docs]</a>
     <span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -1225,7 +1225,7 @@
 
 
 <div class="viewcode-block" id="Server.update_model">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server.update_model">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.update_model">[docs]</a>
     <span class="k">def</span> <span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -1243,7 +1243,7 @@
 
 
 <div class="viewcode-block" id="Server.step">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server.step">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.step">[docs]</a>
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -1255,7 +1255,7 @@
 
 
 <div class="viewcode-block" id="Server.get_model">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server.get_model">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.get_model">[docs]</a>
     <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -1282,7 +1282,7 @@
         <span class="k">return</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
 
 <div class="viewcode-block" id="Server.compute_validation_accuracy">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server.compute_validation_accuracy">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.compute_validation_accuracy">[docs]</a>
     <span class="k">def</span> <span class="nf">compute_validation_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
@@ -1298,7 +1298,7 @@
 
 
 <div class="viewcode-block" id="Server.compute_test_accuracy">
-<a class="viewcode-back" href="../../../pipeline/classes/server.html#byzfl.Server.compute_test_accuracy">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.compute_test_accuracy">[docs]</a>
     <span class="k">def</span> <span class="nf">compute_test_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>

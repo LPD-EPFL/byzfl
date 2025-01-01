@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>byzfl.pipeline.models &#8212; ByzFL</title>
+    <title>byzfl.fed_framework.models &#8212; ByzFL</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/pipeline/models';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/byzfl/fed_framework/models';</script>
     <script src="../../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -149,7 +149,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../pipeline/index.html">
+  <a class="nav-link nav-internal" href="../../../fed_framework/index.html">
     Federated Learning Framework
   </a>
 </li>
@@ -275,7 +275,7 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../pipeline/index.html">
+  <a class="nav-link nav-internal" href="../../../fed_framework/index.html">
     Federated Learning Framework
   </a>
 </li>
@@ -370,7 +370,7 @@
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.pipeline.models</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">byzfl.fed_framework.models</span></li>
   </ul>
 </nav>
 </div>
@@ -387,7 +387,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for byzfl.pipeline.models</h1><div class="highlight"><pre>
+  <h1>Source code for byzfl.fed_framework.models</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Models Module</span>
 <span class="sd">=============</span>
@@ -468,7 +468,7 @@
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 
 <div class="viewcode-block" id="fc_mnist">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.fc_mnist">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.fc_mnist">[docs]</a>
 <span class="k">class</span> <span class="nc">fc_mnist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fully Connected Network for MNIST.</span>
@@ -493,7 +493,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="fc_mnist.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.fc_mnist.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.fc_mnist.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_f1</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)))</span>
@@ -504,7 +504,7 @@
 
 
 <div class="viewcode-block" id="cnn_mnist">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.cnn_mnist">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.cnn_mnist">[docs]</a>
 <span class="k">class</span> <span class="nc">cnn_mnist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convolutional Neural Network for MNIST.</span>
@@ -532,7 +532,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cnn_mnist.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.cnn_mnist.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.cnn_mnist.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -547,7 +547,7 @@
 
 
 <div class="viewcode-block" id="logreg_mnist">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.logreg_mnist">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.logreg_mnist">[docs]</a>
 <span class="k">class</span> <span class="nc">logreg_mnist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Logistic Regression Model for MNIST.</span>
@@ -571,7 +571,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="logreg_mnist.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.logreg_mnist.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.logreg_mnist.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">)))</span></div>
@@ -581,7 +581,7 @@
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 
 <div class="viewcode-block" id="cnn_cifar">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.cnn_cifar">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.cnn_cifar">[docs]</a>
 <span class="k">class</span> <span class="nc">cnn_cifar</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convolutional Neural Network for CIFAR.</span>
@@ -612,7 +612,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="o">.</span><span class="n">out_features</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <div class="viewcode-block" id="cnn_cifar.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.cnn_cifar.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.cnn_cifar.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
@@ -707,7 +707,7 @@
 
 
 <div class="viewcode-block" id="ResNet18">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet18">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet18">[docs]</a>
 <span class="k">class</span> <span class="nc">ResNet18</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
@@ -734,7 +734,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">BasicBlock</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ResNet18.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet18.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet18.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
@@ -743,7 +743,7 @@
 
 
 <div class="viewcode-block" id="ResNet34">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet34">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet34">[docs]</a>
 <span class="k">class</span> <span class="nc">ResNet34</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
@@ -769,7 +769,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">BasicBlock</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ResNet34.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet34.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet34.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
@@ -778,7 +778,7 @@
 
 
 <div class="viewcode-block" id="ResNet50">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet50">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet50">[docs]</a>
 <span class="k">class</span> <span class="nc">ResNet50</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
@@ -805,7 +805,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">Bottleneck</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ResNet50.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet50.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet50.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
@@ -814,7 +814,7 @@
 
 
 <div class="viewcode-block" id="ResNet101">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet101">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet101">[docs]</a>
 <span class="k">class</span> <span class="nc">ResNet101</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
@@ -840,7 +840,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">Bottleneck</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ResNet101.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet101.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet101.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
@@ -849,7 +849,7 @@
 
 
 <div class="viewcode-block" id="ResNet152">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet152">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet152">[docs]</a>
 <span class="k">class</span> <span class="nc">ResNet152</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
@@ -876,7 +876,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ResNet</span><span class="p">(</span><span class="n">Bottleneck</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">num_classes</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ResNet152.forward">
-<a class="viewcode-back" href="../../../pipeline/classes/models.html#byzfl.ResNet152.forward">[docs]</a>
+<a class="viewcode-back" href="../../../fed_framework/classes/models.html#byzfl.ResNet152.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>

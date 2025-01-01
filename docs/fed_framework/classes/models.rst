@@ -3,7 +3,7 @@
 Models
 ======
 
-The Models module provides a collection of neural network architectures for use with the `Client` class in the Pipeline. These models include fully connected networks, convolutional networks, logistic regression, and ResNet architectures, tailored for datasets such as MNIST, CIFAR-10, CIFAR-100, and ImageNet.
+The Models module provides a collection of neural network architectures for use with the ``Client`` and ``Server`` classes in the Federated Learning Framework. These models include fully connected networks, convolutional networks, logistic regression, and ResNet architectures, tailored for datasets such as MNIST, CIFAR-10, CIFAR-100, and ImageNet.
 
 Available Models
 ----------------
@@ -32,7 +32,7 @@ Available Models
 Usage Examples
 --------------
 
-Each model can be easily imported and used in your training pipeline. For instance:
+Each model can be easily imported and used in your training framework. For instance:
 
 Using `ResNet18` for CIFAR-10:
 

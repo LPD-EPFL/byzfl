@@ -1,7 +1,7 @@
 from byzfl.aggregators import aggregators
 from byzfl.aggregators import preaggregators
 import byzfl.attacks as attacks
-import byzfl.pipeline.models as models
+import byzfl.fed_framework.models as models
 from byzfl.utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
 import inspect
 import torch
@@ -171,7 +171,7 @@ class Client(ModelBaseInterface):
         A dictionary containing the configuration for the Client. Must include:
 
         - `"model_name"`: str
-            Name of the model to be used. For a complete list of available models within the pipeline, refer to :ref:`models-label`.
+            Name of the model to be used. For a complete list of available models within the framework, refer to :ref:`models-label`.
         - `"device"`: str
             Device for computation (e.g., 'cpu' or 'cuda').
         - `"learning_rate"`: float
@@ -217,7 +217,7 @@ class Client(ModelBaseInterface):
     >>> import torch
     >>> from torch.utils.data import DataLoader
     >>> from torchvision import datasets, transforms
-    >>> from byzfl.pipeline import Client
+    >>> from byzfl import Client
 
     >>> # Fix the random seed of torch
     >>> SEED = 42

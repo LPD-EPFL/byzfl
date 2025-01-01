@@ -9,7 +9,7 @@
   
   aggregators/index
   attacks/index
-  pipeline/index
+  fed_framework/index
   team/index
 
 
@@ -168,7 +168,7 @@ Explore the key components of ByzFL below:
       <div class="container">
         <h2>Pipeline</h2>
 
-:ref:`Get Started <_federated-learning-framework-label>`
+:ref:`Get Started <federated-learning-framework-label>`
 
 .. raw:: html
 
