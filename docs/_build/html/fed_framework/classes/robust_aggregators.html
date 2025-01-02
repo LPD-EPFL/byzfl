@@ -415,24 +415,21 @@
                   
   <section id="robust-aggregator">
 <span id="robust-aggregator-label"></span><h1>Robust Aggregator<a class="headerlink" href="#robust-aggregator" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code> class provides a robust mechanism for aggregating gradients in federated learning setups. It combines pre-aggregation techniques with robust aggregation methods to mitigate the effects of adversarial inputs and outliers, ensuring reliable updates for the global model.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Pre-Aggregation</strong>:
+Supports applying multiple pre-aggregation techniques sequentially, such as <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a> and <a class="reference internal" href="../../aggregators/classes/nnm.html#nnm-label"><span class="std std-ref">Nearest Neighbor Mixing (NNM)</span></a>, to refine the input gradients.</p></li>
+<li><p><strong>Robust Aggregation</strong>:
+Implements aggregation strategies like <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> to handle Byzantine gradients and ensure robustness against adversarial attacks.</p></li>
+<li><p><strong>Flexible Input Handling</strong>:
+Compatible with various input formats, including NumPy arrays, PyTorch tensors, and lists of these data types.</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.RobustAggregator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">RobustAggregator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregator_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_agg_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#RobustAggregator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.RobustAggregator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code> class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.
-This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</p>
-</section>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Pre-Aggregation</strong>: Enables the application of multiple pre-aggregation steps in a sequential manner,
-such as <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a> or <a class="reference internal" href="../../aggregators/classes/nnm.html#nnm-label"><span class="std std-ref">Nearest Neighbor Mixing (NNM)</span></a>, to refine input vectors before aggregation.</p></li>
-<li><p><strong>Robust Aggregation</strong>: Integrates robust aggregation methods like <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> (TrMean) to compute
-an output vector resilient to Byzantine inputs.</p></li>
-<li><p><strong>Compatibility</strong>: Works seamlessly with NumPy arrays, PyTorch tensors, and lists of these data types.</p></li>
-</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -538,11 +535,6 @@ These vectors conceptually correspond to gradients submitted by honest and Byzan
 <span class="go">tensor([0.9584, 1.1442, 1.3299])</span>
 </pre></div>
 </div>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>Pre-aggregations are applied in the order they are listed in <cite>pre_agg_list</cite>.</p></li>
-<li><p>The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.</p></li>
-</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="id0">
 <span class="sig-name descname"><span class="pre">aggregate_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#RobustAggregator.aggregate_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
@@ -557,9 +549,16 @@ These vectors conceptually correspond to gradients submitted by honest and Byzan
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The pre-aggregation methods are applied in the order they are listed in <cite>pre_agg_list</cite>.</p></li>
+<li><p>The robust aggregation method is applied after all pre-aggregation techniques are completed.</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -609,11 +608,15 @@ These vectors conceptually correspond to gradients submitted by honest and Byzan
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.RobustAggregator.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate_vectors()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate_vectors()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.RobustAggregator"><code class="docutils literal notranslate"><span class="pre">RobustAggregator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.RobustAggregator.aggregate_vectors"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate_vectors()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">RobustAggregator.aggregate_vectors()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
 

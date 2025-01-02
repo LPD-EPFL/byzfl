@@ -415,23 +415,21 @@
                   
   <section id="byzantine-client">
 <span id="byzantine-client-label"></span><h1>Byzantine Client<a class="headerlink" href="#byzantine-client" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code> class simulates malicious participants in a federated learning setup. These clients perform adversarial attacks to disrupt the training process by introducing corrupted updates, enabling the evaluation of robust aggregation methods and defenses against Byzantine behavior.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Simulated Attacks</strong>:
+Implements various attack strategies, such as <a class="reference internal" href="../../attacks/classes/inner_product_manipulation.html#ipm-label"><span class="std std-ref">Inner Product Manipulation (IPM)</span></a> and <a class="reference internal" href="../../attacks/classes/little_is_enough.html#alie-label"><span class="std std-ref">A Little Is Enough (ALIE)</span></a>, to evaluate the robustness of aggregation techniques.</p></li>
+<li><p><strong>Configurable Behavior</strong>:
+Allows customization of the type and intensity of attacks through a flexible parameterization system.</p></li>
+<li><p><strong>Integration with Federated Learning</strong>:
+Easily integrates into federated learning workflows alongside honest clients and the central server.</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.ByzantineClient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ByzantineClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ByzantineClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineClient" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code> class is responsible for simulating Byzantine behavior in distributed machine learning
-by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors)
-submitted by honest participants and generates multiple faulty (Byzantine) vectors.</p>
-</section>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Supports various Byzantine attack strategies through dynamic initialization.</p></li>
-<li><p>Allows customization of attack parameters and the number of faulty nodes.</p></li>
-<li><p>Compatible with both NumPy and PyTorch tensors, as well as lists of these data types.</p></li>
-</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Byzantine attack. Must include:</p>
@@ -523,9 +521,16 @@ If <cite>f = 0</cite>, an empty list is returned.</p>
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The number of adversarial vectors generated is determined by the <cite>“f”</cite> parameter.</p></li>
+<li><p>Attack strategies can be extended or modified by customizing the attack implementation in the library.</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -575,11 +580,15 @@ If <cite>f = 0</cite>, an empty list is returned.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient"><code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient"><code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
 

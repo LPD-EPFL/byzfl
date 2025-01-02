@@ -415,23 +415,19 @@
                   
   <section id="client">
 <span id="client-label"></span><h1>Client<a class="headerlink" href="#client" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class simulates an honest participant in a federated learning environment. Each client trains its local model on its private dataset and shares its updates (gradients) with the server for aggregation. The class is designed to integrate seamlessly into the federated learning pipeline provided by the ByzFL framework.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Local Training</strong>: Allows training on client-specific datasets while maintaining data ownership.</p></li>
+<li><p><strong>Gradient Computation</strong>: Computes gradients of the model’s loss function with respect to its parameters.</p></li>
+<li><p><strong>Support for Momentum</strong>: Incorporates momentum into gradient updates to improve convergence.</p></li>
+<li><p><strong>Integration with Robust Aggregators</strong>: Shares updates with the server, enabling robust aggregation techniques to handle adversarial or heterogeneous data environments.</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.Client">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class simulates a single honest node capable of training its local model,
-sending gradients, and receiving the global model in every training round.</p>
-</section>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Local Training</strong>: Performs training on a local dataset using a specified model and optimizer.</p></li>
-<li><p><strong>Gradient Computation</strong>: Computes gradients for the local dataset.</p></li>
-<li><p><strong>Momentum Support</strong>: Supports momentum for gradient updates.</p></li>
-<li><p><strong>Label Flipping Attack</strong>: Optionally applies a label flipping attack during training.</p></li>
-</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Client. Must include:</p>
@@ -629,9 +625,9 @@ sending gradients, and receiving the global model in every training round.</p>
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
+</section>
 </section>
 
 
@@ -681,19 +677,22 @@ sending gradients, and receiving the global model in every training round.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.compute_gradients"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_flat_flipped_gradients"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_flat_gradients_with_momentum"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_loss_list"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_train_accuracy"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.set_model_state"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.compute_gradients"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_flat_flipped_gradients"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_flat_gradients_with_momentum"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_loss_list"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_train_accuracy"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.set_model_state"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

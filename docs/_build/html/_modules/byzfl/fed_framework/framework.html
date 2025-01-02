@@ -546,18 +546,6 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client">[docs]</a>
 <span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    The ``Client`` class simulates a single honest node capable of training its local model, </span>
-<span class="sd">    sending gradients, and receiving the global model in every training round.</span>
-
-<span class="sd">    Features</span>
-<span class="sd">    --------</span>
-<span class="sd">    - **Local Training**: Performs training on a local dataset using a specified model and optimizer.</span>
-<span class="sd">    - **Gradient Computation**: Computes gradients for the local dataset.</span>
-<span class="sd">    - **Momentum Support**: Supports momentum for gradient updates.</span>
-<span class="sd">    - **Label Flipping Attack**: Optionally applies a label flipping attack during training.</span>
-
 <span class="sd">    Initialization Parameters</span>
 <span class="sd">    -------------------------</span>
 <span class="sd">    params : dict</span>
@@ -818,19 +806,6 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/robust_aggregators.html#byzfl.RobustAggregator">[docs]</a>
 <span class="k">class</span> <span class="nc">RobustAggregator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    The ``RobustAggregator`` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.</span>
-<span class="sd">    This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.</span>
-
-<span class="sd">    Features</span>
-<span class="sd">    --------</span>
-<span class="sd">    - **Pre-Aggregation**: Enables the application of multiple pre-aggregation steps in a sequential manner, </span>
-<span class="sd">      such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors before aggregation.</span>
-<span class="sd">    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute </span>
-<span class="sd">      an output vector resilient to Byzantine inputs.</span>
-<span class="sd">    - **Compatibility**: Works seamlessly with NumPy arrays, PyTorch tensors, and lists of these data types.</span>
-
 <span class="sd">    Initialization Parameters</span>
 <span class="sd">    -------------------------</span>
 <span class="sd">    aggregator_info : dict </span>
@@ -913,10 +888,6 @@
 <span class="sd">    &gt;&gt;&gt; rob_agg.aggregate_vectors(vectors)</span>
 <span class="sd">    tensor([0.9584, 1.1442, 1.3299])</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    - Pre-aggregations are applied in the order they are listed in `pre_agg_list`.</span>
-<span class="sd">    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="p">[]):</span>
@@ -985,18 +956,6 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/byzantine_client.html#byzfl.ByzantineClient">[docs]</a>
 <span class="k">class</span> <span class="nc">ByzantineClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    The ``ByzantineClient`` class is responsible for simulating Byzantine behavior in distributed machine learning </span>
-<span class="sd">    by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors) </span>
-<span class="sd">    submitted by honest participants and generates multiple faulty (Byzantine) vectors.</span>
-
-<span class="sd">    Features</span>
-<span class="sd">    --------</span>
-<span class="sd">    - Supports various Byzantine attack strategies through dynamic initialization.</span>
-<span class="sd">    - Allows customization of attack parameters and the number of faulty nodes.</span>
-<span class="sd">    - Compatible with both NumPy and PyTorch tensors, as well as lists of these data types.</span>
-
 <span class="sd">    Initialization Parameters</span>
 <span class="sd">    -------------------------</span>
 <span class="sd">    params : dict</span>
@@ -1133,17 +1092,6 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server">[docs]</a>
 <span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description</span>
-<span class="sd">    -----------</span>
-<span class="sd">    The ``Server`` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.</span>
-
-<span class="sd">    Features</span>
-<span class="sd">    --------</span>
-<span class="sd">    - **Gradient Aggregation**: Supports robust aggregation of client gradients using pre-aggregators and aggregators like :ref:`trmean-label`.</span>
-<span class="sd">    - **Model Updates**: Aggregates gradients from clients and updates the global model accordingly.</span>
-<span class="sd">    - **Performance Evaluation**: Computes accuracy on validation and test datasets.</span>
-<span class="sd">    - **Integration**: Works in conjunction with `Client` and `ByzantineClient` classes to simulate realistic federated learning scenarios.</span>
-
 <span class="sd">    Initialization Parameters</span>
 <span class="sd">    -------------------------</span>
 <span class="sd">    params : dict</span>

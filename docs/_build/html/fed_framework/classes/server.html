@@ -415,22 +415,23 @@
                   
   <section id="server">
 <span id="server-label"></span><h1>Server<a class="headerlink" href="#server" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Server</span></code> class represents the central node in a federated learning simulation. It is responsible for aggregating updates from clients, maintaining the global model, and evaluating its performance. The server employs robust aggregation techniques to mitigate the impact of adversarial behavior introduced by Byzantine clients.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Global Model Management</strong>:
+Updates and maintains the global model using aggregated gradients received from clients.</p></li>
+<li><p><strong>Robust Aggregation</strong>:
+Integrates defensive techniques, such as <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> and <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a>, to ensure resilience against malicious updates.</p></li>
+<li><p><strong>Performance Evaluation</strong>:
+Computes accuracy metrics on validation and test datasets to track the global model’s progress.</p></li>
+<li><p><strong>Integration</strong>:
+Works in conjunction with <code class="docutils literal notranslate"><span class="pre">Client</span></code> and <code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code> classes to simulate realistic federated learning scenarios.</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.Server">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Server</span></code> class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.</p>
-</section>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Gradient Aggregation</strong>: Supports robust aggregation of client gradients using pre-aggregators and aggregators like <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a>.</p></li>
-<li><p><strong>Model Updates</strong>: Aggregates gradients from clients and updates the global model accordingly.</p></li>
-<li><p><strong>Performance Evaluation</strong>: Computes accuracy on validation and test datasets.</p></li>
-<li><p><strong>Integration</strong>: Works in conjunction with <cite>Client</cite> and <cite>ByzantineClient</cite> classes to simulate realistic federated learning scenarios.</p></li>
-</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Server. Must include:</p>
@@ -570,8 +571,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="id0">
 <span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
-<dd><section id="id1">
-<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<dd><section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h3>
 <p>Aggregates input vectors using the configured robust aggregator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param vectors<span class="colon">:</span></dt>
@@ -588,10 +589,10 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
-<dd><section id="id3">
-<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd><section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Computes the accuracy of the global model on the test dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -602,10 +603,10 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
-<dd><section id="id5">
-<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Computes the accuracy of the global model on the validation dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -616,10 +617,10 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
-<dd><section id="id7">
-<h3>Description<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd><section id="id6">
+<h3>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>Retrieves the current global model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -630,19 +631,19 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
-<dd><section id="id9">
-<h3>Description<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd><section id="id8">
+<h3>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <p>Performs a single optimization step for the global model.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
-<dd><section id="id11">
-<h3>Description<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd><section id="id10">
+<h3>Description<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
 <p>Updates the global model by aggregating gradients and performing an optimization step.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param gradients<span class="colon">:</span></dt>
@@ -655,9 +656,16 @@
 </section>
 </dd></dl>
 
-</section>
 </dd></dl>
 
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The server is designed to be resilient against Byzantine behaviors by integrating pre-aggregation and aggregation techniques.</p></li>
+<li><p>Accuracy evaluation is built-in to monitor the model’s progress throughout the simulation.</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -707,21 +715,25 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.aggregate"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.step"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.get_model"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_test_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.aggregate"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.step"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.get_model"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_test_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
 
