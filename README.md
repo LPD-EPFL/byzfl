@@ -90,7 +90,7 @@ server_params = {
 # Initialize Server and Clients
 server = Server(server_params)
 clients = [Client(client_params) for _ in range(3)]
-byz_worker = ByzantineClient({"name": "InnerProductManipulation", "f": 1, "parameters": {"tau": 3.0}})
+byz_client = ByzantineClient({"name": "InnerProductManipulation", "f": 1, "parameters": {"tau": 3.0}})
 
 # Simulate federated learning
 for epoch in range(2):  # Simulate 2 epochs
@@ -100,7 +100,7 @@ for epoch in range(2):  # Simulate 2 epochs
     # Collect gradients (with momentum) from honest clients
     honest_gradients = [client.get_flat_gradients_with_momentum() for client in clients]
     # Apply Byzantine attack
-    byz_vector = byz_worker.apply_attack(honest_gradients)
+    byz_vector = byz_client.apply_attack(honest_gradients)
     # Combine honest gradients and Byzantine gradients
     gradients = honest_gradients + byz_vector
     # Server aggregates gradients and updates the global model
