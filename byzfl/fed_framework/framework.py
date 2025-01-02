@@ -154,18 +154,6 @@ class ModelBaseInterface(object):
     
 class Client(ModelBaseInterface):
     """
-    Description
-    -----------
-    The ``Client`` class simulates a single honest node capable of training its local model, 
-    sending gradients, and receiving the global model in every training round.
-
-    Features
-    --------
-    - **Local Training**: Performs training on a local dataset using a specified model and optimizer.
-    - **Gradient Computation**: Computes gradients for the local dataset.
-    - **Momentum Support**: Supports momentum for gradient updates.
-    - **Label Flipping Attack**: Optionally applies a label flipping attack during training.
-
     Initialization Parameters
     -------------------------
     params : dict
@@ -405,19 +393,6 @@ class Client(ModelBaseInterface):
 
 class RobustAggregator:
     """
-    Description
-    -----------
-    The ``RobustAggregator`` class is a comprehensive utility for applying pre-aggregations and aggregations to a set of input vectors.
-    This class combines multiple pre-aggregation steps with a robust aggregation method, ensuring that the input data is processed efficiently and reliably to mitigate the effects of adversarial inputs or outliers.
-
-    Features
-    --------
-    - **Pre-Aggregation**: Enables the application of multiple pre-aggregation steps in a sequential manner, 
-      such as :ref:`clipping-label` or :ref:`nnm-label`, to refine input vectors before aggregation.
-    - **Robust Aggregation**: Integrates robust aggregation methods like :ref:`trmean-label` (TrMean) to compute 
-      an output vector resilient to Byzantine inputs.
-    - **Compatibility**: Works seamlessly with NumPy arrays, PyTorch tensors, and lists of these data types.
-
     Initialization Parameters
     -------------------------
     aggregator_info : dict 
@@ -500,10 +475,6 @@ class RobustAggregator:
     >>> rob_agg.aggregate_vectors(vectors)
     tensor([0.9584, 1.1442, 1.3299])
 
-    Notes
-    -----
-    - Pre-aggregations are applied in the order they are listed in `pre_agg_list`.
-    - The class dynamically initializes pre-aggregation and aggregation methods based on the provided configurations.
     """
 
     def __init__(self, aggregator_info, pre_agg_list=[]):
@@ -566,18 +537,6 @@ class RobustAggregator:
 
 class ByzantineClient:
     """
-    Description
-    -----------
-    The ``ByzantineClient`` class is responsible for simulating Byzantine behavior in distributed machine learning 
-    by executing a specified Byzantine attack. It applies an attack to the gradients (or input vectors) 
-    submitted by honest participants and generates multiple faulty (Byzantine) vectors.
-
-    Features
-    --------
-    - Supports various Byzantine attack strategies through dynamic initialization.
-    - Allows customization of attack parameters and the number of faulty nodes.
-    - Compatible with both NumPy and PyTorch tensors, as well as lists of these data types.
-
     Initialization Parameters
     -------------------------
     params : dict
@@ -708,17 +667,6 @@ class ByzantineClient:
 
 class Server(ModelBaseInterface):
     """
-    Description
-    -----------
-    The ``Server`` class simulates the central server in a federated learning setup, responsible for aggregating gradients, updating the global model, and evaluating its performance. This class seamlessly integrates robust aggregation methods to mitigate the impact of Byzantine participants and ensures efficient global model updates.
-
-    Features
-    --------
-    - **Gradient Aggregation**: Supports robust aggregation of client gradients using pre-aggregators and aggregators like :ref:`trmean-label`.
-    - **Model Updates**: Aggregates gradients from clients and updates the global model accordingly.
-    - **Performance Evaluation**: Computes accuracy on validation and test datasets.
-    - **Integration**: Works in conjunction with `Client` and `ByzantineClient` classes to simulate realistic federated learning scenarios.
-
     Initialization Parameters
     -------------------------
     params : dict
