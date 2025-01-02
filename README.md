@@ -67,7 +67,7 @@ client_params = {
     "weight_decay": 0.0005,
     "milestones": [10, 20],
     "learning_rate_decay": 0.5,
-    "LabelFlipping": True,
+    "LabelFlipping": False,
     "momentum": 0.9,
     "training_dataloader": train_loader,
     "nb_labels": 10,
@@ -79,13 +79,12 @@ server_params = {
     "device": "cpu",
     "model_name": "cnn_mnist",
     "test_loader": test_loader,
-    "validation_loader": None,
     "learning_rate": 0.01,
     "weight_decay": 0.0005,
     "milestones": [10, 20],
     "learning_rate_decay": 0.5,
     "aggregator_info": {"name": "TrMean", "parameters": {"f": 1}},
-    "pre_agg_list": [{"name": "Clipping", "parameters": {"c": 2.0}}]
+    "pre_agg_list": [{"name": "Clipping", "parameters": {"c": 2.0}}, {"name": "NNM", "parameters": {"f": 1}}]
 }
 
 # Initialize Server and Clients
@@ -94,14 +93,19 @@ clients = [Client(client_params) for _ in range(3)]
 byz_worker = ByzantineClient({"name": "InnerProductManipulation", "f": 1, "parameters": {"tau": 3.0}})
 
 # Simulate federated learning
-for epoch in range(2):  # Example: 2 epochs
+for epoch in range(2):  # Simulate 2 epochs
+    # Clients compute their gradients
     for client in clients:
         client.compute_gradients()
-
-    honest_gradients = [client.get_flat_gradients() for client in clients]
+    # Collect gradients (with momentum) from honest clients
+    honest_gradients = [client.get_flat_gradients_with_momentum() for client in clients]
+    # Apply Byzantine attack
     byz_vector = byz_worker.apply_attack(honest_gradients)
+    # Combine honest gradients and Byzantine gradients
     gradients = honest_gradients + byz_vector
+    # Server aggregates gradients and updates the global model
     server.update_model(gradients)
+    # Evaluate global model
     print(f"Epoch {epoch + 1}")
     print("Test Accuracy:", server.compute_test_accuracy())
 ```
@@ -111,7 +115,7 @@ for epoch in range(2):  # Example: 2 epochs
 Epoch 1
 Test Accuracy: 0.1015
 Epoch 2
-Test Accuracy: 0.1016
+Test Accuracy: 0.1015
 ```
 
 Here are quick examples of how to use the `TrMean` robust aggregator and the `SignFlipping` Byzantine attack:

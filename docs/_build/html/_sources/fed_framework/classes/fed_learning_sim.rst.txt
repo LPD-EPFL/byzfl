@@ -48,7 +48,7 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
        "weight_decay": 0.0005,
        "milestones": [10, 20],
        "learning_rate_decay": 0.5,
-       "LabelFlipping": True,
+       "LabelFlipping": False,
        "momentum": 0.9,
        "training_dataloader": train_loader,
        "nb_labels": 10,
@@ -69,7 +69,6 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
        "device": "cpu",
        "model_name": "cnn_mnist",
        "test_loader": test_loader,
-       "validation_loader": None,
        "learning_rate": 0.01,
        "weight_decay": 0.0005,
        "milestones": [10, 20],
@@ -102,8 +101,8 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
        for client in clients:
            client.compute_gradients()
 
-       # Collect gradients from honest clients
-       honest_gradients = [client.get_flat_gradients() for client in clients]
+       # Collect gradients (with momentum) from honest clients
+       honest_gradients = [client.get_flat_gradients_with_momentum() for client in clients]
 
        # Apply Byzantine attack
        byz_vector = byz_client.apply_attack(honest_gradients)
@@ -125,9 +124,9 @@ Running the above code will produce the following output:
 .. code-block:: text
 
    Epoch 1
-   Test Accuracy: 0.1013
+   Test Accuracy: 0.1015
    Epoch 2
-   Test Accuracy: 0.1016
+   Test Accuracy: 0.1015
 
 Documentation References
 ------------------------

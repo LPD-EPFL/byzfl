@@ -393,6 +393,7 @@
 <span class="kn">import</span> <span class="nn">byzfl.attacks</span> <span class="k">as</span> <span class="nn">attacks</span>
 <span class="kn">import</span> <span class="nn">byzfl.fed_framework.models</span> <span class="k">as</span> <span class="nn">models</span>
 <span class="kn">from</span> <span class="nn">byzfl.utils.conversion</span> <span class="kn">import</span> <span class="n">flatten_dict</span><span class="p">,</span> <span class="n">unflatten_dict</span><span class="p">,</span> <span class="n">unflatten_generator</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -656,6 +657,32 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+
+        <span class="c1"># Check for correct types and values in params</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span> <span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span> <span class="s2">&quot;milestones&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">miletsone</span> <span class="ow">in</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">miletsone</span><span class="p">,</span> <span class="s2">&quot;miletsone&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;loss_name&quot;</span><span class="p">],</span> <span class="s2">&quot;loss_name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;LabelFlipping&quot;</span><span class="p">],</span> <span class="s2">&quot;LabelFlipping&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_labels&quot;</span><span class="p">],</span> <span class="s2">&quot;nb_labels&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_labels&quot;</span><span class="p">],</span> <span class="s2">&quot;nb_labels&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;momentum&quot;</span><span class="p">],</span> <span class="s2">&quot;momentum&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;momentum&quot;</span><span class="p">],</span> <span class="s2">&quot;momentum&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;momentum&quot;</span><span class="p">],</span> <span class="s2">&quot;momentum&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;training_dataloader&quot;</span><span class="p">],</span> <span class="s2">&quot;training_dataloader&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_steps&quot;</span><span class="p">],</span> <span class="s2">&quot;nb_steps&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_steps&quot;</span><span class="p">],</span> <span class="s2">&quot;nb_steps&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Initialize Client instance</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
             <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
             <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span>
@@ -666,11 +693,9 @@
         <span class="p">})</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;loss_name&quot;</span><span class="p">])()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">gradient_LF</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labelflipping</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;LabelFlipping&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_labels</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_labels&quot;</span><span class="p">]</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;momentum&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span>
@@ -683,7 +708,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_dataloader</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_steps&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nb_steps&quot;</span><span class="p">])</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">SGD_step</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">_sample_train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -695,7 +719,6 @@
         <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_dataloader</span><span class="p">)</span>
             <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span><span class="p">)</span>
-
 
 <div class="viewcode-block" id="Client.compute_gradients">
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.compute_gradients">[docs]</a>
@@ -785,6 +808,7 @@
 <span class="sd">        state_dict : dict</span>
 <span class="sd">            The state dictionary of a model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">state_dict</span><span class="p">,</span> <span class="s2">&quot;state_dict&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span></div>
 </div>
 
@@ -906,6 +930,14 @@
 <span class="sd">        pre_agg_list : list, optional</span>
 <span class="sd">            List of dictionaries specifying pre-aggregation methods and their parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check for correct types and values in params</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">aggregator_info</span><span class="p">,</span> <span class="s2">&quot;aggregator_info&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">,</span> <span class="s2">&quot;pre_agg&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the RobustAggregator instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">aggregators</span><span class="p">,</span> <span class="n">aggregator_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
         <span class="n">signature_agg</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aggregator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
         <span class="n">agg_parameters</span> <span class="o">=</span> <span class="p">{</span>
@@ -1051,6 +1083,15 @@
 <span class="sd">            - `&quot;parameters&quot;`: dict</span>
 <span class="sd">                Parameters for the specified attack.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check for correct types and values in params</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">],</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">],</span> <span class="s2">&quot;parameters&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the ByzantineClient instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attack</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
             <span class="n">attacks</span><span class="p">,</span> 
@@ -1074,9 +1115,11 @@
 <span class="sd">            A list containing `f` faulty (Byzantine) vectors generated by the attack, each with the same data type as the input.</span>
 <span class="sd">            If `f = 0`, an empty list is returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        
+
         <span class="c1"># Generate the Byzantine vector by applying the attack</span>
         <span class="n">byz_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
 
@@ -1170,7 +1213,6 @@
 <span class="sd">    &gt;&gt;&gt;     &quot;device&quot;: &quot;cpu&quot;,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;model_name&quot;: &quot;cnn_mnist&quot;,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;test_loader&quot;: test_loader,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;validation_loader&quot;: None,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;learning_rate&quot;: 0.01,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;weight_decay&quot;: 0.0005,</span>
 <span class="sd">    &gt;&gt;&gt;     &quot;milestones&quot;: [10, 20],</span>
@@ -1191,6 +1233,23 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+
+        <span class="c1"># Check for correct types and values in params</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span> <span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;weight_decay&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span> <span class="s2">&quot;milestones&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">miletsone</span> <span class="ow">in</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">miletsone</span><span class="p">,</span> <span class="s2">&quot;miletsone&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span> <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;test_loader&quot;</span><span class="p">],</span> <span class="s2">&quot;test_loader&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the Server instance</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
             <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span>
             <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
@@ -1201,7 +1260,9 @@
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">robust_aggregator</span> <span class="o">=</span> <span class="n">RobustAggregator</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;aggregator_info&quot;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;pre_agg_list&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;test_loader&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;validation_loader&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;validation_loader&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;validation_loader&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span><span class="p">,</span> <span class="s2">&quot;validation_loader&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Server.aggregate">
@@ -1294,6 +1355,9 @@
 <span class="sd">        float</span>
 <span class="sd">            Validation accuracy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation Data Loader is not set.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span><span class="p">)</span></div>
 
 
