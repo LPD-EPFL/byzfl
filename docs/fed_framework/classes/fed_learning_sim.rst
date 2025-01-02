@@ -3,119 +3,128 @@
 Federated Learning Simulation
 =============================
 
-The **Federated Learning Simulation** module demonstrates how to use the key components of the library — ``Client``, ``Server``, and ``ByzantineClient`` — to simulate a federated learning environment. This example showcases how to perform distributed learning with Byzantine-resilient aggregation strategies.
+The **Federated Learning Simulation** module demonstrates how to use the key components of the library — ``Client``, ``Server``, ``ByzantineClient``, and ``DataDistributor`` — to simulate a federated learning environment. This example showcases how to perform distributed learning with Byzantine-resilient aggregation strategies.
 
 Key Features
 ------------
 - **Client Class**: Simulates honest participants that compute gradients based on their local data.
 - **Server Class**: Simulates the central server that aggregates gradients and updates the global model.
 - **ByzantineClient Class**: Simulates malicious participants injecting adversarial gradients into the aggregation process.
+- **DataDistributor Class**: Handles the distribution of data among clients in various configurations, including IID and non-IID distributions (e.g., Dirichlet, Gamma, Extreme), to simulate realistic federated learning setups.
 - **Robust Aggregation**: Demonstrates the usage of robust aggregation techniques such as :ref:`trmean-label`, combined with pre-aggregation methods like :ref:`clipping-label` and :ref:`nnm-label`.
 
 Example: Federated Learning Workflow
 ------------------------------------
-This example uses the MNIST dataset to simulate a federated learning setup with multiple honest clients and one Byzantine client. Follow the steps below to run the simulation:
+This example uses the MNIST dataset to simulate a federated learning setup with five honest clients and two Byzantine clients. Follow the steps below to run the simulation:
 
 .. code-block:: python
 
-   # Import necessary libraries
-   import torch
-   from torch.utils.data import DataLoader
-   from torchvision import datasets, transforms
-   from byzfl import Client, Server, ByzantineClient
+    # Import necessary libraries
+    import torch
+    from torch.utils.data import DataLoader
+    from torchvision import datasets, transforms
+    from byzfl import Client, Server, ByzantineClient, DataDistributor
 
-   # Set random seed for reproducibility
-   SEED = 42
-   torch.manual_seed(SEED)
-   torch.cuda.manual_seed(SEED)
-   torch.backends.cudnn.deterministic = True
-   torch.backends.cudnn.benchmark = False
+    # Set random seed for reproducibility
+    SEED = 42
+    torch.manual_seed(SEED)
+    torch.cuda.manual_seed(SEED)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
-   # Prepare the MNIST dataset
-   transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
-   train_dataset = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
-   train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    # Configurations
+    nb_honest_clients = 5
+    nb_byz_clients = 2
+    nb_training_steps = 10
+    batch_size = 64
 
-   test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
-   test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    # Data Preparation
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+    train_dataset = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
+    train_loader = DataLoader(train_dataset, shuffle=True)
 
-   # Define client parameters
-   client_params = {
-       "model_name": "cnn_mnist",
-       "device": "cpu",
-       "learning_rate": 0.01,
-       "loss_name": "CrossEntropyLoss",
-       "weight_decay": 0.0005,
-       "milestones": [10, 20],
-       "learning_rate_decay": 0.5,
-       "LabelFlipping": False,
-       "momentum": 0.9,
-       "training_dataloader": train_loader,
-       "nb_labels": 10,
-       "nb_steps": len(train_loader),
-   }
+    # Distribute data among clients using non-IID Dirichlet distribution
+    data_distributor = DataDistributor({
+        "data_distribution_name": "dirichlet_niid",
+        "distribution_parameter": 0.5,
+        "nb_honest": nb_honest_clients,
+        "data_loader": train_loader,
+        "batch_size": batch_size,
+    })
+    client_dataloaders = data_distributor.split_data()
 
-   # Define pre-aggregation methods
-   pre_aggregators = [
-       {"name": "Clipping", "parameters": {"c": 2.0}},
-       {"name": "NNM", "parameters": {"f": 1}},
-   ]
+    # Initialize Honest Clients
+    honest_clients = [
+        Client({
+            "model_name": "cnn_mnist",
+            "device": "cpu",
+            "learning_rate": 0.1,
+            "loss_name": "NLLLoss",
+            "weight_decay": 0.0005,
+            "milestones": [10, 20],
+            "learning_rate_decay": 0.25,
+            "LabelFlipping": False,
+            "training_dataloader": client_dataloaders[i],
+            "momentum": 0.9,
+            "nb_labels": 10,
+        }) for i in range(nb_honest_clients)
+    ]
 
-   # Define aggregation method
-   aggregator_info = {"name": "TrMean", "parameters": {"f": 1}}
+    # Prepare Test Dataset
+    test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-   # Define server parameters
-   server_params = {
-       "device": "cpu",
-       "model_name": "cnn_mnist",
-       "test_loader": test_loader,
-       "learning_rate": 0.01,
-       "weight_decay": 0.0005,
-       "milestones": [10, 20],
-       "learning_rate_decay": 0.5,
-       "aggregator_info": aggregator_info,
-       "pre_agg_list": pre_aggregators,
-   }
+    # Server Setup
+    pre_aggregators = [
+        {"name": "Clipping", "parameters": {"c": 2.0}},
+        {"name": "NNM", "parameters": {"f": nb_byz_clients}},
+    ]
+    aggregator_info = {"name": "TrMean", "parameters": {"f": nb_byz_clients}}
+    server = Server({
+        "device": "cpu",
+        "model_name": "cnn_mnist",
+        "test_loader": test_loader,
+        "learning_rate": 0.1,
+        "weight_decay": 0.0005,
+        "milestones": [10, 20],
+        "learning_rate_decay": 0.25,
+        "aggregator_info": aggregator_info,
+        "pre_agg_list": pre_aggregators,
+    })
 
-   # Initialize the Server
-   server = Server(server_params)
+    # Byzantine Client Setup
+    attack = {
+        "name": "InnerProductManipulation",
+        "f": nb_byz_clients,
+        "parameters": {"tau": 3.0},
+    }
+    byz_client = ByzantineClient(attack)
 
-   # Initialize the Clients
-   client1 = Client(client_params)
-   client2 = Client(client_params)
-   client3 = Client(client_params)
-   clients = [client1, client2, client3]
+    # Training Loop
+    for training_step in range(nb_training_steps):
+        print(f"--- Training Step {training_step + 1}/{nb_training_steps} ---")
 
-   # Define a Byzantine Client
-   attack = {
-       "name": "InnerProductManipulation",
-       "f": 1,
-       "parameters": {"tau": 3.0},
-   }
-   byz_client = ByzantineClient(attack)
+        # Honest Clients Compute Gradients
+        for client in honest_clients:
+            client.compute_gradients()
 
-   # Training loop
-   for epoch in range(1, 3):  # Simulate 2 epochs
-       print(f"Epoch {epoch}")
-       # Clients compute their gradients
-       for client in clients:
-           client.compute_gradients()
+        # Aggregate Honest Gradients
+        honest_gradients = [client.get_flat_gradients_with_momentum() for client in honest_clients]
 
-       # Collect gradients (with momentum) from honest clients
-       honest_gradients = [client.get_flat_gradients_with_momentum() for client in clients]
+        # Apply Byzantine Attack
+        byz_gradients = byz_client.apply_attack(honest_gradients)
 
-       # Apply Byzantine attack
-       byz_vector = byz_client.apply_attack(honest_gradients)
+        # Combine Honest and Byzantine Gradients
+        gradients = honest_gradients + byz_gradients
 
-       # Combine honest gradients and Byzantine gradients
-       gradients = honest_gradients + byz_vector
+        # Robustly Aggregate Gradients and Update Global Model
+        server.update_model(gradients)
 
-       # Server aggregates gradients and updates the global model
-       server.update_model(gradients)
+        # Evaluate Global Model
+        test_acc = server.compute_test_accuracy()
+        print(f"Test Accuracy: {test_acc:.4f}")
 
-       # Evaluate global model
-       test_acc = server.compute_test_accuracy()
-       print(f"Test Accuracy: {test_acc:.4f}")
+    print("Training Complete!")
 
 Example Output
 --------------
@@ -123,10 +132,27 @@ Running the above code will produce the following output:
 
 .. code-block:: text
 
-   Epoch 1
-   Test Accuracy: 0.1015
-   Epoch 2
-   Test Accuracy: 0.1015
+    --- Training Step 1/10 ---
+    Test Accuracy: 0.1012
+    --- Training Step 2/10 ---
+    Test Accuracy: 0.1011
+    --- Training Step 3/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 4/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 5/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 6/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 7/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 8/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 9/10 ---
+    Test Accuracy: 0.1010
+    --- Training Step 10/10 ---
+    Test Accuracy: 0.1010
+    Training Complete!
 
 Documentation References
 ------------------------
@@ -135,6 +161,7 @@ For more information about individual components, refer to the following:
 - **Server Class**: :ref:`server-label`
 - **ByzantineClient Class**: :ref:`byzantine-client-label`
 - **RobustAggregator Class**: :ref:`robust-aggregator-label`
+- **DataDistributor Class**: :ref:`data-dist-label`
 - **Models Module**: :ref:`models-label`
 
 Notes

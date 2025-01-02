@@ -183,8 +183,6 @@ class Client(ModelBaseInterface):
             DataLoader for the training data.
         - `"nb_labels"`: int
             Number of labels in the dataset.
-        - `"nb_steps"`: int
-            Number of training steps.
 
     Methods
     -------
@@ -234,7 +232,6 @@ class Client(ModelBaseInterface):
     >>>     "momentum": 0.9, 
     >>>     "training_dataloader": train_loader, 
     >>>     "nb_labels": 10, 
-    >>>     "nb_steps": len(train_loader)
     >>> }
 
     >>> # Initialize the Client
@@ -277,8 +274,6 @@ class Client(ModelBaseInterface):
         check_greater_than_or_equal_value(params["momentum"], "momentum", 0)
         check_smaller_than_value(params["momentum"], "momentum", 1)
         check_type(params["training_dataloader"], "training_dataloader", torch.utils.data.DataLoader)
-        check_type(params["nb_steps"], "nb_steps", int)
-        check_greater_than_value(params["nb_steps"], "nb_steps", 0)
 
         # Initialize Client instance
         super().__init__({
@@ -304,8 +299,8 @@ class Client(ModelBaseInterface):
         )
         self.training_dataloader = params["training_dataloader"]
         self.train_iterator = iter(self.training_dataloader)
-        self.loss_list = np.array([0.0] * params["nb_steps"])
-        self.train_acc_list = np.array([0.0] * params["nb_steps"])
+        self.loss_list = list()
+        self.train_acc_list = list()
         self.SGD_step = 0
 
     def _sample_train_batch(self):
@@ -338,7 +333,7 @@ class Client(ModelBaseInterface):
         self.model.zero_grad()
         outputs = self.model(inputs)
         loss = self.criterion(outputs, targets)
-        self.loss_list[self.SGD_step] = loss.item()
+        self.loss_list.append(loss.item())
         loss.backward()
 
         # Compute train accuracy
@@ -346,7 +341,7 @@ class Client(ModelBaseInterface):
         total = targets.size(0)
         correct = (predicted == targets).sum().item()
         acc = correct / total
-        self.train_acc_list[self.SGD_step] = acc
+        self.train_acc_list.append(acc)
 
         self.SGD_step += 1
 
