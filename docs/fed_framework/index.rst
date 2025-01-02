@@ -33,4 +33,5 @@ By leveraging this framework, researchers can gain valuable insights into the pe
    classes/client
    classes/byzantine_client
    classes/server
+   classes/data_distributor
    classes/models
