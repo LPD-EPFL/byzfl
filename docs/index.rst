@@ -166,7 +166,7 @@ Explore the key components of ByzFL below:
   <div class="column">
     <div class="card">
       <div class="container">
-        <h2>Pipeline</h2>
+        <h2>Federated Learning Framework</h2>
 
 :ref:`Get Started <federated-learning-framework-label>`
 

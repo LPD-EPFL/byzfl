@@ -24,6 +24,11 @@ By leveraging this framework, researchers can gain valuable insights into the pe
    :titlesonly:
 
    classes/fed_learning_sim
+
+.. toctree::
+   :caption: Helper Modules
+   :titlesonly:
+
    classes/robust_aggregators
    classes/client
    classes/byzantine_client
