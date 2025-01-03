@@ -414,13 +414,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="c1"># Initialize optimizer</span>
+        <span class="c1"># Initialize optimizer, set default to SGD if optimizer_name is not provided</span>
         <span class="n">optimizer_name</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optimizer_name&quot;</span><span class="p">,</span> <span class="s2">&quot;SGD&quot;</span><span class="p">)</span>
         <span class="n">optimizer_params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optimizer_params&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">optimizer_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">optimizer_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimizer &#39;</span><span class="si">{</span><span class="n">optimizer_name</span><span class="si">}</span><span class="s2">&#39; is not supported by PyTorch.&quot;</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer_class</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
             <span class="n">lr</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span>
@@ -1100,97 +1100,8 @@
 <div class="viewcode-block" id="Server">
 <a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server">[docs]</a>
 <span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Initialization Parameters</span>
-<span class="sd">    -------------------------</span>
-<span class="sd">    params : dict</span>
-<span class="sd">        A dictionary containing the configuration for the Server. Must include:</span>
-
-<span class="sd">        - `&quot;model_name&quot;`: str</span>
-<span class="sd">            Name of the model to be used. Refer to :ref:`models-label` for available models.</span>
-<span class="sd">        - `&quot;device&quot;`: str</span>
-<span class="sd">            Name of the device to be used for computations (e.g., `&quot;cpu&quot;`, `&quot;cuda&quot;`).</span>
-<span class="sd">        - `&quot;learning_rate&quot;`: float</span>
-<span class="sd">            Learning rate for the global model optimizer.</span>
-<span class="sd">        - `&quot;weight_decay&quot;`: float</span>
-<span class="sd">            Weight decay (L2 regularization) for the optimizer.</span>
-<span class="sd">        - `&quot;milestones&quot;`: list</span>
-<span class="sd">            List of epochs at which the learning rate decay is applied.</span>
-<span class="sd">        - `&quot;learning_rate_decay&quot;`: float</span>
-<span class="sd">            Factor by which the learning rate is reduced at each milestone.</span>
-<span class="sd">        - `&quot;aggregator_info&quot;`: dict</span>
-<span class="sd">            Dictionary specifying the aggregation method and its parameters:</span>
-<span class="sd">            - `&quot;name&quot;`: str, name of the aggregator (e.g., `&quot;TrMean&quot;`).</span>
-<span class="sd">            - `&quot;parameters&quot;`: dict, parameters for the aggregator.</span>
-<span class="sd">        - `&quot;pre_agg_list&quot;`: list</span>
-<span class="sd">            List of dictionaries specifying pre-aggregation methods and their parameters:</span>
-<span class="sd">            - `&quot;name&quot;`: str, name of the pre-aggregator (e.g., `&quot;Clipping&quot;`).</span>
-<span class="sd">            - `&quot;parameters&quot;`: dict, parameters for the pre-aggregator.</span>
-<span class="sd">        - `&quot;test_loader&quot;`: DataLoader</span>
-<span class="sd">            DataLoader for the test dataset to evaluate the global model.</span>
-<span class="sd">        - `&quot;validation_loader&quot;`: DataLoader (optional)</span>
-<span class="sd">            DataLoader for the validation dataset to monitor training performance.</span>
-<span class="sd">    </span>
-<span class="sd">    Methods</span>
-<span class="sd">    -------</span>
-<span class="sd">    aggregate(vectors)</span>
-<span class="sd">        Aggregates input vectors using the configured robust aggregator.</span>
-<span class="sd">    update_model(gradients)</span>
-<span class="sd">        Updates the global model using aggregated gradients.</span>
-<span class="sd">    step()</span>
-<span class="sd">        Executes a single optimization step for the global model.</span>
-<span class="sd">    get_model()</span>
-<span class="sd">        Returns the current global model.</span>
-<span class="sd">    compute_validation_accuracy()</span>
-<span class="sd">        Computes accuracy on the validation dataset.</span>
-<span class="sd">    compute_test_accuracy()</span>
-<span class="sd">        Computes accuracy on the test dataset.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    Initialize MNIST test data loader:</span>
-
-<span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; from torch.utils.data import DataLoader</span>
-<span class="sd">    &gt;&gt;&gt; from torchvision import datasets, transforms</span>
-<span class="sd">    &gt;&gt;&gt; from byzfl import Client, Server, ByzantineClient</span>
-<span class="sd">    &gt;&gt;&gt; # Define data loader using MNIST</span>
-<span class="sd">    &gt;&gt;&gt; transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])</span>
-<span class="sd">    &gt;&gt;&gt; test_dataset = datasets.MNIST(root=&quot;./data&quot;, train=False, download=True, transform=transform)</span>
-<span class="sd">    &gt;&gt;&gt; test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)</span>
-
-<span class="sd">    Initialize the Server class:</span>
-
-<span class="sd">    &gt;&gt;&gt; # Define pre-aggregators and aggregator</span>
-<span class="sd">    &gt;&gt;&gt; pre_aggregators = [{&quot;name&quot;: &quot;Clipping&quot;, &quot;parameters&quot;: {&quot;c&quot;: 2.0}}, {&quot;name&quot;: &quot;NNM&quot;, &quot;parameters&quot;: {&quot;f&quot;: 1}}]</span>
-<span class="sd">    &gt;&gt;&gt; aggregator_info = {&quot;name&quot;: &quot;TrMean&quot;, &quot;parameters&quot;: {&quot;f&quot;: 1}}</span>
-<span class="sd">    &gt;&gt;&gt; # Define server parameters</span>
-<span class="sd">    &gt;&gt;&gt; server_params = {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;device&quot;: &quot;cpu&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;model_name&quot;: &quot;cnn_mnist&quot;,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;test_loader&quot;: test_loader,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;learning_rate&quot;: 0.01,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;weight_decay&quot;: 0.0005,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;milestones&quot;: [10, 20],</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;learning_rate_decay&quot;: 0.5,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;aggregator_info&quot;: aggregator_info,</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;pre_agg_list&quot;: pre_aggregators,</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
-<span class="sd">    &gt;&gt;&gt; # Initialize the Server</span>
-<span class="sd">    &gt;&gt;&gt; server = Server(server_params)</span>
-
-<span class="sd">    Aggregation and model update:</span>
-
-<span class="sd">    &gt;&gt;&gt; # Perform aggregation and model updates</span>
-<span class="sd">    &gt;&gt;&gt; gradients = [...]  # Collect gradients from clients</span>
-<span class="sd">    &gt;&gt;&gt; server.update_model(gradients)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Test Accuracy:&quot;, server.compute_test_accuracy())</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+    
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-
         <span class="c1"># Check for correct types and values in params</span>
         <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;test_loader&quot;</span><span class="p">],</span> <span class="s2">&quot;test_loader&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">)</span>
@@ -1199,6 +1110,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
             <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span>
             <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;optimizer_name&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optimizer_params&quot;</span><span class="p">,</span> <span class="p">{}),</span>
             <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span>
             <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span>
             <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
@@ -1206,7 +1119,7 @@
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">robust_aggregator</span> <span class="o">=</span> <span class="n">RobustAggregator</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;aggregator_info&quot;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;pre_agg_list&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;test_loader&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;validation_loader&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;validation_loader&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;validation_loader&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">check_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span><span class="p">,</span> <span class="s2">&quot;validation_loader&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>

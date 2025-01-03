@@ -22,13 +22,13 @@ class ModelBaseInterface(object):
         self.device = params["device"]
         self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
 
-        # Initialize optimizer
+        # Initialize optimizer, set default to SGD if optimizer_name is not provided
         optimizer_name = params.get("optimizer_name", "SGD")
         optimizer_params = params.get("optimizer_params", {})
         optimizer_class = getattr(torch.optim, optimizer_name, None)
         if optimizer_class is None:
             raise ValueError(f"Optimizer '{optimizer_name}' is not supported by PyTorch.")
-        
+
         self.optimizer = optimizer_class(
             self.model.parameters(),
             lr=params["learning_rate"],
@@ -651,97 +651,8 @@ class ByzantineClient:
 
 
 class Server(ModelBaseInterface):
-    """
-    Initialization Parameters
-    -------------------------
-    params : dict
-        A dictionary containing the configuration for the Server. Must include:
-
-        - `"model_name"`: str
-            Name of the model to be used. Refer to :ref:`models-label` for available models.
-        - `"device"`: str
-            Name of the device to be used for computations (e.g., `"cpu"`, `"cuda"`).
-        - `"learning_rate"`: float
-            Learning rate for the global model optimizer.
-        - `"weight_decay"`: float
-            Weight decay (L2 regularization) for the optimizer.
-        - `"milestones"`: list
-            List of epochs at which the learning rate decay is applied.
-        - `"learning_rate_decay"`: float
-            Factor by which the learning rate is reduced at each milestone.
-        - `"aggregator_info"`: dict
-            Dictionary specifying the aggregation method and its parameters:
-            - `"name"`: str, name of the aggregator (e.g., `"TrMean"`).
-            - `"parameters"`: dict, parameters for the aggregator.
-        - `"pre_agg_list"`: list
-            List of dictionaries specifying pre-aggregation methods and their parameters:
-            - `"name"`: str, name of the pre-aggregator (e.g., `"Clipping"`).
-            - `"parameters"`: dict, parameters for the pre-aggregator.
-        - `"test_loader"`: DataLoader
-            DataLoader for the test dataset to evaluate the global model.
-        - `"validation_loader"`: DataLoader (optional)
-            DataLoader for the validation dataset to monitor training performance.
     
-    Methods
-    -------
-    aggregate(vectors)
-        Aggregates input vectors using the configured robust aggregator.
-    update_model(gradients)
-        Updates the global model using aggregated gradients.
-    step()
-        Executes a single optimization step for the global model.
-    get_model()
-        Returns the current global model.
-    compute_validation_accuracy()
-        Computes accuracy on the validation dataset.
-    compute_test_accuracy()
-        Computes accuracy on the test dataset.
-
-    Examples
-    --------
-
-    Initialize MNIST test data loader:
-
-    >>> import torch
-    >>> from torch.utils.data import DataLoader
-    >>> from torchvision import datasets, transforms
-    >>> from byzfl import Client, Server, ByzantineClient
-    >>> # Define data loader using MNIST
-    >>> transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
-    >>> test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
-    >>> test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
-
-    Initialize the Server class:
-
-    >>> # Define pre-aggregators and aggregator
-    >>> pre_aggregators = [{"name": "Clipping", "parameters": {"c": 2.0}}, {"name": "NNM", "parameters": {"f": 1}}]
-    >>> aggregator_info = {"name": "TrMean", "parameters": {"f": 1}}
-    >>> # Define server parameters
-    >>> server_params = {
-    >>>     "device": "cpu",
-    >>>     "model_name": "cnn_mnist",
-    >>>     "test_loader": test_loader,
-    >>>     "learning_rate": 0.01,
-    >>>     "weight_decay": 0.0005,
-    >>>     "milestones": [10, 20],
-    >>>     "learning_rate_decay": 0.5,
-    >>>     "aggregator_info": aggregator_info,
-    >>>     "pre_agg_list": pre_aggregators,
-    >>> }
-    >>> # Initialize the Server
-    >>> server = Server(server_params)
-
-    Aggregation and model update:
-
-    >>> # Perform aggregation and model updates
-    >>> gradients = [...]  # Collect gradients from clients
-    >>> server.update_model(gradients)
-    >>> print("Test Accuracy:", server.compute_test_accuracy())
-    
-    """
-
     def __init__(self, params):
-
         # Check for correct types and values in params
         check_type(params, "params", dict)
         check_type(params["test_loader"], "test_loader", torch.utils.data.DataLoader)
@@ -750,6 +661,8 @@ class Server(ModelBaseInterface):
         super().__init__({
             "device": params["device"],
             "model_name": params["model_name"],
+            "optimizer_name": params["optimizer_name"],
+            "optimizer_params": params.get("optimizer_params", {}),
             "learning_rate": params["learning_rate"],
             "weight_decay": params["weight_decay"],
             "milestones": params["milestones"],
@@ -757,7 +670,7 @@ class Server(ModelBaseInterface):
         })
         self.robust_aggregator = RobustAggregator(params["aggregator_info"], params["pre_agg_list"])
         self.test_loader = params["test_loader"]
-        self.validation_loader = None if "validation_loader" not in params.keys() else params["validation_loader"]
+        self.validation_loader = params.get("validation_loader")
         if self.validation_loader is not None:
             check_type(self.validation_loader, "validation_loader", torch.utils.data.DataLoader)
         self.model.eval()

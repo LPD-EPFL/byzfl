@@ -417,162 +417,177 @@
                   
   <section id="server">
 <span id="server-label"></span><h1>Server<a class="headerlink" href="#server" title="Link to this heading">#</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">Server</span></code> class represents the central node in a federated learning simulation. It is responsible for aggregating updates from clients, maintaining the global model, and evaluating its performance. The server employs robust aggregation techniques to mitigate the impact of adversarial behavior introduced by Byzantine clients.</p>
-<section id="key-features">
-<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Server</span></code> class simulates the central server in a federated learning environment. It aggregates client updates, applies robust aggregation techniques, and updates the global model to ensure robustness against Byzantine attacks.</p>
+<section id="initialization-parameters">
+<h2>Initialization Parameters<a class="headerlink" href="#initialization-parameters" title="Link to this heading">#</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">param params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict
+A dictionary containing the configuration for the Server. Must include:</p>
+</dd>
+</dl>
 <ul class="simple">
-<li><p><strong>Global Model Management</strong>:
-Updates and maintains the global model using aggregated gradients received from clients.</p></li>
-<li><p><strong>Robust Aggregation</strong>:
-Integrates defensive techniques, such as <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> and <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a>, to ensure resilience against malicious updates.</p></li>
-<li><p><strong>Performance Evaluation</strong>:
-Computes accuracy metrics on validation and test datasets to track the global model’s progress.</p></li>
-<li><p><strong>Integration</strong>:
-Works in conjunction with <code class="docutils literal notranslate"><span class="pre">Client</span></code> and <code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code> classes to simulate realistic federated learning scenarios.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;model_name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the model to be used. Refer to <a class="reference internal" href="models.html#models-label"><span class="std std-ref">Models</span></a> for available models.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;device&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the device to be used for computations (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cuda&quot;</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;optimizer_name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the optimizer to use (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;SGD&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Adam&quot;</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;optimizer_params&quot;</span></code><span class="classifier">dict, optional</span></dt><dd><p>Parameters for the optimizer (e.g., <code class="docutils literal notranslate"><span class="pre">betas</span></code> for Adam, <code class="docutils literal notranslate"><span class="pre">momentum</span></code> for SGD).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;learning_rate&quot;</span></code><span class="classifier">float</span></dt><dd><p>Learning rate for the global model optimizer.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;weight_decay&quot;</span></code><span class="classifier">float</span></dt><dd><p>Weight decay (L2 regularization) for the optimizer.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;milestones&quot;</span></code><span class="classifier">list</span></dt><dd><p>List of training steps at which the learning rate decay is applied.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;learning_rate_decay&quot;</span></code><span class="classifier">float</span></dt><dd><p>Factor by which the learning rate is reduced at each milestone.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;aggregator_info&quot;</span></code><span class="classifier">dict</span></dt><dd><dl class="simple">
+<dt>Dictionary specifying the aggregation method and its parameters:</dt><dd><ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the aggregator (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;TrMean&quot;</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code><span class="classifier">dict</span></dt><dd><p>Parameters for the aggregator.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;pre_agg_list&quot;</span></code><span class="classifier">list</span></dt><dd><dl class="simple">
+<dt>List of dictionaries specifying pre-aggregation methods and their parameters:</dt><dd><ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the pre-aggregator (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;Clipping&quot;</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code><span class="classifier">dict</span></dt><dd><p>Parameters for the pre-aggregator.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;test_loader&quot;</span></code><span class="classifier">DataLoader</span></dt><dd><p>DataLoader for the test dataset to evaluate the global model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;validation_loader&quot;</span></code><span class="classifier">DataLoader, optional</span></dt><dd><p>DataLoader for the validation dataset to monitor training performance.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">aggregate(vectors)</span></code>
+Aggregates input vectors using the configured robust aggregator.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_model(gradients)</span></code>
+Updates the global model by aggregating gradients and performing an optimization step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">step()</span></code>
+Executes a single optimization step for the global model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_model()</span></code>
+Retrieves the current global model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_validation_accuracy()</span></code>
+Computes accuracy on the validation dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_test_accuracy()</span></code>
+Computes accuracy on the test dataset.</p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">Server</span><span class="p">,</span> <span class="n">ByzantineClient</span>
+
+<span class="c1"># Define data loader using MNIST</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Define pre-aggregators and aggregator</span>
+<span class="n">pre_aggregators</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Clipping&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NNM&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}]</span>
+<span class="n">aggregator_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TrMean&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+
+<span class="c1"># Define server parameters</span>
+<span class="n">server_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test_loader&quot;</span><span class="p">:</span> <span class="n">test_loader</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;betas&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">)},</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
+    <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">&quot;aggregator_info&quot;</span><span class="p">:</span> <span class="n">aggregator_info</span><span class="p">,</span>
+    <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">:</span> <span class="n">pre_aggregators</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Initialize the Server</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">server_params</span><span class="p">)</span>
+
+<span class="c1"># Example: Aggregation and model update</span>
+<span class="n">gradients</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># Collect gradients from clients</span>
+<span class="n">server</span><span class="o">.</span><span class="n">update_model</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Accuracy:&quot;</span><span class="p">,</span> <span class="n">server</span><span class="o">.</span><span class="n">compute_test_accuracy</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The server is designed to be resilient against Byzantine behaviors by integrating pre-aggregation and aggregation techniques.</p></li>
+<li><p>Accuracy evaluation is built-in to monitor the model’s progress throughout the simulation.</p></li>
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.Server">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.ModelBaseInterface" title="byzfl.fed_framework.framework.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
-<dl class="field-list simple">
-<dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Server. Must include:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt><cite>“model_name”</cite>: str</dt><dd><p>Name of the model to be used. Refer to <a class="reference internal" href="models.html#models-label"><span class="std std-ref">Models</span></a> for available models.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“device”</cite>: str</dt><dd><p>Name of the device to be used for computations (e.g., <cite>“cpu”</cite>, <cite>“cuda”</cite>).</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“learning_rate”</cite>: float</dt><dd><p>Learning rate for the global model optimizer.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“weight_decay”</cite>: float</dt><dd><p>Weight decay (L2 regularization) for the optimizer.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“milestones”</cite>: list</dt><dd><p>List of epochs at which the learning rate decay is applied.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“learning_rate_decay”</cite>: float</dt><dd><p>Factor by which the learning rate is reduced at each milestone.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“aggregator_info”</cite>: dict</dt><dd><p>Dictionary specifying the aggregation method and its parameters:
-- <cite>“name”</cite>: str, name of the aggregator (e.g., <cite>“TrMean”</cite>).
-- <cite>“parameters”</cite>: dict, parameters for the aggregator.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“pre_agg_list”</cite>: list</dt><dd><p>List of dictionaries specifying pre-aggregation methods and their parameters:
-- <cite>“name”</cite>: str, name of the pre-aggregator (e.g., <cite>“Clipping”</cite>).
-- <cite>“parameters”</cite>: dict, parameters for the pre-aggregator.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“test_loader”</cite>: DataLoader</dt><dd><p>DataLoader for the test dataset to evaluate the global model.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“validation_loader”</cite>: DataLoader (optional)</dt><dd><p>DataLoader for the validation dataset to monitor training performance.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Server.aggregate">
 <span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.aggregate" title="Link to this definition">#</a></dt>
-<dd><p>Aggregates input vectors using the configured robust aggregator.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.update_model">
-<span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.update_model" title="Link to this definition">#</a></dt>
-<dd><p>Updates the global model using aggregated gradients.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.step" title="Link to this definition">#</a></dt>
-<dd><p>Executes a single optimization step for the global model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.get_model">
-<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.get_model" title="Link to this definition">#</a></dt>
-<dd><p>Returns the current global model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.compute_validation_accuracy">
-<span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_validation_accuracy" title="Link to this definition">#</a></dt>
-<dd><p>Computes accuracy on the validation dataset.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.compute_test_accuracy">
-<span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_test_accuracy" title="Link to this definition">#</a></dt>
-<dd><p>Computes accuracy on the test dataset.</p>
-</dd></dl>
-
-<p class="rubric">Examples</p>
-<p>Initialize MNIST test data loader:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">Server</span><span class="p">,</span> <span class="n">ByzantineClient</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define data loader using MNIST</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Initialize the Server class:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define pre-aggregators and aggregator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pre_aggregators</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Clipping&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NNM&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aggregator_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TrMean&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define server parameters</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server_params</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;test_loader&quot;</span><span class="p">:</span> <span class="n">test_loader</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;aggregator_info&quot;</span><span class="p">:</span> <span class="n">aggregator_info</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">:</span> <span class="n">pre_aggregators</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Server</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">server_params</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Aggregation and model update:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perform aggregation and model updates</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gradients</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>  <span class="c1"># Collect gradients from clients</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span><span class="o">.</span><span class="n">update_model</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Accuracy:&quot;</span><span class="p">,</span> <span class="n">server</span><span class="o">.</span><span class="n">compute_test_accuracy</span><span class="p">())</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
 <dd><section id="description">
 <h3>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h3>
 <p>Aggregates input vectors using the configured robust aggregator.</p>
@@ -591,10 +606,10 @@ Works in conjunction with <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
-<dd><section id="id2">
-<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="byzfl.Server.compute_test_accuracy">
+<span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_test_accuracy" title="Link to this definition">#</a></dt>
+<dd><section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>Computes the accuracy of the global model on the test dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -605,10 +620,10 @@ Works in conjunction with <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
-<dd><section id="id4">
-<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="byzfl.Server.compute_validation_accuracy">
+<span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_validation_accuracy" title="Link to this definition">#</a></dt>
+<dd><section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Computes the accuracy of the global model on the validation dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -619,10 +634,10 @@ Works in conjunction with <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
-<dd><section id="id6">
-<h3>Description<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="byzfl.Server.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.get_model" title="Link to this definition">#</a></dt>
+<dd><section id="id3">
+<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>Retrieves the current global model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -633,19 +648,19 @@ Works in conjunction with <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
-<dd><section id="id8">
-<h3>Description<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="byzfl.Server.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.step" title="Link to this definition">#</a></dt>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Performs a single optimization step for the global model.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
-<dd><section id="id10">
-<h3>Description<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object py" id="byzfl.Server.update_model">
+<span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.update_model" title="Link to this definition">#</a></dt>
+<dd><section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>Updates the global model by aggregating gradients and performing an optimization step.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param gradients<span class="colon">:</span></dt>
@@ -660,13 +675,6 @@ Works in conjunction with <code class="docutils literal notranslate"><span class
 
 </dd></dl>
 
-</section>
-<section id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>The server is designed to be resilient against Byzantine behaviors by integrating pre-aggregation and aggregation techniques.</p></li>
-<li><p>Accuracy evaluation is built-in to monitor the model’s progress throughout the simulation.</p></li>
-</ul>
 </section>
 </section>
 
@@ -717,25 +725,21 @@ Works in conjunction with <code class="docutils literal notranslate"><span class
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-parameters">Initialization Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.aggregate"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.step"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.get_model"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_test_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.get_model"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.step"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
 
