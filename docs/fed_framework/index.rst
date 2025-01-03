@@ -29,6 +29,7 @@ By leveraging this framework, researchers can gain valuable insights into the pe
    :caption: Helper Modules
    :titlesonly:
 
+   classes/model_base_interface
    classes/robust_aggregators
    classes/client
    classes/byzantine_client

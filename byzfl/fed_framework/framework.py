@@ -12,161 +12,148 @@ import random
 from torch.utils.data import DataLoader
 
 class ModelBaseInterface(object):
-    """
-    Description
-    -----------
-    The ``ModelBaseInterface`` class serves as an abstract interface that defines the methods 
-    required for classes that encapsulate a model. All subclasses that 
-    contain a model should inherit from this class to ensure they implement 
-    the necessary methods for handling model-related operations and information 
-    exchange.
 
-    Parameters
-    ----------
-        All these parameters should be passed in a dictionary that contains the following keys.
-    model-name : str 
-        Indicates the model to be used
-    device : str
-        Name of the device used
-    learning-rate : float 
-        Learning rate
-    weight-decay : float 
-        Regularization used
-    milestones : list 
-        List of the milestones, where the learning rate decay should be applied
-    learning-rate-decay : float 
-        Rate decreases over time during training
-
-    Methods
-    --------
-    """
     def __init__(self, params):
+        # Input validation
+        self._validate_params(params)
 
-        # Check for correct types and values in params
-        check_type(params["model_name"], "model_name", str)
-        check_type(params["device"], "device", str)
-        check_type(params["learning_rate"], "learning_rate", float)
-        check_greater_than_value(params["learning_rate"], "learning_rate", 0)
-        check_type(params["weight_decay"], "weight_decay", float)
-        check_greater_than_value(params["weight_decay"], "weight_decay", 0)
-        check_type(params["milestones"], "milestones", list)
-        for miletsone in params["milestones"]:
-            check_type(miletsone, "miletsone", int)
-        check_type(params["learning_rate_decay"], "learning_rate_decay", float)
-        check_greater_than_value(params["learning_rate_decay"], "learning_rate_decay", 0)
-
-        # Initialize the ModelBaseInterface instance
+        # Initialize model
         model_name = params["model_name"]
         self.device = params["device"]
         self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
 
-        self.optimizer = torch.optim.SGD(
-            self.model.parameters(), 
-            lr = params["learning_rate"], 
-            weight_decay = params["weight_decay"]
+        # Initialize optimizer
+        optimizer_name = params.get("optimizer_name", "SGD")
+        optimizer_params = params.get("optimizer_params", {})
+        optimizer_class = getattr(torch.optim, optimizer_name, None)
+        if optimizer_class is None:
+            raise ValueError(f"Optimizer '{optimizer_name}' is not supported by PyTorch.")
+        
+        self.optimizer = optimizer_class(
+            self.model.parameters(),
+            lr=params["learning_rate"],
+            weight_decay=params["weight_decay"],
+            **optimizer_params
         )
 
+        # Initialize scheduler
         self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
             self.optimizer,
-            milestones = params["milestones"],
-            gamma = params["learning_rate_decay"]
+            milestones=params["milestones"],
+            gamma=params["learning_rate_decay"]
         )
 
+    def _validate_params(self, params):
+        """
+        Validates the input parameters for correct types and values.
+
+        Parameters
+        ----------
+        params : dict
+            Dictionary of input parameters.
+        """
+        required_keys = ["model_name", "device", "learning_rate", "weight_decay", "milestones", "learning_rate_decay"]
+        for key in required_keys:
+            if key not in params:
+                raise KeyError(f"Missing required parameter: {key}")
+
+        # Validate types and ranges
+        if not isinstance(params["model_name"], str):
+            raise TypeError("Parameter 'model_name' must be a string.")
+        if not isinstance(params["device"], str):
+            raise TypeError("Parameter 'device' must be a string.")
+        if not isinstance(params["learning_rate"], float) or params["learning_rate"] <= 0:
+            raise ValueError("Parameter 'learning_rate' must be a positive float.")
+        if not isinstance(params["weight_decay"], float) or params["weight_decay"] < 0:
+            raise ValueError("Parameter 'weight_decay' must be a non-negative float.")
+        if not isinstance(params["milestones"], list) or not all(isinstance(x, int) for x in params["milestones"]):
+            raise TypeError("Parameter 'milestones' must be a list of integers.")
+        if not isinstance(params["learning_rate_decay"], float) or params["learning_rate_decay"] <= 0 or params["learning_rate_decay"] > 1.0:
+            raise ValueError("Parameter 'learning_rate_decay' must be a positive float smaller than 1.0.")
 
     def get_flat_parameters(self):
         """
-        Description
-        -----------
-        Get the gradients of the model in a flat array
+        Returns model parameters in a flat array.
 
         Returns
         -------
-        List of the gradients
+        list
+            Flat list of model parameters.
         """
         return flatten_dict(self.model.state_dict())
-    
+
     def get_flat_gradients(self):
         """
-        Description
-        -----------
-        Get the gradients of the model in a flat array
+        Returns model gradients in a flat array.
 
         Returns
         -------
-        List of the gradients
+        list
+            Flat list of model gradients.
         """
         return flatten_dict(self.get_dict_gradients())
-    
+
     def get_dict_parameters(self):
         """
-        Description
-        ------------
-        Get the gradients of the model in a dictionary.
+        Returns model parameters in a dictionary format.
 
         Returns
         -------
-        Dicctionary where the keys are the name of the parameters
-        and de values are the gradients.
+        collections.OrderedDict
+            Dictionary of model parameters.
         """
         return self.model.state_dict()
 
     def get_dict_gradients(self):
         """
-        Description
-        ------------
-        Get the gradients of the model in a dictionary.
+        Returns model gradients in a dictionary format.
 
         Returns
         -------
-        Dicctionary where the keys are the name of the parameters
-        and the values are the gradients.
+        collections.OrderedDict
+            Dictionary of model gradients.
         """
         new_dict = collections.OrderedDict()
         for key, value in self.model.named_parameters():
             new_dict[key] = value.grad
         return new_dict
-    
+
     def set_parameters(self, flat_vector):
         """
-        Description
-        -----------
-        Sets the model parameters given a flat vector.
+        Sets model parameters using a flat array.
 
         Parameters
         ----------
-        flat_vector : list 
-            Flat list with the parameters
+        flat_vector : list
+            Flat list of parameters to set.
         """
         new_dict = unflatten_dict(self.model.state_dict(), flat_vector)
         self.model.load_state_dict(new_dict)
 
     def set_gradients(self, flat_vector):
         """
-        Description
-        -----------
-        Sets the model gradients given a flat vector.
+        Sets model gradients using a flat array.
 
         Parameters
         ----------
         flat_vector : list
-            Flat list with the parameters
+            Flat list of gradients to set.
         """
         new_dict = unflatten_generator(self.model.named_parameters(), flat_vector)
         for key, value in self.model.named_parameters():
             value.grad = new_dict[key].clone().detach()
-    
+
     def set_model_state(self, state_dict):
         """
-        Description
-        -----------
-        Sets the state_dict of the model for the state_dict given by parameter.
+        Sets the state_dict of the model.
 
         Parameters
         ----------
-        state_dict : dict 
-            State_dict from a model
+        state_dict : dict
+            Dictionary containing model state.
         """
         self.model.load_state_dict(state_dict)
+
 
     
 class Client(ModelBaseInterface):
