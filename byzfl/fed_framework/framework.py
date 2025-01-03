@@ -41,6 +41,21 @@ class ModelBaseInterface(object):
     --------
     """
     def __init__(self, params):
+
+        # Check for correct types and values in params
+        check_type(params["model_name"], "model_name", str)
+        check_type(params["device"], "device", str)
+        check_type(params["learning_rate"], "learning_rate", float)
+        check_greater_than_value(params["learning_rate"], "learning_rate", 0)
+        check_type(params["weight_decay"], "weight_decay", float)
+        check_greater_than_value(params["weight_decay"], "weight_decay", 0)
+        check_type(params["milestones"], "milestones", list)
+        for miletsone in params["milestones"]:
+            check_type(miletsone, "miletsone", int)
+        check_type(params["learning_rate_decay"], "learning_rate_decay", float)
+        check_greater_than_value(params["learning_rate_decay"], "learning_rate_decay", 0)
+
+        # Initialize the ModelBaseInterface instance
         model_name = params["model_name"]
         self.device = params["device"]
         self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
@@ -57,7 +72,7 @@ class ModelBaseInterface(object):
             gamma = params["learning_rate_decay"]
         )
 
-    
+
     def get_flat_parameters(self):
         """
         Description
@@ -182,7 +197,7 @@ class Client(ModelBaseInterface):
         - `"training_dataloader"`: DataLoader
             DataLoader for the training data.
         - `"nb_labels"`: int
-            Number of labels in the dataset.
+            Number of labels in the dataset. Needed for the LabelFlipping attack.
 
     Methods
     -------
@@ -255,17 +270,6 @@ class Client(ModelBaseInterface):
 
         # Check for correct types and values in params
         check_type(params, "params", dict)
-        check_type(params["model_name"], "model_name", str)
-        check_type(params["device"], "device", str)
-        check_type(params["learning_rate"], "learning_rate", float)
-        check_greater_than_value(params["learning_rate"], "learning_rate", 0)
-        check_type(params["weight_decay"], "weight_decay", float)
-        check_greater_than_value(params["weight_decay"], "weight_decay", 0)
-        check_type(params["milestones"], "milestones", list)
-        for miletsone in params["milestones"]:
-            check_type(miletsone, "miletsone", int)
-        check_type(params["learning_rate_decay"], "learning_rate_decay", float)
-        check_greater_than_value(params["learning_rate_decay"], "learning_rate_decay", 0)
         check_type(params["loss_name"], "loss_name", str)
         check_type(params["LabelFlipping"], "LabelFlipping", bool)
         check_type(params["nb_labels"], "nb_labels", int)
@@ -301,7 +305,6 @@ class Client(ModelBaseInterface):
         self.train_iterator = iter(self.training_dataloader)
         self.loss_list = list()
         self.train_acc_list = list()
-        self.SGD_step = 0
 
     def _sample_train_batch(self):
         """
@@ -342,8 +345,6 @@ class Client(ModelBaseInterface):
         correct = (predicted == targets).sum().item()
         acc = correct / total
         self.train_acc_list.append(acc)
-
-        self.SGD_step += 1
 
     def get_flat_flipped_gradients(self):
         """
@@ -756,17 +757,6 @@ class Server(ModelBaseInterface):
 
         # Check for correct types and values in params
         check_type(params, "params", dict)
-        check_type(params["model_name"], "model_name", str)
-        check_type(params["device"], "device", str)
-        check_type(params["learning_rate"], "learning_rate", float)
-        check_greater_than_value(params["learning_rate"], "learning_rate", 0)
-        check_type(params["weight_decay"], "weight_decay", float)
-        check_greater_than_value(params["weight_decay"], "weight_decay", 0)
-        check_type(params["milestones"], "milestones", list)
-        for miletsone in params["milestones"]:
-            check_type(miletsone, "miletsone", int)
-        check_type(params["learning_rate_decay"], "learning_rate_decay", float)
-        check_greater_than_value(params["learning_rate_decay"], "learning_rate_decay", 0)
         check_type(params["test_loader"], "test_loader", torch.utils.data.DataLoader)
 
         # Initialize the Server instance
