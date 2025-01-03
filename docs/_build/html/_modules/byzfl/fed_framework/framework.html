@@ -568,109 +568,11 @@
 </div>
 
 
-
-    
 <div class="viewcode-block" id="Client">
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client">[docs]</a>
 <span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ModelBaseInterface</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Initialization Parameters</span>
-<span class="sd">    -------------------------</span>
-<span class="sd">    params : dict</span>
-<span class="sd">        A dictionary containing the configuration for the Client. Must include:</span>
-
-<span class="sd">        - `&quot;model_name&quot;`: str</span>
-<span class="sd">            Name of the model to be used. For a complete list of available models within the framework, refer to :ref:`models-label`.</span>
-<span class="sd">        - `&quot;device&quot;`: str</span>
-<span class="sd">            Device for computation (e.g., &#39;cpu&#39; or &#39;cuda&#39;).</span>
-<span class="sd">        - `&quot;learning_rate&quot;`: float</span>
-<span class="sd">            Learning rate for the optimizer.</span>
-<span class="sd">        - `&quot;loss_name&quot;`: str</span>
-<span class="sd">            Loss function name (e.g., &#39;CrossEntropyLoss&#39;).</span>
-<span class="sd">        - `&quot;weight_decay&quot;`: float</span>
-<span class="sd">            Weight decay for regularization.</span>
-<span class="sd">        - `&quot;milestones&quot;`: list</span>
-<span class="sd">            Milestones for learning rate decay.</span>
-<span class="sd">        - `&quot;learning_rate_decay&quot;`: float</span>
-<span class="sd">            Learning rate decay factor.</span>
-<span class="sd">        - `&quot;LabelFlipping&quot;`: bool</span>
-<span class="sd">            A boolean flag that, when set to True, enables the LabelFlipping attack. This attack flips the class labels of the training data to their opposing classes.</span>
-<span class="sd">        - `&quot;momentum&quot;`: float</span>
-<span class="sd">            Momentum for the optimizer.</span>
-<span class="sd">        - `&quot;training_dataloader&quot;`: DataLoader</span>
-<span class="sd">            DataLoader for the training data.</span>
-<span class="sd">        - `&quot;nb_labels&quot;`: int</span>
-<span class="sd">            Number of labels in the dataset. Needed for the LabelFlipping attack.</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    -------</span>
-<span class="sd">    compute_gradients</span>
-<span class="sd">        Computes gradients for the local dataset.</span>
-<span class="sd">    get_flat_flipped_gradients</span>
-<span class="sd">        Returns the gradients of the model with flipped targets in a flat array.</span>
-<span class="sd">    get_flat_gradients_with_momentum</span>
-<span class="sd">        Returns flattened gradients with momentum applied.</span>
-<span class="sd">    get_loss_list</span>
-<span class="sd">        Returns the list of training losses.</span>
-<span class="sd">    get_train_accuracy</span>
-<span class="sd">        Returns the training accuracy per batch.</span>
-<span class="sd">    set_model_state(state_dict)</span>
-<span class="sd">        Updates the model&#39;s state dictionary.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    Initialize the `Client` class with an MNIST data loader:</span>
-
-<span class="sd">    &gt;&gt;&gt; import torch</span>
-<span class="sd">    &gt;&gt;&gt; from torch.utils.data import DataLoader</span>
-<span class="sd">    &gt;&gt;&gt; from torchvision import datasets, transforms</span>
-<span class="sd">    &gt;&gt;&gt; from byzfl import Client</span>
-
-<span class="sd">    &gt;&gt;&gt; # Fix the random seed of torch</span>
-<span class="sd">    &gt;&gt;&gt; SEED = 42</span>
-<span class="sd">    &gt;&gt;&gt; torch.manual_seed(SEED)</span>
-<span class="sd">    &gt;&gt;&gt; torch.cuda.manual_seed(SEED)</span>
-<span class="sd">    &gt;&gt;&gt; torch.backends.cudnn.deterministic = True</span>
-<span class="sd">    &gt;&gt;&gt; torch.backends.cudnn.benchmark = False</span>
-<span class="sd">    &gt;&gt;&gt; # Define the training data loader using MNIST</span>
-<span class="sd">    &gt;&gt;&gt; transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])</span>
-<span class="sd">    &gt;&gt;&gt; train_dataset = datasets.MNIST(root=&quot;./data&quot;, train=True, download=True, transform=transform)</span>
-<span class="sd">    &gt;&gt;&gt; train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)</span>
-
-<span class="sd">    &gt;&gt;&gt; # Define client parameters</span>
-<span class="sd">    &gt;&gt;&gt; client_params = {</span>
-<span class="sd">    &gt;&gt;&gt;     &quot;model_name&quot;: &quot;cnn_mnist&quot;, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;device&quot;: &quot;cpu&quot;, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;learning_rate&quot;: 0.01, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;loss_name&quot;: &quot;CrossEntropyLoss&quot;, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;weight_decay&quot;: 0.0005, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;milestones&quot;: [10, 20], </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;learning_rate_decay&quot;: 0.5, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;LabelFlipping&quot;: True, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;momentum&quot;: 0.9, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;training_dataloader&quot;: train_loader, </span>
-<span class="sd">    &gt;&gt;&gt;     &quot;nb_labels&quot;: 10, </span>
-<span class="sd">    &gt;&gt;&gt; }</span>
-
-<span class="sd">    &gt;&gt;&gt; # Initialize the Client</span>
-<span class="sd">    &gt;&gt;&gt; client = Client(client_params)</span>
-
-<span class="sd">    Compute gradients for the current training batch:</span>
-
-<span class="sd">    &gt;&gt;&gt; # Compute first gradient</span>
-<span class="sd">    &gt;&gt;&gt; client.compute_gradients()</span>
-<span class="sd">    &gt;&gt;&gt; # Initial train accuracy</span>
-<span class="sd">    &gt;&gt;&gt; client.get_train_accuracy()[0]</span>
-<span class="sd">    &gt;&gt;&gt; # Get first flipped gradient</span>
-<span class="sd">    &gt;&gt;&gt; client.get_flat_flipped_gradients()</span>
-<span class="sd">    tensor([-0.0005,  0.0008,  0.0027,  ...,  0.0732,  0.0722, -0.0281])</span>
-<span class="sd">    0.171875</span>
-<span class="sd">    tensor([-0.0002, -0.0027, -0.0032,  ..., -0.0675, -0.0215, -0.0125])</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-
         <span class="c1"># Check for correct types and values in params</span>
         <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="n">check_type</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;loss_name&quot;</span><span class="p">],</span> <span class="s2">&quot;loss_name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
@@ -690,6 +592,8 @@
             <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span>
             <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
             <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;optimizer_name&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optimizer_params&quot;</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="p">})</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;loss_name&quot;</span><span class="p">])()</span>

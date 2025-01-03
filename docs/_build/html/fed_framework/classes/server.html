@@ -418,6 +418,19 @@
   <section id="server">
 <span id="server-label"></span><h1>Server<a class="headerlink" href="#server" title="Link to this heading">#</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">Server</span></code> class simulates the central server in a federated learning environment. It aggregates client updates, applies robust aggregation techniques, and updates the global model to ensure robustness against Byzantine attacks.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Global Model Management</strong>:
+Updates and maintains the global model using aggregated gradients received from clients.</p></li>
+<li><p><strong>Robust Aggregation</strong>:
+Integrates defensive techniques, such as <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> and <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a>, to ensure resilience against malicious updates.</p></li>
+<li><p><strong>Performance Evaluation</strong>:
+Computes accuracy metrics on validation and test datasets to track the global model’s progress.</p></li>
+<li><p><strong>Integration</strong>:
+Works in conjunction with <code class="docutils literal notranslate"><span class="pre">Client</span></code> and <code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code> classes to simulate realistic federated learning scenarios.</p></li>
+</ul>
+</section>
 <section id="initialization-parameters">
 <h2>Initialization Parameters<a class="headerlink" href="#initialization-parameters" title="Link to this heading">#</a></h2>
 <dl class="field-list simple">
@@ -725,6 +738,7 @@ Computes accuracy on the test dataset.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-parameters">Initialization Parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>

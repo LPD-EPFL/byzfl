@@ -417,7 +417,7 @@
                   
   <section id="client">
 <span id="client-label"></span><h1>Client<a class="headerlink" href="#client" title="Link to this heading">#</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class simulates an honest participant in a federated learning environment. Each client trains its local model on its private dataset and shares its updates (gradients) with the server for aggregation. The class is designed to integrate seamlessly into the federated learning pipeline provided by the ByzFL framework.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class simulates an honest participant in a federated learning environment. Each client trains its local model on its subset of the data and shares updates (e.g., gradients) with the central server.</p>
 <section id="key-features">
 <h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -426,76 +426,159 @@
 <li><p><strong>Support for Momentum</strong>: Incorporates momentum into gradient updates to improve convergence.</p></li>
 <li><p><strong>Integration with Robust Aggregators</strong>: Shares updates with the server, enabling robust aggregation techniques to handle adversarial or heterogeneous data environments.</p></li>
 </ul>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzfl.Client">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.ModelBaseInterface" title="byzfl.fed_framework.framework.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
+</section>
+<section id="initialization-parameters">
+<h2>Initialization Parameters<a class="headerlink" href="#initialization-parameters" title="Link to this heading">#</a></h2>
 <dl class="field-list simple">
-<dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Client. Must include:</p>
+<dt class="field-odd">param dict params<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the configuration for the Client. Must include:</p>
+</dd>
+</dl>
 <ul class="simple">
 <li><dl class="simple">
-<dt><cite>“model_name”</cite>: str</dt><dd><p>Name of the model to be used. For a complete list of available models within the framework, refer to <a class="reference internal" href="models.html#models-label"><span class="std std-ref">Models</span></a>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;model_name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the model to be used. For a complete list of available models, refer to <a class="reference internal" href="models.html#models-label"><span class="std std-ref">Models</span></a>.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“device”</cite>: str</dt><dd><p>Device for computation (e.g., ‘cpu’ or ‘cuda’).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;device&quot;</span></code><span class="classifier">str</span></dt><dd><p>Device for computation (e.g., <code class="docutils literal notranslate"><span class="pre">'cpu'</span></code> or <code class="docutils literal notranslate"><span class="pre">'cuda'</span></code>).</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“learning_rate”</cite>: float</dt><dd><p>Learning rate for the optimizer.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;optimizer_name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the optimizer to be used (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;SGD&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Adam&quot;</span></code>).</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“loss_name”</cite>: str</dt><dd><p>Loss function name (e.g., ‘CrossEntropyLoss’).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;optimizer_params&quot;</span></code><span class="classifier">dict, optional</span></dt><dd><p>Additional parameters for the optimizer (e.g., beta values for Adam).</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“weight_decay”</cite>: float</dt><dd><p>Weight decay for regularization.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;learning_rate&quot;</span></code><span class="classifier">float</span></dt><dd><p>Learning rate for the optimizer.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“milestones”</cite>: list</dt><dd><p>Milestones for learning rate decay.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;loss_name&quot;</span></code><span class="classifier">str</span></dt><dd><p>Name of the loss function to be used (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;CrossEntropyLoss&quot;</span></code>).</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“learning_rate_decay”</cite>: float</dt><dd><p>Learning rate decay factor.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;weight_decay&quot;</span></code><span class="classifier">float</span></dt><dd><p>Weight decay for regularization.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“LabelFlipping”</cite>: bool</dt><dd><p>A boolean flag that, when set to True, enables the LabelFlipping attack. This attack flips the class labels of the training data to their opposing classes.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;milestones&quot;</span></code><span class="classifier">list</span></dt><dd><p>List of training steps at which the learning rate decay is applied.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“momentum”</cite>: float</dt><dd><p>Momentum for the optimizer.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;learning_rate_decay&quot;</span></code><span class="classifier">float</span></dt><dd><p>Factor by which the learning rate is reduced at each milestone.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“training_dataloader”</cite>: DataLoader</dt><dd><p>DataLoader for the training data.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;LabelFlipping&quot;</span></code><span class="classifier">bool</span></dt><dd><p>A flag that enables the label-flipping attack. When set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the class labels in the local dataset are flipped to their opposing classes.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>“nb_labels”</cite>: int</dt><dd><p>Number of labels in the dataset. Needed for the LabelFlipping attack.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;momentum&quot;</span></code><span class="classifier">float</span></dt><dd><p>Momentum parameter for the optimizer.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;training_dataloader&quot;</span></code><span class="classifier">DataLoader</span></dt><dd><p>PyTorch DataLoader object for the local training dataset.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;nb_labels&quot;</span></code><span class="classifier">int</span></dt><dd><p>Number of labels in the dataset, required for the label-flipping attack.</p>
 </dd>
 </dl>
 </li>
 </ul>
-</dd>
-</dl>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_gradients()</span></code>
+Computes the gradients of the local model based on the client’s subset of training data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_flat_gradients_with_momentum()</span></code>
+Returns the flattened gradients with momentum applied, combining current and past updates.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_flat_flipped_gradients()</span></code>
+Retrieves the gradients of the model after applying the label-flipping attack in a flattened array.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_loss_list()</span></code>
+Returns the list of training losses recorded during training.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_train_accuracy()</span></code>
+Provides the training accuracy for each processed batch.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set_model_state(state_dict)</span></code>
+Updates the model’s state with the provided state dictionary.</p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<p>Initialize the <code class="docutils literal notranslate"><span class="pre">Client</span></code> class with an MNIST data loader:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c1"># Fix the random seed</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Define the training data loader using MNIST</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Define client parameters</span>
+<span class="n">client_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;betas&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">)},</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">&quot;loss_name&quot;</span><span class="p">:</span> <span class="s2">&quot;CrossEntropyLoss&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
+    <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">&quot;LabelFlipping&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;momentum&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="s2">&quot;training_dataloader&quot;</span><span class="p">:</span> <span class="n">train_loader</span><span class="p">,</span>
+    <span class="s2">&quot;nb_labels&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Initialize the Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">client_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute gradients for the local dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute gradients</span>
+<span class="n">client</span><span class="o">.</span><span class="n">compute_gradients</span><span class="p">()</span>
+
+<span class="c1"># Retrieve the training accuracy for the first batch</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">get_train_accuracy</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># Retrieve the gradients after applying the label-flipping attack</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">get_flat_flipped_gradients</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.Client">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.ModelBaseInterface" title="byzfl.fed_framework.framework.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.compute_gradients">
 <span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.compute_gradients" title="Link to this definition">#</a></dt>
-<dd><p>Computes gradients for the local dataset.</p>
+<dd><p>Computes the gradients of the local model loss function.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -507,13 +590,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_flat_gradients_with_momentum">
 <span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_gradients_with_momentum" title="Link to this definition">#</a></dt>
-<dd><p>Returns flattened gradients with momentum applied.</p>
+<dd><p>Returns the gradients with momentum applied in a flat array.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_loss_list">
 <span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_loss_list" title="Link to this definition">#</a></dt>
-<dd><p>Returns the list of training losses.</p>
+<dd><p>Returns the list of computed losses over training.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -525,94 +608,6 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.set_model_state">
 <span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.set_model_state" title="Link to this definition">#</a></dt>
-<dd><p>Updates the model’s state dictionary.</p>
-</dd></dl>
-
-<p class="rubric">Examples</p>
-<p>Initialize the <cite>Client</cite> class with an MNIST data loader:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">Client</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fix the random seed of torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define the training data loader using MNIST</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define client parameters</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client_params</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;loss_name&quot;</span><span class="p">:</span> <span class="s2">&quot;CrossEntropyLoss&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;LabelFlipping&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;momentum&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;training_dataloader&quot;</span><span class="p">:</span> <span class="n">train_loader</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;nb_labels&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Client</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">client_params</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Compute gradients for the current training batch:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute first gradient</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">compute_gradients</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initial train accuracy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get_train_accuracy</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get first flipped gradient</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get_flat_flipped_gradients</span><span class="p">()</span>
-<span class="go">tensor([-0.0005,  0.0008,  0.0027,  ...,  0.0732,  0.0722, -0.0281])</span>
-<span class="go">0.171875</span>
-<span class="go">tensor([-0.0002, -0.0027, -0.0032,  ..., -0.0675, -0.0215, -0.0125])</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
-<dd><p>Computes the gradients of the local model loss function.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">get_flat_flipped_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_flat_flipped_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
-<dd><p>Returns the gradients of the model with flipped targets in a flat array.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
-<dd><p>Returns the gradients with momentum applied in a flat array.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
-<dd><p>Returns the list of computed losses over training.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">get_train_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_train_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
-<dd><p>Returns the training accuracy per batch.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
 <dd><p>Updates the model state with the provided state dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -673,7 +668,10 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-parameters">Initialization Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.compute_gradients"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_flat_flipped_gradients"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
@@ -681,12 +679,6 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_loss_list"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.get_train_accuracy"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Client.set_model_state"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Client.compute_gradients()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_flipped_gradients()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Client.get_flat_gradients_with_momentum()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Client.get_loss_list()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Client.get_train_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Client.set_model_state()</span></code></a></li>
 </ul>
 </li>
 </ul>

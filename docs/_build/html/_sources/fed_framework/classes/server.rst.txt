@@ -5,6 +5,17 @@ Server
 
 The ``Server`` class simulates the central server in a federated learning environment. It aggregates client updates, applies robust aggregation techniques, and updates the global model to ensure robustness against Byzantine attacks.
 
+Key Features
+------------
+- **Global Model Management**:  
+  Updates and maintains the global model using aggregated gradients received from clients.
+- **Robust Aggregation**:  
+  Integrates defensive techniques, such as :ref:`trmean-label` and :ref:`clipping-label`, to ensure resilience against malicious updates.
+- **Performance Evaluation**:  
+  Computes accuracy metrics on validation and test datasets to track the global model's progress.
+- **Integration**:
+  Works in conjunction with ``Client`` and ``ByzantineClient`` classes to simulate realistic federated learning scenarios.
+
 Initialization Parameters
 -------------------------
 :param params: dict

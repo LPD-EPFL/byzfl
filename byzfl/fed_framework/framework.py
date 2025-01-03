@@ -154,107 +154,9 @@ class ModelBaseInterface(object):
         """
         self.model.load_state_dict(state_dict)
 
-
-    
 class Client(ModelBaseInterface):
-    """
-    Initialization Parameters
-    -------------------------
-    params : dict
-        A dictionary containing the configuration for the Client. Must include:
-
-        - `"model_name"`: str
-            Name of the model to be used. For a complete list of available models within the framework, refer to :ref:`models-label`.
-        - `"device"`: str
-            Device for computation (e.g., 'cpu' or 'cuda').
-        - `"learning_rate"`: float
-            Learning rate for the optimizer.
-        - `"loss_name"`: str
-            Loss function name (e.g., 'CrossEntropyLoss').
-        - `"weight_decay"`: float
-            Weight decay for regularization.
-        - `"milestones"`: list
-            Milestones for learning rate decay.
-        - `"learning_rate_decay"`: float
-            Learning rate decay factor.
-        - `"LabelFlipping"`: bool
-            A boolean flag that, when set to True, enables the LabelFlipping attack. This attack flips the class labels of the training data to their opposing classes.
-        - `"momentum"`: float
-            Momentum for the optimizer.
-        - `"training_dataloader"`: DataLoader
-            DataLoader for the training data.
-        - `"nb_labels"`: int
-            Number of labels in the dataset. Needed for the LabelFlipping attack.
-
-    Methods
-    -------
-    compute_gradients
-        Computes gradients for the local dataset.
-    get_flat_flipped_gradients
-        Returns the gradients of the model with flipped targets in a flat array.
-    get_flat_gradients_with_momentum
-        Returns flattened gradients with momentum applied.
-    get_loss_list
-        Returns the list of training losses.
-    get_train_accuracy
-        Returns the training accuracy per batch.
-    set_model_state(state_dict)
-        Updates the model's state dictionary.
-
-    Examples
-    --------
-    Initialize the `Client` class with an MNIST data loader:
-
-    >>> import torch
-    >>> from torch.utils.data import DataLoader
-    >>> from torchvision import datasets, transforms
-    >>> from byzfl import Client
-
-    >>> # Fix the random seed of torch
-    >>> SEED = 42
-    >>> torch.manual_seed(SEED)
-    >>> torch.cuda.manual_seed(SEED)
-    >>> torch.backends.cudnn.deterministic = True
-    >>> torch.backends.cudnn.benchmark = False
-    >>> # Define the training data loader using MNIST
-    >>> transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
-    >>> train_dataset = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
-    >>> train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-
-    >>> # Define client parameters
-    >>> client_params = {
-    >>>     "model_name": "cnn_mnist", 
-    >>>     "device": "cpu", 
-    >>>     "learning_rate": 0.01, 
-    >>>     "loss_name": "CrossEntropyLoss", 
-    >>>     "weight_decay": 0.0005, 
-    >>>     "milestones": [10, 20], 
-    >>>     "learning_rate_decay": 0.5, 
-    >>>     "LabelFlipping": True, 
-    >>>     "momentum": 0.9, 
-    >>>     "training_dataloader": train_loader, 
-    >>>     "nb_labels": 10, 
-    >>> }
-
-    >>> # Initialize the Client
-    >>> client = Client(client_params)
-
-    Compute gradients for the current training batch:
-
-    >>> # Compute first gradient
-    >>> client.compute_gradients()
-    >>> # Initial train accuracy
-    >>> client.get_train_accuracy()[0]
-    >>> # Get first flipped gradient
-    >>> client.get_flat_flipped_gradients()
-    tensor([-0.0005,  0.0008,  0.0027,  ...,  0.0732,  0.0722, -0.0281])
-    0.171875
-    tensor([-0.0002, -0.0027, -0.0032,  ..., -0.0675, -0.0215, -0.0125])
-
-    """
 
     def __init__(self, params):
-
         # Check for correct types and values in params
         check_type(params, "params", dict)
         check_type(params["loss_name"], "loss_name", str)
@@ -274,6 +176,8 @@ class Client(ModelBaseInterface):
             "weight_decay": params["weight_decay"],
             "milestones": params["milestones"],
             "learning_rate_decay": params["learning_rate_decay"],
+            "optimizer_name": params["optimizer_name"],
+            "optimizer_params": params.get("optimizer_params", {}),
         })
 
         self.criterion = getattr(torch.nn, params["loss_name"])()
