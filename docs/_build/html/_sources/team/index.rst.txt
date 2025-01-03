@@ -10,7 +10,7 @@ Our Team
       <img src="../_static/geovani_rizk.jpeg" alt="Geovani Rizk" style="width:100%">
       <div class="container">
         <h2>Geovani Rizk</h2>
-        <p class="title">Postdoc @EPFL</p>
+        <p class="title">Postdoc @EPFL <br> Lead & Active Contributor</p>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@ Our Team
       <img src="../_static/john_stephan.jpeg" alt="John Stephan" style="width:100%">
       <div class="container">
         <h2>John Stephan</h2>
-        <p class="title">PhD @EPFL</p>
+        <p class="title">PhD @EPFL <br> Lead & Active Contributor</p>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@ Our Team
       <img src="../_static/marc_gonzalez.jpeg" alt="Marc Gonzalez" style="width:100%">
       <div class="container">
         <h2>Marc Gonzalez</h2>
-        <p class="title">Intern @EPFL (now Master's student @UPC)</p>
+        <p class="title">Intern @EPFL<br> Active Contributor</p>
       </div>
     </div>
   </div>
