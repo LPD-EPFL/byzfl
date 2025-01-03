@@ -35,12 +35,6 @@ Methods
 - ``set_gradients(flat_vector)``: Sets model gradients using a flat array.
 - ``set_model_state(state_dict)``: Updates the model's state using a state dictionary.
 
-.. autoclass:: byzfl.ModelBaseInterface
-   :members:
-   :undoc-members:
-   :inherited-members:
-   :show-inheritance:
-
 Usage Example
 -------------
 Below is an example of how to initialize the ``ModelBaseInterface`` and use its methods:
@@ -71,6 +65,12 @@ Below is an example of how to initialize the ``ModelBaseInterface`` and use its 
    # Perform an optimization step
    model_interface.optimizer.step()
    model_interface.scheduler.step()
+
+.. autoclass:: byzfl.ModelBaseInterface
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :show-inheritance:
 
 Notes
 -----

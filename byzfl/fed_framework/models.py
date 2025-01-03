@@ -1,3 +1,7 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
 """
 Models Module
 =============
@@ -72,10 +76,6 @@ Notes
 - All models are subclasses of `torch.nn.Module` and are compatible with PyTorch training pipelines.
 - The ResNet implementations support custom class numbers via the `num_classes` parameter.
 """
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 class fc_mnist(nn.Module):
     """

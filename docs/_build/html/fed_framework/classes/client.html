@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -573,41 +573,41 @@ Updates the model’s state with the provided state dictionary.</p></li>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.Client">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.ModelBaseInterface" title="byzfl.fed_framework.framework.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.ModelBaseInterface" title="byzfl.fed_framework.model_base_interface.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.compute_gradients">
-<span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.compute_gradients" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.compute_gradients" title="Link to this definition">#</a></dt>
 <dd><p>Computes the gradients of the local model loss function.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_flat_flipped_gradients">
-<span class="sig-name descname"><span class="pre">get_flat_flipped_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_flat_flipped_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_flipped_gradients" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_flat_flipped_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_flat_flipped_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_flipped_gradients" title="Link to this definition">#</a></dt>
 <dd><p>Returns the gradients of the model with flipped targets in a flat array.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_flat_gradients_with_momentum">
-<span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_gradients_with_momentum" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_gradients_with_momentum" title="Link to this definition">#</a></dt>
 <dd><p>Returns the gradients with momentum applied in a flat array.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_loss_list">
-<span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_loss_list" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_loss_list" title="Link to this definition">#</a></dt>
 <dd><p>Returns the list of computed losses over training.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_train_accuracy">
-<span class="sig-name descname"><span class="pre">get_train_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.get_train_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_train_accuracy" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_train_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_train_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_train_accuracy" title="Link to this definition">#</a></dt>
 <dd><p>Returns the training accuracy per batch.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.set_model_state">
-<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.set_model_state" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.set_model_state" title="Link to this definition">#</a></dt>
 <dd><p>Updates the model state with the provided state dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -720,7 +720,7 @@ Updates the model’s state with the provided state dictionary.</p></li>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>

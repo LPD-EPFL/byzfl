@@ -42,7 +42,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -452,89 +452,6 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">set_gradients(flat_vector)</span></code>: Sets model gradients using a flat array.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">set_model_state(state_dict)</span></code>: Updates the model’s state using a state dictionary.</p></li>
 </ul>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ModelBaseInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_dict_gradients">
-<span class="sig-name descname"><span class="pre">get_dict_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.get_dict_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_dict_gradients" title="Link to this definition">#</a></dt>
-<dd><p>Returns model gradients in a dictionary format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>collections.OrderedDict</strong> – Dictionary of model gradients.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_dict_parameters">
-<span class="sig-name descname"><span class="pre">get_dict_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.get_dict_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_dict_parameters" title="Link to this definition">#</a></dt>
-<dd><p>Returns model parameters in a dictionary format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>collections.OrderedDict</strong> – Dictionary of model parameters.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_flat_gradients">
-<span class="sig-name descname"><span class="pre">get_flat_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.get_flat_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_flat_gradients" title="Link to this definition">#</a></dt>
-<dd><p>Returns model gradients in a flat array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list</strong> – Flat list of model gradients.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_flat_parameters">
-<span class="sig-name descname"><span class="pre">get_flat_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.get_flat_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_flat_parameters" title="Link to this definition">#</a></dt>
-<dd><p>Returns model parameters in a flat array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list</strong> – Flat list of model parameters.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.set_gradients">
-<span class="sig-name descname"><span class="pre">set_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.set_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.set_gradients" title="Link to this definition">#</a></dt>
-<dd><p>Sets model gradients using a flat array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>flat_vector</strong> (<em>list</em>) – Flat list of gradients to set.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.set_model_state">
-<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.set_model_state" title="Link to this definition">#</a></dt>
-<dd><p>Sets the state_dict of the model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state_dict</strong> (<em>dict</em>) – Dictionary containing model state.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.set_parameters">
-<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/framework.html#ModelBaseInterface.set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.set_parameters" title="Link to this definition">#</a></dt>
-<dd><p>Sets model parameters using a flat array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>flat_vector</strong> (<em>list</em>) – Flat list of parameters to set.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 <section id="usage-example">
 <h2>Usage Example<a class="headerlink" href="#usage-example" title="Link to this heading">#</a></h2>
@@ -565,6 +482,89 @@
 <span class="n">model_interface</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </pre></div>
 </div>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ModelBaseInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_dict_gradients">
+<span class="sig-name descname"><span class="pre">get_dict_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.get_dict_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_dict_gradients" title="Link to this definition">#</a></dt>
+<dd><p>Returns model gradients in a dictionary format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collections.OrderedDict</strong> – Dictionary of model gradients.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_dict_parameters">
+<span class="sig-name descname"><span class="pre">get_dict_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.get_dict_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_dict_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Returns model parameters in a dictionary format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collections.OrderedDict</strong> – Dictionary of model parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_flat_gradients">
+<span class="sig-name descname"><span class="pre">get_flat_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.get_flat_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_flat_gradients" title="Link to this definition">#</a></dt>
+<dd><p>Returns model gradients in a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list</strong> – Flat list of model gradients.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.get_flat_parameters">
+<span class="sig-name descname"><span class="pre">get_flat_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.get_flat_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.get_flat_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Returns model parameters in a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list</strong> – Flat list of model parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.set_gradients">
+<span class="sig-name descname"><span class="pre">set_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.set_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.set_gradients" title="Link to this definition">#</a></dt>
+<dd><p>Sets model gradients using a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>flat_vector</strong> (<em>list</em>) – Flat list of gradients to set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.set_model_state">
+<span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.set_model_state" title="Link to this definition">#</a></dt>
+<dd><p>Sets the state_dict of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state_dict</strong> (<em>dict</em>) – Dictionary containing model state.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ModelBaseInterface.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/model_base_interface.html#ModelBaseInterface.set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ModelBaseInterface.set_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Sets model parameters using a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>flat_vector</strong> (<em>list</em>) – Flat list of parameters to set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
@@ -621,7 +621,8 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-parameters">Initialization Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example">Usage Example</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ModelBaseInterface"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ModelBaseInterface.get_dict_gradients"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_dict_gradients()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ModelBaseInterface.get_dict_parameters"><code class="docutils literal notranslate"><span class="pre">ModelBaseInterface.get_dict_parameters()</span></code></a></li>
@@ -634,7 +635,6 @@
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example">Usage Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
@@ -673,7 +673,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
