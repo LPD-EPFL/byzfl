@@ -40,26 +40,23 @@ Below is an example of how to simulate federated learning using this framework:
 
 ```python
 # Import necessary libraries
-import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from byzfl import Client, Server, ByzantineClient, DataDistributor
+from byzfl import set_random_seed
 
 # Set random seed for reproducibility
 SEED = 42
-torch.manual_seed(SEED)
-torch.cuda.manual_seed(SEED)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
+set_random_seed(SEED)
 
 # Configurations
-nb_honest_clients = 5
-nb_byz_clients = 2
-nb_training_steps = 10
-batch_size = 64
+nb_honest_clients = 3
+nb_byz_clients = 1
+nb_training_steps = 1000
+batch_size = 25
 
 # Data Preparation
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
 train_dataset = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
 train_loader = DataLoader(train_dataset, shuffle=True)
 
@@ -78,10 +75,11 @@ honest_clients = [
     Client({
         "model_name": "cnn_mnist",
         "device": "cpu",
+        "optimizer_name": "SGD",
         "learning_rate": 0.1,
         "loss_name": "NLLLoss",
-        "weight_decay": 0.0005,
-        "milestones": [10, 20],
+        "weight_decay": 0.0001,
+        "milestones": [1000],
         "learning_rate_decay": 0.25,
         "LabelFlipping": False,
         "training_dataloader": client_dataloaders[i],
@@ -92,24 +90,23 @@ honest_clients = [
 
 # Prepare Test Dataset
 test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
-test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-# Server Setup
-pre_aggregators = [
-    {"name": "Clipping", "parameters": {"c": 2.0}},
-    {"name": "NNM", "parameters": {"f": nb_byz_clients}},
-]
-aggregator_info = {"name": "TrMean", "parameters": {"f": nb_byz_clients}}
+# Server Setup, Use SGD Optimizer
 server = Server({
     "device": "cpu",
     "model_name": "cnn_mnist",
     "test_loader": test_loader,
+    "optimizer_name": "SGD",
     "learning_rate": 0.1,
-    "weight_decay": 0.0005,
-    "milestones": [10, 20],
+    "weight_decay": 0.0001,
+    "milestones": [1000],
     "learning_rate_decay": 0.25,
-    "aggregator_info": aggregator_info,
-    "pre_agg_list": pre_aggregators,
+    "aggregator_info": {"name": "TrMean", "parameters": {"f": nb_byz_clients}},
+    "pre_agg_list": [
+        {"name": "Clipping", "parameters": {"c": 2.0}},
+        {"name": "NNM", "parameters": {"f": nb_byz_clients}},
+        ]
 })
 
 # Byzantine Client Setup
@@ -122,7 +119,12 @@ byz_client = ByzantineClient(attack)
 
 # Training Loop
 for training_step in range(nb_training_steps):
-    print(f"--- Training Step {training_step + 1}/{nb_training_steps} ---")
+
+    # Evaluate Global Model Every 100 Training Steps
+    if training_step % 100 == 0:
+        test_acc = server.compute_test_accuracy()
+        print(f"--- Training Step {training_step}/{nb_training_steps} ---")
+        print(f"Test Accuracy: {test_acc:.4f}")
 
     # Honest Clients Compute Gradients
     for client in honest_clients:
@@ -132,43 +134,44 @@ for training_step in range(nb_training_steps):
     honest_gradients = [client.get_flat_gradients_with_momentum() for client in honest_clients]
 
     # Apply Byzantine Attack
-    byz_gradients = byz_client.apply_attack(honest_gradients)
+    byz_vector = byz_client.apply_attack(honest_gradients)
 
     # Combine Honest and Byzantine Gradients
-    gradients = honest_gradients + byz_gradients
+    gradients = honest_gradients + byz_vector
 
-    # Robustly Aggregate Gradients and Update Global Model
+    # Update Global Model
     server.update_model(gradients)
 
-    # Evaluate Global Model
-    test_acc = server.compute_test_accuracy()
-    print(f"Test Accuracy: {test_acc:.4f}")
+    # Send Updated Model to Clients
+    new_model = server.get_dict_parameters()
+    for client in honest_clients:
+        client.set_model_state(new_model)
 
 print("Training Complete!")
 ```
 
 ## Output
 ```plaintext
---- Training Step 1/10 ---
-Test Accuracy: 0.1012
---- Training Step 2/10 ---
-Test Accuracy: 0.1011
---- Training Step 3/10 ---
-Test Accuracy: 0.1010
---- Training Step 4/10 ---
-Test Accuracy: 0.1010
---- Training Step 5/10 ---
-Test Accuracy: 0.1010
---- Training Step 6/10 ---
-Test Accuracy: 0.1010
---- Training Step 7/10 ---
-Test Accuracy: 0.1010
---- Training Step 8/10 ---
-Test Accuracy: 0.1010
---- Training Step 9/10 ---
-Test Accuracy: 0.1010
---- Training Step 10/10 ---
-Test Accuracy: 0.1010
+--- Training Step 0/1000 ---
+Test Accuracy: 0.0600
+--- Training Step 100/1000 ---
+Test Accuracy: 0.6454
+--- Training Step 200/1000 ---
+Test Accuracy: 0.8156
+--- Training Step 300/1000 ---
+Test Accuracy: 0.8878
+--- Training Step 400/1000 ---
+Test Accuracy: 0.8667
+--- Training Step 500/1000 ---
+Test Accuracy: 0.9014
+--- Training Step 600/1000 ---
+Test Accuracy: 0.9103
+--- Training Step 700/1000 ---
+Test Accuracy: 0.9647
+--- Training Step 800/1000 ---
+Test Accuracy: 0.9531
+--- Training Step 900/1000 ---
+Test Accuracy: 0.9732
 Training Complete!
 ```
 

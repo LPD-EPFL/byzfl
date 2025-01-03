@@ -28,7 +28,7 @@ class ModelBaseInterface(object):
         optimizer_class = getattr(torch.optim, optimizer_name, None)
         if optimizer_class is None:
             raise ValueError(f"Optimizer '{optimizer_name}' is not supported by PyTorch.")
-
+        
         self.optimizer = optimizer_class(
             self.model.parameters(),
             lr=params["learning_rate"],
@@ -42,6 +42,7 @@ class ModelBaseInterface(object):
             milestones=params["milestones"],
             gamma=params["learning_rate_decay"]
         )
+
 
     def _validate_params(self, params):
         """

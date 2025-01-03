@@ -420,7 +420,7 @@
         <span class="n">optimizer_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">optimizer_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimizer &#39;</span><span class="si">{</span><span class="n">optimizer_name</span><span class="si">}</span><span class="s2">&#39; is not supported by PyTorch.&quot;</span><span class="p">)</span>
-
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer_class</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
             <span class="n">lr</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span>
@@ -434,6 +434,7 @@
             <span class="n">milestones</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
             <span class="n">gamma</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">]</span>
         <span class="p">)</span>
+
 
     <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

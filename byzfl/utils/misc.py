@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from scipy.spatial import distance
 from byzfl.utils import torch_tools
-
+import os, random
 
 def check_vectors_type(vectors):
     if isinstance(vectors, list) and isinstance(vectors[0], np.ndarray):
@@ -54,6 +54,33 @@ def check_type(element, element_name, t):
         s = "'" + t.__name__+ "'"
     if not isinstance(element, t):
         raise TypeError("Expected type " + s + " for " + str(element_name) + " but got '" + type(element).__name__ + "'")
+
+
+
+def set_random_seed(seed: int):
+    """
+    Set the random seed for reproducibility across different libraries and environments.
+
+    Parameters
+    ----------
+    seed : int
+        The seed value to use for random number generation.
+    """
+    # Python's built-in random module
+    random.seed(seed)
+
+    # NumPy
+    np.random.seed(seed)
+
+    # PyTorch
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)  # For multi-GPU setups
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+    # Environment variables for reproducibility
+    os.environ['PYTHONHASHSEED'] = str(seed)
 
 
 #JS

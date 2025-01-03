@@ -432,26 +432,23 @@
 <h2>Example: Federated Learning Workflow<a class="headerlink" href="#example-federated-learning-workflow" title="Link to this heading">#</a></h2>
 <p>This example uses the MNIST dataset to simulate a federated learning setup with five honest clients and two Byzantine clients. Follow the steps below to run the simulation:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
-<span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 <span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">Server</span><span class="p">,</span> <span class="n">ByzantineClient</span><span class="p">,</span> <span class="n">DataDistributor</span>
+<span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">set_random_seed</span>
 
 <span class="c1"># Set random seed for reproducibility</span>
 <span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">set_random_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
 
 <span class="c1"># Configurations</span>
-<span class="n">nb_honest_clients</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">nb_byz_clients</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">nb_training_steps</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">nb_honest_clients</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">nb_byz_clients</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">nb_training_steps</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">25</span>
 
 <span class="c1"># Data Preparation</span>
-<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.1307</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.3081</span><span class="p">,))])</span>
 <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
 <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -470,10 +467,11 @@
     <span class="n">Client</span><span class="p">({</span>
         <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
         <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="s2">&quot;SGD&quot;</span><span class="p">,</span>
         <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="s2">&quot;loss_name&quot;</span><span class="p">:</span> <span class="s2">&quot;NLLLoss&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
-        <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+        <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0001</span><span class="p">,</span>
+        <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1000</span><span class="p">],</span>
         <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
         <span class="s2">&quot;LabelFlipping&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s2">&quot;training_dataloader&quot;</span><span class="p">:</span> <span class="n">client_dataloaders</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
@@ -484,24 +482,23 @@
 
 <span class="c1"># Prepare Test Dataset</span>
 <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Server Setup</span>
-<span class="n">pre_aggregators</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Clipping&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NNM&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="n">nb_byz_clients</span><span class="p">}},</span>
-<span class="p">]</span>
-<span class="n">aggregator_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TrMean&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="n">nb_byz_clients</span><span class="p">}}</span>
+<span class="c1"># Server Setup, Use SGD Optimizer</span>
 <span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">({</span>
     <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
     <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
     <span class="s2">&quot;test_loader&quot;</span><span class="p">:</span> <span class="n">test_loader</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="s2">&quot;SGD&quot;</span><span class="p">,</span>
     <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
-    <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="mf">0.0001</span><span class="p">,</span>
+    <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1000</span><span class="p">],</span>
     <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-    <span class="s2">&quot;aggregator_info&quot;</span><span class="p">:</span> <span class="n">aggregator_info</span><span class="p">,</span>
-    <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">:</span> <span class="n">pre_aggregators</span><span class="p">,</span>
+    <span class="s2">&quot;aggregator_info&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TrMean&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="n">nb_byz_clients</span><span class="p">}},</span>
+    <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Clipping&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NNM&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="n">nb_byz_clients</span><span class="p">}},</span>
+        <span class="p">]</span>
 <span class="p">})</span>
 
 <span class="c1"># Byzantine Client Setup</span>
@@ -514,7 +511,12 @@
 
 <span class="c1"># Training Loop</span>
 <span class="k">for</span> <span class="n">training_step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_training_steps</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Training Step </span><span class="si">{</span><span class="n">training_step</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">nb_training_steps</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Evaluate Global Model Every 100 Training Steps</span>
+    <span class="k">if</span> <span class="n">training_step</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">test_acc</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">compute_test_accuracy</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Training Step </span><span class="si">{</span><span class="n">training_step</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">nb_training_steps</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Honest Clients Compute Gradients</span>
     <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">honest_clients</span><span class="p">:</span>
@@ -524,17 +526,18 @@
     <span class="n">honest_gradients</span> <span class="o">=</span> <span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">get_flat_gradients_with_momentum</span><span class="p">()</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">honest_clients</span><span class="p">]</span>
 
     <span class="c1"># Apply Byzantine Attack</span>
-    <span class="n">byz_gradients</span> <span class="o">=</span> <span class="n">byz_client</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_gradients</span><span class="p">)</span>
+    <span class="n">byz_vector</span> <span class="o">=</span> <span class="n">byz_client</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_gradients</span><span class="p">)</span>
 
     <span class="c1"># Combine Honest and Byzantine Gradients</span>
-    <span class="n">gradients</span> <span class="o">=</span> <span class="n">honest_gradients</span> <span class="o">+</span> <span class="n">byz_gradients</span>
+    <span class="n">gradients</span> <span class="o">=</span> <span class="n">honest_gradients</span> <span class="o">+</span> <span class="n">byz_vector</span>
 
-    <span class="c1"># Robustly Aggregate Gradients and Update Global Model</span>
+    <span class="c1"># Update Global Model</span>
     <span class="n">server</span><span class="o">.</span><span class="n">update_model</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
 
-    <span class="c1"># Evaluate Global Model</span>
-    <span class="n">test_acc</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">compute_test_accuracy</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Send Updated Model to Clients</span>
+    <span class="n">new_model</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">get_dict_parameters</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">honest_clients</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">set_model_state</span><span class="p">(</span><span class="n">new_model</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training Complete!&quot;</span><span class="p">)</span>
 </pre></div>
@@ -543,26 +546,26 @@
 <section id="example-output">
 <h2>Example Output<a class="headerlink" href="#example-output" title="Link to this heading">#</a></h2>
 <p>Running the above code will produce the following output:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--- Training Step 1/10 ---
-Test Accuracy: 0.1012
---- Training Step 2/10 ---
-Test Accuracy: 0.1011
---- Training Step 3/10 ---
-Test Accuracy: 0.1010
---- Training Step 4/10 ---
-Test Accuracy: 0.1010
---- Training Step 5/10 ---
-Test Accuracy: 0.1010
---- Training Step 6/10 ---
-Test Accuracy: 0.1010
---- Training Step 7/10 ---
-Test Accuracy: 0.1010
---- Training Step 8/10 ---
-Test Accuracy: 0.1010
---- Training Step 9/10 ---
-Test Accuracy: 0.1010
---- Training Step 10/10 ---
-Test Accuracy: 0.1010
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--- Training Step 0/1000 ---
+Test Accuracy: 0.0600
+--- Training Step 100/1000 ---
+Test Accuracy: 0.6454
+--- Training Step 200/1000 ---
+Test Accuracy: 0.8156
+--- Training Step 300/1000 ---
+Test Accuracy: 0.8878
+--- Training Step 400/1000 ---
+Test Accuracy: 0.8667
+--- Training Step 500/1000 ---
+Test Accuracy: 0.9014
+--- Training Step 600/1000 ---
+Test Accuracy: 0.9103
+--- Training Step 700/1000 ---
+Test Accuracy: 0.9647
+--- Training Step 800/1000 ---
+Test Accuracy: 0.9531
+--- Training Step 900/1000 ---
+Test Accuracy: 0.9732
 Training Complete!
 </pre></div>
 </div>
