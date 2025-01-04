@@ -389,8 +389,8 @@
                   
   <h1>Source code for byzfl.attacks.attacks</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span><span class="p">,</span> <span class="n">random_tool</span>
+<span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">Average</span><span class="p">,</span> <span class="n">Median</span><span class="p">,</span> <span class="n">TrMean</span><span class="p">,</span> <span class="n">GeometricMedian</span><span class="p">,</span> <span class="n">Krum</span><span class="p">,</span> <span class="n">MultiKrum</span><span class="p">,</span> <span class="n">CenteredClipping</span><span class="p">,</span> <span class="n">MDA</span><span class="p">,</span> <span class="n">MoNNA</span><span class="p">,</span> <span class="n">Meamed</span><span class="p">,</span> <span class="n">Clipping</span><span class="p">,</span> <span class="n">NNM</span><span class="p">,</span> <span class="n">ARC</span><span class="p">,</span> <span class="n">Bucketing</span>
 
 <div class="viewcode-block" id="SignFlipping">
 <a class="viewcode-back" href="../../../attacks/classes/sign_flipping.html#byzfl.SignFlipping">[docs]</a>
@@ -584,7 +584,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="s2">&quot;tau&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;tau must be a float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
@@ -729,31 +730,30 @@
 
         <span class="c1"># List of valid aggregator classes</span>
         <span class="n">valid_agg_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">Average</span><span class="p">,</span> <span class="n">Median</span><span class="p">,</span> <span class="n">TrMean</span><span class="p">,</span> <span class="n">GeometricMedian</span><span class="p">,</span> <span class="n">Krum</span><span class="p">,</span> <span class="n">MultiKrum</span><span class="p">,</span> <span class="n">CenteredClipping</span><span class="p">,</span> <span class="n">MDA</span><span class="p">,</span> <span class="n">MoNNA</span><span class="p">,</span> <span class="n">Meamed</span><span class="p">)</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="s2">&quot;agg&quot;</span><span class="p">,</span> <span class="n">valid_agg_classes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="n">valid_agg</span><span class="p">)</span> <span class="k">for</span> <span class="n">valid_agg</span> <span class="ow">in</span> <span class="n">valid_agg_classes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;agg must be a valid aggregator.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agg</span> <span class="o">=</span> <span class="n">agg</span>
 
         <span class="c1"># List of valid pre-aggregator classes</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
         <span class="n">valid_pre_agg_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">NNM</span><span class="p">,</span> <span class="n">Bucketing</span><span class="p">,</span> <span class="n">Clipping</span><span class="p">,</span> <span class="n">ARC</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
-            <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">,</span> <span class="s2">&quot;pre_agg&quot;</span><span class="p">,</span> <span class="n">valid_pre_agg_classes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">,</span> <span class="n">valid_pre_agg</span><span class="p">)</span> <span class="k">for</span> <span class="n">valid_pre_agg</span> <span class="ow">in</span> <span class="n">valid_pre_agg_classes</span><span class="p">)</span> <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;valid_pre_agg_classes must be a list valid pre-aggregators.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="n">pre_agg_list</span>
 
-        <span class="n">check_type</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;f must be a non-negative integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="s2">&quot;evals&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="s2">&quot;evals&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">evals</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;evals must be a positive integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="n">evals</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;start must be a float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="n">check_different_from_value</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;delta must be a non-zero float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.5</span> <span class="ow">or</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ratio must be a float in (0.5, 1) exclusive.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
 
     <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">current_tau</span><span class="p">):</span>
@@ -963,7 +963,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="s2">&quot;tau&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;tau must be a float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
@@ -1112,31 +1113,30 @@
 
         <span class="c1"># List of valid aggregator classes</span>
         <span class="n">valid_agg_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">Average</span><span class="p">,</span> <span class="n">Median</span><span class="p">,</span> <span class="n">TrMean</span><span class="p">,</span> <span class="n">GeometricMedian</span><span class="p">,</span> <span class="n">Krum</span><span class="p">,</span> <span class="n">MultiKrum</span><span class="p">,</span> <span class="n">CenteredClipping</span><span class="p">,</span> <span class="n">MDA</span><span class="p">,</span> <span class="n">MoNNA</span><span class="p">,</span> <span class="n">Meamed</span><span class="p">)</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="s2">&quot;agg&quot;</span><span class="p">,</span> <span class="n">valid_agg_classes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="n">valid_agg</span><span class="p">)</span> <span class="k">for</span> <span class="n">valid_agg</span> <span class="ow">in</span> <span class="n">valid_agg_classes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;agg must be a valid aggregator.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agg</span> <span class="o">=</span> <span class="n">agg</span>
 
         <span class="c1"># List of valid pre-aggregator classes</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="s2">&quot;pre_agg_list&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
         <span class="n">valid_pre_agg_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">NNM</span><span class="p">,</span> <span class="n">Bucketing</span><span class="p">,</span> <span class="n">Clipping</span><span class="p">,</span> <span class="n">ARC</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">:</span>
-            <span class="n">check_type</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">,</span> <span class="s2">&quot;pre_agg&quot;</span><span class="p">,</span> <span class="n">valid_pre_agg_classes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">pre_agg</span><span class="p">,</span> <span class="n">valid_pre_agg</span><span class="p">)</span> <span class="k">for</span> <span class="n">valid_pre_agg</span> <span class="ow">in</span> <span class="n">valid_pre_agg_classes</span><span class="p">)</span> <span class="k">for</span> <span class="n">pre_agg</span> <span class="ow">in</span> <span class="n">pre_agg_list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;valid_pre_agg_classes must be a list valid pre-aggregators.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="n">pre_agg_list</span>
 
-        <span class="n">check_type</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;f must be a non-negative integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="s2">&quot;evals&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="s2">&quot;evals&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">evals</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">evals</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;evals must be a positive integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evals</span> <span class="o">=</span> <span class="n">evals</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;start must be a float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="n">check_different_from_value</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;delta must be a non-zero float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="s2">&quot;ratio&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.5</span> <span class="ow">or</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ratio must be a float in (0.5, 1) exclusive.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ratio</span> <span class="o">=</span> <span class="n">ratio</span>
 
     <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">,</span> <span class="n">avg_honest_vector</span><span class="p">,</span> <span class="n">current_tau</span><span class="p">):</span>
@@ -1338,12 +1338,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epsilon</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;epsilon must be a non-negative int.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>
-        <span class="n">check_smaller_than_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span> <span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epsilon must be smaller than len(honest_vectors), but got epsilon=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="si">}</span><span class="s2"> and len(honest_vectors)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">honest_vectors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">]</span></div>
 
 
@@ -1532,10 +1533,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;mu must be a float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mu</span>
-        <span class="n">check_type</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sigma must be a non-negative float.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">honest_vectors</span><span class="p">):</span>

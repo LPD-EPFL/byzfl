@@ -1,6 +1,6 @@
 import numpy as np
-from byzfl.utils.misc import *
-from byzfl.aggregators import *
+from byzfl.utils.misc import check_vectors_type, random_tool
+from byzfl.aggregators import Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed, Clipping, NNM, ARC, Bucketing
 
 class SignFlipping:
     
@@ -189,7 +189,8 @@ class InnerProductManipulation:
     """
 
     def __init__(self, tau=2.0):
-        check_type(tau, "tau", float)
+        if not isinstance(tau, float):
+            raise TypeError("tau must be a float.")
         self.tau = tau
 
     def __call__(self, honest_vectors):
@@ -331,31 +332,30 @@ class Optimal_InnerProductManipulation:
 
         # List of valid aggregator classes
         valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
-        check_type(agg, "agg", valid_agg_classes)
+        if not any(isinstance(agg, valid_agg) for valid_agg in valid_agg_classes):
+            raise TypeError("agg must be a valid aggregator.")
         self.agg = agg
 
         # List of valid pre-aggregator classes
-        check_type(pre_agg_list, "pre_agg_list", list)
         valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
-        for pre_agg in pre_agg_list:
-            check_type(pre_agg, "pre_agg", valid_pre_agg_classes)
+        if not isinstance(pre_agg_list, list) or not all(any(isinstance(pre_agg, valid_pre_agg) for valid_pre_agg in valid_pre_agg_classes) for pre_agg in pre_agg_list):
+            raise TypeError("valid_pre_agg_classes must be a list valid pre-aggregators.")
         self.pre_agg_list = pre_agg_list
 
-        check_type(f, "f", int)
-        check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
-        check_type(evals, "evals", int)
-        check_greater_than_value(evals, "evals", 0)
+        if not isinstance(evals, int) or evals <= 0:
+            raise ValueError("evals must be a positive integer")
         self.evals = evals
-        check_type(start, "start", float)
+        if not isinstance(start, float):
+            raise ValueError("start must be a float.")
         self.start = start
-        check_type(delta, "delta", float)
-        check_different_from_value(delta, "delta", 0.0)
+        if not isinstance(delta, float) or delta == 0:
+            raise ValueError("delta must be a non-zero float.")
         self.delta = delta
-        check_type(ratio, "ratio", float)
-        check_greater_than_value(ratio, "ratio", 0.5)
-        check_smaller_than_value(ratio, "ratio", 1.0)
-        
+        if not isinstance(ratio, float) or ratio <= 0.5 or ratio >= 1:
+            raise ValueError("ratio must be a float in (0.5, 1) exclusive.")
         self.ratio = ratio
 
     def _evaluate(self, honest_vectors, avg_honest_vector, current_tau):
@@ -562,7 +562,8 @@ class ALittleIsEnough:
     """
 
     def __init__(self, tau=1.5):
-        check_type(tau, "tau", float)
+        if not isinstance(tau, float):
+            raise TypeError("tau must be a float.")
         self.tau = tau
 
     def __call__(self, honest_vectors):
@@ -708,31 +709,30 @@ class Optimal_ALittleIsEnough:
 
         # List of valid aggregator classes
         valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
-        check_type(agg, "agg", valid_agg_classes)
+        if not any(isinstance(agg, valid_agg) for valid_agg in valid_agg_classes):
+            raise TypeError("agg must be a valid aggregator.")
         self.agg = agg
 
         # List of valid pre-aggregator classes
-        check_type(pre_agg_list, "pre_agg_list", list)
         valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
-        for pre_agg in pre_agg_list:
-            check_type(pre_agg, "pre_agg", valid_pre_agg_classes)
+        if not isinstance(pre_agg_list, list) or not all(any(isinstance(pre_agg, valid_pre_agg) for valid_pre_agg in valid_pre_agg_classes) for pre_agg in pre_agg_list):
+            raise TypeError("valid_pre_agg_classes must be a list valid pre-aggregators.")
         self.pre_agg_list = pre_agg_list
 
-        check_type(f, "f", int)
-        check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
-        check_type(evals, "evals", int)
-        check_greater_than_value(evals, "evals", 0)
+        if not isinstance(evals, int) or evals <= 0:
+            raise ValueError("evals must be a positive integer")
         self.evals = evals
-        check_type(start, "start", float)
+        if not isinstance(start, float):
+            raise ValueError("start must be a float.")
         self.start = start
-        check_type(delta, "delta", float)
-        check_different_from_value(delta, "delta", 0.0)
+        if not isinstance(delta, float) or delta == 0:
+            raise ValueError("delta must be a non-zero float.")
         self.delta = delta
-        check_type(ratio, "ratio", float)
-        check_greater_than_value(ratio, "ratio", 0.5)
-        check_smaller_than_value(ratio, "ratio", 1.0)
-        
+        if not isinstance(ratio, float) or ratio <= 0.5 or ratio >= 1:
+            raise ValueError("ratio must be a float in (0.5, 1) exclusive.")
         self.ratio = ratio
 
     def _evaluate(self, honest_vectors, avg_honest_vector, current_tau):
@@ -931,12 +931,13 @@ class Mimic:
     """
 
     def __init__(self, epsilon=0):
-        check_type(epsilon, "epsilon", int)
-        check_greater_than_or_equal_value(epsilon, "epsilon", 0)
+        if not isinstance(epsilon, float) or epsilon < 0:
+            raise ValueError("epsilon must be a non-negative int.")
         self.epsilon = epsilon
 
     def __call__(self, honest_vectors):
-        check_smaller_than_value(self.epsilon, "epsilon", len(honest_vectors))
+        if not self.epsilon < len(honest_vectors):
+            raise ValueError(f"epsilon must be smaller than len(honest_vectors), but got epsilon={self.epsilon} and len(honest_vectors)={len(honest_vectors)}")
         return honest_vectors[self.epsilon]
 
 
@@ -1119,10 +1120,11 @@ class Gaussian:
     """
 
     def __init__(self, mu=0.0, sigma=1.0):
-        check_type(mu, "mu", float)
+        if not isinstance(mu, float):
+            raise TypeError("mu must be a float.")
         self.mu = mu
-        check_type(sigma, "sigma", float)
-        check_greater_than_or_equal_value(sigma, "sigma", 0)
+        if not isinstance(sigma, float) or sigma < 0:
+            raise ValueError("sigma must be a non-negative float.")
         self.sigma = sigma
 
     def __call__(self, honest_vectors):

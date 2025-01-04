@@ -389,7 +389,7 @@
                   
   <h1>Source code for byzfl.aggregators.preaggregators</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">byzfl.utils.misc</span> <span class="k">as</span> <span class="nn">misc</span>
+<span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span><span class="p">,</span> <span class="n">distance_tool</span><span class="p">,</span> <span class="n">random_tool</span>
 
 <div class="viewcode-block" id="NNM">
 <a class="viewcode-back" href="../../../aggregators/classes/nnm.html#byzfl.NNM">[docs]</a>
@@ -494,15 +494,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;f must be a non-negative integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_smaller_than_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f must be smaller than len(vectors), but got f=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> and len(vectors)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">distance</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">distance_tool</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">distance_tool</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span>
         <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[:,:</span><span class="n">k</span><span class="p">]</span>
@@ -616,13 +617,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_greater_than_value</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;f must be a positive integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="n">random</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">random_tool</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="n">random</span> <span class="o">=</span> <span class="n">random_tool</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">vectors</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
         <span class="n">nb_buckets</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
         <span class="n">buckets</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[:</span><span class="n">nb_buckets</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">]</span>
@@ -636,16 +637,6 @@
             <span class="n">output</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">output</span><span class="p">,</span> <span class="n">last_mean</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
-
-
-<span class="k">class</span> <span class="nc">Identity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tools</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Clipping">
@@ -743,12 +734,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;c must be a non-negative float&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">c</span>
 
     <span class="k">def</span> <span class="nf">_clip_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="n">vector_norm</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">vector_norm</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">:</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">)</span>
@@ -866,20 +857,21 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_type</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_greater_than_or_equal_value</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;f must be a non-negative integer&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
 
     <span class="k">def</span> <span class="nf">_clip_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">,</span> <span class="n">clip_threshold</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="n">vector_norm</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">vector_norm</span> <span class="o">&gt;</span> <span class="n">clip_threshold</span><span class="p">:</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="p">(</span><span class="n">clip_threshold</span> <span class="o">/</span> <span class="n">vector_norm</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">vector</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
-        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
-        <span class="n">misc</span><span class="o">.</span><span class="n">check_smaller_than_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">tools</span><span class="p">,</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">check_vectors_type</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f must be smaller than len(vectors)+1, but got f=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> and len(vectors)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">magnitudes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tools</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">),</span> <span class="n">vector_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">vector_id</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vectors</span><span class="p">)]</span>
         <span class="n">magnitudes</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">nb_vectors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>

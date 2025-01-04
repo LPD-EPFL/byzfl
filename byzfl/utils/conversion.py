@@ -1,5 +1,4 @@
 import collections
-
 import torch
 
 def flatten_dict(dict):

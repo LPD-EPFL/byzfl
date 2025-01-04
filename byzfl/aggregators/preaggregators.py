@@ -1,5 +1,5 @@
 import math
-import byzfl.utils.misc as misc
+from byzfl.utils.misc import check_vectors_type, distance_tool, random_tool
 
 class NNM(object):
 
@@ -102,15 +102,16 @@ class NNM(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors))
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors):
+            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
 
-        distance = misc.distance_tool(vectors)
+        distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)
         k = len(vectors) - self.f
         indices = tools.argpartition(dist, k-1, axis = 1)[:,:k]
@@ -221,13 +222,13 @@ class Bucketing(object):
     """
 
     def __init__(self, s=1):
-        misc.check_type(s, "s", int)
-        misc.check_greater_than_value(s, "s", 0)
+        if not isinstance(s, int) or s <= 0:
+            raise ValueError("f must be a positive integer")
         self.s = s
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        random = misc.random_tool(vectors)
+        tools, vectors = check_vectors_type(vectors)
+        random = random_tool(vectors)
         vectors = random.permutation(vectors)
         nb_buckets = int(math.floor(len(vectors) / self.s))
         buckets = vectors[:nb_buckets * self.s]
@@ -240,16 +241,6 @@ class Bucketing(object):
             last_mean = last_mean.reshape(1,-1)
             output = tools.concatenate((output, last_mean), axis = 0)
         return output
-
-
-class Identity(object):
-
-    def __init__(self):
-        pass
-
-    def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        return tools.copy(vectors)
 
 
 class Clipping(object):
@@ -345,12 +336,12 @@ class Clipping(object):
     """
 
     def __init__(self, c=2.0):
-        misc.check_type(c, "c", float)
-        misc.check_greater_than_or_equal_value(c, "c", 0.0)
+        if not isinstance(c, float) or c < 0:
+            raise ValueError("c must be a non-negative float")
         self.c = c
 
     def _clip_vector(self, vector):
-        tools, vector = misc.check_vectors_type(vector)
+        tools, vector = check_vectors_type(vector)
         vector_norm = tools.linalg.norm(vector)
         if vector_norm > self.c:
             vector = tools.multiply(vector, self.c / vector_norm)
@@ -465,20 +456,21 @@ class ARC(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
 
     def _clip_vector(self, vector, clip_threshold):
-        tools, vector = misc.check_vectors_type(vector)
+        tools, vector = check_vectors_type(vector)
         vector_norm = tools.linalg.norm(vector)
         if vector_norm > clip_threshold:
             vector = tools.multiply(vector, (clip_threshold / vector_norm))
         return vector
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors)+1)
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors)+1:
+            raise ValueError(f"f must be smaller than len(vectors)+1, but got f={self.f} and len(vectors)={len(vectors)}")
         magnitudes = [(tools.linalg.norm(vector), vector_id) for vector_id, vector in enumerate(vectors)]
         magnitudes.sort(key=lambda x:x[0])
         nb_vectors = len(vectors)

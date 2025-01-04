@@ -43,7 +43,7 @@ Below is an example of how to simulate federated learning using this framework:
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from byzfl import Client, Server, ByzantineClient, DataDistributor
-from byzfl import set_random_seed
+from byzfl.utils.misc import set_random_seed
 
 # Set random seed for reproducibility
 SEED = 42

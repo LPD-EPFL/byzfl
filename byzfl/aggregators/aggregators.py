@@ -1,8 +1,7 @@
 import itertools
 import numpy as np
 import torch
-from byzfl.utils import misc
-
+from byzfl.utils.misc import check_vectors_type, distance_tool
 
 class Average(object):
 
@@ -87,7 +86,7 @@ class Average(object):
         pass        
     
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
+        tools, vectors = check_vectors_type(vectors)
         return tools.mean(vectors, axis=0)
 
 
@@ -184,7 +183,7 @@ class Median(object):
         pass
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
+        tools, vectors = check_vectors_type(vectors)
         return tools.median(vectors, axis=0)
 
 
@@ -284,13 +283,14 @@ class TrMean(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors)/2)
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors)/2:
+            raise ValueError(f"f must be smaller than len(vectors)/2, but got f={self.f} and len(vectors)={len(vectors)}")
         if self.f == 0:
             avg = Average()
             return avg(vectors)
@@ -392,14 +392,15 @@ class GeometricMedian(object):
     """
 
     def __init__(self, nu=0.1, T=3):
-        misc.check_type(nu, "nu", float)
+        if not isinstance(nu, float):
+            raise TypeError("f must be a float")
         self.nu = nu
-        misc.check_type(T, "T", int)
-        misc.check_greater_than_or_equal_value(T, "T", 0)
+        if not isinstance(T, int) or T < 0:
+            raise ValueError("T must be a non-negative integer")
         self.T = T
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
+        tools, vectors = check_vectors_type(vectors)
         z = tools.zeros_like(vectors[0])
 
         filtered_vectors = vectors[~tools.any(tools.isinf(vectors), axis = 1)]
@@ -514,15 +515,15 @@ class Krum(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
     
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors)-1)
-
-        distance = misc.distance_tool(vectors)
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors)-1:
+            raise ValueError(f"f must be smaller than len(vectors)-1, but got f={self.f} and len(vectors)={len(vectors)}")
+        distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.f]
         dist = tools.mean(dist, axis=1)
@@ -630,15 +631,15 @@ class MultiKrum(object):
     """
 
     def __init__(self, f = 0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors)-1)
-
-        distance = misc.distance_tool(vectors)
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors)-1:
+            raise ValueError(f"f must be smaller than len(vectors)-1, but got f={self.f} and len(vectors)={len(vectors)}")
+        distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
         dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-self.f]
         dist = tools.mean(dist, axis = 1)
@@ -756,18 +757,18 @@ class CenteredClipping(object):
     """
 
     def __init__(self, m=None, L=1, tau=100.0):
-        if m is not None:
-            misc.check_type(m, "m", (np.ndarray, torch.Tensor))
+        if m is not None and (not isinstance(m, np.ndarray) or not isinstance(m, torch.Tensor)):
+            raise TypeError("m must be of type np.ndarray or orch.Tensor")
         self.m = m
-        misc.check_type(L, "L", int)
-        misc.check_greater_than_or_equal_value(L, "L", 0)
+        if not isinstance(L, int) or L < 0:
+            raise ValueError("L must be a non-negative integer")
         self.L = L
-        misc.check_type(tau, "tau", float)
-        misc.check_greater_than_or_equal_value(tau, "tau", 0.0)
+        if not isinstance(tau, float) or tau < 0.:
+            raise ValueError("tau must be a non-negative float")
         self.tau = tau
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
+        tools, vectors = check_vectors_type(vectors)
 
         if self.m is None:
             self.m = tools.zeros_like(vectors[0])
@@ -876,15 +877,16 @@ class MDA(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
     
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors))
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors):
+            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
 
-        distance = misc.distance_tool(vectors)
+        distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)
         n = len(vectors)
         k = n - self.f
@@ -1005,19 +1007,21 @@ class MoNNA(object):
     """
     
     def __init__(self, f=0, idx=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
-        misc.check_type(idx, "idx", int)
-        misc.check_greater_than_or_equal_value(idx, "idx", 0)
+        if not isinstance(idx, int) or idx < 0:
+            raise ValueError("idx must be a non-negative integer")
         self.idx = idx
     
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors))
-        misc.check_smaller_than_value(self.idx, "idx", len(vectors))
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors):
+            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
+        if not self.idx < len(vectors):
+            raise ValueError(f"idx must be smaller than len(vectors), but got idx={self.idx} and len(vectors)={len(vectors)}")
 
-        distance = misc.distance_tool(vectors)
+        distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors[self.idx].reshape(1,-1))
         k = len(vectors) - self.f
         indices = tools.argpartition(dist.reshape(-1), k-1)[:k]
@@ -1121,13 +1125,14 @@ class Meamed(object):
     """
 
     def __init__(self, f=0):
-        misc.check_type(f, "f", int)
-        misc.check_greater_than_or_equal_value(f, "f", 0)
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
         self.f = f
 
     def __call__(self, vectors):
-        tools, vectors = misc.check_vectors_type(vectors)
-        misc.check_smaller_than_value(self.f, "f", len(vectors))
+        tools, vectors = check_vectors_type(vectors)
+        if not self.f < len(vectors):
+            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
         
         d = len(vectors[0])
         k = len(vectors) - self.f

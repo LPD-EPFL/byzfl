@@ -23,7 +23,7 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
     from torch.utils.data import DataLoader
     from torchvision import datasets, transforms
     from byzfl import Client, Server, ByzantineClient, DataDistributor
-    from byzfl import set_random_seed
+    from byzfl.utils.misc import set_random_seed
 
     # Set random seed for reproducibility
     SEED = 42

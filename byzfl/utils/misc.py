@@ -43,20 +43,6 @@ def distance_tool(vectors):
     return tools
 
 
-def check_type(element, element_name, t):
-    if isinstance(t, tuple):
-        s = "" 
-        for i in range(len(t)):
-            s = s + "'"+ t[i].__name__+"'"
-            if i < len(t)-1:
-                s = s + " or "
-    else:
-        s = "'" + t.__name__+ "'"
-    if not isinstance(element, t):
-        raise TypeError("Expected type " + s + " for " + str(element_name) + " but got '" + type(element).__name__ + "'")
-
-
-
 def set_random_seed(seed: int):
     """
     Set the random seed for reproducibility across different libraries and environments.
@@ -81,31 +67,3 @@ def set_random_seed(seed: int):
 
     # Environment variables for reproducibility
     os.environ['PYTHONHASHSEED'] = str(seed)
-
-
-#JS
-def check_greater_than_value(element, element_name, value):
-    if element <= value:
-        raise ValueError("Expected value greater than " + str(value) + " for " + element_name)
-
-
-#JS
-def check_greater_than_or_equal_value(element, element_name, value):
-    if element < value:
-        raise ValueError("Expected value greater than or equal to " + str(value) + " for " + element_name)
-
-
-#JS
-def check_smaller_than_value(element, element_name, value):
-    if element >= value:
-        raise ValueError("Expected value smaller than " + str(value) + " for " + element_name)
-    
-#JS
-def check_smaller_than_or_equal_value(element, element_name, value):
-    if element > value:
-        raise ValueError("Expected value smaller than " + str(value) + " for " + element_name)
-    
-#JS
-def check_different_from_value(element, element_name, value):
-    if element == value:
-        raise ValueError("Expected value different from " + str(value) + " for " + element_name)
