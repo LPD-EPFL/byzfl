@@ -34,9 +34,9 @@ ByzFL is a **Python library for Byzantine-resilient Federated Learning**. It is 
 Key Features
 ------------
 
-1. **Robust Aggregators and Pre-Aggregators**: Robustly aggregate gradients while mitigating the impact of Byzantine participants.
-2. **Byzantine Attacks**: Simulate and evaluate different attack strategies for testing resilience.
-3. **ML Pipelines**: Train and benchmark robust aggregation schemes and attack implementations seamlessly.
+1. **Robust Aggregators and Pre-Aggregators**: Implement state-of-the-art aggregation strategies, such as :ref:`trmean-label`, alongside pre-aggregation techniques like :ref:`clipping-label` and :ref:`nnm-label`, to ensure resilience against Byzantine participants in federated learning workflows.
+2. **Byzantine Attacks**: Simulate a wide range of adversarial attack scenarios, including :ref:`ipm-label` and :ref:`alie-label`, to rigorously test the robustness of federated learning systems under malicious conditions.
+3. **Comprehensive Federated Learning Pipelines**: Seamlessly integrate key components — such as :ref:`client-label`, :ref:`server-label`, :ref:`byzantine-client-label`, and :ref:`data-dist-label` — to train, simulate, and benchmark robust aggregation schemes. The framework supports various datasets, models, and custom configurations, enabling researchers to replicate real-world distributed learning setups with heterogeneity and adversarial threats.
 
 
 Installation
@@ -166,7 +166,7 @@ Explore the key components of ByzFL below:
   <div class="column">
     <div class="card">
       <div class="container">
-        <h2>Federated Learning Framework</h2>
+        <h2>FL Framework</h2>
 
 :ref:`Get Started <federated-learning-framework-label>`
 

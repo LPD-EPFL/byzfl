@@ -1,4 +1,4 @@
-import collections
+from collections import OrderedDict
 import torch
 
 def flatten_dict(dict):
@@ -20,7 +20,7 @@ def flatten_generator(generator):
         return torch.Tensor(flatten_vector)
 
 def unflatten_dict(state_dict, flat_vector):
-        new_dict = collections.OrderedDict()
+        new_dict = OrderedDict()
         c = 0
         for key, value in state_dict.items():
             nb_elements = torch.numel(value) 
@@ -29,7 +29,7 @@ def unflatten_dict(state_dict, flat_vector):
         return new_dict
 
 def unflatten_generator(generator, flat_vector):
-    new_dict = collections.OrderedDict()
+    new_dict = OrderedDict()
     c = 0
     for item in generator:
         key = item[0]
