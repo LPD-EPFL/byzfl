@@ -118,7 +118,12 @@ attack = {
 byz_client = ByzantineClient(attack)
 
 # Training Loop
-for training_step in range(nb_training_steps):
+for training_step in range(nb_training_steps+1):
+
+    # Send (Updated) Server Model to Clients
+    server_model = server.get_dict_parameters()
+    for client in honest_clients:
+        client.set_model_state(server_model)
 
     # Evaluate Global Model Every 100 Training Steps
     if training_step % 100 == 0:
@@ -142,11 +147,6 @@ for training_step in range(nb_training_steps):
     # Update Global Model
     server.update_model(gradients)
 
-    # Send Updated Model to Clients
-    new_model = server.get_dict_parameters()
-    for client in honest_clients:
-        client.set_model_state(new_model)
-
 print("Training Complete!")
 ```
 
@@ -155,23 +155,25 @@ print("Training Complete!")
 --- Training Step 0/1000 ---
 Test Accuracy: 0.0600
 --- Training Step 100/1000 ---
-Test Accuracy: 0.6454
+Test Accuracy: 0.6375
 --- Training Step 200/1000 ---
-Test Accuracy: 0.8156
+Test Accuracy: 0.8148
 --- Training Step 300/1000 ---
-Test Accuracy: 0.8878
+Test Accuracy: 0.9318
 --- Training Step 400/1000 ---
-Test Accuracy: 0.8667
+Test Accuracy: 0.8588
 --- Training Step 500/1000 ---
-Test Accuracy: 0.9014
+Test Accuracy: 0.9537
 --- Training Step 600/1000 ---
-Test Accuracy: 0.9103
+Test Accuracy: 0.9185
 --- Training Step 700/1000 ---
-Test Accuracy: 0.9647
+Test Accuracy: 0.9511
 --- Training Step 800/1000 ---
-Test Accuracy: 0.9531
+Test Accuracy: 0.9400
 --- Training Step 900/1000 ---
-Test Accuracy: 0.9732
+Test Accuracy: 0.9781
+--- Training Step 1000/1000 ---
+Test Accuracy: 0.9733
 Training Complete!
 ```
 
