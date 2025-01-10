@@ -493,10 +493,7 @@
 
         <span class="c1"># Initialize the ByzantineClient instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attack</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-            <span class="n">attacks</span><span class="p">,</span> 
-            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="p">)(</span><span class="o">**</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attack</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attacks</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])(</span><span class="o">**</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="ByzantineClient.apply_attack">
 <a class="viewcode-back" href="../../../fed_framework/classes/byzantine_client.html#byzfl.ByzantineClient.apply_attack">[docs]</a>

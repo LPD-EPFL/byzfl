@@ -442,7 +442,16 @@
 
     <span class="k">def</span> <span class="nf">_sample_train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Private function to get the next data from the dataloader.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Retrieves the next batch of data from the training dataloader. If the </span>
+<span class="sd">        end of the dataset is reached, the dataloader is reinitialized to start </span>
+<span class="sd">        from the beginning.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A tuple containing the input data and corresponding target labels for the current batch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_iterator</span><span class="p">)</span>
@@ -454,40 +463,80 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.compute_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the gradients of the local model loss function.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Computes the gradients of the local model&#39;s loss function for the </span>
+<span class="sd">        current training batch. If the `LabelFlipping` attack is enabled, </span>
+<span class="sd">        gradients for flipped targets are computed and stored separately. </span>
+<span class="sd">        Additionally, the training loss and accuracy for the batch are </span>
+<span class="sd">        computed and recorded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_train_batch</span><span class="p">()</span>
         <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">targets</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelflipping</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
             <span class="n">targets_flipped</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_labels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets_flipped</span><span class="p">)</span>
-            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_backward_pass</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets_flipped</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gradient_LF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dict_gradients</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
+        <span class="n">train_loss_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backward_pass</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">train_acc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss_value</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_backward_pass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">train_acc</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Performs a backward pass through the model to compute gradients for </span>
+<span class="sd">        the given inputs and targets. Optionally computes training accuracy </span>
+<span class="sd">        for the batch.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        inputs : torch.Tensor</span>
+<span class="sd">            The input data for the batch.</span>
+<span class="sd">        targets : torch.Tensor</span>
+<span class="sd">            The target labels for the batch.</span>
+<span class="sd">        train_acc : bool, optional</span>
+<span class="sd">            If True, computes and stores the training accuracy for the batch. </span>
+<span class="sd">            Default is False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The loss value for the current batch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 
-        <span class="c1"># Compute train accuracy</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">total</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="n">acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">train_acc</span><span class="p">:</span>
+            <span class="c1"># Compute and store train accuracy</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
 
+        <span class="k">return</span> <span class="n">loss_value</span>
 
 <div class="viewcode-block" id="Client.get_flat_flipped_gradients">
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_flat_flipped_gradients">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_flipped_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the gradients of the model with flipped targets in a flat array.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Retrieves the gradients computed using flipped targets as a flat array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray or torch.Tensor</span>
+<span class="sd">            A flat array containing the gradients for the model parameters </span>
+<span class="sd">            when trained with flipped targets.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">flatten_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gradient_LF</span><span class="p">)</span></div>
 
@@ -496,14 +545,21 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_flat_gradients_with_momentum">[docs]</a>
     <span class="k">def</span> <span class="nf">get_flat_gradients_with_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the gradients with momentum applied in a flat array.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Computes the gradients with momentum applied and returns them as a </span>
+<span class="sd">        flat array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            A flat array containing the gradients with momentum applied.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span><span class="o">.</span><span class="n">mul_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">momentum</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_flat_gradients</span><span class="p">(),</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum</span>
         <span class="p">)</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">momentum_gradient</span></div>
 
 
@@ -511,7 +567,16 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_loss_list">[docs]</a>
     <span class="k">def</span> <span class="nf">get_loss_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the list of computed losses over training.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Retrieves the list of training losses recorded over the course of </span>
+<span class="sd">        training.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list of float values representing the training losses for each </span>
+<span class="sd">            batch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_list</span></div>
 
@@ -520,7 +585,16 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.get_train_accuracy">[docs]</a>
     <span class="k">def</span> <span class="nf">get_train_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the training accuracy per batch.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Retrieves the training accuracy for each batch processed during </span>
+<span class="sd">        training.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list of float values representing the training accuracy for each </span>
+<span class="sd">            batch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_acc_list</span></div>
 
@@ -529,12 +603,21 @@
 <a class="viewcode-back" href="../../../fed_framework/classes/client.html#byzfl.Client.set_model_state">[docs]</a>
     <span class="k">def</span> <span class="nf">set_model_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Updates the model state with the provided state dictionary.</span>
+<span class="sd">        Description</span>
+<span class="sd">        -----------</span>
+<span class="sd">        Updates the state of the model with the provided state dictionary. </span>
+<span class="sd">        This method is typically used to load a saved model state or update </span>
+<span class="sd">        the global model in a federated learning context.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        state_dict : dict</span>
-<span class="sd">            The state dictionary of a model.</span>
+<span class="sd">            The state dictionary containing model parameters and buffers.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If `state_dict` is not a dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;state_dict&#39; must be of type dict, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

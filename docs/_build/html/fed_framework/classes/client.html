@@ -578,42 +578,98 @@ Updates the model’s state with the provided state dictionary.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.compute_gradients">
 <span class="sig-name descname"><span class="pre">compute_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.compute_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.compute_gradients" title="Link to this definition">#</a></dt>
-<dd><p>Computes the gradients of the local model loss function.</p>
+<dd><section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h3>
+<p>Computes the gradients of the local model’s loss function for the
+current training batch. If the <cite>LabelFlipping</cite> attack is enabled,
+gradients for flipped targets are computed and stored separately.
+Additionally, the training loss and accuracy for the batch are
+computed and recorded.</p>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_flat_flipped_gradients">
 <span class="sig-name descname"><span class="pre">get_flat_flipped_gradients</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_flat_flipped_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_flipped_gradients" title="Link to this definition">#</a></dt>
-<dd><p>Returns the gradients of the model with flipped targets in a flat array.</p>
+<dd><section id="id1">
+<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Retrieves the gradients computed using flipped targets as a flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>numpy.ndarray or torch.Tensor</strong> – A flat array containing the gradients for the model parameters
+when trained with flipped targets.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_flat_gradients_with_momentum">
 <span class="sig-name descname"><span class="pre">get_flat_gradients_with_momentum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_flat_gradients_with_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_flat_gradients_with_momentum" title="Link to this definition">#</a></dt>
-<dd><p>Returns the gradients with momentum applied in a flat array.</p>
+<dd><section id="id2">
+<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Computes the gradients with momentum applied and returns them as a
+flat array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>torch.Tensor</strong> – A flat array containing the gradients with momentum applied.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_loss_list">
 <span class="sig-name descname"><span class="pre">get_loss_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_loss_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_loss_list" title="Link to this definition">#</a></dt>
-<dd><p>Returns the list of computed losses over training.</p>
+<dd><section id="id3">
+<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Retrieves the list of training losses recorded over the course of
+training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list</strong> – A list of float values representing the training losses for each
+batch.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.get_train_accuracy">
 <span class="sig-name descname"><span class="pre">get_train_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.get_train_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.get_train_accuracy" title="Link to this definition">#</a></dt>
-<dd><p>Returns the training accuracy per batch.</p>
+<dd><section id="id4">
+<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Retrieves the training accuracy for each batch processed during
+training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list</strong> – A list of float values representing the training accuracy for each
+batch.</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Client.set_model_state">
 <span class="sig-name descname"><span class="pre">set_model_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/client.html#Client.set_model_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Client.set_model_state" title="Link to this definition">#</a></dt>
-<dd><p>Updates the model state with the provided state dictionary.</p>
+<dd><section id="id5">
+<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>Updates the state of the model with the provided state dictionary.
+This method is typically used to load a saved model state or update
+the global model in a federated learning context.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state_dict</strong> (<em>dict</em>) – The state dictionary of a model.</p>
+<dt class="field-odd">param state_dict<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The state dictionary containing model parameters and buffers.</p>
+</dd>
+<dt class="field-even">type state_dict<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">raises TypeError<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If <cite>state_dict</cite> is not a dictionary.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 </dd></dl>

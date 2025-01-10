@@ -50,7 +50,16 @@ class Client(ModelBaseInterface):
 
     def _sample_train_batch(self):
         """
-        Private function to get the next batch from the dataloader.
+        Description
+        -----------
+        Retrieves the next batch of data from the training dataloader. If the 
+        end of the dataset is reached, the dataloader is reinitialized to start 
+        from the beginning.
+
+        Returns
+        -------
+        tuple
+            A tuple containing the input data and corresponding target labels for the current batch.
         """
         try:
             return next(self.train_iterator)
@@ -60,7 +69,13 @@ class Client(ModelBaseInterface):
 
     def compute_gradients(self):
         """
-        Computes the gradients of the local model's loss function.
+        Description
+        -----------
+        Computes the gradients of the local model's loss function for the 
+        current training batch. If the `LabelFlipping` attack is enabled, 
+        gradients for flipped targets are computed and stored separately. 
+        Additionally, the training loss and accuracy for the batch are 
+        computed and recorded.
         """
         inputs, targets = self._sample_train_batch()
         inputs, targets = inputs.to(self.device), targets.to(self.device)
@@ -75,10 +90,28 @@ class Client(ModelBaseInterface):
         train_loss_value = self._backward_pass(inputs, targets, train_acc=True)
         self.loss_list.append(train_loss_value)
 
-
     def _backward_pass(self, inputs, targets, train_acc=False):
         """
-        Generic function to compute gradient on batch = (inputs, targets)
+        Description
+        -----------
+        Performs a backward pass through the model to compute gradients for 
+        the given inputs and targets. Optionally computes training accuracy 
+        for the batch.
+
+        Parameters
+        ----------
+        inputs : torch.Tensor
+            The input data for the batch.
+        targets : torch.Tensor
+            The target labels for the batch.
+        train_acc : bool, optional
+            If True, computes and stores the training accuracy for the batch. 
+            Default is False.
+
+        Returns
+        -------
+        float
+            The loss value for the current batch.
         """
         self.model.zero_grad()
         outputs = self.model(inputs)
@@ -93,18 +126,34 @@ class Client(ModelBaseInterface):
             correct = (predicted == targets).sum().item()
             acc = correct / total
             self.train_acc_list.append(acc)
-    
+
         return loss_value
 
     def get_flat_flipped_gradients(self):
         """
-        Returns the gradients of the model with flipped targets in a flat array.
+        Description
+        -----------
+        Retrieves the gradients computed using flipped targets as a flat array.
+
+        Returns
+        -------
+        numpy.ndarray or torch.Tensor
+            A flat array containing the gradients for the model parameters 
+            when trained with flipped targets.
         """
         return flatten_dict(self.gradient_LF)
 
     def get_flat_gradients_with_momentum(self):
         """
-        Returns the gradients with momentum applied in a flat array.
+        Description
+        -----------
+        Computes the gradients with momentum applied and returns them as a 
+        flat array.
+
+        Returns
+        -------
+        torch.Tensor
+            A flat array containing the gradients with momentum applied.
         """
         self.momentum_gradient.mul_(self.momentum)
         self.momentum_gradient.add_(
@@ -115,24 +164,51 @@ class Client(ModelBaseInterface):
 
     def get_loss_list(self):
         """
-        Returns the list of computed losses over training.
+        Description
+        -----------
+        Retrieves the list of training losses recorded over the course of 
+        training.
+
+        Returns
+        -------
+        list
+            A list of float values representing the training losses for each 
+            batch.
         """
         return self.loss_list
 
     def get_train_accuracy(self):
         """
-        Returns the training accuracy per batch.
+        Description
+        -----------
+        Retrieves the training accuracy for each batch processed during 
+        training.
+
+        Returns
+        -------
+        list
+            A list of float values representing the training accuracy for each 
+            batch.
         """
         return self.train_acc_list
 
     def set_model_state(self, state_dict):
         """
-        Updates the model state with the provided state dictionary.
+        Description
+        -----------
+        Updates the state of the model with the provided state dictionary. 
+        This method is typically used to load a saved model state or update 
+        the global model in a federated learning context.
 
         Parameters
         ----------
         state_dict : dict
-            The state dictionary of a model.
+            The state dictionary containing model parameters and buffers.
+
+        Raises
+        ------
+        TypeError
+            If `state_dict` is not a dictionary.
         """
         if not isinstance(state_dict, dict):
             raise TypeError(f"'state_dict' must be of type dict, but got {type(state_dict).__name__}")
