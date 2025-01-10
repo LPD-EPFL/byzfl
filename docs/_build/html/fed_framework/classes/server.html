@@ -537,10 +537,6 @@ A dictionary containing the configuration for the Server. Must include:</p>
 Aggregates input vectors using the configured robust aggregator.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">update_model(gradients)</span></code>
 Updates the global model by aggregating gradients and performing an optimization step.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">step()</span></code>
-Executes a single optimization step for the global model.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_model()</span></code>
-Retrieves the current global model.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compute_validation_accuracy()</span></code>
 Computes accuracy on the validation dataset.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compute_test_accuracy()</span></code>
@@ -606,13 +602,13 @@ Computes accuracy on the test dataset.</p></li>
 <p>Aggregates input vectors using the configured robust aggregator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param vectors<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A collection of input vectors.</p>
+<dd class="field-odd"><p>A collection of input vectors to be aggregated.</p>
 </dd>
 <dt class="field-even">type vectors<span class="colon">:</span></dt>
 <dd class="field-even"><p>list or np.ndarray or torch.Tensor</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Aggregated output vector.</strong></p>
+<dd class="field-odd"><p><strong>numpy.ndarray or torch.Tensor</strong> – Aggregated output vector, with the same type as the input vectors.</p>
 </dd>
 </dl>
 </section>
@@ -623,10 +619,11 @@ Computes accuracy on the test dataset.</p></li>
 <span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_test_accuracy" title="Link to this definition">#</a></dt>
 <dd><section id="id1">
 <h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>Computes the accuracy of the global model on the test dataset.</p>
+<p>Computes the accuracy of the global model on the test dataset.
+This method is used to evaluate the model’s final performance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>float</strong> – Test accuracy.</p>
+<dd class="field-odd"><p><strong>float</strong> – Test accuracy as a value between 0 and 1.</p>
 </dd>
 </dl>
 </section>
@@ -637,47 +634,29 @@ Computes accuracy on the test dataset.</p></li>
 <span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_validation_accuracy" title="Link to this definition">#</a></dt>
 <dd><section id="id2">
 <h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<p>Computes the accuracy of the global model on the validation dataset.</p>
+<p>Computes the accuracy of the global model on the validation dataset.
+This method evaluates the model’s performance during training.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>float</strong> – Validation accuracy.</p>
+<dd class="field-odd"><p><strong>float</strong> – Validation accuracy as a value between 0 and 1.</p>
+</dd>
+<dt class="field-even">raises RuntimeError<span class="colon">:</span></dt>
+<dd class="field-even"><p>If the validation DataLoader is not set.</p>
 </dd>
 </dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.get_model">
-<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.get_model" title="Link to this definition">#</a></dt>
-<dd><section id="id3">
-<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>Retrieves the current global model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>torch.nn.Module</strong> – The current global model.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.step" title="Link to this definition">#</a></dt>
-<dd><section id="id4">
-<h3>Description<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
-<p>Performs a single optimization step for the global model.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="byzfl.Server.update_model">
 <span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.update_model" title="Link to this definition">#</a></dt>
-<dd><section id="id5">
-<h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
-<p>Updates the global model by aggregating gradients and performing an optimization step.</p>
+<dd><section id="id3">
+<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Updates the global model by aggregating the provided gradients and performing
+an optimization step to adjust model parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param gradients<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of gradients to aggregate and apply.</p>
+<dd class="field-odd"><p>A list of gradients to aggregate and apply to the global model.</p>
 </dd>
 <dt class="field-even">type gradients<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
@@ -747,8 +726,6 @@ Computes accuracy on the test dataset.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.aggregate"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_test_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.get_model"><code class="docutils literal notranslate"><span class="pre">Server.get_model()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.step"><code class="docutils literal notranslate"><span class="pre">Server.step()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
 </ul>
 </li>

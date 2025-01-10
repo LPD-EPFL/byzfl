@@ -1,6 +1,5 @@
 import torch
-from byzfl.fed_framework import ModelBaseInterface
-from byzfl.fed_framework import RobustAggregator
+from byzfl.fed_framework import ModelBaseInterface, RobustAggregator
 
 class Server(ModelBaseInterface):
     
@@ -40,11 +39,12 @@ class Server(ModelBaseInterface):
         Parameters
         ----------
         vectors : list or np.ndarray or torch.Tensor
-            A collection of input vectors.
+            A collection of input vectors to be aggregated.
 
         Returns
         -------
-        Aggregated output vector.
+        numpy.ndarray or torch.Tensor
+            Aggregated output vector, with the same type as the input vectors.
         """
         return self.robust_aggregator.aggregate_vectors(vectors)
 
@@ -52,40 +52,46 @@ class Server(ModelBaseInterface):
         """
         Description
         -----------
-        Updates the global model by aggregating gradients and performing an optimization step.
+        Updates the global model by aggregating the provided gradients and performing
+        an optimization step to adjust model parameters.
 
         Parameters
         ----------
         gradients : list
-            List of gradients to aggregate and apply.
+            A list of gradients to aggregate and apply to the global model.
         """
         aggregate_gradient = self.aggregate(gradients)
         self.set_gradients(aggregate_gradient)
-        self.step()
+        self._step()
 
-    def step(self):
+    def _step(self):
         """
         Description
         -----------
-        Performs a single optimization step for the global model.
+        Executes a single optimization step for the global model. The optimizer
+        updates model parameters based on aggregated gradients, and the scheduler
+        adjusts the learning rate as required.
         """
         self.optimizer.step()
         self.scheduler.step()
 
-    def get_model(self):
+    def _compute_accuracy(self, data_loader):
         """
         Description
         -----------
-        Retrieves the current global model.
+        Computes the accuracy of the global model on a given dataset.
+
+        Parameters
+        ----------
+        data_loader : torch.utils.data.DataLoader
+            A DataLoader object for the dataset to evaluate the model on.
 
         Returns
         -------
-        torch.nn.Module
-            The current global model.
+        float
+            The accuracy of the model on the provided dataset, as a value
+            between 0 and 1.
         """
-        return self.model
-
-    def _compute_accuracy(self, data_loader):
         total = 0
         correct = 0
         for inputs, targets in data_loader:
@@ -101,11 +107,17 @@ class Server(ModelBaseInterface):
         Description
         -----------
         Computes the accuracy of the global model on the validation dataset.
+        This method evaluates the model's performance during training.
 
         Returns
         -------
         float
-            Validation accuracy.
+            Validation accuracy as a value between 0 and 1.
+
+        Raises
+        ------
+        RuntimeError
+            If the validation DataLoader is not set.
         """
         if self.validation_loader is None:
             print("Validation Data Loader is not set.")
@@ -117,10 +129,11 @@ class Server(ModelBaseInterface):
         Description
         -----------
         Computes the accuracy of the global model on the test dataset.
+        This method is used to evaluate the model's final performance.
 
         Returns
         -------
         float
-            Test accuracy.
+            Test accuracy as a value between 0 and 1.
         """
         return self._compute_accuracy(self.test_loader)

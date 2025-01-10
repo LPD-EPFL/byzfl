@@ -656,8 +656,9 @@ batch.</p>
 <dd><section id="id5">
 <h3>Description<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>Updates the state of the model with the provided state dictionary.
-This method is typically used to load a saved model state or update
-the global model in a federated learning context.</p>
+This method is used to load a saved model state or update
+the global model in a federated learning context.
+Typically, this method can be used to synchronize clients with the global model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param state_dict<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The state dictionary containing model parameters and buffers.</p>

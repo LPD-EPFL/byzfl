@@ -197,8 +197,9 @@ class Client(ModelBaseInterface):
         Description
         -----------
         Updates the state of the model with the provided state dictionary. 
-        This method is typically used to load a saved model state or update 
+        This method is used to load a saved model state or update 
         the global model in a federated learning context.
+        Typically, this method can be used to synchronize clients with the global model.
 
         Parameters
         ----------

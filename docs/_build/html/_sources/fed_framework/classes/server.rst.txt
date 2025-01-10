@@ -62,12 +62,6 @@ Methods
 - ``update_model(gradients)``  
   Updates the global model by aggregating gradients and performing an optimization step.
 
-- ``step()``  
-  Executes a single optimization step for the global model.
-
-- ``get_model()``  
-  Retrieves the current global model.
-
 - ``compute_validation_accuracy()``  
   Computes accuracy on the validation dataset.
 

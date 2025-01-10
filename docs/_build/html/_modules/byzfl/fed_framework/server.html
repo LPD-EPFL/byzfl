@@ -389,8 +389,7 @@
                   
   <h1>Source code for byzfl.fed_framework.server</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">byzfl.fed_framework</span> <span class="kn">import</span> <span class="n">ModelBaseInterface</span>
-<span class="kn">from</span> <span class="nn">byzfl.fed_framework</span> <span class="kn">import</span> <span class="n">RobustAggregator</span>
+<span class="kn">from</span> <span class="nn">byzfl.fed_framework</span> <span class="kn">import</span> <span class="n">ModelBaseInterface</span><span class="p">,</span> <span class="n">RobustAggregator</span>
 
 <div class="viewcode-block" id="Server">
 <a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server">[docs]</a>
@@ -434,11 +433,12 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        vectors : list or np.ndarray or torch.Tensor</span>
-<span class="sd">            A collection of input vectors.</span>
+<span class="sd">            A collection of input vectors to be aggregated.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Aggregated output vector.</span>
+<span class="sd">        numpy.ndarray or torch.Tensor</span>
+<span class="sd">            Aggregated output vector, with the same type as the input vectors.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robust_aggregator</span><span class="o">.</span><span class="n">aggregate_vectors</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span></div>
 
@@ -449,47 +449,47 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
-<span class="sd">        Updates the global model by aggregating gradients and performing an optimization step.</span>
+<span class="sd">        Updates the global model by aggregating the provided gradients and performing</span>
+<span class="sd">        an optimization step to adjust model parameters.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        gradients : list</span>
-<span class="sd">            List of gradients to aggregate and apply.</span>
+<span class="sd">            A list of gradients to aggregate and apply to the global model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">aggregate_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_gradients</span><span class="p">(</span><span class="n">aggregate_gradient</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="Server.step">
-<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.step">[docs]</a>
-    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
-<span class="sd">        Performs a single optimization step for the global model.</span>
+<span class="sd">        Executes a single optimization step for the global model. The optimizer</span>
+<span class="sd">        updates model parameters based on aggregated gradients, and the scheduler</span>
+<span class="sd">        adjusts the learning rate as required.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="Server.get_model">
-<a class="viewcode-back" href="../../../fed_framework/classes/server.html#byzfl.Server.get_model">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_compute_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_loader</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
-<span class="sd">        Retrieves the current global model.</span>
+<span class="sd">        Computes the accuracy of the global model on a given dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_loader : torch.utils.data.DataLoader</span>
+<span class="sd">            A DataLoader object for the dataset to evaluate the model on.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        torch.nn.Module</span>
-<span class="sd">            The current global model.</span>
+<span class="sd">        float</span>
+<span class="sd">            The accuracy of the model on the provided dataset, as a value</span>
+<span class="sd">            between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span></div>
-
-
-    <span class="k">def</span> <span class="nf">_compute_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_loader</span><span class="p">):</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="ow">in</span> <span class="n">data_loader</span><span class="p">:</span>
@@ -507,11 +507,17 @@
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
 <span class="sd">        Computes the accuracy of the global model on the validation dataset.</span>
+<span class="sd">        This method evaluates the model&#39;s performance during training.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
-<span class="sd">            Validation accuracy.</span>
+<span class="sd">            Validation accuracy as a value between 0 and 1.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the validation DataLoader is not set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_loader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validation Data Loader is not set.&quot;</span><span class="p">)</span>
@@ -526,11 +532,12 @@
 <span class="sd">        Description</span>
 <span class="sd">        -----------</span>
 <span class="sd">        Computes the accuracy of the global model on the test dataset.</span>
+<span class="sd">        This method is used to evaluate the model&#39;s final performance.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
-<span class="sd">            Test accuracy.</span>
+<span class="sd">            Test accuracy as a value between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span><span class="p">)</span></div>
 </div>
