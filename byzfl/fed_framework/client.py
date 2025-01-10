@@ -50,7 +50,7 @@ class Client(ModelBaseInterface):
 
     def _sample_train_batch(self):
         """
-        Private function to get the next data from the dataloader.
+        Private function to get the next batch from the dataloader.
         """
         try:
             return next(self.train_iterator)
@@ -60,33 +60,41 @@ class Client(ModelBaseInterface):
 
     def compute_gradients(self):
         """
-        Computes the gradients of the local model loss function.
+        Computes the gradients of the local model's loss function.
         """
         inputs, targets = self._sample_train_batch()
         inputs, targets = inputs.to(self.device), targets.to(self.device)
 
         if self.labelflipping:
             self.model.eval()
-            self.model.zero_grad()
             targets_flipped = targets.sub(self.nb_labels - 1).mul(-1)
-            outputs = self.model(inputs)
-            loss = self.criterion(outputs, targets_flipped)
-            loss.backward()
+            self._backward_pass(inputs, targets_flipped)
             self.gradient_LF = self.get_dict_gradients()
             self.model.train()
 
+        train_loss_value = self._backward_pass(inputs, targets, train_acc=True)
+        self.loss_list.append(train_loss_value)
+
+
+    def _backward_pass(self, inputs, targets, train_acc=False):
+        """
+        Generic function to compute gradient on batch = (inputs, targets)
+        """
         self.model.zero_grad()
         outputs = self.model(inputs)
         loss = self.criterion(outputs, targets)
-        self.loss_list.append(loss.item())
+        loss_value = loss.item()
         loss.backward()
 
-        # Compute train accuracy
-        _, predicted = torch.max(outputs.data, 1)
-        total = targets.size(0)
-        correct = (predicted == targets).sum().item()
-        acc = correct / total
-        self.train_acc_list.append(acc)
+        if train_acc:
+            # Compute and store train accuracy
+            _, predicted = torch.max(outputs.data, 1)
+            total = targets.size(0)
+            correct = (predicted == targets).sum().item()
+            acc = correct / total
+            self.train_acc_list.append(acc)
+    
+        return loss_value
 
     def get_flat_flipped_gradients(self):
         """
@@ -103,7 +111,6 @@ class Client(ModelBaseInterface):
             self.get_flat_gradients(),
             alpha=1 - self.momentum
         )
-
         return self.momentum_gradient
 
     def get_loss_list(self):

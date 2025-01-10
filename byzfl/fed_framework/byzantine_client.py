@@ -101,10 +101,7 @@ class ByzantineClient:
 
         # Initialize the ByzantineClient instance
         self.f = params["f"]
-        self.attack = getattr(
-            attacks, 
-            params["name"]
-        )(**params["parameters"])
+        self.attack = getattr(attacks, params["name"])(**params["parameters"])
 
     def apply_attack(self, honest_vectors):
         """

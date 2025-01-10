@@ -131,8 +131,7 @@ class DataDistributor:
             A list of arrays where each array contains indices for one client.
         """
         random.shuffle(idx)
-        split_idx = np.array_split(idx, self.nb_honest)
-        return split_idx
+        return np.array_split(idx, self.nb_honest)
 
     def extreme_niid_idx(self, targets, idx):
         """
@@ -153,8 +152,7 @@ class DataDistributor:
         if len(idx) == 0:
             return list([[]] * self.nb_honest)
         sorted_idx = np.array(sorted(zip(targets[idx], idx)))[:, 1]
-        split_idx = np.array_split(sorted_idx, self.nb_honest)
-        return split_idx
+        return np.array_split(sorted_idx, self.nb_honest)
 
     def gamma_niid_idx(self, targets, idx):
         """
@@ -176,8 +174,7 @@ class DataDistributor:
         iid = self.iid_idx(idx[:nb_similarity])
         niid = self.extreme_niid_idx(targets, idx[nb_similarity:])
         split_idx = [np.concatenate((iid[i], niid[i])) for i in range(self.nb_honest)]
-        split_idx = [node_idx.astype(int) for node_idx in split_idx]
-        return split_idx
+        return [node_idx.astype(int) for node_idx in split_idx]
 
     def dirichlet_niid_idx(self, targets, idx):
         """
@@ -202,8 +199,7 @@ class DataDistributor:
         aux_idx = [np.split(aux_idx[k], (p[k] * len(aux_idx[k])).astype(int)) for k in range(c)]
         aux_idx = [np.concatenate([aux_idx[i][j] for i in range(c)]) for j in range(self.nb_honest)]
         idx = np.array(idx)
-        aux_idx = [list(idx[aux_idx[i]]) for i in range(len(aux_idx))]
-        return aux_idx
+        return [list(idx[aux_idx[i]]) for i in range(len(aux_idx))]
 
     def idx_to_dataloaders(self, split_idx):
         """
