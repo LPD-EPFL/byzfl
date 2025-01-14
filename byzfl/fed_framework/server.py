@@ -20,6 +20,7 @@ class Server(ModelBaseInterface):
             "weight_decay": params["weight_decay"],
             "milestones": params["milestones"],
             "learning_rate_decay": params["learning_rate_decay"],
+            "isServer": True,
         })
         self.robust_aggregator = RobustAggregator(params["aggregator_info"], params["pre_agg_list"])
         self.test_loader = params["test_loader"]

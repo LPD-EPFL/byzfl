@@ -412,6 +412,7 @@
             <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span>
             <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
             <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;isServer&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">robust_aggregator</span> <span class="o">=</span> <span class="n">RobustAggregator</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;aggregator_info&quot;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;pre_agg_list&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;test_loader&quot;</span><span class="p">]</span>

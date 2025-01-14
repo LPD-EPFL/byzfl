@@ -75,12 +75,7 @@ honest_clients = [
     Client({
         "model_name": "cnn_mnist",
         "device": "cpu",
-        "optimizer_name": "SGD",
-        "learning_rate": 0.1,
         "loss_name": "NLLLoss",
-        "weight_decay": 0.0001,
-        "milestones": [1000],
-        "learning_rate_decay": 0.25,
         "LabelFlipping": False,
         "training_dataloader": client_dataloaders[i],
         "momentum": 0.9,

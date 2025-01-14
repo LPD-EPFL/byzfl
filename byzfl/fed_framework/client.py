@@ -21,13 +21,15 @@ class Client(ModelBaseInterface):
 
         # Initialize Client instance
         super().__init__({
+            # Required parameters
             "model_name": params["model_name"],
             "device": params["device"],
-            "learning_rate": params["learning_rate"],
-            "weight_decay": params["weight_decay"],
-            "milestones": params["milestones"],
-            "learning_rate_decay": params["learning_rate_decay"],
-            "optimizer_name": params["optimizer_name"],
+            # Optional parameters
+            "learning_rate": params.get("learning_rate", None),
+            "weight_decay": params.get("weight_decay", None),
+            "milestones": params.get("milestones", None),
+            "learning_rate_decay": params.get("learning_rate_decay", None),
+            "optimizer_name": params.get("optimizer_name", None),
             "optimizer_params": params.get("optimizer_params", {}),
         })
 

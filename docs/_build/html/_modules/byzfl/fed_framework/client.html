@@ -413,13 +413,15 @@
 
         <span class="c1"># Initialize Client instance</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">({</span>
+            <span class="c1"># Required parameters</span>
             <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
             <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;milestones&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;optimizer_name&quot;</span><span class="p">],</span>
+            <span class="c1"># Optional parameters</span>
+            <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;milestones&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;milestones&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">&quot;optimizer_name&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optimizer_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
             <span class="s2">&quot;optimizer_params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optimizer_params&quot;</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="p">})</span>
 

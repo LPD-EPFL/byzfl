@@ -15,26 +15,27 @@ class ModelBaseInterface(object):
         self.device = params["device"]
         self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
 
-        # Initialize optimizer, set default to SGD if optimizer_name is not provided
-        optimizer_name = params.get("optimizer_name", "SGD")
-        optimizer_params = params.get("optimizer_params", {})
-        optimizer_class = getattr(torch.optim, optimizer_name, None)
-        if optimizer_class is None:
-            raise ValueError(f"Optimizer '{optimizer_name}' is not supported by PyTorch.")
-        
-        self.optimizer = optimizer_class(
-            self.model.parameters(),
-            lr=params["learning_rate"],
-            weight_decay=params["weight_decay"],
-            **optimizer_params
-        )
+        # Initialize optimizer. If set to None, it means that the Client does not need this information 
+        optimizer_name = params["optimizer_name"]
+        if optimizer_name is not None:
+            optimizer_params = params["optimizer_params"]
+            optimizer_class = getattr(torch.optim, optimizer_name, None)
+            if optimizer_class is None:
+                raise ValueError(f"Optimizer '{optimizer_name}' is not supported by PyTorch.")
+            
+            self.optimizer = optimizer_class(
+                self.model.parameters(),
+                lr=params["learning_rate"],
+                weight_decay=params["weight_decay"],
+                **optimizer_params
+            )
 
-        # Initialize scheduler
-        self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
-            self.optimizer,
-            milestones=params["milestones"],
-            gamma=params["learning_rate_decay"]
-        )
+            # Initialize scheduler
+            self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
+                self.optimizer,
+                milestones=params["milestones"],
+                gamma=params["learning_rate_decay"]
+            )
 
 
     def _validate_params(self, params):
@@ -46,7 +47,12 @@ class ModelBaseInterface(object):
         params : dict
             Dictionary of input parameters.
         """
-        required_keys = ["model_name", "device", "learning_rate", "weight_decay", "milestones", "learning_rate_decay"]
+
+        # Required keys for Server and Client
+        required_keys = ["model_name", "device"]
+        if params.get("isServer", False):
+            # Required keys for Server, Optional for client
+            required_keys += ["learning_rate", "weight_decay", "milestones", "learning_rate_decay"]
         for key in required_keys:
             if key not in params:
                 raise KeyError(f"Missing required parameter: {key}")
@@ -56,14 +62,18 @@ class ModelBaseInterface(object):
             raise TypeError("Parameter 'model_name' must be a string.")
         if not isinstance(params["device"], str):
             raise TypeError("Parameter 'device' must be a string.")
-        if not isinstance(params["learning_rate"], float) or params["learning_rate"] <= 0:
-            raise ValueError("Parameter 'learning_rate' must be a positive float.")
-        if not isinstance(params["weight_decay"], float) or params["weight_decay"] < 0:
-            raise ValueError("Parameter 'weight_decay' must be a non-negative float.")
-        if not isinstance(params["milestones"], list) or not all(isinstance(x, int) for x in params["milestones"]):
-            raise TypeError("Parameter 'milestones' must be a list of integers.")
-        if not isinstance(params["learning_rate_decay"], float) or params["learning_rate_decay"] <= 0 or params["learning_rate_decay"] > 1.0:
-            raise ValueError("Parameter 'learning_rate_decay' must be a positive float smaller than 1.0.")
+        if params["learning_rate"] is not None:
+            if not isinstance(params["learning_rate"], float) or params["learning_rate"] <= 0:
+                raise ValueError("Parameter 'learning_rate' must be a positive float.")
+        if params["weight_decay"] is not None:
+            if not isinstance(params["weight_decay"], float) or params["weight_decay"] < 0:
+                raise ValueError("Parameter 'weight_decay' must be a non-negative float.")
+        if params["milestones"] is not None:
+            if not isinstance(params["milestones"], list) or not all(isinstance(x, int) for x in params["milestones"]):
+                raise TypeError("Parameter 'milestones' must be a list of integers.")
+        if params["learning_rate_decay"] is not None:
+            if not isinstance(params["learning_rate_decay"], float) or params["learning_rate_decay"] <= 0 or params["learning_rate_decay"] > 1.0:
+                raise ValueError("Parameter 'learning_rate_decay' must be a positive float smaller than 1.0.")
 
     def get_flat_parameters(self):
         """
