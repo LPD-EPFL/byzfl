@@ -299,9 +299,9 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_server_batch_size_validation(self):
-        default = 100
-        path = ["server", "batch_size_validation"]
+    def get_server_batch_size_evaluation(self):
+        default = 128
+        path = ["server", "batch_size_evaluation"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
@@ -382,13 +382,13 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     def get_data_folder(self):
-        default = None
+        default = "./data"
         path = ["evaluation_and_results", "data_folder"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
     def get_results_directory(self):
-        default = "results"
+        default = "./results"
         path = ["evaluation_and_results", "results_directory"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)

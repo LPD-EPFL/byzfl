@@ -77,8 +77,8 @@ class DataDistributor:
             raise ValueError("nb_honest must be a positive integer")
         self.nb_honest = params["nb_honest"]
 
-        if not isinstance(params["data_loader"], torch.utils.data.DataLoader):
-            raise TypeError("data_loader must be an instance of torch.utils.data.DataLoader")
+        if not (isinstance(params["data_loader"], torch.utils.data.DataLoader) or isinstance(params["data_loader"], torch.utils.data.Subset)):
+            raise TypeError("data_loader must be an instance of torch.utils.data.DataLoader or torch.utils.data.Subset")
         self.data_loader = params["data_loader"]
 
         if not isinstance(params["batch_size"], int) or params["batch_size"] <= 0:
@@ -101,7 +101,10 @@ class DataDistributor:
             If the specified data distribution name is invalid.
         """
         targets = self.data_loader.dataset.targets
-        idx = list(range(len(targets)))
+        if isinstance(self.data_loader, torch.utils.data.DataLoader):
+            idx = list(range(len(targets)))
+        else:
+            idx = self.data_loader.indices
 
         if self.data_dist == "iid":
             split_idx = self.iid_idx(idx)
