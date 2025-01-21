@@ -5,92 +5,98 @@ import json
 import numpy as np
 import torch
 
-class FileManager(object):
+
+class FileManager:
     """
     Description
     -----------
-    Object whose responsability is deal with the methods and procedures to
-    manage the files and store results.
+    Manages the creation of directories and files to store results.
     """
-    def __init__(self, params=None):
-        
-        self.files_path = str(
-            params["result_path"] + "/"
-            + params["dataset_name"] + "_" 
-            + params["model_name"] + "_" 
-            "n_" + str(params["nb_workers"]) + "_" 
-            + "f_" + str(params["nb_byz"]) + "_" 
-            + "d_" + str(params["declared_nb_byz"]) + "_" 
-            + params["data_distribution_name"] + "_"
-            + str(params["distribution_parameter"]) + "_" 
-            + params["aggregation_name"] + "_"
-            + "_".join(params["pre_aggregation_names"]) + "_"
-            + params["attack_name"] + "_" 
-            + "lr_" + str(params["learning_rate"]) + "_" 
-            + "mom_" + str(params["momentum"]) + "_" 
-            + "wd_" + str(params["weight_decay"]) + "/"
-        )
-        
-        if not os.path.exists(self.files_path):
-            try:
-                os.makedirs(self.files_path)
-            except Exception as e:
-                print(e)
 
-        with open(self.files_path+"day.txt", "w") as file:
-            file.write(str(datetime.date.today().strftime("%d_%m_%y")))
-        
+    def __init__(self, params=None):
+        self.files_path = (
+            f"{params['result_path']}/"
+            f"{params['dataset_name']}_{params['model_name']}_"
+            f"n_{params['nb_workers']}_"
+            f"f_{params['nb_byz']}_"
+            f"d_{params['declared_nb_byz']}_"
+            f"{params['data_distribution_name']}_"
+            f"{params['distribution_parameter']}_"
+            f"{params['aggregation_name']}_"
+            f"{'_'.join(params['pre_aggregation_names'])}_"
+            f"{params['attack_name']}_"
+            f"lr_{params['learning_rate']}_"
+            f"mom_{params['momentum']}_"
+            f"wd_{params['weight_decay']}/"
+        )
+        os.makedirs(self.files_path, exist_ok=True)
+
+        with open(os.path.join(self.files_path, "day.txt"), "w") as file:
+            file.write(datetime.date.today().strftime("%d_%m_%y"))
+
     def set_experiment_path(self, path):
+        """
+        Set the base path for the experiment files.
+        """
         self.files_path = path
-    
+
     def get_experiment_path(self):
+        """
+        Get the current experiment path.
+        """
         return self.files_path
-    
+
     def save_config_dict(self, dict_to_save):
-        with open(self.files_path+"settings.json", 'w') as json_file:
-            json.dump(dict_to_save, json_file, indent=4, separators=(',', ': '))
-    
+        """
+        Save a configuration dictionary as a JSON file.
+        """
+        config_path = os.path.join(self.files_path, "settings.json")
+        with open(config_path, "w") as json_file:
+            json.dump(dict_to_save, json_file, indent=4, separators=(",", ": "))
+
     def write_array_in_file(self, array, file_name):
-        np.savetxt(self.files_path+file_name, [array], fmt='%.4f', delimiter=",")
-    
+        """
+        Write a single array to a file.
+        """
+        file_path = os.path.join(self.files_path, file_name)
+        np.savetxt(file_path, [array], fmt="%.4f", delimiter=",")
+
     def save_state_dict(self, state_dict, training_seed, data_dist_seed, step):
-        if not os.path.exists(
-            self.files_path+"models_tr_seed_" + str(training_seed)
-            +"_dd_seed_"+str(data_dist_seed)
-        ):
-            os.makedirs(self.files_path+"models_tr_seed_" + str(training_seed) 
-                        + "_dd_seed_"+str(data_dist_seed))
-            
-        torch.save(state_dict, self.files_path+"models_tr_seed_" + str(training_seed) 
-                   + "_dd_seed_"+str(data_dist_seed)+"/model_step_"+ str(step) +".pth")
-    
+        """
+        Save a model's state dictionary under a directory structured by seed values.
+        """
+        model_dir = os.path.join(
+            self.files_path, f"models_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
+        )
+        os.makedirs(model_dir, exist_ok=True)
+
+        file_path = os.path.join(model_dir, f"model_step_{step}.pth")
+        torch.save(state_dict, file_path)
+
     def save_loss(self, loss_array, training_seed, data_dist_seed, client_id):
-        if not os.path.exists(
-            self.files_path+"loss_tr_seed_" + str(training_seed) 
-            + "_dd_seed_"+str(data_dist_seed)
-        ):
-            os.makedirs(self.files_path + "loss_tr_seed_" + str(training_seed) 
-                        + "_dd_seed_" + str(data_dist_seed))
-            
-        file_name = self.files_path + "loss_tr_seed_" + str(training_seed) \
-                    + "_dd_seed_" + str(data_dist_seed) \
-                    + "/loss_client_" + str(client_id) + ".txt"
-        
-        np.savetxt(file_name, loss_array, fmt='%.6f', delimiter=",")
-    
+        """
+        Save a loss array for a specific client and seed values.
+        """
+        loss_dir = os.path.join(
+            self.files_path, f"loss_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
+        )
+        os.makedirs(loss_dir, exist_ok=True)
+
+        file_path = os.path.join(loss_dir, f"loss_client_{client_id}.txt")
+        np.savetxt(file_path, loss_array, fmt="%.6f", delimiter=",")
+
     def save_accuracy(self, acc_array, training_seed, data_dist_seed, client_id):
-        if not os.path.exists(
-            self.files_path+"accuracy_tr_seed_" + str(training_seed) 
-            + "_dd_seed_"+str(data_dist_seed)
-        ):
-            os.makedirs(self.files_path+"accuracy_tr_seed_" + str(training_seed) 
-                        + "_dd_seed_"+str(data_dist_seed))
-            
-        file_name = self.files_path+"accuracy_tr_seed_" + str(training_seed) \
-                    + "_dd_seed_"+str(data_dist_seed) \
-                    + "/accuracy_client_" + str(client_id) + ".txt"
-        
-        np.savetxt(file_name, acc_array, fmt='%.4f', delimiter=",")
+        """
+        Save an accuracy array for a specific client and seed values.
+        """
+        acc_dir = os.path.join(
+            self.files_path,
+            f"accuracy_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
+        )
+        os.makedirs(acc_dir, exist_ok=True)
+
+        file_path = os.path.join(acc_dir, f"accuracy_client_{client_id}.txt")
+        np.savetxt(file_path, acc_array, fmt="%.4f", delimiter=",")
 
 
 

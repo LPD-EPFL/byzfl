@@ -140,165 +140,301 @@ def generate_all_combinations(original_dict, restriction_list):
     generate_all_combinations_aux(list_dict, original_dict, aux_dict, restriction_list)
     return list_dict
 
+import os
+import copy
+import argparse
+
+# Global variable to keep track of training progress
+counter = None
+
 def init_pool_processes(shared_value):
+    """
+    Initialize a global counter variable for multiprocess tracking.
+
+    Parameters
+    ----------
+    shared_value : multiprocessing.Value
+        A shared memory integer used to track the number of finished trainings.
+    """
     global counter
     counter = shared_value
 
+
 def run_training(params):
+    """
+    Run a single training job, then increment the global training counter.
+
+    Parameters
+    ----------
+    params : dict
+        A dictionary containing all necessary parameters for the training job.
+    """
     start_training(params)
     with counter.get_lock():
-        print("Training " + str(counter.value) + " done")
+        print(f"Training {counter.value} done")
         counter.value += 1
 
+"""
 def process_args():
     parser = argparse.ArgumentParser()
-
     parser.add_argument('--nb_jobs', type=int, help='Number of Jobs (multiprocessing)')
-
     args = parser.parse_args()
-    
-    nb_jobs = 1
-    if args.nb_jobs is not None:
-        nb_jobs = args.nb_jobs
-    print("Running " + str(nb_jobs) + " experiments in parallel")
+
+    nb_jobs = args.nb_jobs if args.nb_jobs is not None else 1
+    print(f"Running {nb_jobs} experiments in parallel")
     return nb_jobs
+"""
 
 def eliminate_experiments_done(dict_list):
-    if len(dict_list) != 0:
-        directory = dict_list[0]["evaluation_and_results"]["results_directory"]
-        folders = [name for name in os.listdir(directory) if os.path.isdir(os.path.join(directory, name))]
-        if len(folders) != 0:
-            real_dict_list = []
-            for setting in dict_list:
-                pre_aggregation_names =  [
-                    dict['name']
-                    for dict in setting["pre_aggregators"]
-                ]
-                folder_name = str(
-                    setting["model"]["dataset_name"] + "_" 
-                    + setting["model"]["name"] + "_" 
-                    +"n_" + str(setting["benchmark_config"]["nb_workers"]) + "_" 
-                    + "f_" + str(setting["benchmark_config"]["nb_byz"]) + "_" 
-                    + "d_" + str(setting["benchmark_config"]["declared_nb_byz"]) + "_"
-                    + setting["benchmark_config"]["data_distribution"]["name"] + "_"
-                    + str(setting["benchmark_config"]["data_distribution"]["distribution_parameter"]) + "_" 
-                    + setting["aggregator"]["name"] + "_"
-                    + "_".join(pre_aggregation_names) + "_"
-                    + setting["attack"]["name"] + "_" 
-                    + "lr_" + str(setting["server"]["learning_rate"]) + "_" 
-                    + "mom_" + str(setting["honest_nodes"]["momentum"]) + "_" 
-                    + "wd_" + str(setting["server"]["weight_decay"])
-                )
+    """
+    Remove any configurations (experiments) that have already been completed.
 
-                if folder_name in folders:
-                    #Now we check the seeds
-                    training_seed = setting["benchmark_config"]["training_seed"]
-                    data_distribution_seed = setting["benchmark_config"]["data_distribution_seed"]
-                    files = os.listdir(directory+"/"+folder_name)
-                    name = "train_time_tr_seed_" + str(training_seed) + "_dd_seed_" + str(data_distribution_seed) + ".txt"
-                    if not name in files:
-                        real_dict_list.append(setting)
-                else:
-                    real_dict_list.append(setting)
-            return real_dict_list
-        else:
-            return dict_list
-    else:
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries for each experiment.
+
+    Returns
+    -------
+    list of dict
+        The filtered list of configurations for which experiments are not yet done.
+    """
+    if not dict_list:
         return dict_list
 
+    directory = dict_list[0]["evaluation_and_results"]["results_directory"]
+    if not os.path.isdir(directory):
+        return dict_list
+
+    folders = [
+        name for name in os.listdir(directory)
+        if os.path.isdir(os.path.join(directory, name))
+    ]
+
+    # If there are no subfolders, no experiments are completed yet
+    if not folders:
+        return dict_list
+
+    new_dict_list = []
+    for setting in dict_list:
+        pre_aggregation_names = [
+            agg['name'] for agg in setting["pre_aggregators"]
+        ]
+        folder_name = (
+            f"{setting['model']['dataset_name']}_"
+            f"{setting['model']['name']}_"
+            f"n_{setting['benchmark_config']['nb_workers']}_"
+            f"f_{setting['benchmark_config']['nb_byz']}_"
+            f"d_{setting['benchmark_config']['declared_nb_byz']}_"
+            f"{setting['benchmark_config']['data_distribution']['name']}_"
+            f"{setting['benchmark_config']['data_distribution']['distribution_parameter']}_"
+            f"{setting['aggregator']['name']}_"
+            f"{'_'.join(pre_aggregation_names)}_"
+            f"{setting['attack']['name']}_"
+            f"lr_{setting['server']['learning_rate']}_"
+            f"mom_{setting['honest_nodes']['momentum']}_"
+            f"wd_{setting['server']['weight_decay']}"
+        )
+
+        if folder_name in folders:
+            # Check if a particular seed combination is already done
+            training_seed = setting["benchmark_config"]["training_seed"]
+            data_distribution_seed = setting["benchmark_config"]["data_distribution_seed"]
+
+            file_name = (
+                f"train_time_tr_seed_{training_seed}"
+                f"_dd_seed_{data_distribution_seed}.txt"
+            )
+            if file_name not in os.listdir(os.path.join(directory, folder_name)):
+                new_dict_list.append(setting)
+        else:
+            new_dict_list.append(setting)
+
+    return new_dict_list
+
+
 def delegate_training_seeds(dict_list):
-    real_dict_list = []
+    """
+    For each configuration, generate new configurations for each specified training seed.
+
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries (each containing a base training_seed).
+
+    Returns
+    -------
+    list of dict
+        A new list of configurations, each with a unique training_seed.
+    """
+    new_dict_list = []
     for setting in dict_list:
         original_seed = setting["benchmark_config"]["training_seed"]
         nb_seeds = setting["benchmark_config"]["nb_training_seeds"]
         for i in range(nb_seeds):
             new_setting = copy.deepcopy(setting)
             new_setting["benchmark_config"]["training_seed"] = original_seed + i
-            real_dict_list.append(new_setting)
-    return real_dict_list
+            new_dict_list.append(new_setting)
+    return new_dict_list
+
 
 def delegate_data_distribution_seeds(dict_list):
-    real_dict_list = []
+    """
+    For each configuration, generate new configurations for each specified data distribution seed.
+
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries (each containing a base data_distribution_seed).
+
+    Returns
+    -------
+    list of dict
+        A new list of configurations, each with a unique data_distribution_seed.
+    """
+    new_dict_list = []
     for setting in dict_list:
         original_seed = setting["benchmark_config"]["data_distribution_seed"]
         nb_seeds = setting["benchmark_config"]["nb_data_distribution_seeds"]
         for i in range(nb_seeds):
             new_setting = copy.deepcopy(setting)
             new_setting["benchmark_config"]["data_distribution_seed"] = original_seed + i
-            real_dict_list.append(new_setting)
-    return real_dict_list
+            new_dict_list.append(new_setting)
+    return new_dict_list
+
 
 def remove_real_greater_declared(dict_list):
-    real_dict_list = []
+    """
+    Filter out configurations where the real number of Byzantine workers
+    exceeds the declared number.
+
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries.
+
+    Returns
+    -------
+    list of dict
+        The filtered list where declared_nb_byz >= nb_byz.
+    """
+    new_dict_list = []
     for setting in dict_list:
-        if setting["benchmark_config"]["declared_nb_byz"] >= setting["benchmark_config"]["nb_byz"]:
-            real_dict_list.append(setting)
-    return real_dict_list
+        real_byz = setting["benchmark_config"]["nb_byz"]
+        declared_byz = setting["benchmark_config"]["declared_nb_byz"]
+        if declared_byz >= real_byz:
+            new_dict_list.append(setting)
+    return new_dict_list
+
 
 def remove_real_not_equal_declared(dict_list):
-    real_dict_list = []
+    """
+    Filter out configurations where the real number of Byzantine workers
+    is not equal to the declared number.
+
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries.
+
+    Returns
+    -------
+    list of dict
+        The filtered list where declared_nb_byz == nb_byz.
+    """
+    new_dict_list = []
     for setting in dict_list:
-        if setting["benchmark_config"]["declared_nb_byz"] == setting["benchmark_config"]["nb_byz"]:
-            real_dict_list.append(setting)
-    return real_dict_list
+        real_byz = setting["benchmark_config"]["nb_byz"]
+        declared_byz = setting["benchmark_config"]["declared_nb_byz"]
+        if declared_byz == real_byz:
+            new_dict_list.append(setting)
+    return new_dict_list
+
+
+def set_declared_as_aggregation_parameter(dict_list):
+    """
+    For each configuration, set the aggregator parameter 'f' to the declared number of Byzantine workers.
+
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries.
+
+    Returns
+    -------
+    list of dict
+        The modified list with aggregator parameters updated.
+    """
+    for setting in dict_list:
+        declared_byz = setting["benchmark_config"]["declared_nb_byz"]
+        setting["aggregator"]["parameters"]["f"] = declared_byz
+    return dict_list
+
 
 def run_benchmark(nb_jobs=1):
-    data = {}
+    """
+    Run benchmark experiments in parallel, based on configurations defined
+    in 'config.json'.
+    """
+    # Attempt to load config.json or create one if not found
     try:
         with open('config.json', 'r') as file:
             data = json.load(file)
-    except:
-        print(f"{'config.json'} not found.")
-
+    except FileNotFoundError:
+        print("'config.json' not found. Creating a default one...")
         with open('config.json', 'w') as f:
             json.dump(default_config, f, indent=4)
+        print("'config.json' created successfully.")
+        print("Please configure the experiment you want to run and re-run.")
+        return
 
-        print(f"{'config.json'} created successfully.")
-        print("Please configure the experiment you want to run.")
-        exit()
-    
-    results_directory = None
-    if data["evaluation_and_results"]["results_directory"] is None:
-        results_directory = "./results"
-    else:
-        results_directory = data["evaluation_and_results"]["results_directory"]
+    # Determine the results directory (default to ./results)
+    results_directory = data["evaluation_and_results"].get("results_directory", "./results")
+    os.makedirs(results_directory, exist_ok=True)
 
-    if not os.path.exists(results_directory):
-        os.makedirs(results_directory)
-    
-    with open(results_directory+"/config.json", 'w') as json_file:
-            json.dump(data, json_file, indent=4, separators=(',', ': '))
-    
+    # Save the current config inside the results directory
+    config_path = os.path.join(results_directory, "config.json")
+    with open(config_path, 'w') as json_file:
+        json.dump(data, json_file, indent=4, separators=(',', ': '))
+
+    # Adjust the number of workers if needed
     if data["benchmark_config"]["fix_workers_as_honest"]:
         data["benchmark_config"]["nb_honest"] = data["benchmark_config"]["nb_workers"]
-        data["benchmark_config"]["nb_workers"] = data["benchmark_config"]["nb_honest"] \
+        data["benchmark_config"]["nb_workers"] = (
+            data["benchmark_config"]["nb_honest"]
             + data["benchmark_config"]["nb_byz"]
+        )
     else:
-        data["benchmark_config"]["nb_honest"] = data["benchmark_config"]["nb_workers"] \
+        data["benchmark_config"]["nb_honest"] = (
+            data["benchmark_config"]["nb_workers"]
             - data["benchmark_config"]["nb_byz"]
-        
+        )
 
+    # Generate all combination dictionaries
     restriction_list = ["pre_aggregators", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
 
+    # Filter combinations based on real vs. declared Byzantines
     if data["benchmark_config"]["declared_equal_real"]:
         dict_list = remove_real_not_equal_declared(dict_list)
     else:
         dict_list = remove_real_greater_declared(dict_list)
 
-    #Do a setting for every seed
+    # Set declared parameters in the dictionaries where necessary
+    dict_list = set_declared_as_aggregation_parameter(dict_list)
+
+    # Assign seeds
     dict_list = delegate_training_seeds(dict_list)
     dict_list = delegate_data_distribution_seeds(dict_list)
 
-    #Do only experiments that haven't been done
+    # Remove already completed experiments
     dict_list = eliminate_experiments_done(dict_list)
 
-    print("Total trainings to do: " + str(len(dict_list)))
-
-    print(f"Running {nb_jobs} trainings in parallel")
+    print(f"Total trainings to do: {len(dict_list)}")
+    print(f"Running {nb_jobs} trainings in parallel...")
 
     counter = Value('i', 0)
     with Pool(initializer=init_pool_processes, initargs=(counter,), processes=nb_jobs) as pool:
         pool.map(run_training, dict_list)
 
-    print("Trainings finished")
+    print("All trainings finished.")
