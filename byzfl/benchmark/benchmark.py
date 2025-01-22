@@ -370,6 +370,22 @@ def set_declared_as_aggregation_parameter(dict_list):
         setting["aggregator"]["parameters"]["f"] = declared_byz
     return dict_list
 
+def compute_number_of_honest_workers(dict_list):
+    for data in dict_list:
+        # Adjust the number of workers if needed
+        if data["benchmark_config"]["fix_workers_as_honest"]:
+            data["benchmark_config"]["nb_honest"] = data["benchmark_config"]["nb_workers"]
+            data["benchmark_config"]["nb_workers"] = (
+                data["benchmark_config"]["nb_honest"]
+                + data["benchmark_config"]["nb_byz"]
+            )
+        else:
+            data["benchmark_config"]["nb_honest"] = (
+                data["benchmark_config"]["nb_workers"]
+                - data["benchmark_config"]["nb_byz"]
+            )
+    return dict_list
+
 
 def run_benchmark(nb_jobs=1):
     """
@@ -397,19 +413,6 @@ def run_benchmark(nb_jobs=1):
     with open(config_path, 'w') as json_file:
         json.dump(data, json_file, indent=4, separators=(',', ': '))
 
-    # Adjust the number of workers if needed
-    if data["benchmark_config"]["fix_workers_as_honest"]:
-        data["benchmark_config"]["nb_honest"] = data["benchmark_config"]["nb_workers"]
-        data["benchmark_config"]["nb_workers"] = (
-            data["benchmark_config"]["nb_honest"]
-            + data["benchmark_config"]["nb_byz"]
-        )
-    else:
-        data["benchmark_config"]["nb_honest"] = (
-            data["benchmark_config"]["nb_workers"]
-            - data["benchmark_config"]["nb_byz"]
-        )
-
     # Generate all combination dictionaries
     restriction_list = ["pre_aggregators", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
@@ -422,6 +425,9 @@ def run_benchmark(nb_jobs=1):
 
     # Set declared parameters in the dictionaries where necessary
     dict_list = set_declared_as_aggregation_parameter(dict_list)
+
+    # Compute the number of honest workers
+    dict_list = compute_number_of_honest_workers(dict_list)
 
     # Assign seeds
     dict_list = delegate_training_seeds(dict_list)

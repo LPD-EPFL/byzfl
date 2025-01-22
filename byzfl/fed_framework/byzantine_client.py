@@ -1,4 +1,7 @@
+import inspect
+
 from byzfl.attacks import attacks
+from byzfl.aggregators import aggregators, preaggregators
 
 class ByzantineClient:
     """
@@ -101,7 +104,61 @@ class ByzantineClient:
 
         # Initialize the ByzantineClient instance
         self.f = params["f"]
-        self.attack = getattr(attacks, params["name"])(**params["parameters"])
+
+        # Initialize the aggregator and pre-aggregators
+
+        aggregator_info = params["parameters"]["aggregator_info"]
+        pre_agg_list_info = params["parameters"]["pre_agg_list"]
+
+        aggregator = getattr(aggregators, aggregator_info["name"])
+
+        signature_agg = inspect.signature(aggregator.__init__)
+
+        agg_parameters = {}
+
+        for parameter in signature_agg.parameters.values():
+            param_name = parameter.name
+            if param_name in aggregator_info["parameters"]:
+                agg_parameters[param_name] = aggregator_info["parameters"][param_name]
+        
+        aggregator = aggregator(**agg_parameters)
+
+        pre_agg_list = []
+
+        for pre_agg_info in pre_agg_list_info:
+
+            pre_agg = getattr(
+                preaggregators, 
+                pre_agg_info["name"]
+            )
+
+            signature_pre_agg = inspect.signature(pre_agg.__init__)
+
+            pre_agg_parameters = {}
+
+            for parameter in signature_pre_agg.parameters.values():
+                param_name = parameter.name
+                if param_name in pre_agg_info["parameters"]:
+                    pre_agg_parameters[param_name] = pre_agg_info["parameters"][param_name]
+
+            pre_agg = pre_agg(**pre_agg_parameters)
+
+            pre_agg_list.append(pre_agg)
+
+        params["parameters"]["agg"] = aggregator
+        params["parameters"]["pre_agg_list"] = pre_agg_list
+
+        self.attack = getattr(attacks, params["name"])
+        signature_attack = inspect.signature(self.attack.__init__)
+
+        filtered_parameters = {}
+
+        for parameter in signature_attack.parameters.values():
+            param_name = parameter.name
+            if param_name in params["parameters"]:
+                filtered_parameters[param_name] = params["parameters"][param_name]
+
+        self.attack = self.attack(**filtered_parameters)
 
     def apply_attack(self, honest_vectors):
         """
