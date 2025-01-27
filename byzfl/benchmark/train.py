@@ -56,6 +56,8 @@ def start_training(params):
         "weight_decay": params_manager.get_server_weight_decay(),
     })
 
+    file_manager.save_config_dict(params_manager.get_data())
+
     # <----------------- Federated Framework ----------------->
 
     # Configurations

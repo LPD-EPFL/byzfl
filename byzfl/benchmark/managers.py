@@ -50,7 +50,7 @@ class FileManager:
         """
         Save a configuration dictionary as a JSON file.
         """
-        config_path = os.path.join(self.files_path, "settings.json")
+        config_path = os.path.join(self.files_path, "config.json")
         with open(config_path, "w") as json_file:
             json.dump(dict_to_save, json_file, indent=4, separators=(",", ": "))
 
@@ -130,6 +130,55 @@ class ParamsManager(object):
             else:
                 return None
         return obj
+
+    def get_data(self):
+        return {
+            "benchmark_config": {
+                "device": self.get_device(),
+                "training_seed": self.get_training_seed(),
+                "nb_training_seeds": self.get_nb_training_seeds(),
+                "nb_workers": self.get_nb_workers(),
+                "nb_byz": self.get_nb_byz(),
+                "declared_nb_byz": self.get_declared_nb_byz(),
+                "declared_equal_real": self.get_declared_equal_real(),
+                "fix_workers_as_honest": self.get_fix_workers_as_honest(),
+                "size_train_set": self.get_size_train_set(),
+                "data_distribution_seed": self.get_data_distribution_seed(),
+                "nb_data_distribution_seeds": self.get_nb_data_distribution_seeds(),
+                "data_distribution": self.get_data_distribution(),
+            },
+            "model": {
+                "name": self.get_model_name(),
+                "dataset_name": self.get_dataset_name(),
+                "nb_labels": self.get_nb_labels(),
+                "loss": self.get_loss_name()
+            },
+            "aggregator": self.get_aggregator_info(),
+            "pre_aggregators": self.get_preaggregators(),
+            "server": {
+                "learning_rate": self.get_server_learning_rate(),
+                "weight_decay": self.get_server_weight_decay(),
+                "nb_steps": self.get_nb_steps(),
+                "batch_norm_momentum": self.get_server_batch_norm_momentum(),
+                "batch_size_evaluation": self.get_server_batch_size_evaluation(),
+                "learning_rate_decay": self.get_server_learning_rate_decay(),
+                "milestones": self.get_server_milestones()
+            },
+            "honest_nodes": {
+                "momentum": self.get_honest_nodes_momentum(),
+                "batch_size": self.get_honest_nodes_batch_size()
+            },
+            "attack": self.get_attack_info(),
+            "evaluation_and_results": {
+                "evaluation_delta": self.get_evaluation_delta(),
+                "evaluate_on_test": self.get_evaluate_on_test(),
+                "store_training_accuracy": self.get_store_training_accuracy(),
+                "store_training_loss": self.get_store_training_loss(),
+                "store_models": self.get_store_models(),
+                "data_folder": self.get_data_folder(),
+                "results_directory": self.get_results_directory()
+            }
+        }
 
     # ----------------------------------------------------------------------
     #  Benchmark Config
