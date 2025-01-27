@@ -206,6 +206,15 @@ class ParamsManager(object):
         path = ["benchmark_config", "nb_data_distribution_seeds"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
+    
+    def get_data_distribution(self):
+        default = {
+                "name": "iid",
+                "distribution_parameter": 1.0
+        }
+        path = ["benchmark_config", "data_distribution"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
 
     def get_name_data_distribution(self):
         default = "iid"
@@ -341,6 +350,12 @@ class ParamsManager(object):
     # ----------------------------------------------------------------------
     #  Attack
     # ----------------------------------------------------------------------
+
+    def get_attack_info(self):
+        default = {"name": "Infinity", "parameters": {}}
+        path = ["attack"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
 
     def get_attack_name(self):
         default = "Infinity"

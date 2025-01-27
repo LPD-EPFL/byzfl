@@ -239,9 +239,11 @@ def start_training(params):
     
     val_acc = server.compute_validation_accuracy()
 
+    val_accuracy_list = np.append(val_accuracy_list, val_acc)
+
     file_manager.write_array_in_file(
-        val_acc, 
-        "validation_accuracy_tr_seed_" + str(training_seed) 
+        val_accuracy_list, 
+        "val_accuracy_tr_seed_" + str(training_seed) 
         + "_dd_seed_" + str(dd_seed) +".txt"
     )
 
