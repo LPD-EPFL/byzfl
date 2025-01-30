@@ -162,6 +162,7 @@ def start_training(params):
     attack_parameters = params_manager.get_attack_parameters()
     attack_parameters["aggregator_info"] = params_manager.get_aggregator_info()
     attack_parameters["pre_agg_list"] = params_manager.get_preaggregators()
+    attack_parameters["f"] = nb_byz_clients
 
     attack = {
         "name": params_manager.get_attack_name(),
