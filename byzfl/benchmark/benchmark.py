@@ -353,7 +353,7 @@ def remove_real_not_equal_declared(dict_list):
 
 def set_declared_as_aggregation_parameter(dict_list):
     """
-    For each configuration, set the aggregator parameter 'f' to the declared number of Byzantine workers.
+    For each configuration, set the aggregator and preaggregator parameter 'f' to the declared number of Byzantine workers.
 
     Parameters
     ----------
@@ -368,6 +368,10 @@ def set_declared_as_aggregation_parameter(dict_list):
     for setting in dict_list:
         declared_byz = setting["benchmark_config"]["declared_nb_byz"]
         setting["aggregator"]["parameters"]["f"] = declared_byz
+
+        for pre_agg in setting["pre_aggregators"]:
+                pre_agg["parameters"]["f"] = declared_byz
+                
     return dict_list
 
 def compute_number_of_honest_workers(dict_list):

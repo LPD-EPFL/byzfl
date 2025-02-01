@@ -401,13 +401,13 @@ class ParamsManager(object):
     # ----------------------------------------------------------------------
 
     def get_attack_info(self):
-        default = {"name": "Infinity", "parameters": {}}
+        default = {"name": "Inf", "parameters": {}}
         path = ["attack"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
     def get_attack_name(self):
-        default = "Infinity"
+        default = "Inf"
         path = ["attack", "name"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
