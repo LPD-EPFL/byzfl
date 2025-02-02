@@ -350,6 +350,24 @@ def remove_real_not_equal_declared(dict_list):
             new_dict_list.append(setting)
     return new_dict_list
 
+def ensure_key_parameters(dict_list):
+    """
+    Ensures that each dictionary in dict_list contains a "parameters" key within 
+    "aggregator", "pre_aggregators", and "attack" dictionaries. If the "parameters" 
+    key is missing, it is initialized as an empty dictionary.
+    """
+    for setting in dict_list:
+        if "parameters" not in setting["aggregator"].keys():
+            setting["aggregator"]["parameters"] = {}
+
+        for pre_agg in setting["pre_aggregators"]:
+            if "parameters" not in pre_agg.keys():
+                pre_agg["parameters"] = {}
+        
+        if "parameters" not in setting["attack"].keys():
+            setting["attack"]["parameters"] = {}
+                
+    return dict_list
 
 def set_declared_as_aggregation_parameter(dict_list):
     """
@@ -426,6 +444,10 @@ def run_benchmark(nb_jobs=1):
         dict_list = remove_real_not_equal_declared(dict_list)
     else:
         dict_list = remove_real_greater_declared(dict_list)
+
+    # Ensure that the key parameters are present in the dictionaries
+    # even if they are not in the config file
+    dict_list = ensure_key_parameters(dict_list)
 
     # Set declared parameters in the dictionaries where necessary
     dict_list = set_declared_as_aggregation_parameter(dict_list)
