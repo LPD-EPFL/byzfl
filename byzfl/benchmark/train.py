@@ -45,10 +45,10 @@ def start_training(params):
         "declared_nb_byz": params_manager.get_declared_nb_byz(),
         "data_distribution_name": params_manager.get_name_data_distribution(),
         "distribution_parameter": params_manager.get_parameter_data_distribution(),
-        "aggregation_name": params_manager.get_aggregator_name(),
+        "aggregation_name": params_manager.get_aggregation_name(),
         "pre_aggregation_names": [
             dict['name'] 
-            for dict in params_manager.get_preaggregators()
+            for dict in params_manager.get_preaggregations()
         ],
         "attack_name": params_manager.get_attack_name(),
         "learning_rate": params_manager.get_server_learning_rate(),
@@ -153,15 +153,15 @@ def start_training(params):
         "weight_decay": params_manager.get_server_weight_decay(),
         "milestones": params_manager.get_server_milestones(),
         "learning_rate_decay": params_manager.get_server_learning_rate_decay(),
-        "aggregator_info": params_manager.get_aggregator_info(),
-        "pre_agg_list": params_manager.get_preaggregators(),
+        "aggregation_info": params_manager.get_aggregation_info(),
+        "pre_agg_list": params_manager.get_preaggregations(),
     })
 
     # Byzantine Client Setup
 
     attack_parameters = params_manager.get_attack_parameters()
-    attack_parameters["aggregator_info"] = params_manager.get_aggregator_info()
-    attack_parameters["pre_agg_list"] = params_manager.get_preaggregators()
+    attack_parameters["aggregation_info"] = params_manager.get_aggregation_info()
+    attack_parameters["pre_agg_list"] = params_manager.get_preaggregations()
     attack_parameters["f"] = nb_byz_clients
 
     attack = {

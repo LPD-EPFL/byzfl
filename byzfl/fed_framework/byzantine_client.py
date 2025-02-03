@@ -107,10 +107,10 @@ class ByzantineClient:
 
         # Initialize the aggregator and pre-aggregators for attacks that require it
 
-        if "aggregator_info" in params.get("parameters", {}):
-            aggregator_info = params["parameters"]["aggregator_info"]
+        if "aggregation_info" in params.get("parameters", {}):
+            aggregation_info = params["parameters"]["aggregation_info"]
             
-            aggregator = getattr(aggregators, aggregator_info["name"])
+            aggregator = getattr(aggregators, aggregation_info["name"])
 
             signature_agg = inspect.signature(aggregator.__init__)
 
@@ -118,8 +118,8 @@ class ByzantineClient:
 
             for parameter in signature_agg.parameters.values():
                 param_name = parameter.name
-                if param_name in aggregator_info["parameters"]:
-                    agg_parameters[param_name] = aggregator_info["parameters"][param_name]
+                if param_name in aggregation_info["parameters"]:
+                    agg_parameters[param_name] = aggregation_info["parameters"][param_name]
             
             aggregator = aggregator(**agg_parameters)
 

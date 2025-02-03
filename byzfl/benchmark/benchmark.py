@@ -1,4 +1,3 @@
-import argparse
 import json
 from multiprocessing import Pool, Value
 import os
@@ -50,7 +49,6 @@ default_config = {
     ],
     "server": {
         "learning_rate": 0.25,
-        "weight_decay": 1e-4,
         "nb_steps": 800,
         "batch_norm_momentum": None,
         "batch_size_validation": 100,
@@ -59,6 +57,7 @@ default_config = {
     },
     "honest_nodes": {
         "momentum": 0.9,
+        "weight_decay": 1e-4,
         "batch_size": 25
     },
     "attack": [
@@ -139,10 +138,6 @@ def generate_all_combinations(original_dict, restriction_list):
     aux_dict = {}
     generate_all_combinations_aux(list_dict, original_dict, aux_dict, restriction_list)
     return list_dict
-
-import os
-import copy
-import argparse
 
 # Global variable to keep track of training progress
 counter = None
@@ -233,7 +228,7 @@ def eliminate_experiments_done(dict_list):
             f"{setting['attack']['name']}_"
             f"lr_{setting['server']['learning_rate']}_"
             f"mom_{setting['honest_nodes']['momentum']}_"
-            f"wd_{setting['server']['weight_decay']}"
+            f"wd_{setting['honest_nodes']['weight_decay']}"
         )
 
         if folder_name in folders:
@@ -353,14 +348,14 @@ def remove_real_not_equal_declared(dict_list):
 def ensure_key_parameters(dict_list):
     """
     Ensures that each dictionary in dict_list contains a "parameters" key within 
-    "aggregator", "pre_aggregators", and "attack" dictionaries. If the "parameters" 
+    "aggregation", "pre_aggregations", and "attack" dictionaries. If the "parameters" 
     key is missing, it is initialized as an empty dictionary.
     """
     for setting in dict_list:
-        if "parameters" not in setting["aggregator"].keys():
-            setting["aggregator"]["parameters"] = {}
+        if "parameters" not in setting["aggregation"].keys():
+            setting["aggregation"]["parameters"] = {}
 
-        for pre_agg in setting["pre_aggregators"]:
+        for pre_agg in setting["pre_aggregations"]:
             if "parameters" not in pre_agg.keys():
                 pre_agg["parameters"] = {}
         
@@ -371,7 +366,7 @@ def ensure_key_parameters(dict_list):
 
 def set_declared_as_aggregation_parameter(dict_list):
     """
-    For each configuration, set the aggregator and preaggregator parameter 'f' to the declared number of Byzantine workers.
+    For each configuration, set the aggregation and preaggregations parameter 'f' to the declared number of Byzantine workers.
 
     Parameters
     ----------
@@ -381,13 +376,13 @@ def set_declared_as_aggregation_parameter(dict_list):
     Returns
     -------
     list of dict
-        The modified list with aggregator parameters updated.
+        The modified list with aggregation parameters updated.
     """
     for setting in dict_list:
         declared_byz = setting["benchmark_config"]["declared_nb_byz"]
-        setting["aggregator"]["parameters"]["f"] = declared_byz
+        setting["aggregation"]["parameters"]["f"] = declared_byz
 
-        for pre_agg in setting["pre_aggregators"]:
+        for pre_agg in setting["pre_aggregations"]:
                 pre_agg["parameters"]["f"] = declared_byz
                 
     return dict_list
@@ -436,7 +431,7 @@ def run_benchmark(nb_jobs=1):
         json.dump(data, json_file, indent=4, separators=(',', ': '))
 
     # Generate all combination dictionaries
-    restriction_list = ["pre_aggregators", "milestones"]
+    restriction_list = ["pre_aggregations", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
 
     # Filter combinations based on real vs. declared Byzantines

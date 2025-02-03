@@ -153,8 +153,8 @@ class ParamsManager(object):
                 "nb_labels": self.get_nb_labels(),
                 "loss": self.get_loss_name()
             },
-            "aggregator": self.get_aggregator_info(),
-            "pre_aggregators": self.get_preaggregators(),
+            "aggregation": self.get_aggregation_info(),
+            "pre_aggregations": self.get_preaggregations(),
             "server": {
                 "learning_rate": self.get_server_learning_rate(),
                 "nb_steps": self.get_nb_steps(),
@@ -305,29 +305,29 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     # ----------------------------------------------------------------------
-    #  Aggregator
+    #  Aggregations
     # ----------------------------------------------------------------------
-    def get_aggregator_info(self):
+    def get_aggregation_info(self):
         default = {"name": "Average", "parameters": {}}
-        path = ["aggregator"]
+        path = ["aggregation"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
-    def get_aggregator_name(self):
+    def get_aggregation_name(self):
         default = "average"
-        path = ["aggregator", "name"]
+        path = ["aggregation", "name"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
-    def get_aggregator_parameters(self):
-        path = ["aggregator", "parameters"]
+    def get_aggregation_parameters(self):
+        path = ["aggregation", "parameters"]
         return self._read_object(path)
 
     # ----------------------------------------------------------------------
-    #  Pre-Aggregators
+    #  Pre-Aggregations
     # ----------------------------------------------------------------------
-    def get_preaggregators(self):
-        path = ["pre_aggregators"]
+    def get_preaggregations(self):
+        path = ["pre_aggregations"]
         return self._read_object(path)
 
     # ----------------------------------------------------------------------
