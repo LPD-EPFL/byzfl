@@ -1,4 +1,3 @@
-import argparse
 import json
 from multiprocessing import Pool, Value
 import os
@@ -186,17 +185,6 @@ def run_training(params):
         print(f"Training {counter.value} done")
         counter.value += 1
 
-"""
-def process_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--nb_jobs', type=int, help='Number of Jobs (multiprocessing)')
-    args = parser.parse_args()
-
-    nb_jobs = args.nb_jobs if args.nb_jobs is not None else 1
-    print(f"Running {nb_jobs} experiments in parallel")
-    return nb_jobs
-"""
-
 def eliminate_experiments_done(dict_list):
     """
     Remove any configurations (experiments) that have already been completed.
@@ -245,7 +233,7 @@ def eliminate_experiments_done(dict_list):
             f"{setting['attack']['name']}_"
             f"lr_{setting['server']['learning_rate']}_"
             f"mom_{setting['honest_nodes']['momentum']}_"
-            f"wd_{setting['server']['weight_decay']}"
+            f"wd_{setting['honest_nodes']['weight_decay']}"
         )
 
         if folder_name in folders:
