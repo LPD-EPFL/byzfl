@@ -22,7 +22,7 @@ class Server(ModelBaseInterface):
             "learning_rate_decay": params["learning_rate_decay"],
             "isServer": True,
         })
-        self.robust_aggregator = RobustAggregator(params["aggregation_info"], params["pre_agg_list"])
+        self.robust_aggregator = RobustAggregator(params["aggregator_info"], params["pre_agg_list"])
         self.test_loader = params["test_loader"]
         self.validation_loader = params.get("validation_loader")
         if self.validation_loader is not None:
