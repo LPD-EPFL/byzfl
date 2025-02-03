@@ -1,11 +1,11 @@
 .. _federated_learning-label:
 
-Benchmark Framework
+FL Benchmark
 =========================
 
-ByzFL includes a comprehensive framework for exhaustively testing federated learning aggregations. 
-This framework simulates a distributed environment configured via a JSON file, evaluates the performance 
-of various settings, and provides convenient visualization tools.
+ByzFL includes a comprehensive benchmark for exhaustively testing federated learning aggregations.
+This benchmark simulates a distributed environment configured via a JSON file, evaluates the 
+performance of various settings, and provides convenient visualization tools.
 
 Key Features
 ------------
@@ -25,7 +25,7 @@ Key Features
   Easily generate plots (accuracy curves, heatmaps, etc.) to quickly assess performance and compare 
   methods across different configurations.
 
-Pipeline of the Framework
+Benchmark Pipeline
 -------------------------
 
 1. **Run All Configurations and Store Results**
@@ -40,14 +40,15 @@ Pipeline of the Framework
 
    Visualize the outcomes using prebuilt plotting functions.
 
-Why This Benchmark Framework?
+Why This FL Benchmark?
 -----------------------------
 
-All modules in the Federated Learning Framework (as shown in the Federated Learning Simulation) allow 
-you to set up and run a federated learning training process. However, the original framework does not 
-focus on systematically testing a wide range of parameters. This Benchmark Framework was created for 
-precisely that purpose—leveraging the same modules but enabling exhaustive testing of aggregation methods, 
-pre-aggregations, and attacks (existing or novel) across varying federated scenarios.
+All modules in the Federated Learning Framework (as shown in the Federated Learning Simulation) 
+allow you to set up and run a federated learning training process. However, the original 
+framework does not focus on systematically testing a wide range of parameters. 
+This Benchmark was created for precisely that purpose—leveraging the same modules but enabling 
+exhaustive testing of aggregation methods, pre-aggregations, and attacks (existing or novel) 
+across varying federated scenarios.
 
 Examples of these scenarios include:
 
@@ -58,123 +59,11 @@ Examples of these scenarios include:
 By simply editing the ``config.json`` file, you can fully customize the environment and run multiple 
 experiments without changing the underlying code.
 
-How to Launch the Benchmark
----------------------------
-
-Use the code snippet below to start the benchmark:
-
-.. code-block:: python
-
-    from byzfl.benchmark import run_benchmark
-
-    if __name__ == "__main__":  # Required for multiprocessing
-        n = 1  # Number of training sessions to run in parallel
-        run_benchmark(n)
-
-``run_benchmark()`` reads the configuration from ``config.json`` and begins the benchmarking process. 
-Results for each training session are saved in the folder specified by ``results_directory`` (default: ``./results``).
-
-- **First-time use**: If no ``config.json`` file exists in your current directory, running ``run_benchmark()`` 
-  creates a default configuration file. You can modify this file before re-running the benchmark.
-
-- **Testing multiple parameter values**: You can specify a list of values for any supported parameter in 
-  ``config.json``. Each entry in the list is treated as a separate simulation.
-
-Example: Modifying ``nb_byz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: json
-
-    "nb_byz": 1
-
-becomes
-
-.. code-block:: json
-
-    "nb_byz": [1, 2, 3]
-
-Example: Modifying the ``aggregator``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: json
-
-    "aggregator": {
-        "name": "GeometricMedian",
-        "parameters": {
-            "nu": 0.1,
-            "T": 3
-        }
-    }
-
-becomes
-
-.. code-block:: json
-
-    "aggregator": [
-        {
-            "name": "GeometricMedian",
-            "parameters": {
-                "nu": 0.1,
-                "T": 3
-            }
-        },
-        {
-            "name": "TrMean",
-            "parameters": {}
-        }
-    ],
-
-Suported Variable Parameters
-----------------------------
-
-- Dataset
-- Model
-- Number of Workers
-- Number of Byzantine
-- Number of Declared Byzantine
-- Data distribution name
-- Data distribution parameters
-- Aggregators (not their hyperparameters)
-- Preaggregators (not their hyperparameters)
-- Attacks (not their hyperparameters)
-- Server Learning Rate
-- Client Momentum
-- Client Weight Decay
-
-**Note**: Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.
-
-Evaluation Protocol
--------------------
-
-ByzFL provides a built-in evaluation function that identifies the best hyperparameters by considering 
-worst-case attack scenarios. Specifically, it selects hyperparameters that yield the highest worst-case 
-accuracy on a validation set while under the strongest attack (the one that minimizes maximum accuracy). 
-This approach ensures robustness without overfitting to the test set.
-
-To run this evaluation:
-
-.. code-block:: python
-
-    from byzfl.benchmark.evaluate_results import find_best_hyperparameters
-
-    # Path to the results folder generated by run_benchmark()
-    path_training_results = "./results"
-
-    # Output folder for the best hyperparameters
-    path_best_hyperparameters = "./best_hyperparameters"
-
-    find_best_hyperparameters(path_training_results, path_best_hyperparameters)
-
-A new folder is created to store the best hyperparameters for each configuration.
-
-How to View Results
--------------------
-
-ByzFL offers several plotting functions to visualize benchmark outcomes.
-
-**Note**: Before plotting, you must run ``find_best_hyperparameters()`` to generate the necessary data.
-
-Below is the configuration file (``config.json``) used in the examples:
+Set Up Your Experiments
+------------------------
+All experiments are conducted using a `config.json` file. This file must be placed in the same 
+directory as the program that executes the benchmark. Below is the ``config.json`` 
+configuration file used in the examples:
 
 .. code-block:: json
 
@@ -265,6 +154,64 @@ Below is the configuration file (``config.json``) used in the examples:
         }
     }
 
+Important Note
+""""""""""""""
+
+The `f` parameter must not be explicitly provided to aggregators, pre-aggregators, 
+or attacks that require it, as it is already determined based on the values of 
+"nb_byz" and "declared_nb_byz".
+
+How to Launch the Benchmark
+---------------------------
+
+Use the code snippet below to start the benchmark:
+
+.. code-block:: python
+
+    from byzfl.benchmark import run_benchmark
+
+    if __name__ == "__main__":  # Required for multiprocessing
+        n = 1  # Number of training sessions to run in parallel
+        run_benchmark(n)
+
+``run_benchmark()`` reads the configuration from ``config.json`` and begins the benchmarking process. 
+Results for each training session are saved in the folder specified by ``results_directory`` (default: ``./results``).
+
+- **First-time use**: If no ``config.json`` file exists in your current directory, running ``run_benchmark()`` 
+  creates a default configuration file. You can modify this file before re-running the benchmark.
+
+- **Testing multiple parameter values**: You can specify a list of values for any supported parameter in 
+  ``config.json``. Each entry in the list is treated as a separate simulation.
+
+ByzFL provides a built-in evaluation function that identifies the best hyperparameters by considering 
+worst-case attack scenarios. Specifically, it selects hyperparameters that yield the highest worst-case 
+accuracy on a validation set while under the strongest attack (the one that minimizes maximum accuracy). 
+This approach ensures robustness without overfitting to the test set.
+
+Suported Variable Parameters
+----------------------------
+
+- Dataset
+- Model
+- Number of Workers
+- Number of Byzantine
+- Number of Declared Byzantine
+- Data distribution name
+- Data distribution parameters
+- Aggregators (not their hyperparameters)
+- Preaggregators (not their hyperparameters)
+- Attacks (not their hyperparameters)
+- Server Learning Rate
+- Client Momentum
+- Client Weight Decay
+
+**Note**: Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.
+
+How to View Results
+-------------------
+
+ByzFL offers several plotting functions to visualize benchmark outcomes.
+
 Accuracy Curves
 ---------------
 
@@ -276,12 +223,10 @@ under a single aggregator/pre-aggregator setting. One plot is produced per confi
     from byzfl.benchmark.evaluate_results import plot_accuracy_fix_agg_best_setting
 
     path_training_results = "./results"
-    path_best_hyperparameters = "./best_hyperparameters"
     path_to_plot = "./plot"
 
     plot_accuracy_fix_agg_best_setting(
         path_training_results, 
-        path_best_hyperparameters, 
         path_to_plot
     )
 
@@ -301,8 +246,7 @@ Heatmaps
 
 Heatmaps provide an overview of performance across multiple configurations on the same plot. The horizontal 
 axis typically represents the number of Byzantine nodes, while the vertical axis denotes the distribution parameter. 
-Each cell in the heatmap shows the worst-case performance under the strongest attack, derived from the 
-``find_best_hyperparameters()`` function.
+Each cell in the heatmap shows the worst-case performance under the strongest attack.
 
 Heatmap of losses
 ^^^^^^^^^^^^^^^^^
@@ -312,10 +256,9 @@ Heatmap of losses
     from byzfl.benchmark.evaluate_results import heat_map_loss
 
     path_training_results = "./results"
-    path_best_hyperparameters = "./best_hyperparameters"
     path_to_plot = "./plot"
 
-    heat_map_loss(path_training_results, path_best_hyperparameters, path_to_plot)
+    heat_map_loss(path_training_results, path_to_plot)
 
 .. container:: image-row
 
@@ -346,10 +289,9 @@ Heatmap of test accuracy
     from byzfl.benchmark.evaluate_results import heat_map_test_accuracy
 
     path_training_results = "./results"
-    path_best_hyperparameters = "./best_hyperparameters"
     path_to_plot = "./plot"
 
-    heat_map_test_accuracy(path_training_results, path_best_hyperparameters, path_to_plot)
+    heat_map_test_accuracy(path_training_results, path_to_plot)
 
 .. container:: image-row
 
@@ -383,12 +325,10 @@ approach in each region.
     from byzfl.benchmark.evaluate_results import aggregated_heat_map_test_accuracy
 
     path_training_results = "./results"
-    path_best_hyperparameters = "./best_hyperparameters"
     path_to_plot = "./plot"
 
     aggregated_heat_map_test_accuracy(
         path_training_results,
-        path_best_hyperparameters,
         path_to_plot
     )
 
