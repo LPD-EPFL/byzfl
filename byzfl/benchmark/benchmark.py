@@ -9,10 +9,10 @@ default_config = {
     "benchmark_config": {
         "device": "cuda",
         "training_seed": 0,
-        "nb_training_seeds": 5,
-        "nb_workers": 5,
-        "nb_byz": 1,
-        "declared_nb_byz": 1,
+        "nb_training_seeds": 3,
+        "nb_workers": 10,
+        "nb_byz": [1, 2, 3, 4],
+        "declared_nb_byz": [1, 2, 3, 4],
         "declared_equal_real": True,
         "fix_workers_as_honest": False,
         "size_train_set": 0.8,
@@ -21,9 +21,9 @@ default_config = {
         "data_distribution": [
             {
                 "name": "gamma_similarity_niid",
-                "distribution_parameter": 0.5
+                "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
             }
-        ],
+        ]
     },
     "model": {
         "name": "cnn_mnist",
@@ -33,40 +33,52 @@ default_config = {
     },
     "aggregator": [
         {
+            "name": "GeometricMedian",
+            "parameters": {
+                "nu": 0.1,
+                "T": 3
+            }
+        },
+        {
             "name": "TrMean",
             "parameters": {}
         }
     ],
     "pre_aggregators": [
         {
-            "name": "Clipping", 
+            "name": "Clipping",
             "parameters": {}
         },
         {
-            "name": "NNM", 
+            "name": "NNM",
             "parameters": {}
         }
     ],
     "server": {
-        "learning_rate": 0.25,
+        "learning_rate": 0.1,
         "nb_steps": 800,
         "batch_norm_momentum": None,
-        "batch_size_validation": 100,
+        "batch_size_evaluation": 100,
         "learning_rate_decay": 1.0,
         "milestones": []
     },
     "honest_nodes": {
         "momentum": 0.9,
-        "weight_decay": 1e-4,
+        "weight_decay": 0.0001,
         "batch_size": 25
     },
     "attack": [
         {
             "name": "SignFlipping",
-            "parameters": {},
-            "attack_optimizer": {
-                "name": None
-            }
+            "parameters": {}
+        },
+        {
+            "name": "Optimal_InnerProductManipulation",
+            "parameters": {}
+        },
+        {
+            "name": "Optimal_ALittleIsEnough",
+            "parameters": {}
         }
     ],
     "evaluation_and_results": {
@@ -76,8 +88,8 @@ default_config = {
         "store_training_loss": True,
         "store_models": False,
         "data_folder": None,
-        "results_directory": "results"
-    },
+        "results_directory": "./results"
+    }
 }
 
 def generate_all_combinations_aux(list_dict, orig_dict, aux_dict, rest_list):
