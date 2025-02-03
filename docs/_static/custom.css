@@ -18,6 +18,18 @@ a {
   text-decoration: none;
 }
 
+.image-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* Adjust spacing */
+}
+
+.image-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
 
 

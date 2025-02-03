@@ -25,6 +25,7 @@ By leveraging this framework, researchers can gain valuable insights into the pe
    :titlesonly:
 
    classes/fed_learning_sim
+   classes/benchmark
 
 .. toctree::
    :caption: Helper Modules
