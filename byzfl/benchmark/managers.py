@@ -157,7 +157,6 @@ class ParamsManager(object):
             "pre_aggregators": self.get_preaggregators(),
             "server": {
                 "learning_rate": self.get_server_learning_rate(),
-                "weight_decay": self.get_server_weight_decay(),
                 "nb_steps": self.get_nb_steps(),
                 "batch_norm_momentum": self.get_server_batch_norm_momentum(),
                 "batch_size_evaluation": self.get_server_batch_size_evaluation(),
@@ -166,6 +165,7 @@ class ParamsManager(object):
             },
             "honest_nodes": {
                 "momentum": self.get_honest_nodes_momentum(),
+                "weight_decay": self.get_server_weight_decay(),
                 "batch_size": self.get_honest_nodes_batch_size()
             },
             "attack": self.get_attack_info(),
@@ -344,12 +344,6 @@ class ParamsManager(object):
         path = ["server", "learning_rate"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
-    
-    def get_server_weight_decay(self):
-        default = 1e-4
-        path = ["server", "weight_decay"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
 
     def get_nb_steps(self):
         default = 800
@@ -387,6 +381,12 @@ class ParamsManager(object):
     def get_honest_nodes_momentum(self):
         default = 0.99
         path = ["honest_nodes", "momentum"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_server_weight_decay(self):
+        default = 1e-4
+        path = ["honest_nodes", "weight_decay"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 

@@ -75,7 +75,6 @@ def find_best_hyperparameters(path_to_results, path_hyperparameters):
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
     lr_list = data["server"]["learning_rate"]
-    wd_list = data["server"]["weight_decay"]
 
     # <-------------- Evaluation and Results ------------->
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -86,6 +85,7 @@ def find_best_hyperparameters(path_to_results, path_hyperparameters):
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_nodes"]["momentum"]
+    wd_list = data["honest_nodes"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
@@ -269,7 +269,6 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_hyperparameters,
         # <-------------- Server Config ------------->
         nb_steps = data["server"]["nb_steps"]
         lr_list = data["server"]["learning_rate"]
-        wd_list = data["server"]["weight_decay"]
 
         # <-------------- Evaluation and Results ------------->
         evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -280,6 +279,7 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_hyperparameters,
 
         # <-------------- Honest Nodes Config ------------->
         momentum_list = data["honest_nodes"]["momentum"]
+        wd_list = data["honest_nodes"]["weight_decay"]
 
         # <-------------- Aggregators Config ------------->
         aggregators = data["aggregator"]
@@ -420,10 +420,6 @@ def heat_map_loss( path_to_results, path_to_hyperparameters, path_to_plot):
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
     lr_list = data["server"]["learning_rate"]
-    wd_list = data["server"]["weight_decay"]
-
-    # <-------------- Evaluation and Results ------------->
-    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
     # <-------------- Model Config ------------->
     model_name = data["model"]["name"]
@@ -431,6 +427,7 @@ def heat_map_loss( path_to_results, path_to_hyperparameters, path_to_plot):
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_nodes"]["momentum"]
+    wd_list = data["honest_nodes"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
@@ -600,7 +597,6 @@ def heat_map_test_accuracy(path_to_results, path_to_hyperparameters, path_to_plo
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
     lr_list = data["server"]["learning_rate"]
-    wd_list = data["server"]["weight_decay"]
 
     # <-------------- Evaluation and Results ------------->
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -611,6 +607,7 @@ def heat_map_test_accuracy(path_to_results, path_to_hyperparameters, path_to_plo
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_nodes"]["momentum"]
+    wd_list = data["honest_nodes"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
@@ -769,7 +766,6 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_hyperparameters, 
         # <-------------- Server Config ------------->
         nb_steps = data["server"]["nb_steps"]
         lr_list = data["server"]["learning_rate"]
-        wd_list = data["server"]["weight_decay"]
 
         # <-------------- Evaluation and Results ------------->
         evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -780,6 +776,7 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_hyperparameters, 
 
         # <-------------- Honest Nodes Config ------------->
         momentum_list = data["honest_nodes"]["momentum"]
+        wd_list = data["honest_nodes"]["weight_decay"]
 
         # <-------------- Aggregators Config ------------->
         aggregators = data["aggregator"]
