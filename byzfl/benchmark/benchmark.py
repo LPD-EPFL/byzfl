@@ -4,6 +4,7 @@ import os
 import copy
 
 from byzfl.benchmark.train import start_training
+from byzfl.benchmark.evaluate_results import find_best_hyperparameters
 
 default_config = {
     "benchmark_config": {
@@ -470,3 +471,9 @@ def run_benchmark(nb_jobs=1):
         pool.map(run_training, dict_list)
 
     print("All trainings finished.")
+
+    print("Selecting Best Hyperparameters")
+
+    find_best_hyperparameters(results_directory)
+
+    print("Done")
