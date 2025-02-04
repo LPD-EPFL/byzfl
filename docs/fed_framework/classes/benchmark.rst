@@ -65,94 +65,96 @@ All experiments are conducted using a `config.json` file. This file must be plac
 directory as the program that executes the benchmark. Below is the ``config.json`` 
 configuration file used in the examples:
 
-.. code-block:: json
+.. toggle::
 
-    {
-        "benchmark_config": {
-            "device": "cuda",
-            "training_seed": 0,
-            "nb_training_seeds": 3,
-            "nb_workers": 10,
-            "nb_byz": [1, 2, 3, 4],
-            "declared_nb_byz": [1, 2, 3, 4],
-            "declared_equal_real": true,
-            "fix_workers_as_honest": false,
-            "size_train_set": 0.8,
-            "data_distribution_seed": 0,
-            "nb_data_distribution_seeds": 1,
-            "data_distribution": [
+    .. code-block:: json
+
+        {
+            "benchmark_config": {
+                "device": "cuda",
+                "training_seed": 0,
+                "nb_training_seeds": 3,
+                "nb_workers": 10,
+                "nb_byz": [1, 2, 3, 4],
+                "declared_nb_byz": [1, 2, 3, 4],
+                "declared_equal_real": true,
+                "fix_workers_as_honest": false,
+                "size_train_set": 0.8,
+                "data_distribution_seed": 0,
+                "nb_data_distribution_seeds": 1,
+                "data_distribution": [
+                    {
+                        "name": "gamma_similarity_niid",
+                        "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
+                    }
+                ]
+            },
+            "model": {
+                "name": "cnn_mnist",
+                "dataset_name": "mnist",
+                "nb_labels": 10,
+                "loss": "NLLLoss"
+            },
+            "aggregator": [
                 {
-                    "name": "gamma_similarity_niid",
-                    "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
+                    "name": "GeometricMedian",
+                    "parameters": {
+                        "nu": 0.1,
+                        "T": 3
+                    }
+                },
+                {
+                    "name": "TrMean",
+                    "parameters": {}
                 }
-            ]
-        },
-        "model": {
-            "name": "cnn_mnist",
-            "dataset_name": "mnist",
-            "nb_labels": 10,
-            "loss": "NLLLoss"
-        },
-        "aggregator": [
-            {
-                "name": "GeometricMedian",
-                "parameters": {
-                    "nu": 0.1,
-                    "T": 3
+            ],
+            "pre_aggregators": [
+                {
+                    "name": "Clipping",
+                    "parameters": {}
+                },
+                {
+                    "name": "NNM",
+                    "parameters": {}
                 }
+            ],
+            "server": {
+                "learning_rate": 0.1,
+                "nb_steps": 800,
+                "batch_norm_momentum": null,
+                "batch_size_evaluation": 100,
+                "learning_rate_decay": 1.0,
+                "milestones": []
             },
-            {
-                "name": "TrMean",
-                "parameters": {}
+            "honest_nodes": {
+                "momentum": 0.9,
+                "weight_decay": 0.0001,
+                "batch_size": 25
+            },
+            "attack": [
+                {
+                    "name": "SignFlipping",
+                    "parameters": {}
+                },
+                {
+                    "name": "Optimal_InnerProductManipulation",
+                    "parameters": {}
+                },
+                {
+                    "name": "Optimal_ALittleIsEnough",
+                    "parameters": {}
+                }
+            ],
+            "evaluation_and_results": {
+                "evaluation_delta": 50,
+                "evaluate_on_test": true,
+                "store_training_accuracy": true,
+                "store_training_loss": true,
+                "store_models": false,
+                "data_folder": null,
+                "results_directory": "./results"
             }
-        ],
-        "pre_aggregators": [
-            {
-                "name": "Clipping",
-                "parameters": {}
-            },
-            {
-                "name": "NNM",
-                "parameters": {}
-            }
-        ],
-        "server": {
-            "learning_rate": 0.1,
-            "nb_steps": 800,
-            "batch_norm_momentum": null,
-            "batch_size_evaluation": 100,
-            "learning_rate_decay": 1.0,
-            "milestones": []
-        },
-        "honest_nodes": {
-            "momentum": 0.9,
-            "weight_decay": 0.0001,
-            "batch_size": 25
-        },
-        "attack": [
-            {
-                "name": "SignFlipping",
-                "parameters": {}
-            },
-            {
-                "name": "Optimal_InnerProductManipulation",
-                "parameters": {}
-            },
-            {
-                "name": "Optimal_ALittleIsEnough",
-                "parameters": {}
-            }
-        ],
-        "evaluation_and_results": {
-            "evaluation_delta": 50,
-            "evaluate_on_test": true,
-            "store_training_accuracy": true,
-            "store_training_loss": true,
-            "store_models": false,
-            "data_folder": null,
-            "results_directory": "./results"
         }
-    }
 
 Important Note
 """"""""""""""
