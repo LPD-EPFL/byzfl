@@ -382,9 +382,3 @@ Once implemented, update `config.json`:
             "param2": 2
         }
     }
-
-.. note::
-    If you want the framework to automatically set up the number of declared Byzantine nodes within your 
-    aggregation function, name the parameter **"f"** in the ``__init__`` method. Do not manually add it 
-    as a parameter, as it will be internally assigned through the ``declared_nb_byz`` parameter. However, 
-    it is essential that it remains named **"f"** in the constructor.
