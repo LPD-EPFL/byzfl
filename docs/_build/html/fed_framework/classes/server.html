@@ -32,7 +32,8 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b8db6181" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=613b6425" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
@@ -46,6 +47,12 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'fed_framework/classes/server';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -347,9 +354,10 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning Framework</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning (FL) Framework</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="fed_learning_sim.html">Federated Learning Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_learning_sim.html">FL Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">FL Benchmark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Helper Modules</span></p>
 <ul class="current nav bd-sidenav">
@@ -590,83 +598,6 @@ Computes accuracy on the test dataset.</p></li>
 <li><p>The server is designed to be resilient against Byzantine behaviors by integrating pre-aggregation and aggregation techniques.</p></li>
 <li><p>Accuracy evaluation is built-in to monitor the model’s progress throughout the simulation.</p></li>
 </ul>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzfl.Server">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="model_base_interface.html#byzfl.ModelBaseInterface" title="byzfl.fed_framework.model_base_interface.ModelBaseInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBaseInterface</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.aggregate">
-<span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.aggregate" title="Link to this definition">#</a></dt>
-<dd><section id="description">
-<h3>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h3>
-<p>Aggregates input vectors using the configured robust aggregator.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param vectors<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A collection of input vectors to be aggregated.</p>
-</dd>
-<dt class="field-even">type vectors<span class="colon">:</span></dt>
-<dd class="field-even"><p>list or np.ndarray or torch.Tensor</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>numpy.ndarray or torch.Tensor</strong> – Aggregated output vector, with the same type as the input vectors.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.compute_test_accuracy">
-<span class="sig-name descname"><span class="pre">compute_test_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.compute_test_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_test_accuracy" title="Link to this definition">#</a></dt>
-<dd><section id="id1">
-<h3>Description<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>Computes the accuracy of the global model on the test dataset.
-This method is used to evaluate the model’s final performance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>float</strong> – Test accuracy as a value between 0 and 1.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.compute_validation_accuracy">
-<span class="sig-name descname"><span class="pre">compute_validation_accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.compute_validation_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.compute_validation_accuracy" title="Link to this definition">#</a></dt>
-<dd><section id="id2">
-<h3>Description<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<p>Computes the accuracy of the global model on the validation dataset.
-This method evaluates the model’s performance during training.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>float</strong> – Validation accuracy as a value between 0 and 1.</p>
-</dd>
-<dt class="field-even">raises RuntimeError<span class="colon">:</span></dt>
-<dd class="field-even"><p>If the validation DataLoader is not set.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.Server.update_model">
-<span class="sig-name descname"><span class="pre">update_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/server.html#Server.update_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Server.update_model" title="Link to this definition">#</a></dt>
-<dd><section id="id3">
-<h3>Description<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>Updates the global model by aggregating the provided gradients and performing
-an optimization step to adjust model parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">param gradients<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of gradients to aggregate and apply to the global model.</p>
-</dd>
-<dt class="field-even">type gradients<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 </section>
 
@@ -721,16 +652,7 @@ an optimization step to adjust model parameters.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization-parameters">Initialization Parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.aggregate"><code class="docutils literal notranslate"><span class="pre">Server.aggregate()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_test_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_test_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.compute_validation_accuracy"><code class="docutils literal notranslate"><span class="pre">Server.compute_validation_accuracy()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Server.update_model"><code class="docutils literal notranslate"><span class="pre">Server.update_model()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
 

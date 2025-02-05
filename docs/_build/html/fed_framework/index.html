@@ -32,7 +32,8 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=b8db6181" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=613b6425" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
@@ -46,12 +47,18 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'fed_framework/index';</script>
     <script src="../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Federated Learning Simulation" href="classes/fed_learning_sim.html" />
+    <link rel="next" title="FL Simulation" href="classes/fed_learning_sim.html" />
     <link rel="prev" title="Gaussian" href="../attacks/classes/gaussian.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -347,9 +354,10 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning Framework</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning (FL) Framework</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="classes/fed_learning_sim.html">Federated Learning Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/fed_learning_sim.html">FL Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/benchmark.html">FL Benchmark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Helper Modules</span></p>
 <ul class="nav bd-sidenav">
@@ -429,9 +437,10 @@
 <h2>Purpose<a class="headerlink" href="#purpose" title="Link to this heading">#</a></h2>
 <p>By leveraging this framework, researchers can gain valuable insights into the performance and resilience of aggregation methods under varying levels of dataset heterogeneity, numbers of adversaries, and other federated learning challenges. It serves as a powerful tool for advancing research in robust distributed machine learning.</p>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning Framework</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning (FL) Framework</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="classes/fed_learning_sim.html">Federated Learning Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/fed_learning_sim.html">FL Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/benchmark.html">FL Benchmark</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -473,7 +482,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Federated Learning Simulation</p>
+        <p class="prev-next-title">FL Simulation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

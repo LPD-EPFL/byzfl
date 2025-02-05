@@ -1,9 +1,9 @@
-.. _federated_learning-label:
+.. _federated_learning-sim-label:
 
-Federated Learning Simulation
-=============================
+FL Simulation
+==================================
 
-The **Federated Learning Simulation** module demonstrates how to use the key components of the library — ``Client``, ``Server``, ``ByzantineClient``, and ``DataDistributor`` — to simulate a federated learning environment. This example showcases how to perform distributed learning with Byzantine-resilient aggregation strategies.
+The **FL Simulation** module demonstrates how to use the key components of the library — ``Client``, ``Server``, ``ByzantineClient``, and ``DataDistributor`` — to simulate a federated learning environment. This example showcases how to perform distributed learning with Byzantine-resilient aggregation strategies.
 
 Key Features
 ------------

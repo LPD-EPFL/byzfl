@@ -32,7 +32,8 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b8db6181" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=613b6425" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
@@ -46,6 +47,12 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'fed_framework/classes/data_distributor';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -347,9 +354,10 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning Framework</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning (FL) Framework</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="fed_learning_sim.html">Federated Learning Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fed_learning_sim.html">FL Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">FL Benchmark</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Helper Modules</span></p>
 <ul class="current nav bd-sidenav">
@@ -434,161 +442,6 @@
 <li><p><strong>Flexible Input Support</strong>: Accepts datasets as PyTorch <cite>DataLoader</cite> objects and processes them seamlessly.</p></li>
 <li><p><strong>Flexible Dataset Management</strong>: Returns data loaders for each client after applying the specified data distribution.</p></li>
 </ul>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzfl.DataDistributor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">DataDistributor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the data distributor. Must include:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt><cite>“data_distribution_name”</cite><span class="classifier">str</span></dt><dd><p>Name of the data distribution strategy (<cite>“iid”</cite>, <cite>“gamma_similarity_niid”</cite>, etc.).</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“distribution_parameter”</cite><span class="classifier">float</span></dt><dd><p>Parameter for the data distribution strategy (e.g., gamma or alpha).</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“nb_honest”</cite><span class="classifier">int</span></dt><dd><p>Number of honest clients to split the dataset among.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“data_loader”</cite><span class="classifier">DataLoader</span></dt><dd><p>The data loader of the dataset to be distributed.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><cite>“batch_size”</cite><span class="classifier">int</span></dt><dd><p>Batch size for the generated dataloaders.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">-</span> <span class="pre">**`split_data()`**:</span></span></dt>
-<dd><p>Splits the dataset into dataloaders based on the specified distribution strategy.</p>
-</dd></dl>
-
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">DataDistributor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./data&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;data_distribution_name&quot;</span><span class="p">:</span> <span class="s2">&quot;dirichlet_niid&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;distribution_parameter&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;nb_honest&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;data_loader&quot;</span><span class="p">:</span> <span class="n">data_loader</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">distributor</span> <span class="o">=</span> <span class="n">DataDistributor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloaders</span> <span class="o">=</span> <span class="n">distributor</span><span class="o">.</span><span class="n">split_data</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.DataDistributor.dirichlet_niid_idx">
-<span class="sig-name descname"><span class="pre">dirichlet_niid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor.dirichlet_niid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor.dirichlet_niid_idx" title="Link to this definition">#</a></dt>
-<dd><p>Creates a Dirichlet non-IID partition of the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – Array of dataset targets (labels).</p></li>
-<li><p><strong>idx</strong> (<em>numpy.ndarray</em>) – Array of dataset indices corresponding to the targets.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>list[numpy.ndarray]</strong> – A list of arrays where each array contains indices for one client.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.DataDistributor.extreme_niid_idx">
-<span class="sig-name descname"><span class="pre">extreme_niid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor.extreme_niid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor.extreme_niid_idx" title="Link to this definition">#</a></dt>
-<dd><p>Creates an extremely non-IID partition of the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – Array of dataset targets (labels).</p></li>
-<li><p><strong>idx</strong> (<em>numpy.ndarray</em>) – Array of dataset indices corresponding to the targets.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>list[numpy.ndarray]</strong> – A list of arrays where each array contains indices for one client.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.DataDistributor.gamma_niid_idx">
-<span class="sig-name descname"><span class="pre">gamma_niid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor.gamma_niid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor.gamma_niid_idx" title="Link to this definition">#</a></dt>
-<dd><p>Creates a gamma-similarity non-IID partition of the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>targets</strong> (<em>numpy.ndarray</em>) – Array of dataset targets (labels).</p></li>
-<li><p><strong>idx</strong> (<em>numpy.ndarray</em>) – Array of dataset indices corresponding to the targets.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>list[numpy.ndarray]</strong> – A list of arrays where each array contains indices for one client.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.DataDistributor.idx_to_dataloaders">
-<span class="sig-name descname"><span class="pre">idx_to_dataloaders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor.idx_to_dataloaders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor.idx_to_dataloaders" title="Link to this definition">#</a></dt>
-<dd><p>Converts index splits into DataLoader objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>split_idx</strong> (<em>list</em><em>[</em><em>numpy.ndarray</em><em>]</em>) – A list of arrays where each array contains indices for one client.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>list[DataLoader]</strong> – A list of DataLoader objects for each client.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.DataDistributor.iid_idx">
-<span class="sig-name descname"><span class="pre">iid_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor.iid_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor.iid_idx" title="Link to this definition">#</a></dt>
-<dd><p>Splits indices into IID (independent and identically distributed) partitions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>idx</strong> (<em>numpy.ndarray</em>) – Array of dataset indices.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>list[numpy.ndarray]</strong> – A list of arrays where each array contains indices for one client.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="byzfl.DataDistributor.split_data">
-<span class="sig-name descname"><span class="pre">split_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/data_distributor.html#DataDistributor.split_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.DataDistributor.split_data" title="Link to this definition">#</a></dt>
-<dd><p>Splits the dataset according to the specified distribution strategy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list[DataLoader]</strong> – A list of DataLoader objects for each client.</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the specified data distribution name is invalid.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 </section>
 
@@ -639,18 +492,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor"><code class="docutils literal notranslate"><span class="pre">DataDistributor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor.dirichlet_niid_idx"><code class="docutils literal notranslate"><span class="pre">DataDistributor.dirichlet_niid_idx()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor.extreme_niid_idx"><code class="docutils literal notranslate"><span class="pre">DataDistributor.extreme_niid_idx()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor.gamma_niid_idx"><code class="docutils literal notranslate"><span class="pre">DataDistributor.gamma_niid_idx()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor.idx_to_dataloaders"><code class="docutils literal notranslate"><span class="pre">DataDistributor.idx_to_dataloaders()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor.iid_idx"><code class="docutils literal notranslate"><span class="pre">DataDistributor.iid_idx()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.DataDistributor.split_data"><code class="docutils literal notranslate"><span class="pre">DataDistributor.split_data()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
 </ul>
   </nav></div>
 

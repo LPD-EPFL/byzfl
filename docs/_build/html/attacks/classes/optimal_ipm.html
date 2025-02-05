@@ -32,7 +32,8 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b8db6181" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=613b6425" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
   <!-- So that users can add custom icons -->
@@ -46,8 +47,12 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'attacks/classes/optimal_ipm';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -237,10 +242,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -416,115 +417,6 @@
                   
   <section id="optimal-inner-product-manipulation-opt-ipm">
 <span id="opt-ipm-label"></span><h1>Optimal Inner Product Manipulation (Opt-IPM)<a class="headerlink" href="#optimal-inner-product-manipulation-opt-ipm" title="Link to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="byzfl.Optimal_InnerProductManipulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">Optimal_InnerProductManipulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">agg=&lt;byzfl.aggregators.aggregators.Average</span> <span class="pre">object&gt;,</span> <span class="pre">pre_agg_list=[&lt;byzfl.aggregators.preaggregators.Clipping</span> <span class="pre">object&gt;],</span> <span class="pre">f=1,</span> <span class="pre">evals=20,</span> <span class="pre">start=0.0,</span> <span class="pre">delta=10.0,</span> <span class="pre">ratio=0.8</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/attacks/attacks.html#Optimal_InnerProductManipulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.Optimal_InnerProductManipulation" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Generalization of the <a class="reference internal" href="inner_product_manipulation.html#ipm-label"><span class="std std-ref">Inner Product Manipulation (IPM)</span></a> attack <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> by optimizing the attack factor <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\text{Opt-IPM}_{\textit{agg}, \textit{pre_agg_list}, f}(x_1, \dots, x_n) = - \tau_{opt} \cdot \frac{1}{n} \sum_{i=1}^{n} x_i\]</div>
-<p>where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to correct gradients submitted by honest participants during a training iteration.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\textit{agg}\)</span> is the robust aggregator to be used to aggregate the vectors during the training.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\textit{pre_agg_list}\)</span> is the list of robust pre-aggregators to be used to transform the vectors during the training.</p></li>
-<li><p><span class="math notranslate nohighlight">\(f\)</span> conceptually represents the expected number of Byzantine vectors.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\tau_{opt} \in \mathbb{R}\)</span> is the optimal attack factor found using a line-search optimization method.</p></li>
-</ul>
-<p>This attack is designed to optimize the attack factor <span class="math notranslate nohighlight">\(\tau\)</span> of the IPM attack by maximizing a specific function.
-The function quantifies the effect of the attack, in particular the \(\ell_2\)-norm of the distance between the aggregated vectors (including Byzantine vectors) and the average of honest vectors.
-The goal is to find the attack factor that results in the maximum disruption.</p>
-<p>This attack, developed by the ByzFL team, draws inspiration from the IPM attack and has been utilized in <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>agg</strong> (<em>object, optional (default: Average)</em>) – An instance of a robust aggregator that will be used to aggregate the vectors during the optimization process.</p></li>
-<li><p><strong>pre_agg_list</strong> (<em>list, optional (default: [Clipping])</em>) – A list of pre-aggregation functions, where each element is an object representing a pre-aggregation method.</p></li>
-<li><p><strong>f</strong> (<em>int, optional (default: 1)</em>) – The number of Byzantine participants. Must be a non-negative integer.</p></li>
-<li><p><strong>evals</strong> (<em>int, optional (default: 20)</em>) – The maximum number of evaluations during the optimization process. Must be a positive integer.</p></li>
-<li><p><strong>start</strong> (<em>float, optional (default: 0.0)</em>) – The initial attack factor to evaluate. Must be a float.</p></li>
-<li><p><strong>delta</strong> (<em>float, optional (default: 10.0)</em>) – The initial step size for the optimization process. Must be a non-zero float.</p></li>
-<li><p><strong>ratio</strong> (<em>float, optional (default: 0.8)</em>) – The contraction ratio used to reduce the step size during the contraction phase. Must be between 0.5 and 1 (both excluded).</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Calling the instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output is the same as the input.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate the robust aggregator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">TrMean</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate the list of pre-aggregators</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pre_agg_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">byzfl</span><span class="o">.</span><span class="n">NNM</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Clipping</span><span class="p">()]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Instantiate the attack</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">Optimal_InnerProductManipulation</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="n">pre_agg_list</span><span class="o">=</span><span class="n">pre_agg_list</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Using numpy arrays</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([-2.98949673 -3.73687091 -4.48424509])</span>
-</pre></div>
-</div>
-<p>Using torch tensors</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>   <span class="c1"># torch.tensor</span>
-<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([-2.9895, -3.7369, -4.4842])</span>
-</pre></div>
-</div>
-<p>Using list of numpy arrays</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([-2.98949673 -3.73687091 -4.48424509])</span>
-</pre></div>
-</div>
-<p>Using list of torch tensors</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
-<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([-2.9895, -3.7369, -4.4842])</span>
-</pre></div>
-</div>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-tolerant
-sgd by inner product manipulation. In Ryan P. Adams and Vibhav Gogate (eds.), Proceedings of
-The 35th Uncertainty in Artificial Intelligence Conference, volume 115 of Proceedings of Machine
-Learning Research, pp. 261–270. PMLR, 22–25 Jul 2020. URL <a class="reference external" href="https://proceedings.mlr.press/v115/xie20a.html">https://proceedings.mlr.press/v115/xie20a.html</a>.</p>
-</aside>
-<aside class="footnote brackets" id="id4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Allouah, Y., Farhadkhani, S., Guerraoui, R., Gupta, N., Pinot, R.,
-&amp; Stephan, J. (2023, April). Fixing by mixing: A recipe for optimal
-byzantine ml under heterogeneity. In International Conference on
-Artificial Intelligence and Statistics (pp. 1232-1300). PMLR.</p>
-</aside>
-</aside>
-</section>
-</dd></dl>
-
 </section>
 
 
@@ -561,24 +453,6 @@ Artificial Intelligence and Statistics (pp. 1232-1300). PMLR.</p>
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.Optimal_InnerProductManipulation"><code class="docutils literal notranslate"><span class="pre">Optimal_InnerProductManipulation</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
