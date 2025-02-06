@@ -72,12 +72,8 @@ Below is a sample of a ``config.json`` file, testing the robustness of state-of-
                 "device": "cuda",
                 "training_seed": 0,
                 "nb_training_seeds": 3,
-                "nb_workers": 10,
-                "nb_byz": [1, 2, 3, 4],
-                "declared_nb_byz": [1, 2, 3, 4],
-                "declared_equal_real": true,
-                "fix_workers_as_honest": false,
-                "size_train_set": 0.8,
+                "nb_workers": 10,       // honest by default
+                "f": [1, 2, 3, 4],
                 "data_distribution_seed": 0,
                 "nb_data_distribution_seeds": 1,
                 "data_distribution": [
@@ -144,11 +140,9 @@ Below is a sample of a ``config.json`` file, testing the robustness of state-of-
             ],
             "evaluation_and_results": {
                 "evaluation_delta": 50,
-                "evaluate_on_test": true,
                 "store_training_accuracy": true,
                 "store_training_loss": true,
                 "store_models": false,
-                "data_folder": null,
                 "results_directory": "./results"
             }
         }
@@ -165,7 +159,7 @@ The FL Benchmark allows users to configure a wide range of parameters, enabling 
     - **Model**: Select the neural network architecture for federated learning.
     - **Number of Workers**: Specify the total number of participating clients.
     - **Number of Byzantine Workers**: Define the number of adversarial clients in the system.
-    - **Number of Declared Byzantine Workers**: Control how many clients are suspected of being adversarial.
+    - **Number of Tolerated Byzantine Workers**: Control how many clients are suspected of being adversarial.
     - **Data Distribution**: Configure the data heterogeneity across clients (IID, non-IID distributions).
     - **Aggregators**: Test different aggregation methods (e.g., Trimmed Mean, Geometric Median). *(Hyperparameters must be specified separately.)*
     - **Preaggregators**: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). *(Hyperparameters must be specified separately.)*
@@ -177,7 +171,7 @@ The FL Benchmark allows users to configure a wide range of parameters, enabling 
 .. note::
    - You can specify a list of values for any supported parameter in ``config.json``. Each entry in the list is treated as a separate simulation.
    - Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.
-   - The `f` parameter must not be explicitly provided to aggregators, pre-aggregators, or attacks that require it, as it is already determined based on the values of  "nb_byz" and "declared_nb_byz".
+   - The `f` parameter must not be explicitly provided to aggregators, pre-aggregators, or attacks that require it in their parameters, as it is already determined based on the values of  "f" and "tolerated_f".
 
 
 Launching the Benchmark
@@ -229,7 +223,7 @@ One plot (with several curves: one per considered attack) is produced per aggreg
 Example Plot
 ^^^^^^^^^^^^
 
-For ``nb_byz=2``, ``declared_nb_byz=2``, ``distribution parameter = 0.0``, ``aggregator = Trimmed Mean``:
+For ``f=2``, ``tolerated_f=2``, ``distribution parameter = 0.0``, ``aggregator = Trimmed Mean``:
 
 .. image:: ../../_static/plots_example/mnist_cnn_mnist_n_10_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png
    :alt: Example Accuracy Plot
@@ -279,7 +273,7 @@ Heatmap of training losses
 
 
 Heatmap of test accuracies
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -351,7 +345,7 @@ ByzFL is **fully extensible**, allowing users to integrate custom **aggregators,
     git clone https://github.com/LPD-EPFL/byzfl.git
 
 **Example: Adding a Custom Aggregator**
-**********************************
+****************************************
 
 To add a new aggregation method:
 
