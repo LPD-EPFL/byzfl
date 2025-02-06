@@ -12,10 +12,10 @@ default_config = {
         "training_seed": 0,
         "nb_training_seeds": 3,
         "nb_workers": 10,
-        "nb_byz": [1, 2, 3, 4],
-        "declared_nb_byz": [1, 2, 3, 4],
-        "declared_equal_real": True,
-        "fix_workers_as_honest": False,
+        "f": [1, 2, 3, 4],
+        "tolerated_f": [1, 2, 3, 4],
+        "filter_non_matching_f_tolerated_f": True,
+        "fix_workers_as_honest": True,
         "size_train_set": 0.8,
         "data_distribution_seed": 0,
         "nb_data_distribution_seeds": 1,
@@ -58,7 +58,6 @@ default_config = {
     "server": {
         "learning_rate": 0.1,
         "nb_steps": 800,
-        "batch_norm_momentum": None,
         "batch_size_evaluation": 100,
         "learning_rate_decay": 1.0,
         "milestones": []
@@ -88,7 +87,7 @@ default_config = {
         "store_training_accuracy": True,
         "store_training_loss": True,
         "store_models": False,
-        "data_folder": None,
+        "data_folder": "./data",
         "results_directory": "./results"
     }
 }
@@ -116,7 +115,7 @@ def generate_all_combinations_aux(list_dict, orig_dict, aux_dict, rest_list):
                     else:
                         new_list_dict = [item]
                     for new_dict in new_list_dict:
-                        new_aux_dict = aux_dict.copy()
+                        new_aux_dict = copy.deepcopy(aux_dict)
                         new_aux_dict[key] = new_dict
                         
                         generate_all_combinations_aux(list_dict,
@@ -151,10 +150,6 @@ def generate_all_combinations(original_dict, restriction_list):
     aux_dict = {}
     generate_all_combinations_aux(list_dict, original_dict, aux_dict, restriction_list)
     return list_dict
-
-import os
-import copy
-import argparse
 
 # Global variable to keep track of training progress
 counter = None
@@ -225,8 +220,8 @@ def eliminate_experiments_done(dict_list):
             f"{setting['model']['dataset_name']}_"
             f"{setting['model']['name']}_"
             f"n_{setting['benchmark_config']['nb_workers']}_"
-            f"f_{setting['benchmark_config']['nb_byz']}_"
-            f"d_{setting['benchmark_config']['declared_nb_byz']}_"
+            f"f_{setting['benchmark_config']['f']}_"
+            f"d_{setting['benchmark_config']['tolerated_f']}_"
             f"{setting['benchmark_config']['data_distribution']['name']}_"
             f"{setting['benchmark_config']['data_distribution']['distribution_parameter']}_"
             f"{setting['aggregator']['name']}_"
@@ -317,12 +312,12 @@ def remove_real_greater_declared(dict_list):
     Returns
     -------
     list of dict
-        The filtered list where declared_nb_byz >= nb_byz.
+        The filtered list where tolerated_f >= f.
     """
     new_dict_list = []
     for setting in dict_list:
-        real_byz = setting["benchmark_config"]["nb_byz"]
-        declared_byz = setting["benchmark_config"]["declared_nb_byz"]
+        real_byz = setting["benchmark_config"]["f"]
+        declared_byz = setting["benchmark_config"]["tolerated_f"]
         if declared_byz >= real_byz:
             new_dict_list.append(setting)
     return new_dict_list
@@ -341,15 +336,54 @@ def remove_real_not_equal_declared(dict_list):
     Returns
     -------
     list of dict
-        The filtered list where declared_nb_byz == nb_byz.
+        The filtered list where tolerated_f == f.
     """
     new_dict_list = []
     for setting in dict_list:
-        real_byz = setting["benchmark_config"]["nb_byz"]
-        declared_byz = setting["benchmark_config"]["declared_nb_byz"]
+        real_byz = setting["benchmark_config"]["f"]
+        declared_byz = setting["benchmark_config"]["tolerated_f"]
         if declared_byz == real_byz:
             new_dict_list.append(setting)
     return new_dict_list
+
+def set_declared_as_aggregation_parameter(dict_list):
+    """
+    For each configuration, set the aggregator and preaggregator parameter 'f' to the declared number of Byzantine workers.
+
+    Parameters
+    ----------
+    dict_list : list of dict
+        A list of configuration dictionaries.
+
+    Returns
+    -------
+    list of dict
+        The modified list with aggregator parameters updated.
+    """
+    for setting in dict_list:
+        declared_byz = setting["benchmark_config"]["tolerated_f"]
+        setting["aggregator"]["parameters"]["f"] = declared_byz
+
+        for pre_agg in setting["pre_aggregators"]:
+                pre_agg["parameters"]["f"] = declared_byz
+                
+    return dict_list
+
+def compute_number_of_honest_workers(dict_list):
+    for setting in dict_list:
+        # Adjust the number of workers if needed
+        if setting["benchmark_config"]["fix_workers_as_honest"]:
+            setting["benchmark_config"]["nb_honest"] = setting["benchmark_config"]["nb_workers"]
+            setting["benchmark_config"]["nb_workers"] = (
+                setting["benchmark_config"]["nb_honest"]
+                + setting["benchmark_config"]["f"]
+            )
+        else:
+            setting["benchmark_config"]["nb_honest"] = (
+                setting["benchmark_config"]["nb_workers"]
+                - setting["benchmark_config"]["f"]
+            )
+    return dict_list
 
 def ensure_key_parameters(dict_list):
     """
@@ -370,44 +404,37 @@ def ensure_key_parameters(dict_list):
                 
     return dict_list
 
-def set_declared_as_aggregation_parameter(dict_list):
-    """
-    For each configuration, set the aggregator and preaggregator parameter 'f' to the declared number of Byzantine workers.
 
-    Parameters
-    ----------
-    dict_list : list of dict
-        A list of configuration dictionaries.
+def ensure_key_config_parameters(data):
 
-    Returns
-    -------
-    list of dict
-        The modified list with aggregator parameters updated.
-    """
-    for setting in dict_list:
-        declared_byz = setting["benchmark_config"]["declared_nb_byz"]
-        setting["aggregator"]["parameters"]["f"] = declared_byz
+    if "nb_workers" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["nb_workers"] = 10
 
-        for pre_agg in setting["pre_aggregators"]:
-                pre_agg["parameters"]["f"] = declared_byz
-                
-    return dict_list
+    if "tolerated_f" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["tolerated_f"] = data["benchmark_config"]["f"]
+    
+    if "filter_non_matching_f_tolerated_f" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["filter_non_matching_f_tolerated_f"] = True
 
-def compute_number_of_honest_workers(dict_list):
-    for data in dict_list:
-        # Adjust the number of workers if needed
-        if data["benchmark_config"]["fix_workers_as_honest"]:
-            data["benchmark_config"]["nb_honest"] = data["benchmark_config"]["nb_workers"]
-            data["benchmark_config"]["nb_workers"] = (
-                data["benchmark_config"]["nb_honest"]
-                + data["benchmark_config"]["nb_byz"]
-            )
-        else:
-            data["benchmark_config"]["nb_honest"] = (
-                data["benchmark_config"]["nb_workers"]
-                - data["benchmark_config"]["nb_byz"]
-            )
-    return dict_list
+    if "fix_workers_as_honest" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["fix_workers_as_honest"] = True
+    
+    if "training_seed" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["training_seed"] = 0
+
+    if "nb_training_seeds" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["nb_training_seeds"] = 1
+    
+    if "data_distribution_seed" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["data_distribution_seed"] = 0
+
+    if "nb_data_distribution_seeds" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["nb_data_distribution_seeds"] = 1
+    
+    if "results_directory" not in data["evaluation_and_results"].keys():
+        data["evaluation_and_results"]["results_directory"] = "./results"
+
+    return data
 
 
 def run_benchmark(nb_jobs=1):
@@ -419,6 +446,7 @@ def run_benchmark(nb_jobs=1):
     try:
         with open('config.json', 'r') as file:
             data = json.load(file)
+            data = ensure_key_config_parameters(data)
     except FileNotFoundError:
         print("'config.json' not found. Creating a default one...")
         with open('config.json', 'w') as f:
@@ -428,7 +456,7 @@ def run_benchmark(nb_jobs=1):
         return
 
     # Determine the results directory (default to ./results)
-    results_directory = data["evaluation_and_results"].get("results_directory", "./results")
+    results_directory = data["evaluation_and_results"]["results_directory"]
     os.makedirs(results_directory, exist_ok=True)
 
     # Save the current config inside the results directory
@@ -440,11 +468,12 @@ def run_benchmark(nb_jobs=1):
     restriction_list = ["pre_aggregators", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
 
-    # Filter combinations based on real vs. declared Byzantines
-    if data["benchmark_config"]["declared_equal_real"]:
+    # Filter combinations based on f vs. tolerated f
+    if data["benchmark_config"]["filter_non_matching_f_tolerated_f"]:
         dict_list = remove_real_not_equal_declared(dict_list)
     else:
         dict_list = remove_real_greater_declared(dict_list)
+
 
     # Ensure that the key parameters are present in the dictionaries
     # even if they are not in the config file

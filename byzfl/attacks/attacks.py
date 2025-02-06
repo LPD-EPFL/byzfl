@@ -1132,3 +1132,13 @@ class Gaussian:
         random = random_tool(honest_vectors)
         shape = honest_vectors.shape[1]
         return random.normal(loc=self.mu, scale=self.sigma, size=shape)
+
+
+class Average(object):
+
+    def __init__(self):
+        pass        
+    
+    def __call__(self, vectors):
+        tools, vectors = check_vectors_type(vectors)
+        return tools.mean(vectors, axis=0)

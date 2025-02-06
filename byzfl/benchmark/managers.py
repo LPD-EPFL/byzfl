@@ -138,14 +138,14 @@ class ParamsManager(object):
                 "training_seed": self.get_training_seed(),
                 "nb_training_seeds": self.get_nb_training_seeds(),
                 "nb_workers": self.get_nb_workers(),
-                "nb_byz": self.get_nb_byz(),
-                "declared_nb_byz": self.get_declared_nb_byz(),
-                "declared_equal_real": self.get_declared_equal_real(),
+                "f": self.get_f(),
+                "tolerated_f": self.get_tolerated_f(),
+                "filter_non_matching_f_tolerated_f": self.get_filter_non_matching_f_tolerated_f(),
                 "fix_workers_as_honest": self.get_fix_workers_as_honest(),
                 "size_train_set": self.get_size_train_set(),
                 "data_distribution_seed": self.get_data_distribution_seed(),
                 "nb_data_distribution_seeds": self.get_nb_data_distribution_seeds(),
-                "data_distribution": self.get_data_distribution(),
+                "data_distribution": self.get_data_distribution()
             },
             "model": {
                 "name": self.get_model_name(),
@@ -158,7 +158,6 @@ class ParamsManager(object):
             "server": {
                 "learning_rate": self.get_server_learning_rate(),
                 "nb_steps": self.get_nb_steps(),
-                "batch_norm_momentum": self.get_server_batch_norm_momentum(),
                 "batch_size_evaluation": self.get_server_batch_size_evaluation(),
                 "learning_rate_decay": self.get_server_learning_rate_decay(),
                 "milestones": self.get_server_milestones()
@@ -214,26 +213,26 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_nb_byz(self):
+    def get_f(self):
         default = 0
-        path = ["benchmark_config", "nb_byz"]
+        path = ["benchmark_config", "f"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_declared_nb_byz(self):
-        default = 0
-        path = ["benchmark_config", "declared_nb_byz"]
+    def get_tolerated_f(self):
+        default = self.get_f()
+        path = ["benchmark_config", "tolerated_f"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_declared_equal_real(self):
-        default = False
-        path = ["benchmark_config", "declared_equal_real"]
+    def get_filter_non_matching_f_tolerated_f(self):
+        default = True
+        path = ["benchmark_config", "filter_non_matching_f_tolerated_f"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
     def get_fix_workers_as_honest(self):
-        default = False
+        default = True
         path = ["benchmark_config", "fix_workers_as_honest"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
@@ -272,7 +271,7 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
     
     def get_parameter_data_distribution(self):
-        default = None
+        default = 1.0
         path = ["benchmark_config", "data_distribution", "distribution_parameter"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
@@ -320,15 +319,19 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
     
     def get_aggregator_parameters(self):
+        default = {}
         path = ["aggregator", "parameters"]
-        return self._read_object(path)
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
 
     # ----------------------------------------------------------------------
     #  Pre-Aggregators
     # ----------------------------------------------------------------------
     def get_preaggregators(self):
+        default = []
         path = ["pre_aggregators"]
-        return self._read_object(path)
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
 
     # ----------------------------------------------------------------------
     #  Server Accessors
@@ -346,14 +349,8 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     def get_nb_steps(self):
-        default = 800
+        default = 1000
         path = ["server", "nb_steps"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_server_batch_norm_momentum(self):
-        default = None
-        path = ["server", "batch_norm_momentum"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
@@ -379,7 +376,7 @@ class ParamsManager(object):
     #  Honest Nodes
     # ----------------------------------------------------------------------
     def get_honest_nodes_momentum(self):
-        default = 0.99
+        default = 0.9
         path = ["honest_nodes", "momentum"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
@@ -391,7 +388,7 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     def get_honest_nodes_batch_size(self):
-        default = 25
+        default = 32
         path = ["honest_nodes", "batch_size"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
@@ -446,7 +443,7 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     def get_store_models(self):
-        default = True
+        default = False
         path = ["evaluation_and_results", "store_models"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)

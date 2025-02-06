@@ -26,25 +26,6 @@ def ensure_list(value):
     return value
 
 
-def compute_number_of_honest_workers(nb_workers, nb_byz, fix_workers_as_honest):
-    """
-    Compute the number of honest and total workers based on:
-      - Initial nb_workers
-      - Number of byzantine workers (nb_byz)
-      - Whether the worker set is fixed to be honest (fix_workers_as_honest)
-
-    Returns:
-      (total_workers, honest_workers)
-    """
-    if fix_workers_as_honest:
-        nb_honest = nb_workers
-        nb_workers = nb_honest + nb_byz
-    else:
-        nb_honest = nb_workers - nb_byz
-
-    return nb_workers, nb_honest
-
-
 def find_best_hyperparameters(path_to_results):
     """
     Find the best hyperparameters (learning rate, momentum, weight decay) 
@@ -68,7 +49,7 @@ def find_best_hyperparameters(path_to_results):
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_workers = data["benchmark_config"]["nb_workers"]
-    nb_byz = data["benchmark_config"]["nb_byz"]
+    nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
@@ -264,7 +245,7 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         training_seed = data["benchmark_config"]["training_seed"]
         nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
         nb_workers = data["benchmark_config"]["nb_workers"]
-        nb_byz = data["benchmark_config"]["nb_byz"]
+        nb_byz = data["benchmark_config"]["f"]
         data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
         nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
         data_distributions = data["benchmark_config"]["data_distribution"]
@@ -416,7 +397,7 @@ def heat_map_loss(path_to_results, path_to_plot):
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_workers = data["benchmark_config"]["nb_workers"]
-    nb_byz = data["benchmark_config"]["nb_byz"]
+    nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
@@ -594,7 +575,7 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_workers = data["benchmark_config"]["nb_workers"]
-    nb_byz = data["benchmark_config"]["nb_byz"]
+    nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
@@ -765,7 +746,7 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_workers = data["benchmark_config"]["nb_workers"]
-    nb_byz = data["benchmark_config"]["nb_byz"]
+    nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]

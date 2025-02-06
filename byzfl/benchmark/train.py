@@ -35,14 +35,13 @@ def start_training(params):
     params_manager = ParamsManager(params)
 
     # <----------------- File Manager  ----------------->
-
     file_manager = FileManager({
         "result_path": params_manager.get_results_directory(),
         "dataset_name": params_manager.get_dataset_name(),
         "model_name": params_manager.get_model_name(),
         "nb_workers": params_manager.get_nb_workers(),
-        "nb_byz": params_manager.get_nb_byz(),
-        "declared_nb_byz": params_manager.get_declared_nb_byz(),
+        "nb_byz": params_manager.get_f(),
+        "declared_nb_byz": params_manager.get_tolerated_f(),
         "data_distribution_name": params_manager.get_name_data_distribution(),
         "distribution_parameter": params_manager.get_parameter_data_distribution(),
         "aggregation_name": params_manager.get_aggregator_name(),
@@ -62,7 +61,7 @@ def start_training(params):
 
     # Configurations
     nb_honest_clients = params_manager.get_nb_honest()
-    nb_byz_clients = params_manager.get_nb_byz()
+    nb_byz_clients = params_manager.get_f()
     nb_training_steps = params_manager.get_nb_steps()
     batch_size = params_manager.get_honest_nodes_batch_size()
 
@@ -164,8 +163,15 @@ def start_training(params):
     attack_parameters["pre_agg_list"] = params_manager.get_preaggregators()
     attack_parameters["f"] = nb_byz_clients
 
+    label_flipping_attack = False
+    attack_name = params_manager.get_attack_name()
+
+    if attack_name == "LabelFlipping":
+        label_flipping_attack = True
+        attack_name = "Average"
+
     attack = {
-        "name": params_manager.get_attack_name(),
+        "name": attack_name,
         "f": nb_byz_clients,
         "parameters": attack_parameters,
     }
@@ -226,8 +232,15 @@ def start_training(params):
         # Aggregate Honest Gradients
         honest_gradients = [client.get_flat_gradients_with_momentum() for client in honest_clients]
 
+        # Deal with Label Flipping Attack
+        attack_input = (
+            [client.get_flat_flipped_gradients() for client in honest_clients]
+            if label_flipping_attack
+            else honest_gradients
+        )
+
         # Apply Byzantine Attack
-        byz_vector = byz_client.apply_attack(honest_gradients)
+        byz_vector = byz_client.apply_attack(attack_input)
 
         # Combine Honest and Byzantine Gradients
         gradients = honest_gradients + byz_vector
