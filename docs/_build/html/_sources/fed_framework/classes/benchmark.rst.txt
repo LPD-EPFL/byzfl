@@ -223,9 +223,9 @@ One plot (with several curves: one per considered attack) is produced per aggreg
 Example Plot
 ^^^^^^^^^^^^
 
-For ``f=2``, ``tolerated_f=2``, ``distribution parameter = 0.0``, ``aggregator = Trimmed Mean``:
+For ``nb_honest_clients=10`` ``f=2``, ``distribution parameter = 0.0``, ``aggregator = Trimmed Mean``:
 
-.. image:: ../../_static/plots_example/mnist_cnn_mnist_n_10_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png
+.. image:: ../../_static/plots_example/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png
    :alt: Example Accuracy Plot
    :scale: 50%
    :align: center
