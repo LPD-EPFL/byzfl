@@ -14,21 +14,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -36,14 +34,13 @@
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=613b6425" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -62,7 +59,6 @@
     <link rel="prev" title="Client" href="client.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -70,16 +66,31 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -87,6 +98,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -94,27 +106,20 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
+</form></div>
+  </div>
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
-  </button>
+  </label>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
-  
-    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -129,7 +134,7 @@
     
     
     <img src="../../_static/byzfl_logo.png" class="logo__image only-light" alt="ByzFL - Home"/>
-    <img src="../../_static/byzfl_logo.png" class="logo__image only-dark pst-js-only" alt="ByzFL - Home"/>
+    <script>document.write(`<img src="../../_static/byzfl_logo.png" class="logo__image only-dark" alt="ByzFL - Home"/>`);</script>
   
   
 </a></div>
@@ -141,36 +146,36 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav>
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../aggregators/index.html">
-    Aggregators
-  </a>
-</li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../aggregators/index.html">
+                        Aggregators
+                      </a>
+                    </li>
+                
 
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../attacks/index.html">
+                        Attacks
+                      </a>
+                    </li>
+                
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../attacks/index.html">
-    Attacks
-  </a>
-</li>
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Federated Learning Framework
+                      </a>
+                    </li>
+                
 
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../index.html">
-    Federated Learning Framework
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../team/index.html">
-    Our Team
-  </a>
-</li>
-
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../team/index.html">
+                        Our Team
+                      </a>
+                    </li>
+                
   </ul>
 </nav></div>
       
@@ -182,23 +187,31 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links"
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -209,7 +222,7 @@
           
           
           
-          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -221,7 +234,7 @@
           
           
           
-          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i>
+          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">PyPi</span></a>
         </li>
 </ul></div>
@@ -233,18 +246,22 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
-    </button>
+    </label>
   
 </div>
 
@@ -256,8 +273,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -266,42 +282,39 @@
     
       <div class="sidebar-header-items__center">
         
-          
-          
-            <div class="navbar-item">
-<nav>
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../aggregators/index.html">
-    Aggregators
-  </a>
-</li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../aggregators/index.html">
+                        Aggregators
+                      </a>
+                    </li>
+                
 
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../attacks/index.html">
+                        Attacks
+                      </a>
+                    </li>
+                
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../attacks/index.html">
-    Attacks
-  </a>
-</li>
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Federated Learning Framework
+                      </a>
+                    </li>
+                
 
-
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../index.html">
-    Federated Learning Framework
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../team/index.html">
-    Our Team
-  </a>
-</li>
-
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../team/index.html">
+                        Our Team
+                      </a>
+                    </li>
+                
   </ul>
 </nav></div>
-          
         
       </div>
     
@@ -311,13 +324,17 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links"
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -328,7 +345,7 @@
           
           
           
-          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -340,7 +357,7 @@
           
           
           
-          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i>
+          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">PyPi</span></a>
         </li>
 </ul></div>
@@ -382,20 +399,22 @@
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-<nav aria-label="Breadcrumb" class="d-print-none">
+
+
+<nav aria-label="Breadcrumb">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -406,7 +425,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Federated Learning Framework</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Byzantine Client</span></li>
+    <li class="breadcrumb-item active" aria-current="page">Byzantine Client</li>
   </ul>
 </nav>
 </div>
@@ -436,6 +455,103 @@ Allows customization of the type and intensity of attacks through a flexible par
 <li><p><strong>Integration with Federated Learning</strong>:
 Easily integrates into federated learning workflows alongside honest clients and the central server.</p></li>
 </ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.ByzantineClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ByzantineClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/byzantine_client.html#ByzantineClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineClient" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Initialization Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – A dictionary containing the configuration for the Byzantine attack. Must include:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><cite>“f”</cite>: int</dt><dd><p>The number of faulty (Byzantine) vectors to generate.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>“name”</cite>: str</dt><dd><p>The name of the attack to be executed (e.g., <cite>“InnerProductManipulation”</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>“parameters”</cite>: dict</dt><dd><p>A dictionary of parameters for the specified attack, where keys are parameter names and values are their corresponding values.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="byzfl.ByzantineClient.apply_attack">
+<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/byzantine_client.html#ByzantineClient.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ByzantineClient.apply_attack" title="Link to this definition">#</a></dt>
+<dd><p>Applies the specified Byzantine attack to the input vectors and returns a list of faulty vectors.</p>
+</dd></dl>
+
+<p class="rubric">Calling the Instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Input Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray, or list of torch.Tensor</em>) – A collection of input vectors, matrices, or tensors representing gradients submitted by honest participants.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong> – A list containing <cite>f</cite> faulty vectors generated by the Byzantine attack, each with the same data type as the input.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Initialize the <cite>ByzantineClient</cite> with a specific attack and apply it to input vectors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">byzfl</span> <span class="kn">import</span> <span class="n">ByzantineClient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">attack</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;InnerProductManipulation&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tau&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span> <span class="o">=</span> <span class="n">ByzantineClient</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using numpy arrays:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[array([-12., -15., -18.]), array([-12., -15., -18.]), array([-12., -15., -18.])]</span>
+</pre></div>
+</div>
+<p>Using torch tensors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[tensor([-12., -15., -18.]), tensor([-12., -15., -18.]), tensor([-12., -15., -18.])]</span>
+</pre></div>
+</div>
+<p>Using a list of numpy arrays:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[array([-12., -15., -18.]), array([-12., -15., -18.]), array([-12., -15., -18.])]</span>
+</pre></div>
+</div>
+<p>Using a list of torch tensors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">honest_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byz_worker</span><span class="o">.</span><span class="n">apply_attack</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span>
+<span class="go">[tensor([-12., -15., -18.]), tensor([-12., -15., -18.]), tensor([-12., -15., -18.])]</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">apply_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">honest_vectors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/fed_framework/byzantine_client.html#ByzantineClient.apply_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>Applies the specified Byzantine attack to the input vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>honest_vectors</strong> (<em>numpy.ndarray</em><em>, </em><em>torch.Tensor</em><em>, </em><em>list</em><em> of </em><em>numpy.ndarray</em><em>, or </em><em>list</em><em> of </em><em>torch.Tensor</em>) – A collection of input vectors, matrices, or tensors representing gradients submitted by honest participants.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong> – A list containing <cite>f</cite> faulty (Byzantine) vectors generated by the attack, each with the same data type as the input.
+If <cite>f = 0</cite>, an empty list is returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
@@ -453,7 +569,7 @@ Easily integrates into federated learning workflows alongside honest clients and
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -481,8 +597,7 @@ Easily integrates into federated learning workflows alongside honest clients and
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -493,7 +608,14 @@ Easily integrates into federated learning workflows alongside honest clients and
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient"><code class="docutils literal notranslate"><span class="pre">ByzantineClient</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ByzantineClient.apply_attack"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">ByzantineClient.apply_attack()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
   </nav></div>
@@ -511,8 +633,8 @@ Easily integrates into federated learning workflows alongside honest clients and
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -532,7 +654,7 @@ Easily integrates into federated learning workflows alongside honest clients and
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>
@@ -545,7 +667,7 @@ Easily integrates into federated learning workflows alongside honest clients and
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>

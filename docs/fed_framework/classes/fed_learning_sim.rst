@@ -20,6 +20,7 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
 .. code-block:: python
 
     # Import necessary libraries
+    from torch import Tensor
     from torch.utils.data import DataLoader
     from torchvision import datasets, transforms
     from byzfl import Client, Server, ByzantineClient, DataDistributor
@@ -38,6 +39,7 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
     # Data Preparation
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
     train_dataset = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
+    train_dataset.targets = Tensor(train_dataset.targets).long() # Required for Datasets that targets are not Tensor (e.g. CIFAR-10)
     train_loader = DataLoader(train_dataset, shuffle=True)
 
     # Distribute data among clients using non-IID Dirichlet distribution
@@ -55,7 +57,12 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
         Client({
             "model_name": "cnn_mnist",
             "device": "cpu",
+            "optimizer_name": "SGD",
+            "learning_rate": 0.1,
             "loss_name": "NLLLoss",
+            "weight_decay": 0.0001,
+            "milestones": [1000],
+            "learning_rate_decay": 0.25,
             "LabelFlipping": False,
             "training_dataloader": client_dataloaders[i],
             "momentum": 0.9,
@@ -65,6 +72,7 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
 
     # Prepare Test Dataset
     test_dataset = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
+    test_dataset.targets = Tensor(test_dataset.targets).long() # Required for Datasets that targets are not Tensor (e.g. CIFAR-10)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     # Server Setup, Use SGD Optimizer
@@ -92,13 +100,13 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
     }
     byz_client = ByzantineClient(attack)
 
-    # Training Loop
-    for training_step in range(nb_training_steps+1):
+    # Send Initial Model to All Clients
+    new_model = server.get_dict_parameters()
+    for client in honest_clients:
+        client.set_model_state(new_model)
 
-        # Send (Updated) Server Model to Clients
-        server_model = server.get_dict_parameters()
-        for client in honest_clients:
-            client.set_model_state(server_model)
+    # Training Loop
+    for training_step in range(nb_training_steps):
 
         # Evaluate Global Model Every 100 Training Steps
         if training_step % 100 == 0:
@@ -121,6 +129,11 @@ This example uses the MNIST dataset to simulate a federated learning setup with 
 
         # Update Global Model
         server.update_model(gradients)
+
+        # Send Updated Model to Clients
+        new_model = server.get_dict_parameters()
+        for client in honest_clients:
+            client.set_model_state(new_model)
 
     print("Training Complete!")
 

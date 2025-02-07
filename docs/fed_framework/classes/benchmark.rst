@@ -72,7 +72,7 @@ Below is a sample of a ``config.json`` file, testing the robustness of state-of-
                 "device": "cuda",
                 "training_seed": 0,
                 "nb_training_seeds": 3,
-                "nb_workers": 10,       // honest by default
+                "nb_honest_clients": 10,
                 "f": [1, 2, 3, 4],
                 "data_distribution_seed": 0,
                 "nb_data_distribution_seeds": 1,
@@ -148,7 +148,7 @@ Below is a sample of a ``config.json`` file, testing the robustness of state-of-
         }
 
 **This setup:**  
-    - Runs experiments on **MNIST** with **10 clients**, including **1 to 4 Byzantine clients**  
+    - Runs experiments on **MNIST** with **10 honest clients**, including **1 to 4 Byzantine clients**  
     - Evaluates **non-IID data distributions**
     - Executes the :ref:`trmean-label` & :ref:`gm-label` aggregators, pre-composed with :ref:`clipping-label` and :ref:`nnm-label`.
     - Executes the :ref:`sf-label`, :ref:`opt-alie-label`, and :ref:`opt-ipm-label` attacks.
@@ -157,9 +157,9 @@ The FL Benchmark allows users to configure a wide range of parameters, enabling 
 
     - **Dataset**: Choose the dataset for training (e.g., MNIST, CIFAR-10).
     - **Model**: Select the neural network architecture for federated learning.
-    - **Number of Workers**: Specify the total number of participating clients.
-    - **Number of Byzantine Workers**: Define the number of adversarial clients in the system.
-    - **Number of Tolerated Byzantine Workers**: Control how many clients are suspected of being adversarial.
+    - **Number of Honest Clients**: Specify the total number of participating clients.
+    - **Number of Byzantine Clients**: Define the number of adversarial clients in the system.
+    - **Number of Tolerated Byzantine Clients**: Control how many clients are suspected of being adversarial.
     - **Data Distribution**: Configure the data heterogeneity across clients (IID, non-IID distributions).
     - **Aggregators**: Test different aggregation methods (e.g., Trimmed Mean, Geometric Median). *(Hyperparameters must be specified separately.)*
     - **Preaggregators**: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). *(Hyperparameters must be specified separately.)*

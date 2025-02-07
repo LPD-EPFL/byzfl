@@ -14,21 +14,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -36,14 +34,13 @@
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=613b6425" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -53,6 +50,8 @@
     <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'aggregators/classes/arc';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -62,7 +61,6 @@
     <link rel="prev" title="Static Clipping" href="clipping.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -70,16 +68,31 @@
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -87,6 +100,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -94,27 +108,20 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
+</form></div>
+  </div>
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
-  </button>
+  </label>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
-  
-    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -129,7 +136,7 @@
     
     
     <img src="../../_static/byzfl_logo.png" class="logo__image only-light" alt="ByzFL - Home"/>
-    <img src="../../_static/byzfl_logo.png" class="logo__image only-dark pst-js-only" alt="ByzFL - Home"/>
+    <script>document.write(`<img src="../../_static/byzfl_logo.png" class="logo__image only-dark" alt="ByzFL - Home"/>`);</script>
   
   
 </a></div>
@@ -141,36 +148,36 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav>
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../index.html">
-    Aggregators
-  </a>
-</li>
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Aggregators
+                      </a>
+                    </li>
+                
 
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../attacks/index.html">
+                        Attacks
+                      </a>
+                    </li>
+                
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../attacks/index.html">
-    Attacks
-  </a>
-</li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../fed_framework/index.html">
+                        Federated Learning Framework
+                      </a>
+                    </li>
+                
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../fed_framework/index.html">
-    Federated Learning Framework
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../team/index.html">
-    Our Team
-  </a>
-</li>
-
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../team/index.html">
+                        Our Team
+                      </a>
+                    </li>
+                
   </ul>
 </nav></div>
       
@@ -182,23 +189,31 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links"
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -209,7 +224,7 @@
           
           
           
-          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -221,7 +236,7 @@
           
           
           
-          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i>
+          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">PyPi</span></a>
         </li>
 </ul></div>
@@ -233,14 +248,22 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
   
 </div>
 
@@ -252,8 +275,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -262,42 +284,39 @@
     
       <div class="sidebar-header-items__center">
         
-          
-          
-            <div class="navbar-item">
-<nav>
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../index.html">
-    Aggregators
-  </a>
-</li>
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Aggregators
+                      </a>
+                    </li>
+                
 
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../attacks/index.html">
+                        Attacks
+                      </a>
+                    </li>
+                
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../attacks/index.html">
-    Attacks
-  </a>
-</li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../fed_framework/index.html">
+                        Federated Learning Framework
+                      </a>
+                    </li>
+                
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../fed_framework/index.html">
-    Federated Learning Framework
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../team/index.html">
-    Our Team
-  </a>
-</li>
-
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../team/index.html">
+                        Our Team
+                      </a>
+                    </li>
+                
   </ul>
 </nav></div>
-          
         
       </div>
     
@@ -307,13 +326,17 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links"
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -324,7 +347,7 @@
           
           
           
-          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
         <li class="nav-item">
@@ -336,7 +359,7 @@
           
           
           
-          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i>
+          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">PyPi</span></a>
         </li>
 </ul></div>
@@ -383,20 +406,22 @@
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-<nav aria-label="Breadcrumb" class="d-print-none">
+
+
+<nav aria-label="Breadcrumb">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -407,7 +432,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Aggregators</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Adaptive Robust Clipping (ARC)</span></li>
+    <li class="breadcrumb-item active" aria-current="page">Adaptive...</li>
   </ul>
 </nav>
 </div>
@@ -426,6 +451,99 @@
                   
   <section id="adaptive-robust-clipping-arc">
 <h1>Adaptive Robust Clipping (ARC)<a class="headerlink" href="#adaptive-robust-clipping-arc" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="byzfl.ARC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ARC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/preaggregators.html#ARC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ARC" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>Apply the Adaptive Robust Clipping pre-aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{ARC}_{f} \ (x_1, \dots, x_n) =
+\left( \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_1\big|\big|_2}\right\} x_1 \ \ , \ \dots \ ,\ \
+\min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f\)</span> conceptually represents the expected number of Byzantine vectors.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
+<li><p>\(k = \lfloor 2 \cdot \frac{f}{n} \cdot (n - f) \rfloor\).</p></li>
+<li><p>\(\pi\) denotes a permutation on \(\big[n\big]\) that sorts the \(\ell_2\)-norm of the input vectors in non-increasing order. This sorting is expressed as: <span class="math notranslate nohighlight">\(\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2\)</span>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>
+</dd>
+</dl>
+<p class="rubric">Calling the instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Input parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output will be the same as the input.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">ARC</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>       <span class="c1"># np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([[1.        , 2.        , 3.        ],</span>
+<span class="go">        [4.        , 5.        , 6.        ],</span>
+<span class="go">        [4.41004009, 5.04004582, 5.67005155]])</span>
+</pre></div>
+</div>
+<p>Using torch tensors</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>   <span class="c1"># torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([[1.0000, 2.0000, 3.0000],</span>
+<span class="go">        [4.0000, 5.0000, 6.0000],</span>
+<span class="go">        [4.4100, 5.0400, 5.6701]])</span>
+</pre></div>
+</div>
+<p>Using list of numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>      <span class="c1"># list of np.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([[1.        , 2.        , 3.        ],</span>
+<span class="go">        [4.        , 5.        , 6.        ],</span>
+<span class="go">        [4.41004009, 5.04004582, 5.67005155]])</span>
+</pre></div>
+</div>
+<p>Using list of torch tensors</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of  torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">tensor([[1.0000, 2.0000, 3.0000],</span>
+<span class="go">        [4.0000, 5.0000, 6.0000],</span>
+<span class="go">        [4.4100, 5.0400, 5.6701]])</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
+The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/2405.14432.</p>
+</aside>
+</aside>
+</section>
+</dd></dl>
+
 </section>
 
 
@@ -435,7 +553,7 @@
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -463,6 +581,23 @@
             
             
               
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ARC"><code class="docutils literal notranslate"><span class="pre">ARC</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
             
           </div>
           <footer class="bd-footer-content">
@@ -474,8 +609,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -495,7 +630,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>
@@ -508,7 +643,7 @@
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>
