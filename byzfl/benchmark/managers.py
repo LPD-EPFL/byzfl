@@ -138,10 +138,11 @@ class ParamsManager(object):
                 "training_seed": self.get_training_seed(),
                 "nb_training_seeds": self.get_nb_training_seeds(),
                 "nb_workers": self.get_nb_workers(),
+                "nb_honest_clients": self.get_nb_honest_clients(),
                 "f": self.get_f(),
                 "tolerated_f": self.get_tolerated_f(),
                 "filter_non_matching_f_tolerated_f": self.get_filter_non_matching_f_tolerated_f(),
-                "fix_workers_as_honest": self.get_fix_workers_as_honest(),
+                "set_honest_clients_as_clients": self.get_set_honest_clients_as_clients(),
                 "size_train_set": self.get_size_train_set(),
                 "data_distribution_seed": self.get_data_distribution_seed(),
                 "nb_data_distribution_seeds": self.get_nb_data_distribution_seeds(),
@@ -207,9 +208,9 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
-    def get_nb_honest(self):
+    def get_nb_honest_clients(self):
         default = 0
-        path = ["benchmark_config", "nb_honest"]
+        path = ["benchmark_config", "nb_honest_clients"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
@@ -231,9 +232,9 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_fix_workers_as_honest(self):
-        default = True
-        path = ["benchmark_config", "fix_workers_as_honest"]
+    def get_set_honest_clients_as_clients(self):
+        default = False
+        path = ["benchmark_config", "set_honest_clients_as_clients"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 

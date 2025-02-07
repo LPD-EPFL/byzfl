@@ -11,11 +11,11 @@ default_config = {
         "device": "cuda",
         "training_seed": 0,
         "nb_training_seeds": 3,
-        "nb_workers": 10,
+        "nb_honest_clients": 10,
         "f": [1, 2, 3, 4],
         "tolerated_f": [1, 2, 3, 4],
         "filter_non_matching_f_tolerated_f": True,
-        "fix_workers_as_honest": True,
+        "set_honest_clients_as_clients": False,
         "size_train_set": 0.8,
         "data_distribution_seed": 0,
         "nb_data_distribution_seeds": 1,
@@ -369,19 +369,19 @@ def set_declared_as_aggregation_parameter(dict_list):
                 
     return dict_list
 
-def compute_number_of_honest_workers(dict_list):
+def compute_number_of_workers(dict_list):
     for setting in dict_list:
         # Adjust the number of workers if needed
-        if setting["benchmark_config"]["fix_workers_as_honest"]:
-            setting["benchmark_config"]["nb_honest"] = setting["benchmark_config"]["nb_workers"]
-            setting["benchmark_config"]["nb_workers"] = (
-                setting["benchmark_config"]["nb_honest"]
-                + setting["benchmark_config"]["f"]
-            )
-        else:
-            setting["benchmark_config"]["nb_honest"] = (
+        if setting["benchmark_config"]["set_honest_clients_as_clients"]:
+            setting["benchmark_config"]["nb_workers"] = setting["benchmark_config"]["nb_honest_clients"]
+            setting["benchmark_config"]["nb_honest_clients"] = (
                 setting["benchmark_config"]["nb_workers"]
                 - setting["benchmark_config"]["f"]
+            )
+        else:
+            setting["benchmark_config"]["nb_workers"] = (
+                setting["benchmark_config"]["nb_honest_clients"]
+                + setting["benchmark_config"]["f"]
             )
     return dict_list
 
@@ -407,8 +407,8 @@ def ensure_key_parameters(dict_list):
 
 def ensure_key_config_parameters(data):
 
-    if "nb_workers" not in data["benchmark_config"].keys():
-        data["benchmark_config"]["nb_workers"] = 10
+    if "nb_honest_clients" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["nb_honest_clients"] = 10
 
     if "tolerated_f" not in data["benchmark_config"].keys():
         data["benchmark_config"]["tolerated_f"] = data["benchmark_config"]["f"]
@@ -416,8 +416,8 @@ def ensure_key_config_parameters(data):
     if "filter_non_matching_f_tolerated_f" not in data["benchmark_config"].keys():
         data["benchmark_config"]["filter_non_matching_f_tolerated_f"] = True
 
-    if "fix_workers_as_honest" not in data["benchmark_config"].keys():
-        data["benchmark_config"]["fix_workers_as_honest"] = True
+    if "set_honest_clients_as_clients" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["set_honest_clients_as_clients"] = False
     
     if "training_seed" not in data["benchmark_config"].keys():
         data["benchmark_config"]["training_seed"] = 0
@@ -482,8 +482,8 @@ def run_benchmark(nb_jobs=1):
     # Set declared parameters in the dictionaries where necessary
     dict_list = set_declared_as_aggregation_parameter(dict_list)
 
-    # Compute the number of honest workers
-    dict_list = compute_number_of_honest_workers(dict_list)
+    # Compute the number of workers
+    dict_list = compute_number_of_workers(dict_list)
 
     # Assign seeds
     dict_list = delegate_training_seeds(dict_list)

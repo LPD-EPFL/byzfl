@@ -48,12 +48,12 @@ def find_best_hyperparameters(path_to_results):
     # <-------------- Benchmark Config ------------->
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
-    nb_workers = data["benchmark_config"]["nb_workers"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
-    fix_workers_as_honest = data["benchmark_config"]["fix_workers_as_honest"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
 
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
@@ -78,7 +78,7 @@ def find_best_hyperparameters(path_to_results):
     attacks = data["attack"]
 
     # Ensure certain configurations are always lists
-    nb_workers = ensure_list(nb_workers)
+    nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
@@ -96,12 +96,12 @@ def find_best_hyperparameters(path_to_results):
     nb_accuracies = 1 + math.ceil(nb_steps / evaluation_delta)
 
     # Main nested loops to explore configurations
-    for nb_nodes in nb_workers:
+    for nb_honest in nb_honest_clients:
         for nb_byzantine in nb_byz:
-            # If fix_workers_as_honest is True, total nodes = nb_nodes + nb_byzantine
-            # otherwise, it's just nb_nodes with nb_byzantine byzantine among them
-            if fix_workers_as_honest:
-                nb_nodes += nb_byzantine
+            if set_honest_clients_as_clients:
+                nb_nodes = nb_honest
+            else:
+                nb_nodes = nb_honest + nb_byzantine
 
             for data_dist in data_distributions:
                 distribution_parameter_list = ensure_list(data_dist["distribution_parameter"])
@@ -244,12 +244,12 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         # <-------------- Benchmark Config ------------->
         training_seed = data["benchmark_config"]["training_seed"]
         nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
-        nb_workers = data["benchmark_config"]["nb_workers"]
+        nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
         nb_byz = data["benchmark_config"]["f"]
         data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
         nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
         data_distributions = data["benchmark_config"]["data_distribution"]
-        fix_workers_as_honest = data["benchmark_config"]["fix_workers_as_honest"]
+        set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
 
         # <-------------- Server Config ------------->
         nb_steps = data["server"]["nb_steps"]
@@ -274,7 +274,7 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         attacks = data["attack"]
 
         # Ensure certain configurations are always lists
-        nb_workers = ensure_list(nb_workers)
+        nb_honest_clients = ensure_list(nb_honest_clients)
         nb_byz = ensure_list(nb_byz)
         data_distributions = ensure_list(data_distributions)
         aggregators = ensure_list(aggregators)
@@ -290,10 +290,12 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
 
         nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
 
-        for nb_nodes in nb_workers:
+        for nb_honest in nb_honest_clients:
             for nb_byzantine in nb_byz:
-                if fix_workers_as_honest:
-                    nb_nodes += nb_byzantine
+                if set_honest_clients_as_clients:
+                    nb_nodes = nb_honest
+                else:
+                    nb_nodes = nb_honest + nb_byzantine
                 for data_dist in data_distributions:
                     dist_parameter_list = data_dist["distribution_parameter"]
                     for dist_parameter in dist_parameter_list:
@@ -396,12 +398,12 @@ def heat_map_loss(path_to_results, path_to_plot):
     # <-------------- Benchmark Config ------------->
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
-    nb_workers = data["benchmark_config"]["nb_workers"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
-    fix_workers_as_honest = data["benchmark_config"]["fix_workers_as_honest"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
 
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
@@ -423,7 +425,7 @@ def heat_map_loss(path_to_results, path_to_plot):
     attacks = data["attack"]
 
     # Ensure certain configurations are always lists
-    nb_workers = ensure_list(nb_workers)
+    nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
@@ -449,14 +451,14 @@ def heat_map_loss(path_to_results, path_to_plot):
                 distribution_parameter_list = data_dist["distribution_parameter"]
                 heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
 
-                for nb_nodes in nb_workers:
+                for nb_honest in nb_honest_clients:
                     for y, nb_byzantine in enumerate(nb_byz):
 
-                        if fix_workers_as_honest:
-                            nb_honest = nb_nodes
-                            nb_nodes += nb_byzantine
-                        else:
+                        if set_honest_clients_as_clients:
+                            nb_nodes = nb_honest
                             nb_honest = nb_nodes - nb_byzantine
+                        else:
+                            nb_nodes = nb_honest + nb_byzantine
 
                         for x, dist_param in enumerate(distribution_parameter_list):
 
@@ -574,12 +576,12 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     # <-------------- Benchmark Config ------------->
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
-    nb_workers = data["benchmark_config"]["nb_workers"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
-    fix_workers_as_honest = data["benchmark_config"]["fix_workers_as_honest"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
 
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
@@ -604,7 +606,7 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     attacks = data["attack"]
 
     # Ensure certain configurations are always lists
-    nb_workers = ensure_list(nb_workers)
+    nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
@@ -630,11 +632,14 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
                 distribution_parameter_list = data_dist["distribution_parameter"]
                 heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
 
-                for nb_nodes in nb_workers:
+                for nb_honest in nb_honest_clients:
                     for y, nb_byzantine in enumerate(nb_byz):
 
-                        if fix_workers_as_honest:
-                            nb_nodes += nb_byzantine
+                        if set_honest_clients_as_clients:
+                            nb_nodes = nb_honest
+                            nb_honest = nb_nodes - nb_byzantine
+                        else:
+                            nb_nodes = nb_honest + nb_byzantine
 
                         for x, dist_param in enumerate(distribution_parameter_list):
 
@@ -745,12 +750,12 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     # <-------------- Benchmark Config ------------->
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
-    nb_workers = data["benchmark_config"]["nb_workers"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
-    fix_workers_as_honest = data["benchmark_config"]["fix_workers_as_honest"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
 
     # <-------------- Server Config ------------->
     nb_steps = data["server"]["nb_steps"]
@@ -775,7 +780,7 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     attacks = data["attack"]
 
     # Ensure certain configurations are always lists
-    nb_workers = ensure_list(nb_workers)
+    nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
@@ -802,12 +807,15 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
                 distribution_parameter_list = data_dist["distribution_parameter"]
                 heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
 
-                for nb_nodes in nb_workers:
+                for nb_honest in nb_honest_clients:
 
                     for y, nb_byzantine in enumerate(nb_byz):
 
-                        if fix_workers_as_honest:
-                            nb_nodes += nb_byzantine
+                        if set_honest_clients_as_clients:
+                            nb_nodes = nb_honest
+                            nb_honest = nb_nodes - nb_byzantine
+                        else:
+                            nb_nodes = nb_honest + nb_byzantine
 
                         for x, dist_param in enumerate(distribution_parameter_list):
 

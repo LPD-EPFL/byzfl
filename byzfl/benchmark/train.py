@@ -60,7 +60,7 @@ def start_training(params):
     # <----------------- Federated Framework ----------------->
 
     # Configurations
-    nb_honest_clients = params_manager.get_nb_honest()
+    nb_honest_clients = params_manager.get_nb_honest_clients()
     nb_byz_clients = params_manager.get_f()
     nb_training_steps = params_manager.get_nb_steps()
     batch_size = params_manager.get_honest_nodes_batch_size()
@@ -166,9 +166,7 @@ def start_training(params):
     label_flipping_attack = False
     attack_name = params_manager.get_attack_name()
 
-    if attack_name == "LabelFlipping":
-        label_flipping_attack = True
-        attack_name = "Average"
+    label_flipping_attack = attack_name == "LabelFlipping"
 
     attack = {
         "name": attack_name,
@@ -190,6 +188,11 @@ def start_training(params):
     test_accuracy_list = np.array([])
 
     start_time = time.time()
+
+    # Send Initial Model to All Clients
+    new_model = server.get_dict_parameters()
+    for client in honest_clients:
+        client.set_model_state(new_model)
 
     # Training Loop
     for training_step in range(nb_training_steps):

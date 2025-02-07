@@ -1134,7 +1134,11 @@ class Gaussian:
         return random.normal(loc=self.mu, scale=self.sigma, size=shape)
 
 
-class Average(object):
+# This attack method calculates the average of the honest vectors. 
+# This behavior arises because the Label Flipping attack manipulates 
+# the labels of the data rather than directly altering the computed gradients. 
+# As a result, the attack occurs on the client side before the gradients are computed.
+class LabelFlipping(object): 
 
     def __init__(self):
         pass        
