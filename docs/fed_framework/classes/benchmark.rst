@@ -259,7 +259,7 @@ Heatmap of training losses
 
         .. image:: ../../_static/plots_example/GM_heatmap_loss.png
            :alt: Geometric Median Heatmap Loss
-           :scale: 40%
+           :scale: 30%
            :align: center
 
     .. container:: image-column
@@ -268,7 +268,7 @@ Heatmap of training losses
 
         .. image:: ../../_static/plots_example/TM_heatmap_loss.png
            :alt: Trimmed Mean Heatmap Loss
-           :scale: 40%
+           :scale: 30%
            :align: center
 
 
@@ -292,7 +292,7 @@ Heatmap of test accuracies
 
         .. image:: ../../_static/plots_example/GM_test_heatmap.png
            :alt: Geometric Median Heatmap Test Accuracy
-           :scale: 40%
+           :scale: 30%
            :align: center
 
     .. container:: image-column
@@ -301,7 +301,7 @@ Heatmap of test accuracies
 
         .. image:: ../../_static/plots_example/TM_test_heatmap.png
            :alt: Trimmed Mean Heatmap Test Accuracy
-           :scale: 40%
+           :scale: 30%
            :align: center
 
 
