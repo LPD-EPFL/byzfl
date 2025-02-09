@@ -104,6 +104,11 @@ class ByzantineClient:
 
         # Initialize the ByzantineClient instance
         self.f = params["f"]
+        self.no_attack = False
+
+        if params["name"] == "NoAttack":
+            self.no_attack = True
+            return
 
         # Initialize the aggregator and pre-aggregators for attacks that require it
 
@@ -182,6 +187,8 @@ class ByzantineClient:
 
         if not self.f < len(honest_vectors):
             raise ValueError(f"f must be smaller than the number of honest_vectors, but got f={self.f} and len(honest_vectors)={len(honest_vectors)}")
+        if self.f > 0 and  self.no_attack:
+            raise ValueError(f"Got f={self.f}, but no attack is set")
         if self.f == 0:
             return []
 
