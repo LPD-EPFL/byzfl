@@ -1,6 +1,6 @@
 # FL Benchmark
 
-The **FL Benchmark** in ByzFL is a **comprehensive testing framework** for evaluating federated learning aggregation methods under adversarial conditions. It automates large-scale experiments, allowing users to test various **aggregators, attacks, and data heterogeneity levels** through a single **configurable JSON file**.
+The **FL Benchmark** in ByzFL is a **comprehensive testing framework** for evaluating federated learning algorithms under adversarial conditions. It automates large-scale experiments, allowing users to test various **aggregators, attacks, and data heterogeneity levels** through a single **configurable JSON file**.
 
 This benchmark extends the Federated Learning Framework by enabling **systematic evaluation** rather than manual experiment setup.
 
@@ -18,7 +18,7 @@ This benchmark extends the Federated Learning Framework by enabling **systematic
   Automatically identify the best hyperparameter settings by testing aggregators **against the worst-case Byzantine attack**.
 
 - **Prebuilt Visualizations**  
-  Easily generate plots (**test accuracy curves**, **heatmaps**, and **aggregated performance plots**) to quickly assess performance and compare methods across different configurations.
+  Easily generate plots (**test accuracy curves**, **heatmaps**) to quickly assess performance and compare methods across different configurations.
 
 ---
 
@@ -29,12 +29,12 @@ This benchmark extends the Federated Learning Framework by enabling **systematic
    - Supports parallel execution across multiple settings.
 
 2. **Evaluate the Results**  
-   - Assesses aggregation robustness under **various attack scenarios**.  
+   - Assesses robustness under **various attacks**.  
    - Identifies optimal learning hyperparameters for each aggregator.
 
 3. **Generate Plots**  
-   - Produces **accuracy curves, loss heatmaps, and aggregated performance summaries**.  
-   - Facilitates easy comparison of methods across different federated settings.
+   - Produces **accuracy curves, heatmaps, and aggregated performance summaries**.  
+   - Facilitates easy comparison of robust aggregators across different federated settings.
 
 ---
 
@@ -56,7 +56,7 @@ By modifying only the `config.json` file, users can fully customize the environm
 
 All experiments are set up using a single JSON configuration file (`config.json`), placed in the working directory.
 
-Below is a sample of a `config.json` file, testing the robustness of state-of-the-art robust aggregators in an adversarial distributed setup.
+Below is a sample of a `config.json` file, testing the strength of state-of-the-art robust aggregators in an adversarial distributed setup.
 
 ```json
 {
@@ -141,8 +141,8 @@ Below is a sample of a `config.json` file, testing the robustness of state-of-th
 ```
 
 **This setup:**  
-- Runs experiments on **MNIST** with **10 honest clients**, including **1 to 4 Byzantine clients**  
-- Evaluates **non-IID data distributions**  
+- Runs experiments on **MNIST** with **10 honest clients** and **1 to 4 Byzantine clients**.
+- Evaluates **non-IID data distributions**.
 - Executes the Trimmed Mean & Geometric Median aggregators, pre-composed with Clipping and NNM.  
 - Executes the Sign Flipping, Optimal A Little Is Enough, and Optimal Inner Product Manipulation attacks.
 
@@ -150,12 +150,11 @@ The FL Benchmark allows users to configure a wide range of parameters, enabling 
 
 - **Dataset**: Choose the dataset for training (e.g., MNIST, CIFAR-10).  
 - **Model**: Select the neural network architecture for federated learning.  
-- **Number of Honest Clients**: Specify the total number of participating clients.  
-- **Number of Byzantine Clients**: Define the number of adversarial clients in the system.  
-- **Number of Tolerated Byzantine Clients**: Control how many clients are suspected of being adversarial.  
+- **Number of Honest Clients**: Specify the number of honest clients in the system.
+- **Number of Byzantine Clients**: Specify the number of adversarial clients in the system.  
 - **Data Distribution**: Configure the data heterogeneity across clients (IID, non-IID distributions).  
 - **Aggregators**: Test different aggregation methods (e.g., Trimmed Mean, Geometric Median). *(Hyperparameters must be specified separately.)*  
-- **Preaggregators**: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). *(Hyperparameters must be specified separately.)*  
+- **Pre-aggregators**: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). *(Hyperparameters must be specified separately.)*  
 - **Attacks**: Simulate different Byzantine attack strategies (e.g., Sign Flipping, ALIE, Inner Product Manipulation). *(Hyperparameters must be specified separately.)*  
 - **Learning Rate**: Define the learning rate for model training.  
 - **Client Momentum**: Adjust the momentum value for client-side optimization.  
@@ -164,7 +163,7 @@ The FL Benchmark allows users to configure a wide range of parameters, enabling 
 > **Note**  
 > - You can specify a list of values for any supported parameter in `config.json`. Each entry in the list is treated as a separate simulation.  
 > - Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.  
-> - The `f` parameter must not be explicitly provided to aggregators, pre-aggregators, or attacks that require it in their parameters, as it is already determined based on the values of `"f"` and `"tolerated_f"`.
+> - The `f` parameter must not be explicitly provided to (pre-)aggregators or attacks that require it in their parameters, as it is already determined based on the values of the main `f` parameter in ``config.json``.
 
 ---
 
@@ -184,7 +183,7 @@ if __name__ == "__main__":  # Required for multiprocessing
 - Results are stored in the `results_directory` (default: `./results`).  
 - If no `config.json` file exists in your current directory, **a default template is generated** for customization. You can modify this file before re-running the benchmark.
 
-The built-in evaluation function automatically selects the best hyperparameters by assessing **worst-case attack scenarios**. Specifically, it evaluates various provided hyperparameters, such as **learning rates, client momentum, and weight decay**, and determines the configuration that achieves the **highest worst-case accuracy** on a validation set while under the **strongest Byzantine attack** (i.e., the attack that minimizes the maximum accuracy). This approach ensures that selected hyperparameters maximize **robustness** while preventing overfitting to the test set.
+The built-in evaluation function automatically selects the best hyperparameters by assessing **worst-case attack scenarios**. Specifically, it evaluates various provided hyperparameters, such as **learning rates, client momentum, and weight decay**, and determines the configuration that achieves the **highest worst-case accuracy** on a validation set against the **strongest Byzantine attack** (i.e., the attack that minimizes the best achievable accuracy). This approach ensures that the selected hyperparameters maximize **robustness** while preventing overfitting to the test set.
 
 ---
 
@@ -194,7 +193,8 @@ ByzFL provides **built-in visualization tools** to analyze results.
 
 ### Test Accuracy Curves
 
-Tracks **test accuracy over time** for each aggregator under several attack strategies. One plot (with several curves: one per considered attack) is produced per aggregator.
+Displays **test accuracy trends over time** for each aggregator across different attack strategies. Each aggregator is represented by a plot containing accuracy curves for all considered attacks.
+
 
 ```python
 from byzfl.benchmark.evaluate_results import plot_accuracy_fix_agg_best_setting
@@ -212,7 +212,8 @@ plot_accuracy_fix_agg_best_setting(
 
 For `nb_honest_clients=10`, `f=2`, `distribution parameter = 0.0`, `aggregator = Trimmed Mean`:
 
-![mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot plot](../../docs/_static/plots_example/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png)
+<img src="../../docs/_static/plots_example/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png" 
+     alt="MNIST CNN Plot" width="50%">
 
 ---
 
@@ -237,11 +238,11 @@ heat_map_loss(path_training_results, path_to_plot)
 
 - **Geometric Median (Loss)**
 
-![Geometric Median Heatmap Loss](../../docs/_static/plots_example/GM_heatmap_loss.png)
+<img src="../../docs/_static/plots_example/GM_heatmap_loss.png" alt="Geometric Median Heatmap Loss" width="50%">
 
 - **Trimmed Mean (Loss)**
 
-![Trimmed Mean Heatmap Loss](../../docs/_static/plots_example/TM_heatmap_loss.png)
+<img src="../../docs/_static/plots_example/TM_heatmap_loss.png" alt="Trimmed Mean Heatmap Loss" width="50%">
 
 #### Heatmap of test accuracies
 
@@ -256,15 +257,16 @@ heat_map_test_accuracy(path_training_results, path_to_plot)
 
 - **Geometric Median (Test Accuracy)**
 
-![Geometric Median Heatmap Test Accuracy](../../docs/_static/plots_example/GM_test_heatmap.png)
+<img src="../../docs/_static/plots_example/GM_test_heatmap.png" alt="Geometric Median Heatmap Test Accuracy" width="50%">
+
 
 - **Trimmed Mean (Test Accuracy)**
 
-![Trimmed Mean Heatmap Loss](../../docs/_static/plots_example/TM_test_heatmap.png)
+<img src="../../docs/_static/plots_example/TM_test_heatmap.png" alt="Trimmed Mean Heatmap Loss" width="50%">
 
 #### Aggregated heatmap of test accuracies
 
-This plot consolidates all aggregation/pre-aggregation combinations, showing **the best-performing method per scenario (cell)**.
+This plot consolidates all (pre-)aggregators, showing **the best-performing method per scenario (cell)**.
 
 ```python
 from byzfl.benchmark.evaluate_results import aggregated_heat_map_test_accuracy
@@ -278,18 +280,18 @@ aggregated_heat_map_test_accuracy(
 )
 ```
 
-Aggregated Heatmap Test Accuracy
+The aggregated view of Geometric Median and Trimmed Mean shows the accuracy achieved by the best method in each configuration:
 
-![Aggregated Heatmap Test Accuracy](../../docs/_static/plots_example/aggregated_heatmap.png)
+<img src="../../docs/_static/plots_example/aggregated_heatmap.png" alt="Aggregated Heatmap Test Accuracy" width="50%">
 
 ---
 
 ## Extending the Benchmark
 
-ByzFL is **fully extensible**, allowing users to integrate custom **aggregators, attacks, and models**. There are two options:
+ByzFL is **fully extendable**, allowing users to integrate custom **(pre-)aggregators, attacks, and models**. There are two options:
 
 1. Modify the code within the installed library.  
-2. Clone the ByzFL repository, make changes and run it: 
+2. Clone the ByzFL repository, make changes, and then run it: 
 
 ```bash
 git clone https://github.com/LPD-EPFL/byzfl.git

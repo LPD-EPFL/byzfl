@@ -522,6 +522,11 @@ document.write(`
 
         <span class="c1"># Initialize the ByzantineClient instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_attack</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NoAttack&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">no_attack</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span>
 
         <span class="c1"># Initialize the aggregator and pre-aggregators for attacks that require it</span>
 
@@ -602,6 +607,8 @@ document.write(`
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f must be smaller than the number of honest_vectors, but got f=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> and len(honest_vectors)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">honest_vectors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">no_attack</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got f=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2">, but no attack is set&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 

@@ -401,9 +401,6 @@ def ensure_key_parameters(dict_list):
         
         if "parameters" not in setting["attack"].keys():
             setting["attack"]["parameters"] = {}
-        
-        if "name" not in setting["attack"].keys():
-            setting["attack"]["name"] = "NoAttack"
                 
     return dict_list
 

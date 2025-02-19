@@ -444,7 +444,7 @@ document.write(`
                   
   <section id="fl-benchmark">
 <span id="federated-learning-label"></span><h1>FL Benchmark<a class="headerlink" href="#fl-benchmark" title="Link to this heading">#</a></h1>
-<p>The <strong>FL Benchmark</strong> in ByzFL is a <strong>comprehensive testing framework</strong> for evaluating federated learning aggregation methods under adversarial conditions. It automates large-scale experiments, allowing users to test various <strong>aggregators, attacks, and data heterogeneity levels</strong> through a single <strong>configurable JSON file</strong>.</p>
+<p>The <strong>FL Benchmark</strong> in ByzFL is a <strong>comprehensive testing framework</strong> for evaluating federated learning algorithms under adversarial conditions. It automates large-scale experiments, allowing users to test various <strong>aggregators, attacks, and data heterogeneity levels</strong> through a single <strong>configurable JSON file</strong>.</p>
 <p>This benchmark extends the <a class="reference internal" href="../index.html#federated-learning-framework-label"><span class="std std-ref">Federated Learning Framework</span></a> by enabling <strong>systematic evaluation</strong> rather than manual experiment setup.</p>
 <section id="key-features">
 <h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
@@ -459,7 +459,7 @@ document.write(`
 <p>Automatically identify the best hyperparameter settings by testing aggregators <strong>against the worst-case Byzantine attack</strong>.</p>
 </li>
 <li><p><strong>Prebuilt Visualizations</strong></p>
-<p>Easily generate plots (<strong>test accuracy curves</strong>, <strong>heatmaps</strong>, and <strong>aggregated performance plots</strong>) to quickly assess performance and compare
+<p>Easily generate plots (<strong>test accuracy curves</strong>, <strong>heatmaps</strong>) to quickly assess performance and compare
 methods across different configurations.</p>
 </li>
 </ul>
@@ -477,7 +477,7 @@ methods across different configurations.</p>
 </li>
 <li><dl class="simple">
 <dt><strong>Evaluate the Results</strong></dt><dd><ul class="simple">
-<li><p>Assesses aggregation robustness under <strong>various attack scenarios</strong>.</p></li>
+<li><p>Assesses robustness against <strong>various attacks</strong>.</p></li>
 <li><p>Identifies optimal learning hyperparameters for each aggregator.</p></li>
 </ul>
 </dd>
@@ -485,8 +485,8 @@ methods across different configurations.</p>
 </li>
 <li><dl class="simple">
 <dt><strong>Generate Plots</strong></dt><dd><ul class="simple">
-<li><p>Produces <strong>accuracy curves, loss heatmaps, and aggregated performance summaries</strong>.</p></li>
-<li><p>Facilitates easy comparison of methods across different federated settings.</p></li>
+<li><p>Produces <strong>accuracy curves, heatmaps, and aggregated performance summaries</strong>.</p></li>
+<li><p>Facilitates easy comparison of robust aggregators across different federated settings.</p></li>
 </ul>
 </dd>
 </dl>
@@ -508,7 +508,7 @@ methods across different configurations.</p>
 <section id="setting-up-your-experiments">
 <h2>Setting Up Your Experiments<a class="headerlink" href="#setting-up-your-experiments" title="Link to this heading">#</a></h2>
 <p>All experiments are set up using a single JSON configuration file (<code class="docutils literal notranslate"><span class="pre">config.json</span></code>), placed in the working directory.
-Below is a sample of a <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file, testing the robustness of state-of-the-art robust aggregators in an adversarial distributed setup.</p>
+Below is a sample of a <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file, testing the strength of state-of-the-art robust aggregators in an adversarial distributed setup.</p>
 <div class="toggle admonition">
 <p class="admonition-title">Click to expand JSON configuration</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -595,8 +595,8 @@ Below is a sample of a <code class="docutils literal notranslate"><span class="p
 </div>
 <dl class="simple">
 <dt><strong>This setup:</strong></dt><dd><ul class="simple">
-<li><p>Runs experiments on <strong>MNIST</strong> with <strong>10 honest clients</strong>, including <strong>1 to 4 Byzantine clients</strong></p></li>
-<li><p>Evaluates <strong>non-IID data distributions</strong></p></li>
+<li><p>Runs experiments on <strong>MNIST</strong> with <strong>10 honest clients</strong> and <strong>1 to 4 Byzantine clients</strong>.</p></li>
+<li><p>Evaluates <strong>non-IID data distributions</strong>.</p></li>
 <li><p>Executes the <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> &amp; <a class="reference internal" href="../../aggregators/classes/geometric_median.html#gm-label"><span class="std std-ref">Geometric Median</span></a> aggregators, pre-composed with <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a> and <a class="reference internal" href="../../aggregators/classes/nnm.html#nnm-label"><span class="std std-ref">Nearest Neighbor Mixing (NNM)</span></a>.</p></li>
 <li><p>Executes the <a class="reference internal" href="../../attacks/classes/sign_flipping.html#sf-label"><span class="std std-ref">Sign Flipping</span></a>, <a class="reference internal" href="../../attacks/classes/optimal_alie.html#opt-alie-label"><span class="std std-ref">Optimal A Little Is Enough (Opt-ALIE)</span></a>, and <a class="reference internal" href="../../attacks/classes/optimal_ipm.html#opt-ipm-label"><span class="std std-ref">Optimal Inner Product Manipulation (Opt-IPM)</span></a> attacks.</p></li>
 </ul>
@@ -607,12 +607,11 @@ Below is a sample of a <code class="docutils literal notranslate"><span class="p
 <div><ul class="simple">
 <li><p><strong>Dataset</strong>: Choose the dataset for training (e.g., MNIST, CIFAR-10).</p></li>
 <li><p><strong>Model</strong>: Select the neural network architecture for federated learning.</p></li>
-<li><p><strong>Number of Honest Clients</strong>: Specify the total number of participating clients.</p></li>
-<li><p><strong>Number of Byzantine Clients</strong>: Define the number of adversarial clients in the system.</p></li>
-<li><p><strong>Number of Tolerated Byzantine Clients</strong>: Control how many clients are suspected of being adversarial.</p></li>
+<li><p><strong>Number of Honest Clients</strong>: Specify the number of honest clients in the system.</p></li>
+<li><p><strong>Number of Byzantine Clients</strong>: Specify the number of adversarial clients in the system.</p></li>
 <li><p><strong>Data Distribution</strong>: Configure the data heterogeneity across clients (IID, non-IID distributions).</p></li>
 <li><p><strong>Aggregators</strong>: Test different aggregation methods (e.g., Trimmed Mean, Geometric Median). <em>(Hyperparameters must be specified separately.)</em></p></li>
-<li><p><strong>Preaggregators</strong>: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). <em>(Hyperparameters must be specified separately.)</em></p></li>
+<li><p><strong>Pre-aggregators</strong>: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). <em>(Hyperparameters must be specified separately.)</em></p></li>
 <li><p><strong>Attacks</strong>: Simulate different Byzantine attack strategies (e.g., Sign Flipping, ALIE, Inner Product Manipulation). <em>(Hyperparameters must be specified separately.)</em></p></li>
 <li><p><strong>Learning Rate</strong>: Define the learning rate for model training.</p></li>
 <li><p><strong>Client Momentum</strong>: Adjust the momentum value for client-side optimization.</p></li>
@@ -624,7 +623,7 @@ Below is a sample of a <code class="docutils literal notranslate"><span class="p
 <ul class="simple">
 <li><p>You can specify a list of values for any supported parameter in <code class="docutils literal notranslate"><span class="pre">config.json</span></code>. Each entry in the list is treated as a separate simulation.</p></li>
 <li><p>Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.</p></li>
-<li><p>The <cite>f</cite> parameter must not be explicitly provided to aggregators, pre-aggregators, or attacks that require it in their parameters, as it is already determined based on the values of  “f” and “tolerated_f”.</p></li>
+<li><p>The <cite>f</cite> parameter must not be explicitly provided to (pre-)aggregators or attacks that require it in their parameters, as it is already determined based on the values of the main <cite>f</cite> parameter in <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p></li>
 </ul>
 </div>
 </section>
@@ -644,16 +643,16 @@ Below is a sample of a <code class="docutils literal notranslate"><span class="p
 <li><p>If no <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file exists in your current directory, <strong>a default template is generated</strong> for customization. You can modify this file before re-running the benchmark.</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">run_benchmark()</span></code> provides a built-in evaluation function that automatically selects the best hyperparameters by assessing <strong>worst-case attack scenarios</strong>.
-Specifically, it evaluates various provided hyperparameters, such as <strong>learning rates, client momentum, and weight decay</strong>, and determines the configuration that achieves the <strong>highest worst-case accuracy</strong> on a validation set while under the <strong>strongest Byzantine attack</strong> (i.e., the attack that minimizes the maximum accuracy).
-This approach ensures that selected hyperparameters maximize <strong>robustness</strong> while preventing overfitting to the test set.</p>
+Specifically, it evaluates various provided hyperparameters, such as <strong>learning rates, client momentum, and weight decay</strong>, and determines the configuration that achieves the <strong>highest worst-case accuracy</strong> on a validation set against the <strong>strongest Byzantine attack</strong> (i.e., the attack that minimizes the best achievable accuracy).
+This approach ensures that the selected hyperparameters maximize <strong>robustness</strong> while preventing overfitting to the test set.</p>
 </section>
 <section id="viewing-results">
 <h2>Viewing Results<a class="headerlink" href="#viewing-results" title="Link to this heading">#</a></h2>
 <p>ByzFL provides <strong>built-in visualization tools</strong> to analyze results.</p>
 <section id="test-accuracy-curves">
 <h3><strong>Test Accuracy Curves</strong><a class="headerlink" href="#test-accuracy-curves" title="Link to this heading">#</a></h3>
-<p>Tracks <strong>test accuracy over time</strong> for each aggregator under several attack strategies.
-One plot (with several curves: one per considered attack) is produced per aggregator.</p>
+<p>Displays <strong>test accuracy trends over time</strong> for each aggregator across different attack strategies.
+Each aggregator is represented by a plot containing accuracy curves for all considered attacks.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark.evaluate_results</span> <span class="kn">import</span> <span class="n">plot_accuracy_fix_agg_best_setting</span>
 
 <span class="n">path_training_results</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
@@ -667,7 +666,7 @@ One plot (with several curves: one per considered attack) is produced per aggreg
 </div>
 <section id="example-plot">
 <h4>Example Plot<a class="headerlink" href="#example-plot" title="Link to this heading">#</a></h4>
-<p>For <code class="docutils literal notranslate"><span class="pre">nb_honest_clients=10</span></code> <code class="docutils literal notranslate"><span class="pre">f=2</span></code>, <code class="docutils literal notranslate"><span class="pre">distribution</span> <span class="pre">parameter</span> <span class="pre">=</span> <span class="pre">0.0</span></code>, <code class="docutils literal notranslate"><span class="pre">aggregator</span> <span class="pre">=</span> <span class="pre">Trimmed</span> <span class="pre">Mean</span></code>:</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">nb_honest_clients=10</span></code>, <code class="docutils literal notranslate"><span class="pre">f=2</span></code>, <code class="docutils literal notranslate"><span class="pre">distribution</span> <span class="pre">parameter</span> <span class="pre">=</span> <span class="pre">0.0</span></code>, <code class="docutils literal notranslate"><span class="pre">aggregator</span> <span class="pre">=</span> <span class="pre">Trimmed</span> <span class="pre">Mean</span></code>:</p>
 <a class="reference internal image-reference" href="../../_images/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png"><img alt="Example Accuracy Plot" class="align-center" src="../../_images/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png" style="width: 608.0px; height: 456.0px;" /></a>
 </section>
 </section>
@@ -723,7 +722,7 @@ One plot (with several curves: one per considered attack) is produced per aggreg
 </section>
 <section id="aggregated-heatmap-of-test-accuracies">
 <h4>Aggregated heatmap of test accuracies<a class="headerlink" href="#aggregated-heatmap-of-test-accuracies" title="Link to this heading">#</a></h4>
-<p>This plot consolidates all aggregation/pre-aggregation combinations, showing <strong>the best-performing method per scenario (cell)</strong>.</p>
+<p>This plot consolidates all (pre-)aggregators, showing <strong>the best-performing method per scenario (cell)</strong>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark.evaluate_results</span> <span class="kn">import</span> <span class="n">aggregated_heat_map_test_accuracy</span>
 
 <span class="n">path_training_results</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
@@ -735,17 +734,17 @@ One plot (with several curves: one per considered attack) is produced per aggreg
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>The aggregated view of Geometric Median and Trimmed Mean shows the best method for each configuration:</p>
+<p>The aggregated view of Geometric Median and Trimmed Mean shows the accuracy achieved by the best method in each configuration:</p>
 <a class="reference internal image-reference" href="../../_images/aggregated_heatmap.png"><img alt="Aggregated Heatmap Test Accuracy" class="align-center" src="../../_images/aggregated_heatmap.png" style="width: 448.8px; height: 363.20000000000005px;" /></a>
 </section>
 </section>
 </section>
 <section id="extending-the-benchmark">
 <h2>Extending the Benchmark<a class="headerlink" href="#extending-the-benchmark" title="Link to this heading">#</a></h2>
-<p>ByzFL is <strong>fully extensible</strong>, allowing users to integrate custom <strong>aggregators, attacks, and models</strong>. There are two options:</p>
+<p>ByzFL is <strong>fully extendable</strong>, allowing users to integrate custom <strong>(pre-)aggregators, attacks, and models</strong>. There are two options:</p>
 <ol class="arabic simple">
 <li><p>Modify the code within the installed library.</p></li>
-<li><p>Clone the ByzFL repository, make changes and run it:</p></li>
+<li><p>Clone the ByzFL repository, make changes, and then run it:</p></li>
 </ol>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/LPD-EPFL/byzfl.git</span>
 </pre></div>
