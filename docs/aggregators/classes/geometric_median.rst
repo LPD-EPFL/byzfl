@@ -1,3 +1,5 @@
+.. _gm-label:
+
 Geometric Median
 =================
 

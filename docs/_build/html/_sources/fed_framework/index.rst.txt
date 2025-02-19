@@ -21,10 +21,11 @@ By leveraging this framework, researchers can gain valuable insights into the pe
 
 
 .. toctree::
-   :caption: Federated Learning Framework
+   :caption: Federated Learning (FL) Framework
    :titlesonly:
 
    classes/fed_learning_sim
+   classes/benchmark
 
 .. toctree::
    :caption: Helper Modules
