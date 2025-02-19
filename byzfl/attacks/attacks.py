@@ -1132,3 +1132,17 @@ class Gaussian:
         random = random_tool(honest_vectors)
         shape = honest_vectors.shape[1]
         return random.normal(loc=self.mu, scale=self.sigma, size=shape)
+
+
+# This attack method calculates the average of the honest vectors. 
+# This behavior arises because the Label Flipping attack manipulates 
+# the labels of the data rather than directly altering the computed gradients. 
+# As a result, the attack occurs on the client side before the gradients are computed.
+class LabelFlipping(object): 
+
+    def __init__(self):
+        pass        
+    
+    def __call__(self, vectors):
+        tools, vectors = check_vectors_type(vectors)
+        return tools.mean(vectors, axis=0)

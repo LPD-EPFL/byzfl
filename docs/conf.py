@@ -28,7 +28,8 @@ extensions = ["sphinx.ext.todo",
               "sphinx_copybutton", 
               "sphinx.ext.autosectionlabel", 
               "sphinx.ext.intersphinx",
-              "sphinx_favicon"]
+              "sphinx_favicon",
+              "sphinx_togglebutton"]
 
 
 # Use MathJax to render math in HTML

@@ -1,0 +1,911 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>FL Benchmark &#8212; ByzFL</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=613b6425" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'fed_framework/classes/benchmark';</script>
+    <script src="../../_static/custom-icon.js?v=74687d30"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Model Base Interface" href="model_base_interface.html" />
+    <link rel="prev" title="FL Simulation" href="fed_learning_sim.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/byzfl_logo.png" class="logo__image only-light" alt="ByzFL - Home"/>
+    <script>document.write(`<img src="../../_static/byzfl_logo.png" class="logo__image only-dark" alt="ByzFL - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../aggregators/index.html">
+                        Aggregators
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../attacks/index.html">
+                        Attacks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Federated Learning Framework
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../team/index.html">
+                        Our Team
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPi</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../aggregators/index.html">
+                        Aggregators
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../attacks/index.html">
+                        Attacks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Federated Learning Framework
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../team/index.html">
+                        Our Team
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/LPD-EPFL/byzfl" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/byzfl/" title="PyPi" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-custom fa-pypi fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPi</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Federated Learning (FL) Framework</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="fed_learning_sim.html">FL Simulation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">FL Benchmark</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Helper Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="model_base_interface.html">Model Base Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robust_aggregators.html">Robust Aggregator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="byzantine_client.html">Byzantine Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_distributor.html">Data Distributor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Federated Learning Framework</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">FL Benchmark</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="fl-benchmark">
+<span id="federated-learning-label"></span><h1>FL Benchmark<a class="headerlink" href="#fl-benchmark" title="Link to this heading">#</a></h1>
+<p>The <strong>FL Benchmark</strong> in ByzFL is a <strong>comprehensive testing framework</strong> for evaluating federated learning algorithms under adversarial conditions. It automates large-scale experiments, allowing users to test various <strong>aggregators, attacks, and data heterogeneity levels</strong> through a single <strong>configurable JSON file</strong>.</p>
+<p>This benchmark extends the <a class="reference internal" href="../index.html#federated-learning-framework-label"><span class="std std-ref">Federated Learning Framework</span></a> by enabling <strong>systematic evaluation</strong> rather than manual experiment setup.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul>
+<li><p><strong>Fully Configurable via JSON</strong></p>
+<p>Define federated learning scenarios (e.g., aggregators, attacks, data heterogeneity) though a single configuration file (<code class="docutils literal notranslate"><span class="pre">config.json</span></code>), without modifying code.</p>
+</li>
+<li><p><strong>Scalable Benchmarking</strong></p>
+<p>Run exhaustive simulations with multiple configurations in parallel, automatically storing and analyzing results.</p>
+</li>
+<li><p><strong>Robust Evaluation</strong></p>
+<p>Automatically identify the best hyperparameter settings by testing aggregators <strong>against the worst-case Byzantine attack</strong>.</p>
+</li>
+<li><p><strong>Prebuilt Visualizations</strong></p>
+<p>Easily generate plots (<strong>test accuracy curves</strong>, <strong>heatmaps</strong>) to quickly assess performance and compare
+methods across different configurations.</p>
+</li>
+</ul>
+</section>
+<section id="pipeline">
+<h2>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt><strong>Run All Configurations and Store Results</strong></dt><dd><ul class="simple">
+<li><p>Executes federated learning simulations using predefined configurations.</p></li>
+<li><p>Supports parallel execution across multiple settings.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Evaluate the Results</strong></dt><dd><ul class="simple">
+<li><p>Assesses robustness against <strong>various attacks</strong>.</p></li>
+<li><p>Identifies optimal learning hyperparameters for each aggregator.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Generate Plots</strong></dt><dd><ul class="simple">
+<li><p>Produces <strong>accuracy curves, heatmaps, and aggregated performance summaries</strong>.</p></li>
+<li><p>Facilitates easy comparison of robust aggregators across different federated settings.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="why-this-fl-benchmark">
+<h2>Why This FL Benchmark?<a class="headerlink" href="#why-this-fl-benchmark" title="Link to this heading">#</a></h2>
+<p>The FL Benchmark automates <strong>large-scale federated learning evaluations</strong>, unlike the <a class="reference internal" href="fed_learning_sim.html#federated-learning-sim-label"><span class="std std-ref">FL Simulation</span></a>, which focuses on single-instance experiments.</p>
+<dl class="simple">
+<dt>It enables exhaustive testing across multiple configurations, including:</dt><dd><p>✔ Varying numbers of honest vs. Byzantine clients
+✔ Different levels of data heterogeneity (IID vs. non-IID distributions)
+✔ Multiple aggregation and pre-aggregation strategies
+✔ Multiple Byzantine attack strategies</p>
+</dd>
+</dl>
+<p>By modifying only the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file, users can can fully customize the environment and launch extensive experiments without writing additional code.</p>
+</section>
+<section id="setting-up-your-experiments">
+<h2>Setting Up Your Experiments<a class="headerlink" href="#setting-up-your-experiments" title="Link to this heading">#</a></h2>
+<p>All experiments are set up using a single JSON configuration file (<code class="docutils literal notranslate"><span class="pre">config.json</span></code>), placed in the working directory.
+Below is a sample of a <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file, testing the strength of state-of-the-art robust aggregators in an adversarial distributed setup.</p>
+<div class="toggle admonition">
+<p class="admonition-title">Click to expand JSON configuration</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;benchmark_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;device&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;training_seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;nb_training_seeds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;nb_honest_clients&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;f&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;data_distribution_seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;nb_data_distribution_seeds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;data_distribution&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gamma_similarity_niid&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;distribution_parameter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.66</span><span class="p">,</span><span class="w"> </span><span class="mf">0.33</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cnn_mnist&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;dataset_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;nb_labels&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;loss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NLLLoss&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;aggregator&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GeometricMedian&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;nu&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;T&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TrMean&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;pre_aggregators&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Clipping&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NNM&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;server&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;learning_rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;nb_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;batch_size_evaluation&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;learning_rate_decay&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;milestones&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;honest_nodes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;momentum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;weight_decay&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0001</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;batch_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;attack&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SignFlipping&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Optimal_InnerProductManipulation&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Optimal_ALittleIsEnough&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;evaluation_and_results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;evaluation_delta&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;store_training_accuracy&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;store_training_loss&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;store_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;results_directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./results&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<dl class="simple">
+<dt><strong>This setup:</strong></dt><dd><ul class="simple">
+<li><p>Runs experiments on <strong>MNIST</strong> with <strong>10 honest clients</strong> and <strong>1 to 4 Byzantine clients</strong>.</p></li>
+<li><p>Evaluates <strong>non-IID data distributions</strong>.</p></li>
+<li><p>Executes the <a class="reference internal" href="../../aggregators/classes/trmean.html#trmean-label"><span class="std std-ref">Trimmed Mean</span></a> &amp; <a class="reference internal" href="../../aggregators/classes/geometric_median.html#gm-label"><span class="std std-ref">Geometric Median</span></a> aggregators, pre-composed with <a class="reference internal" href="../../aggregators/classes/clipping.html#clipping-label"><span class="std std-ref">Static Clipping</span></a> and <a class="reference internal" href="../../aggregators/classes/nnm.html#nnm-label"><span class="std std-ref">Nearest Neighbor Mixing (NNM)</span></a>.</p></li>
+<li><p>Executes the <a class="reference internal" href="../../attacks/classes/sign_flipping.html#sf-label"><span class="std std-ref">Sign Flipping</span></a>, <a class="reference internal" href="../../attacks/classes/optimal_alie.html#opt-alie-label"><span class="std std-ref">Optimal A Little Is Enough (Opt-ALIE)</span></a>, and <a class="reference internal" href="../../attacks/classes/optimal_ipm.html#opt-ipm-label"><span class="std std-ref">Optimal Inner Product Manipulation (Opt-IPM)</span></a> attacks.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The FL Benchmark allows users to configure a wide range of parameters, enabling flexible experimentation with different federated learning scenarios.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Dataset</strong>: Choose the dataset for training (e.g., MNIST, CIFAR-10).</p></li>
+<li><p><strong>Model</strong>: Select the neural network architecture for federated learning.</p></li>
+<li><p><strong>Number of Honest Clients</strong>: Specify the number of honest clients in the system.</p></li>
+<li><p><strong>Number of Byzantine Clients</strong>: Specify the number of adversarial clients in the system.</p></li>
+<li><p><strong>Data Distribution</strong>: Configure the data heterogeneity across clients (IID, non-IID distributions).</p></li>
+<li><p><strong>Aggregators</strong>: Test different aggregation methods (e.g., Trimmed Mean, Geometric Median). <em>(Hyperparameters must be specified separately.)</em></p></li>
+<li><p><strong>Pre-aggregators</strong>: Select pre-processing techniques applied before aggregation (e.g., Clipping, Nearest Neighbor Mixing). <em>(Hyperparameters must be specified separately.)</em></p></li>
+<li><p><strong>Attacks</strong>: Simulate different Byzantine attack strategies (e.g., Sign Flipping, ALIE, Inner Product Manipulation). <em>(Hyperparameters must be specified separately.)</em></p></li>
+<li><p><strong>Learning Rate</strong>: Define the learning rate for model training.</p></li>
+<li><p><strong>Client Momentum</strong>: Adjust the momentum value for client-side optimization.</p></li>
+<li><p><strong>Weight Decay</strong>: Set the weight decay factor to control regularization.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>You can specify a list of values for any supported parameter in <code class="docutils literal notranslate"><span class="pre">config.json</span></code>. Each entry in the list is treated as a separate simulation.</p></li>
+<li><p>Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.</p></li>
+<li><p>The <cite>f</cite> parameter must not be explicitly provided to (pre-)aggregators or attacks that require it in their parameters, as it is already determined based on the values of the main <cite>f</cite> parameter in <code class="docutils literal notranslate"><span class="pre">config.json</span></code>.</p></li>
+</ul>
+</div>
+</section>
+<section id="launching-the-benchmark">
+<h2>Launching the Benchmark<a class="headerlink" href="#launching-the-benchmark" title="Link to this heading">#</a></h2>
+<p>To execute the benchmark, simply run:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark</span> <span class="kn">import</span> <span class="n">run_benchmark</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>  <span class="c1"># Required for multiprocessing</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Number of trainings to run in parallel</span>
+    <span class="n">run_benchmark</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The benchmark automatically reads <code class="docutils literal notranslate"><span class="pre">config.json</span></code> and executes all specified experiments.</p></li>
+<li><p>Results are stored in the <code class="docutils literal notranslate"><span class="pre">results_directory</span></code> (default: <code class="docutils literal notranslate"><span class="pre">./results</span></code>).</p></li>
+<li><p>If no <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file exists in your current directory, <strong>a default template is generated</strong> for customization. You can modify this file before re-running the benchmark.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">run_benchmark()</span></code> provides a built-in evaluation function that automatically selects the best hyperparameters by assessing <strong>worst-case attack scenarios</strong>.
+Specifically, it evaluates various provided hyperparameters, such as <strong>learning rates, client momentum, and weight decay</strong>, and determines the configuration that achieves the <strong>highest worst-case accuracy</strong> on a validation set against the <strong>strongest Byzantine attack</strong> (i.e., the attack that minimizes the best achievable accuracy).
+This approach ensures that the selected hyperparameters maximize <strong>robustness</strong> while preventing overfitting to the test set.</p>
+</section>
+<section id="viewing-results">
+<h2>Viewing Results<a class="headerlink" href="#viewing-results" title="Link to this heading">#</a></h2>
+<p>ByzFL provides <strong>built-in visualization tools</strong> to analyze results.</p>
+<section id="test-accuracy-curves">
+<h3><strong>Test Accuracy Curves</strong><a class="headerlink" href="#test-accuracy-curves" title="Link to this heading">#</a></h3>
+<p>Displays <strong>test accuracy trends over time</strong> for each aggregator across different attack strategies.
+Each aggregator is represented by a plot containing accuracy curves for all considered attacks.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark.evaluate_results</span> <span class="kn">import</span> <span class="n">plot_accuracy_fix_agg_best_setting</span>
+
+<span class="n">path_training_results</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
+<span class="n">path_to_plot</span> <span class="o">=</span> <span class="s2">&quot;./plot&quot;</span>
+
+<span class="n">plot_accuracy_fix_agg_best_setting</span><span class="p">(</span>
+    <span class="n">path_training_results</span><span class="p">,</span>
+    <span class="n">path_to_plot</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<section id="example-plot">
+<h4>Example Plot<a class="headerlink" href="#example-plot" title="Link to this heading">#</a></h4>
+<p>For <code class="docutils literal notranslate"><span class="pre">nb_honest_clients=10</span></code>, <code class="docutils literal notranslate"><span class="pre">f=2</span></code>, <code class="docutils literal notranslate"><span class="pre">distribution</span> <span class="pre">parameter</span> <span class="pre">=</span> <span class="pre">0.0</span></code>, <code class="docutils literal notranslate"><span class="pre">aggregator</span> <span class="pre">=</span> <span class="pre">Trimmed</span> <span class="pre">Mean</span></code>:</p>
+<a class="reference internal image-reference" href="../../_images/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png"><img alt="Example Accuracy Plot" class="align-center" src="../../_images/mnist_cnn_mnist_n_12_f_2_d_2_gamma_similarity_niid_0.0_TrMean_Clipping_NNM_lr_0.1_mom_0.9_wd_0.0001_plot.png" style="width: 608.0px; height: 456.0px;" /></a>
+</section>
+</section>
+<section id="heatmaps">
+<h3><strong>Heatmaps</strong><a class="headerlink" href="#heatmaps" title="Link to this heading">#</a></h3>
+<p>Heatmaps summarize performance across multiple configurations.</p>
+<ul class="simple">
+<li><p><strong>X-axis:</strong> Number of Byzantine clients</p></li>
+<li><p><strong>Y-axis:</strong> Data heterogeneity (distribution parameter)</p></li>
+<li><p><strong>Cell Value:</strong> Worst-case test accuracy or training loss under the strongest attack</p></li>
+</ul>
+<section id="heatmap-of-training-losses">
+<h4>Heatmap of training losses<a class="headerlink" href="#heatmap-of-training-losses" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark.evaluate_results</span> <span class="kn">import</span> <span class="n">heat_map_loss</span>
+
+<span class="n">path_training_results</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
+<span class="n">path_to_plot</span> <span class="o">=</span> <span class="s2">&quot;./plot&quot;</span>
+
+<span class="n">heat_map_loss</span><span class="p">(</span><span class="n">path_training_results</span><span class="p">,</span> <span class="n">path_to_plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="image-row docutils container">
+<div class="image-column docutils container">
+<p><strong>Geometric Median (Loss)</strong></p>
+<a class="reference internal image-reference" href="../../_images/GM_heatmap_loss.png"><img alt="Geometric Median Heatmap Loss" class="align-center" src="../../_images/GM_heatmap_loss.png" style="width: 333.0px; height: 272.09999999999997px;" /></a>
+</div>
+<div class="image-column docutils container">
+<p><strong>Trimmed Mean (Loss)</strong></p>
+<a class="reference internal image-reference" href="../../_images/TM_heatmap_loss.png"><img alt="Trimmed Mean Heatmap Loss" class="align-center" src="../../_images/TM_heatmap_loss.png" style="width: 335.09999999999997px; height: 273.59999999999997px;" /></a>
+</div>
+</div>
+</section>
+<section id="heatmap-of-test-accuracies">
+<h4>Heatmap of test accuracies<a class="headerlink" href="#heatmap-of-test-accuracies" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark.evaluate_results</span> <span class="kn">import</span> <span class="n">heat_map_test_accuracy</span>
+
+<span class="n">path_training_results</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
+<span class="n">path_to_plot</span> <span class="o">=</span> <span class="s2">&quot;./plot&quot;</span>
+
+<span class="n">heat_map_test_accuracy</span><span class="p">(</span><span class="n">path_training_results</span><span class="p">,</span> <span class="n">path_to_plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="image-row docutils container">
+<div class="image-column docutils container">
+<p><strong>Geometric Median (Test Accuracy)</strong></p>
+<a class="reference internal image-reference" href="../../_images/GM_test_heatmap.png"><img alt="Geometric Median Heatmap Test Accuracy" class="align-center" src="../../_images/GM_test_heatmap.png" style="width: 336.3px; height: 273.59999999999997px;" /></a>
+</div>
+<div class="image-column docutils container">
+<p><strong>Trimmed Mean (Test Accuracy)</strong></p>
+<a class="reference internal image-reference" href="../../_images/TM_test_heatmap.png"><img alt="Trimmed Mean Heatmap Test Accuracy" class="align-center" src="../../_images/TM_test_heatmap.png" style="width: 337.5px; height: 272.09999999999997px;" /></a>
+</div>
+</div>
+</section>
+<section id="aggregated-heatmap-of-test-accuracies">
+<h4>Aggregated heatmap of test accuracies<a class="headerlink" href="#aggregated-heatmap-of-test-accuracies" title="Link to this heading">#</a></h4>
+<p>This plot consolidates all (pre-)aggregators, showing <strong>the best-performing method per scenario (cell)</strong>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">byzfl.benchmark.evaluate_results</span> <span class="kn">import</span> <span class="n">aggregated_heat_map_test_accuracy</span>
+
+<span class="n">path_training_results</span> <span class="o">=</span> <span class="s2">&quot;./results&quot;</span>
+<span class="n">path_to_plot</span> <span class="o">=</span> <span class="s2">&quot;./plot&quot;</span>
+
+<span class="n">aggregated_heat_map_test_accuracy</span><span class="p">(</span>
+    <span class="n">path_training_results</span><span class="p">,</span>
+    <span class="n">path_to_plot</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The aggregated view of Geometric Median and Trimmed Mean shows the accuracy achieved by the best method in each configuration:</p>
+<a class="reference internal image-reference" href="../../_images/aggregated_heatmap.png"><img alt="Aggregated Heatmap Test Accuracy" class="align-center" src="../../_images/aggregated_heatmap.png" style="width: 448.8px; height: 363.20000000000005px;" /></a>
+</section>
+</section>
+</section>
+<section id="extending-the-benchmark">
+<h2>Extending the Benchmark<a class="headerlink" href="#extending-the-benchmark" title="Link to this heading">#</a></h2>
+<p>ByzFL is <strong>fully extendable</strong>, allowing users to integrate custom <strong>(pre-)aggregators, attacks, and models</strong>. There are two options:</p>
+<ol class="arabic simple">
+<li><p>Modify the code within the installed library.</p></li>
+<li><p>Clone the ByzFL repository, make changes, and then run it:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/LPD-EPFL/byzfl.git</span>
+</pre></div>
+</div>
+<section id="example-adding-a-custom-aggregator">
+<h3><strong>Example: Adding a Custom Aggregator</strong><a class="headerlink" href="#example-adding-a-custom-aggregator" title="Link to this heading">#</a></h3>
+<p>To add a new aggregation method:</p>
+<ol class="arabic simple">
+<li><p>Navigate to <code class="docutils literal notranslate"><span class="pre">byzfl/aggregators/aggregators.py</span></code>.</p></li>
+<li><p>Implement a class with a constructor (<cite>__init__</cite>) and an aggregation method (<cite>__call__</cite>).</p></li>
+<li><p>Register the new aggregation in the <cite>config.json</cite> file.</p></li>
+</ol>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomAggregator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">param2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param1</span> <span class="o">=</span> <span class="n">param1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param2</span> <span class="o">=</span> <span class="n">param2</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">some_aggregation_function</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once implemented, update <cite>config.json</cite>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;aggregator&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CustomAggregator&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;param1&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;param2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fed_learning_sim.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">FL Simulation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="model_base_interface.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Base Interface</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline">Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-fl-benchmark">Why This FL Benchmark?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-your-experiments">Setting Up Your Experiments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-the-benchmark">Launching the Benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-results">Viewing Results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-accuracy-curves"><strong>Test Accuracy Curves</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-plot">Example Plot</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmaps"><strong>Heatmaps</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-of-training-losses">Heatmap of training losses</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-of-test-accuracies">Heatmap of test accuracies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregated-heatmap-of-test-accuracies">Aggregated heatmap of test accuracies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-benchmark">Extending the Benchmark</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-adding-a-custom-aggregator"><strong>Example: Adding a Custom Aggregator</strong></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, EPFL.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

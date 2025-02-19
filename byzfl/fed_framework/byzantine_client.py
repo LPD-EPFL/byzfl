@@ -1,4 +1,7 @@
+import inspect
+
 from byzfl.attacks import attacks
+from byzfl.aggregators import aggregators, preaggregators
 
 class ByzantineClient:
     """
@@ -101,7 +104,70 @@ class ByzantineClient:
 
         # Initialize the ByzantineClient instance
         self.f = params["f"]
-        self.attack = getattr(attacks, params["name"])(**params["parameters"])
+        self.no_attack = False
+
+        if params["name"] == "NoAttack":
+            self.no_attack = True
+            return
+
+        # Initialize the aggregator and pre-aggregators for attacks that require it
+
+        if "aggregator_info" in params.get("parameters", {}):
+            aggregator_info = params["parameters"]["aggregator_info"]
+            
+            aggregator = getattr(aggregators, aggregator_info["name"])
+
+            signature_agg = inspect.signature(aggregator.__init__)
+
+            agg_parameters = {}
+
+            for parameter in signature_agg.parameters.values():
+                param_name = parameter.name
+                if param_name in aggregator_info["parameters"]:
+                    agg_parameters[param_name] = aggregator_info["parameters"][param_name]
+            
+            aggregator = aggregator(**agg_parameters)
+
+            params["parameters"]["agg"] = aggregator
+        
+        if "pre_agg_list" in params.get("parameters", {}):
+
+            pre_agg_list_info = params["parameters"]["pre_agg_list"]
+
+            pre_agg_list = []
+
+            for pre_agg_info in pre_agg_list_info:
+
+                pre_agg = getattr(
+                    preaggregators, 
+                    pre_agg_info["name"]
+                )
+
+                signature_pre_agg = inspect.signature(pre_agg.__init__)
+
+                pre_agg_parameters = {}
+
+                for parameter in signature_pre_agg.parameters.values():
+                    param_name = parameter.name
+                    if param_name in pre_agg_info["parameters"]:
+                        pre_agg_parameters[param_name] = pre_agg_info["parameters"][param_name]
+
+                pre_agg = pre_agg(**pre_agg_parameters)
+
+                pre_agg_list.append(pre_agg)
+
+            params["parameters"]["pre_agg_list"] = pre_agg_list
+
+        self.attack = getattr(attacks, params["name"])
+        signature_attack = inspect.signature(self.attack.__init__)
+
+        filtered_parameters = {}
+        for parameter in signature_attack.parameters.values():
+            param_name = parameter.name
+            if param_name in params["parameters"]:
+                filtered_parameters[param_name] = params["parameters"][param_name]
+
+        self.attack = self.attack(**filtered_parameters)
 
     def apply_attack(self, honest_vectors):
         """
@@ -121,6 +187,8 @@ class ByzantineClient:
 
         if not self.f < len(honest_vectors):
             raise ValueError(f"f must be smaller than the number of honest_vectors, but got f={self.f} and len(honest_vectors)={len(honest_vectors)}")
+        if self.f > 0 and  self.no_attack:
+            raise ValueError(f"Got f={self.f}, but no attack is set")
         if self.f == 0:
             return []
 
