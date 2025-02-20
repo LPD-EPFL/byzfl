@@ -7,11 +7,12 @@ The **FL Simulation** module demonstrates how to use the key components of the l
 
 Key Features
 ------------
-- **Client Class**: Simulates honest participants that compute gradients based on their local data.
-- **Server Class**: Simulates the central server that aggregates gradients and updates the global model.
-- **ByzantineClient Class**: Simulates malicious participants injecting adversarial gradients into the aggregation process.
-- **DataDistributor Class**: Handles the distribution of data among clients in various configurations, including IID and non-IID distributions (e.g., Dirichlet, Gamma, Extreme), to simulate realistic federated learning setups.
-- **Robust Aggregation**: Demonstrates the usage of robust aggregation techniques such as :ref:`trmean-label`, combined with pre-aggregation methods like :ref:`clipping-label` and :ref:`nnm-label`.
+- ``Client`` Class: Simulates honest participants that compute gradients based on their local data.
+- ``Server`` Class: Simulates the central server that aggregates gradients and updates the global model.
+- ``ByzantineClient`` Class: Simulates malicious participants injecting adversarial gradients into the aggregation process.
+- ``DataDistributor`` Class: Handles the distribution of data among clients in various configurations, including IID and non-IID distributions (e.g., Dirichlet, Gamma, Extreme), to simulate realistic federated learning setups.
+- ``RobustAggregator`` Class: Demonstrates the usage of robust aggregation techniques such as :ref:`trmean-label`, combined with pre-aggregation methods like :ref:`clipping-label` and :ref:`nnm-label`.
+- ``Models`` Module: Stores a collection of available ML models for federated learning tasks on MNIST and CIFAR-10.
 
 Example: Federated Learning Workflow
 ------------------------------------
@@ -167,18 +168,18 @@ Running the above code will produce the following output:
     Test Accuracy: 0.9733
     Training Complete!
 
-Documentation References
-------------------------
-For more information about individual components, refer to the following:
-- **Client Class**: :ref:`client-label`
-- **Server Class**: :ref:`server-label`
-- **ByzantineClient Class**: :ref:`byzantine-client-label`
-- **RobustAggregator Class**: :ref:`robust-aggregator-label`
-- **DataDistributor Class**: :ref:`data-dist-label`
-- **Models Module**: :ref:`models-label`
-
 Notes
 -----
 - This example can be extended to other datasets and models by modifying the parameters accordingly.
 - The robustness of the system depends on the aggregation methods and the number of Byzantine participants.
 - The module is designed to be flexible and adaptable for experimentation with different setups.
+
+Documentation References
+------------------------
+For more information about individual components, refer to the following:
+    - ``Client`` Class: :ref:`client-label`
+    - ``Server`` Class: :ref:`server-label`
+    - ``ByzantineClient`` Class: :ref:`byzantine-client-label`
+    - ``RobustAggregator`` Class: :ref:`robust-aggregator-label`
+    - ``DataDistributor`` Class: :ref:`data-dist-label`
+    - ``Models`` Module: :ref:`models-label`
