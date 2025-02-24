@@ -6,7 +6,7 @@ Welcome to the **official documentation of ByzFL**, developed by [DCL](http://dc
 
 ## What is ByzFL?
 
-ByzFL is a **Python library for Byzantine-resilient Federated Learning**. It is fully compatible with both [PyTorch](http://pytorch.org) tensors and [NumPy](http://numpy.org) arrays, making it versatile for a wide range of machine learning workflows.
+ByzFL is a **Python library for robust Federated Learning**. It is fully compatible with both [PyTorch](http://pytorch.org) tensors and [NumPy](http://numpy.org) arrays, making it versatile for a wide range of machine learning workflows.
 
 ### Key Features
 
@@ -14,10 +14,12 @@ ByzFL is a **Python library for Byzantine-resilient Federated Learning**. It is 
    - Aggregate gradients robustly while mitigating the impact of Byzantine participants.
 2. **Byzantine Attacks**: 
    - Simulate and evaluate different attack strategies to test resilience.
-3. **Federated Learning Framework**: 
-    - Provides an end-to-end simulation environment for federated learning, integrating clients (honest and Byzantine), a central server, and robust aggregation mechanisms. This framework supports testing and benchmarking the robustness of various aggregation strategies against adversarial attacks in a distributed learning setup.
+3. **Federated Learning Framework/Simulation**: 
+    - Provides an end-to-end simulation environment for federated learning, integrating clients (honest and Byzantine), a central server, and robust aggregation mechanisms.
+4. **Federated Learning Benchmarking**:
+    - Provides a systematic and automated evaluation framework to test federated learning algorithms under adversarial conditions, ensuring robust performance across various configurations. This framework supports benchmarking the robustness of various aggregation strategies against adversarial attacks in a distributed learning setup.
 
-The exact implementations of these modules (`aggregators`, `attacks`, and `fed_framework`) can be found in the `byzfl/` directory.
+The exact implementations of these modules (`aggregators`, `attacks`, `benchmark`, and `fed_framework`) can be found in the `byzfl/` directory.
 
 ---
 
