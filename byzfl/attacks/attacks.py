@@ -931,7 +931,7 @@ class Mimic:
     """
 
     def __init__(self, epsilon=0):
-        if not isinstance(epsilon, float) or epsilon < 0:
+        if not isinstance(epsilon, int) or epsilon < 0:
             raise ValueError("epsilon must be a non-negative int.")
         self.epsilon = epsilon
 
