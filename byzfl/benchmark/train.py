@@ -98,6 +98,7 @@ def start_training(params):
             shuffle=False
         )
     else:
+        val_loader = None
         print("WARNING: NO VALIDATION DATASET")
     
     test_dataset = getattr(datasets, dataset_name)(
@@ -200,15 +201,17 @@ def start_training(params):
         # Evaluate Global Model Every Evaluation Delta Steps
         if training_step % evaluation_delta == 0:
 
-            val_acc = server.compute_validation_accuracy()
+            if val_loader is not None:
 
-            val_accuracy_list = np.append(val_accuracy_list, val_acc)
+                val_acc = server.compute_validation_accuracy()
 
-            file_manager.write_array_in_file(
-                val_accuracy_list, 
-                "val_accuracy_tr_seed_" + str(training_seed) 
-                + "_dd_seed_" + str(dd_seed) +".txt"
-            )
+                val_accuracy_list = np.append(val_accuracy_list, val_acc)
+
+                file_manager.write_array_in_file(
+                    val_accuracy_list, 
+                    "val_accuracy_tr_seed_" + str(training_seed) 
+                    + "_dd_seed_" + str(dd_seed) +".txt"
+                )
 
             if evaluate_on_test:
                 test_acc = server.compute_test_accuracy()
@@ -256,15 +259,17 @@ def start_training(params):
         for client in honest_clients:
             client.set_model_state(new_model)
     
-    val_acc = server.compute_validation_accuracy()
+    if val_loader is not None:
+    
+        val_acc = server.compute_validation_accuracy()
 
-    val_accuracy_list = np.append(val_accuracy_list, val_acc)
+        val_accuracy_list = np.append(val_accuracy_list, val_acc)
 
-    file_manager.write_array_in_file(
-        val_accuracy_list, 
-        "val_accuracy_tr_seed_" + str(training_seed) 
-        + "_dd_seed_" + str(dd_seed) +".txt"
-    )
+        file_manager.write_array_in_file(
+            val_accuracy_list, 
+            "val_accuracy_tr_seed_" + str(training_seed) 
+            + "_dd_seed_" + str(dd_seed) +".txt"
+        )
 
     if evaluate_on_test:
         test_acc = server.compute_test_accuracy()

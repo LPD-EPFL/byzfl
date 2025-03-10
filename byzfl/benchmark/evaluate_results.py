@@ -45,6 +45,10 @@ def find_best_hyperparameters(path_to_results):
     
     path_hyperparameters = path_to_results + "/best_hyperparameters"
 
+    if float(data["benchmark_config"]["size_train_set"]) == 1.0:
+        print("No hyperparameter exploration done.")
+        return
+
     # <-------------- Benchmark Config ------------->
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
@@ -334,10 +338,18 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
                                     f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_{pre_agg_names}_{agg['name']}.txt"
                                     )
 
-                                    hyperparameters = np.loadtxt(path_to_hyperparameters +"/hyperparameters/"+ hyper_file_name)
-                                    lr = hyperparameters[0]
-                                    momentum = hyperparameters[1]
-                                    wd = hyperparameters[2]
+
+                                    full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                                    if os.path.exists(full_path):
+                                        hyperparameters = np.loadtxt(full_path)
+                                        lr = hyperparameters[0]
+                                        momentum = hyperparameters[1]
+                                        wd = hyperparameters[2]
+                                    else:
+                                        lr = lr_list[0]
+                                        momentum = momentum_list[0]
+                                        wd = wd_list[0]
 
                                     tab_acc = np.zeros((
                                         len(attacks), 
@@ -493,11 +505,18 @@ def heat_map_loss(path_to_results, path_to_plot):
                             )
 
                             
-                            hyperparameters = np.loadtxt(path_to_hyperparameters +"/hyperparameters/"+ hyper_file_name)
+                            full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
 
-                            lr = hyperparameters[0]
-                            momentum = hyperparameters[1]
-                            wd = hyperparameters[2]
+                            if os.path.exists(full_path):
+                                hyperparameters = np.loadtxt(full_path)
+                                lr = hyperparameters[0]
+                                momentum = hyperparameters[1]
+                                wd = hyperparameters[2]
+                            else:
+                                lr = lr_list[0]
+                                momentum = momentum_list[0]
+                                wd = wd_list[0]
+
                             
                             lowest_loss = 0
                             for attack in attacks:
@@ -673,12 +692,18 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
                                 f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_{pre_agg_names}_{agg['name']}.txt"
                             )
 
-                            
-                            hyperparameters = np.loadtxt(path_to_hyperparameters +"/hyperparameters/"+ hyper_file_name)
+                            full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
 
-                            lr = hyperparameters[0]
-                            momentum = hyperparameters[1]
-                            wd = hyperparameters[2]
+                            if os.path.exists(full_path):
+                                hyperparameters = np.loadtxt(full_path)
+                                lr = hyperparameters[0]
+                                momentum = hyperparameters[1]
+                                wd = hyperparameters[2]
+                            else:
+                                lr = lr_list[0]
+                                momentum = momentum_list[0]
+                                wd = wd_list[0]
+
                             
                             worst_accuracy = np.inf
                             for attack in attacks:
@@ -852,10 +877,18 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
                             )
 
                             
-                            hyperparameters = np.loadtxt(path_to_hyperparameters +"/hyperparameters/"+ hyper_file_name)
-                            lr = hyperparameters[0]
-                            momentum = hyperparameters[1]
-                            wd = hyperparameters[2]
+                            full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                            if os.path.exists(full_path):
+                                hyperparameters = np.loadtxt(full_path)
+                                lr = hyperparameters[0]
+                                momentum = hyperparameters[1]
+                                wd = hyperparameters[2]
+                            else:
+                                lr = lr_list[0]
+                                momentum = momentum_list[0]
+                                wd = wd_list[0]
+
                             
                             worst_accuracy = np.inf
                             for attack in attacks:
