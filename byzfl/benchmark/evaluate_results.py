@@ -327,6 +327,7 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
                     
                     for data_dist in data_distributions:
                         dist_parameter_list = data_dist["distribution_parameter"]
+                        dist_parameter_list = ensure_list(dist_parameter_list)
                         for dist_parameter in dist_parameter_list:
                             for pre_agg in pre_aggregators:
                                 pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
@@ -486,6 +487,8 @@ def heat_map_loss(path_to_results, path_to_plot):
             for data_dist in data_distributions:
 
                 distribution_parameter_list = data_dist["distribution_parameter"]
+                distribution_parameter_list = ensure_list(distribution_parameter_list)
+
                 heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
 
                 for nb_honest in nb_honest_clients:
@@ -674,6 +677,8 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
             for data_dist in data_distributions:
 
                 distribution_parameter_list = data_dist["distribution_parameter"]
+                distribution_parameter_list = ensure_list(distribution_parameter_list)
+
                 heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
 
                 for nb_honest in nb_honest_clients:
@@ -848,6 +853,7 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
 
         pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
         pre_agg_names = "_".join(pre_agg_list_names)
+        data_distributions[0]["distribution_parameter"] = ensure_list(data_distributions[0]["distribution_parameter"])
         heat_map_cube = np.zeros((len(aggregators), len(data_distributions[0]["distribution_parameter"]), len(nb_byz)))
 
         for z, agg in enumerate(aggregators):
