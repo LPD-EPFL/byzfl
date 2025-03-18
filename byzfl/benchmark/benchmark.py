@@ -405,7 +405,7 @@ def ensure_key_parameters(dict_list):
     return dict_list
 
 
-def ensure_key_config_parameters(data):
+def ensure_optional_config_parameters(data):
 
     if "nb_honest_clients" not in data["benchmark_config"].keys():
         data["benchmark_config"]["nb_honest_clients"] = 10
@@ -434,6 +434,9 @@ def ensure_key_config_parameters(data):
     if "results_directory" not in data["evaluation_and_results"].keys():
         data["evaluation_and_results"]["results_directory"] = "./results"
 
+    if "size_train_set" not in data["benchmark_config"].keys():
+        data["benchmark_config"]["size_train_set"] = 1.0
+
     return data
 
 
@@ -446,13 +449,20 @@ def run_benchmark(nb_jobs=1):
     try:
         with open('config.json', 'r') as file:
             data = json.load(file)
-            data = ensure_key_config_parameters(data)
+        
+        data = ensure_optional_config_parameters(data)
+        if float(data["benchmark_config"]["size_train_set"]) == 1.0:
+            print("WARNING: NO VALIDATION DATASET USED FOR HYPERPARAMETER EXPLORATION (Learning Rate, Momentum, Weight Decay)")
+
     except FileNotFoundError:
         print("'config.json' not found. Creating a default one...")
+
         with open('config.json', 'w') as f:
             json.dump(default_config, f, indent=4)
+
         print("'config.json' created successfully.")
         print("Please configure the experiment you want to run and re-run.")
+
         return
 
     # Determine the results directory (default to ./results)
@@ -501,8 +511,11 @@ def run_benchmark(nb_jobs=1):
 
     print("All trainings finished.")
 
-    print("Selecting Best Hyperparameters")
+    if float(data["benchmark_config"]["size_train_set"]) == 1.0:
+        print("No hyperparameter exploration done.")
+    else:
+        print("Selecting Best Hyperparameters...")
 
-    find_best_hyperparameters(results_directory)
+        find_best_hyperparameters(results_directory)
 
-    print("Done")
+        print("Done")

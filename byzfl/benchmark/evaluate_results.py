@@ -45,10 +45,6 @@ def find_best_hyperparameters(path_to_results):
     
     path_hyperparameters = path_to_results + "/best_hyperparameters"
 
-    if float(data["benchmark_config"]["size_train_set"]) == 1.0:
-        print("No hyperparameter exploration done.")
-        return
-
     # <-------------- Benchmark Config ------------->
     training_seed = data["benchmark_config"]["training_seed"]
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]

@@ -239,7 +239,7 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     def get_size_train_set(self):
-        default = 0.8
+        default = 1.0
         path = ["benchmark_config", "size_train_set"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)

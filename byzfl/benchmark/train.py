@@ -43,7 +43,11 @@ def start_training(params):
         "nb_byz": params_manager.get_f(),
         "declared_nb_byz": params_manager.get_tolerated_f(),
         "data_distribution_name": params_manager.get_name_data_distribution(),
-        "distribution_parameter": params_manager.get_parameter_data_distribution(),
+        "distribution_parameter": (
+            None if params_manager.get_name_data_distribution() 
+            in ["iid", "extreme_niid"] 
+            else params_manager.get_parameter_data_distribution()
+        ),
         "aggregation_name": params_manager.get_aggregator_name(),
         "pre_aggregation_names": [
             dict['name'] 
@@ -99,7 +103,6 @@ def start_training(params):
         )
     else:
         val_loader = None
-        print("WARNING: NO VALIDATION DATASET")
     
     test_dataset = getattr(datasets, dataset_name)(
                 root = params_manager.get_data_folder(),
