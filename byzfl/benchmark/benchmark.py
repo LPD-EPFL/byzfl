@@ -93,6 +93,34 @@ default_config = {
 }
 
 def generate_all_combinations_aux(list_dict, orig_dict, aux_dict, rest_list):
+    """
+    Recursively builds all combinations of key-value pairs from a nested dictionary.
+
+    This helper function iterates over the keys in `orig_dict` and, depending on the type of the corresponding value,
+    it recursively constructs combinations of values:
+      - If a value is a list:
+          - When the list is empty or the key is in `rest_list` (and its first element is not a list),
+            the entire list is assigned to the key.
+          - Otherwise, the function iterates over each item in the list. If an item is a dictionary, the function
+            recursively generates combinations for that dictionary; if not, it treats the item as a single-element list.
+      - If a value is a dictionary, it recursively generates combinations for that sub-dictionary.
+      - For other types, the value is directly assigned.
+
+    When the auxiliary dictionary `aux_dict` has entries for all keys in `orig_dict`, it is considered a complete
+    combination and is appended to `list_dict`.
+
+    Parameters:
+        list_dict (list): A list that accumulates the resulting combinations. Each element is a dictionary representing
+            one combination.
+        orig_dict (dict): The original dictionary from which combinations are to be generated. Its values may be lists,
+            dictionaries, or atomic values.
+        aux_dict (dict): An auxiliary dictionary used to build up a single combination during the recursive process.
+        rest_list (list): A list of keys for which list values in `orig_dict` should be treated as atomic (i.e., not iterated
+            over), even if they contain list elements.
+
+    Returns:
+        None: The function appends complete combinations to `list_dict` as a side effect.
+    """
     if len(aux_dict) < len(orig_dict):
         key = list(orig_dict)[len(aux_dict)]
         if isinstance(orig_dict[key], list):
@@ -146,6 +174,25 @@ def generate_all_combinations_aux(list_dict, orig_dict, aux_dict, rest_list):
         list_dict.append(aux_dict)
 
 def generate_all_combinations(original_dict, restriction_list):
+    """
+    Generates all possible combinations from a nested dictionary structure.
+
+    This function acts as the entry point for generating combinations from `original_dict`. It handles
+    nested structures where values can be lists or dictionaries, and uses the helper function
+    `generate_all_combinations_aux` to recursively construct every possible combination of key-value pairs.
+    For keys specified in `restriction_list`, list values are treated as atomic (i.e., the list is not iterated
+    over) and is directly assigned as the value.
+
+    Parameters:
+        original_dict (dict): The dictionary from which to generate combinations. Its values may include lists,
+            nested dictionaries, or simple values.
+        restriction_list (list): A list of keys whose list values should be treated as atomic, meaning the list
+            is used as is without iterating over its items.
+
+    Returns:
+        list: A list of dictionaries. Each dictionary represents one complete combination of key-value pairs
+            generated from `original_dict`.
+    """
     list_dict = []
     aux_dict = {}
     generate_all_combinations_aux(list_dict, original_dict, aux_dict, restriction_list)
