@@ -1,5 +1,7 @@
-from byzfl.aggregators import aggregators, preaggregators
 import inspect
+
+from byzfl.aggregators import aggregators, preaggregators
+
 
 class RobustAggregator:
     """

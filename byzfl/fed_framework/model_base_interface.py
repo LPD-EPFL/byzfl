@@ -1,8 +1,9 @@
+import collections
+
+import torch
 
 import byzfl.fed_framework.models as models
 from byzfl.utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
-import torch
-import collections
 
 class ModelBaseInterface(object):
 

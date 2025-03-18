@@ -1,4 +1,5 @@
 import torch
+
 from byzfl.fed_framework import ModelBaseInterface
 from byzfl.utils.conversion import flatten_dict
 

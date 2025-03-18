@@ -1,6 +1,8 @@
 import itertools
+
 import numpy as np
 import torch
+
 from byzfl.utils.misc import check_vectors_type, distance_tool
 
 class Average(object):

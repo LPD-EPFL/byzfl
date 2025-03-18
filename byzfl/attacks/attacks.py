@@ -1,4 +1,5 @@
 import numpy as np
+
 from byzfl.utils.misc import check_vectors_type, random_tool
 from byzfl.aggregators import Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed, Clipping, NNM, ARC, Bucketing
 

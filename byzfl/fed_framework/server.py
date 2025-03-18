@@ -1,4 +1,5 @@
 import torch
+
 from byzfl.fed_framework import ModelBaseInterface, RobustAggregator
 
 class Server(ModelBaseInterface):

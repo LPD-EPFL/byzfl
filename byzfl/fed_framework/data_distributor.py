@@ -1,6 +1,6 @@
-from torch.utils.data import DataLoader
 import numpy as np
 import torch, random
+from torch.utils.data import DataLoader
 
 class DataDistributor:
     """

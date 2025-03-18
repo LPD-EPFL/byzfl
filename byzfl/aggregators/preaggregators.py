@@ -1,4 +1,5 @@
 import math
+
 from byzfl.utils.misc import check_vectors_type, distance_tool, random_tool
 
 class NNM(object):

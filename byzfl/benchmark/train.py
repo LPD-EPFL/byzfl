@@ -1,8 +1,10 @@
 import time
+
 import numpy as np
 from torch import Tensor
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
+
 from byzfl import Client, Server, ByzantineClient, DataDistributor
 from byzfl.utils.misc import set_random_seed
 from byzfl.benchmark.managers import ParamsManager, FileManager
