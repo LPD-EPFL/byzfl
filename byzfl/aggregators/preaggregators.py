@@ -349,6 +349,7 @@ class Clipping(object):
         return vector
 
     def __call__(self, vectors):
+        _, vectors = check_vectors_type(vectors)
         for i in range(len(vectors)):
             vectors[i] = self._clip_vector(vectors[i])
         return vectors
