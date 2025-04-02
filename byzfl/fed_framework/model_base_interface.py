@@ -14,7 +14,15 @@ class ModelBaseInterface(object):
         # Initialize model
         model_name = params["model_name"]
         self.device = params["device"]
-        self.model = torch.nn.DataParallel(getattr(models, model_name)()).to(self.device)
+
+        model = getattr(models, model_name)()
+
+        if self.device == "cuda" and torch.cuda.device_count() > 1:
+            self.model = torch.nn.DataParallel(model)
+        else:
+            self.model = model
+
+        self.model.to(self.device)
 
         # Initialize optimizer. If set to None, it means that the Client does not need this information 
         optimizer_name = params["optimizer_name"]
