@@ -2,6 +2,7 @@ import sys
 import os
 import json
 
+import numpy as np
 import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -91,7 +92,7 @@ class TestBenchmark:
                     "results_directory": "./results"
                 }
             }
-            
+
             with open('config.json', 'w') as f:
                 json.dump(default_config, f, indent=4)
             run_benchmark(1)
@@ -107,14 +108,40 @@ class TestBenchmark:
             loss_dir = os.path.join(experiment_path, "loss_tr_seed_0_dd_seed_0")
 
             for i in range(10):
-                assert os.path.exists(os.path.join(accuracy_dir, f"accuracy_client_{i}.txt")), f"Missing accuracy_client_{i}.txt"
-                assert os.path.exists(os.path.join(loss_dir, f"loss_client_{i}.txt")), f"Missing loss_client_{i}.txt"
+                acc_file = os.path.join(accuracy_dir, f"accuracy_client_{i}.txt")
+                loss_file = os.path.join(loss_dir, f"loss_client_{i}.txt")
 
-            assert os.path.exists(os.path.join(experiment_path, "test_accuracy_tr_seed_0_dd_seed_0.txt"))
-            assert os.path.exists(os.path.join(experiment_path, "train_time_tr_seed_0_dd_seed_0.txt"))
-            assert os.path.exists(os.path.join(experiment_path, "val_accuracy_tr_seed_0_dd_seed_0.txt"))
-            assert os.path.exists(os.path.join(experiment_path, "day.txt"))
-            assert os.path.exists(os.path.join(experiment_path, "config.json"))
+                assert os.path.exists(acc_file), f"Missing {acc_file}"
+                assert os.path.exists(loss_file), f"Missing {loss_file}"
+
+                acc_data = np.loadtxt(acc_file, delimiter=",")
+                loss_data = np.loadtxt(loss_file, delimiter=",")
+                assert len(acc_data) == 800, f"Unexpected length in {acc_file}: got {len(acc_data)}"
+                assert len(loss_data) == 800, f"Unexpected length in {loss_file}: got {len(loss_data)}"
+
+            config_file = os.path.join(experiment_path, "config.json")
+            assert os.path.exists(config_file), f"Missing {file_path}"
+
+            day_file = os.path.join(experiment_path, "day.txt")
+            assert os.path.exists(day_file), f"Missing {file_path}"
+
+            train_time = os.path.join(experiment_path, "train_time_tr_seed_0_dd_seed_0.txt")
+            assert os.path.exists(train_time), f"Missing {file_path}"
+
+
+            # Additional files
+            test_acc = os.path.join(experiment_path, "test_accuracy_tr_seed_0_dd_seed_0.txt")
+            val_acc = os.path.join(experiment_path, "val_accuracy_tr_seed_0_dd_seed_0.txt")
+
+            expected_len = [800/50 + 1, 800/50 + 1, 1]
+
+            for i, file_path in enumerate([test_acc, val_acc]):
+                assert os.path.exists(file_path), f"Missing {file_path}"
+
+                if file_path.endswith(".txt"):
+                    data = np.loadtxt(file_path, delimiter=",")
+                    print(len(data))
+                    assert len(data) == expected_len[i], f"Unexpected length in {file_path}: got {len(data)}"
 
         except Exception as e:
             pytest.fail(f"run_benchmark raised an unexpected exception: {e}")
