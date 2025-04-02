@@ -760,7 +760,7 @@ class CenteredClipping(object):
 
     def __init__(self, m=None, L=1, tau=100.0):
         if m is not None and (not isinstance(m, np.ndarray) or not isinstance(m, torch.Tensor)):
-            raise TypeError("m must be of type np.ndarray or orch.Tensor")
+            raise TypeError("m must be of type np.ndarray or torch.Tensor")
         self.m = m
         if not isinstance(L, int) or L < 0:
             raise ValueError("L must be a non-negative integer")
