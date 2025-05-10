@@ -22,6 +22,17 @@ def check_vectors_type(vectors):
                         " or 'torch.Tensor'")
     return tools, vectors
 
+def shape(tools, vectors):
+    if tools == np:
+        n, dimension = vectors.shape
+    else:
+        n, dimension = vectors.size()
+    return n, dimension
+
+def ones_vector(tools, n, vectors):
+    if tools == np:
+        return tools.ones(n)
+    return tools.ones(n, device=vectors.device)
 
 def random_tool(vectors):
     if (isinstance(vectors, list) and isinstance(vectors[0], np.ndarray) or

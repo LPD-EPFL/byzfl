@@ -1,9 +1,7 @@
 import itertools
-
 import numpy as np
 import torch
-
-from byzfl.utils.misc import check_vectors_type, distance_tool
+from byzfl.utils.misc import check_vectors_type, distance_tool, shape, ones_vector
 
 class Average(object):
 
@@ -291,8 +289,10 @@ class TrMean(object):
 
     def __call__(self, vectors):
         tools, vectors = check_vectors_type(vectors)
-        if not self.f < len(vectors)/2:
-            raise ValueError(f"f must be smaller than len(vectors)/2, but got f={self.f} and len(vectors)={len(vectors)}")
+        n = len(vectors)
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
+
         if self.f == 0:
             avg = Average()
             return avg(vectors)
@@ -523,11 +523,12 @@ class Krum(object):
     
     def __call__(self, vectors):
         tools, vectors = check_vectors_type(vectors)
-        if not self.f < len(vectors)-1:
-            raise ValueError(f"f must be smaller than len(vectors)-1, but got f={self.f} and len(vectors)={len(vectors)}")
+        n = len(vectors)
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
         distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
-        dist = tools.sort(dist, axis=1)[:,1:len(vectors)-self.f]
+        dist = tools.sort(dist, axis=1)[:,1:n-self.f]
         dist = tools.mean(dist, axis=1)
         index = tools.argmin(dist)
         return vectors[index]
@@ -639,13 +640,14 @@ class MultiKrum(object):
 
     def __call__(self, vectors):
         tools, vectors = check_vectors_type(vectors)
-        if not self.f < len(vectors)-1:
-            raise ValueError(f"f must be smaller than len(vectors)-1, but got f={self.f} and len(vectors)={len(vectors)}")
+        n = len(vectors)
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
         distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)**2
-        dist = tools.sort(dist, axis = 1)[:,1:len(vectors)-self.f]
+        dist = tools.sort(dist, axis = 1)[:,1:n-self.f]
         dist = tools.mean(dist, axis = 1)
-        k = len(vectors) - self.f
+        k = n - self.f
         indices = tools.argpartition(dist, k-1)[:k]
         return tools.mean(vectors[indices], axis=0)
 
@@ -885,12 +887,12 @@ class MDA(object):
     
     def __call__(self, vectors):
         tools, vectors = check_vectors_type(vectors)
-        if not self.f < len(vectors):
-            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
+        n = len(vectors)
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
 
         distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors)
-        n = len(vectors)
         k = n - self.f
 
         min_diameter = np.inf
@@ -1018,14 +1020,15 @@ class MoNNA(object):
     
     def __call__(self, vectors):
         tools, vectors = check_vectors_type(vectors)
-        if not self.f < len(vectors):
-            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
-        if not self.idx < len(vectors):
-            raise ValueError(f"idx must be smaller than len(vectors), but got idx={self.idx} and len(vectors)={len(vectors)}")
+        n = len(vectors)
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
+        if not self.idx < n:
+            raise ValueError(f"idx must be smaller than n, but got idx={self.idx} and n={n}")
 
         distance = distance_tool(vectors)
         dist = distance.cdist(vectors, vectors[self.idx].reshape(1,-1))
-        k = len(vectors) - self.f
+        k = n - self.f
         indices = tools.argpartition(dist.reshape(-1), k-1)[:k]
         return tools.mean(vectors[indices], axis=0)
 
@@ -1133,8 +1136,9 @@ class Meamed(object):
 
     def __call__(self, vectors):
         tools, vectors = check_vectors_type(vectors)
-        if not self.f < len(vectors):
-            raise ValueError(f"f must be smaller than len(vectors), but got f={self.f} and len(vectors)={len(vectors)}")
+        n = len(vectors)
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
         
         d = len(vectors[0])
         k = len(vectors) - self.f
@@ -1148,3 +1152,177 @@ class Meamed(object):
             a = a.to(indices.device)
         indices = tools.add(indices, a)
         return tools.mean(vectors.take(indices), axis=0)
+
+
+class CAF(object):
+    r"""
+    Description
+    -----------
+
+    Implements the **Covariance-bound Agnostic Filter** (CAF) [1]_, a robust aggregator
+    designed to tolerate Byzantine inputs without requiring a bound on the covariance
+    of honest vectors.
+
+    The algorithm iteratively estimates a robust mean by downweighting samples whose
+    deviations from the mean are aligned with the dominant eigenvector of the
+    empirical covariance matrix.
+
+    Precisely, given a set of input vectors :math:`x_1, \dots, x_n \in \mathbb{R}^d`,
+    the algorithm proceeds as follows:
+
+    1. Initialize weights :math:`c_i = 1` for all :math:`i \in [n]`.
+    2. Repeat until the total weight :math:`\sum_i c_i \leq n - 2f`:
+        - Compute the weighted empirical mean:
+
+          .. math::
+             \mu_c = \frac{1}{\sum_i c_i} \sum_{i=1}^n c_i x_i
+
+        - Using the power method [2]_, compute the dominant eigenvector :math:`v` and maximum eigenvalue :math:`\lambda_{max}` of the empirical covariance matrix:
+
+          .. math::
+             \Sigma_c = \frac{1}{\sum_i c_i} \sum_{i=1}^n c_i (x_i - \mu_c)(x_i - \mu_c)^\top
+
+        - For each vector, compute the projection squared:
+
+          .. math::
+             \tau_i = ((x_i - \mu_c)^\top v)^2
+
+        - Downweight outliers:
+
+          .. math::
+             c_i \leftarrow c_i \cdot \left(1 - \frac{\tau_i}{\max_j \tau_j}\right)
+
+    3. Return the empirical mean :math:`\mu_c` corresponding to the smallest maximum eigenvalue :math:`\lambda_{max}` encountered.
+
+    This algorithm does not assume any upper bound on the spectral norm of the covariance matrix
+    and is especially suited to settings with high-dimensional or heterogeneously distributed data.
+
+    Initialization parameters
+    --------------------------
+    f : int
+        Upper bound on the number of Byzantine vectors.
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: list of torch.Tensor or torch.Tensor
+        A list of vectors or a 2D tensor of shape (n, d), where each row is a d-dimensional client update.
+
+    Returns
+    -------
+    :torch.Tensor
+        A d-dimensional PyTorch tensor representing the robust aggregated update.
+
+    Examples
+    --------
+
+    >>> import byzfl
+    >>> agg = byzfl.CAF(1)
+
+    Using numpy arrays
+
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([4. 5. 6.])
+
+    Using torch tensors
+
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([4., 5., 6.])
+
+    Using list of numpy arrays
+
+    >>> import numpy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([4., 5., 6.])
+
+    Using list of torch tensors
+
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([4., 5., 6.])
+
+    References
+    ----------
+    .. [1] Allouah, Y., Guerraoui, R., and Stephan, J. Towards Trustworthy Federated Learning with Untrusted Participants. ICML, 2025.
+    .. [2] Golub, G. H., & Van Loan, C. F. (2013). Matrix Computations (4th ed.). Johns Hopkins University Press.
+
+    """
+    def __init__(self, f):
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
+        self.f = f
+
+    def __call__(self, vectors):
+        tools, vectors = check_vectors_type(vectors)
+        n, dimension = shape(tools, vectors)
+
+        if self.f * 2 >= n:
+            raise ValueError(f"Cannot tolerate 2f ≥ n. Got f={self.f}, n={n}")
+
+        def compute_dominant_eigenvector(tools, vectors, c, diffs, dimension, max_iters=1):
+            # Compute the dominant eigenvector using a weighted sum approach.
+            if tools == np:
+                vector = np.random.randn(dimension)
+            else:
+                vector = torch.randn(dimension, device=vectors.device)
+            vector = vector / tools.linalg.norm(vector)
+
+            eigenvalue = None
+            for _ in range(max_iters):
+                # Weighted sum for matrix-vector product
+                dot_products = tools.matmul(diffs, vector) # (x_i - mu_c) · vector
+                weighted_sum = tools.sum(c[:, None] * diffs * dot_products[:, None], axis=0) / tools.sum(c)
+                # Normalize the vector
+                next_vector = weighted_sum / tools.linalg.norm(weighted_sum)
+                # Compute eigenvalue as Rayleigh quotient
+                next_eigenvalue = tools.dot(next_vector, weighted_sum)
+
+                vector = next_vector
+                eigenvalue = next_eigenvalue
+
+            return eigenvalue, next_vector
+
+        c = ones_vector(tools, n, vectors)
+        c_sum = tools.sum(c)
+        eigen_val = float('inf')
+
+        best_mu_c = None
+        while c_sum > n - 2 * self.f:
+            # Compute the empirical mean
+            weighted_sum = tools.sum(c[:, None] * vectors, axis=0)
+            current_mu_c = weighted_sum / c_sum
+
+            # Compute the maximum eigenvector and eigenvalue of the empirical covariance matrix
+            diffs = vectors - current_mu_c      # Compute (x_i - current_mu_c)
+            max_eigen_val, max_eigen_vec = compute_dominant_eigenvector(tools, vectors, c, diffs, dimension)
+
+            if max_eigen_val < eigen_val:
+                eigen_val = max_eigen_val
+                best_mu_c = current_mu_c
+
+            # Compute tau values
+            tau = tools.matmul(diffs, max_eigen_vec) ** 2
+            # Update weights
+            tau_max = tau.max()
+            c = c * (1 - tau / tau_max)
+            c_sum = tools.sum(c)
+
+        # Return the empirical mean with smallest max_eigen_val encountered
+        return best_mu_c

@@ -4,6 +4,9 @@ import torch.linalg as linalg
 def mean(vectors, axis=0):
 	return torch.mean(vectors, axis=axis)
 
+def matmul(vectors1, vectors2):
+	return torch.matmul(vectors1, vectors2)
+
 def median(vectors, axis = 0):
 	return torch.quantile(vectors, dim=axis, q=0.5)
 	# return torch.median(vectors, axis=axis)[0]
@@ -52,6 +55,9 @@ def minimum(tensor1, tensor2):
 
 def ones_like(tensor):
 	return torch.ones_like(tensor)
+
+def ones(n, device):
+	return torch.ones(n, device=device)
 
 def multiply(tensor1, tensor2):
 	return torch.mul(tensor1, tensor2)

@@ -396,6 +396,7 @@
                   
   <h1>Source code for byzfl.attacks.attacks</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">byzfl.utils.misc</span> <span class="kn">import</span> <span class="n">check_vectors_type</span><span class="p">,</span> <span class="n">random_tool</span>
 <span class="kn">from</span> <span class="nn">byzfl.aggregators</span> <span class="kn">import</span> <span class="n">Average</span><span class="p">,</span> <span class="n">Median</span><span class="p">,</span> <span class="n">TrMean</span><span class="p">,</span> <span class="n">GeometricMedian</span><span class="p">,</span> <span class="n">Krum</span><span class="p">,</span> <span class="n">MultiKrum</span><span class="p">,</span> <span class="n">CenteredClipping</span><span class="p">,</span> <span class="n">MDA</span><span class="p">,</span> <span class="n">MoNNA</span><span class="p">,</span> <span class="n">Meamed</span><span class="p">,</span> <span class="n">Clipping</span><span class="p">,</span> <span class="n">NNM</span><span class="p">,</span> <span class="n">ARC</span><span class="p">,</span> <span class="n">Bucketing</span>
 
@@ -1345,7 +1346,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epsilon</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epsilon</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;epsilon must be a non-negative int.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
 

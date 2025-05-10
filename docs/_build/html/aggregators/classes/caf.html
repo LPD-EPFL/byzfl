@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Adaptive Robust Clipping (ARC) &#8212; ByzFL</title>
+    <title>Covariance-bound Agnostic Filter (CAF) &#8212; ByzFL</title>
   
   
   
@@ -55,13 +55,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmin": "\\mathop{\\mathrm{arg\\,min}}"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'aggregators/classes/arc';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'aggregators/classes/caf';</script>
     <script src="../../_static/custom-icon.js?v=74687d30"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Attacks" href="../../attacks/index.html" />
-    <link rel="prev" title="Static Clipping" href="clipping.html" />
+    <link rel="next" title="Nearest Neighbor Mixing (NNM)" href="nnm.html" />
+    <link rel="prev" title="Meamed" href="meamed.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -357,7 +357,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Aggregators</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="average.html">Average</a></li>
 <li class="toctree-l1"><a class="reference internal" href="median.html">Median</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trmean.html">Trimmed Mean</a></li>
@@ -368,14 +368,14 @@
 <li class="toctree-l1"><a class="reference internal" href="mda.html">Minimum-Diameter Averaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monna.html">MoNNA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meamed.html">Meamed</a></li>
-<li class="toctree-l1"><a class="reference internal" href="caf.html">Covariance-bound Agnostic Filter (CAF)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Covariance-bound Agnostic Filter (CAF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Pre-aggregators</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="nnm.html">Nearest Neighbor Mixing (NNM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bucketing.html">Bucketing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clipping.html">Static Clipping</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Adaptive Robust Clipping (ARC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arc.html">Adaptive Robust Clipping (ARC)</a></li>
 </ul>
 </div>
 </nav></div>
@@ -414,7 +414,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Aggregators</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Adaptive Robust Clipping (ARC)</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Covariance-bound Agnostic Filter (CAF)</span></li>
   </ul>
 </nav>
 </div>
@@ -431,44 +431,66 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="adaptive-robust-clipping-arc">
-<h1>Adaptive Robust Clipping (ARC)<a class="headerlink" href="#adaptive-robust-clipping-arc" title="Link to this heading">#</a></h1>
+  <section id="covariance-bound-agnostic-filter-caf">
+<span id="caf-label"></span><h1>Covariance-bound Agnostic Filter (CAF)<a class="headerlink" href="#covariance-bound-agnostic-filter-caf" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="byzfl.ARC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">ARC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/preaggregators.html#ARC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.ARC" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<section id="description">
+<dt class="sig sig-object py" id="byzfl.CAF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">CAF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#CAF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.CAF" title="Link to this definition">#</a></dt>
+<dd><section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Apply the Adaptive Robust Clipping pre-aggregation rule <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<p>Implements the <strong>Covariance-bound Agnostic Filter</strong> (CAF) <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, a robust aggregator
+designed to tolerate Byzantine inputs without requiring a bound on the covariance
+of honest vectors.</p>
+<p>The algorithm iteratively estimates a robust mean by downweighting samples whose
+deviations from the mean are aligned with the dominant eigenvector of the
+empirical covariance matrix.</p>
+<p>Precisely, given a set of input vectors <span class="math notranslate nohighlight">\(x_1, \dots, x_n \in \mathbb{R}^d\)</span>,
+the algorithm proceeds as follows:</p>
+<ol class="arabic">
+<li><p>Initialize weights <span class="math notranslate nohighlight">\(c_i = 1\)</span> for all <span class="math notranslate nohighlight">\(i \in [n]\)</span>.</p></li>
+<li><dl>
+<dt>Repeat until the total weight <span class="math notranslate nohighlight">\(\sum_i c_i \leq n - 2f\)</span>:</dt><dd><ul>
+<li><p>Compute the weighted empirical mean:</p>
 <div class="math notranslate nohighlight">
-\[\mathrm{ARC}_{f} \ (x_1, \dots, x_n) =
-\left( \min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_1\big|\big|_2}\right\} x_1 \ \ , \ \dots \ ,\ \
-\min\left\{1, \frac{x_{\pi(k)}}{\big|\big|x_n\big|\big|_2}\right\} x_n \right)\]</div>
-<p>where</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_1, \dots, x_n\)</span> are the input vectors, which conceptually correspond to gradients submitted by honest and Byzantine participants during a training iteration.</p></li>
-<li><p><span class="math notranslate nohighlight">\(f\)</span> conceptually represents the expected number of Byzantine vectors.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\big|\big|.\big|\big|_2\)</span> denotes the \(\ell_2\)-norm.</p></li>
-<li><p>\(k = \lfloor 2 \cdot \frac{f}{n} \cdot (n - f) \rfloor\).</p></li>
-<li><p>\(\pi\) denotes a permutation on \(\big[n\big]\) that sorts the \(\ell_2\)-norm of the input vectors in non-increasing order. This sorting is expressed as: <span class="math notranslate nohighlight">\(\big|\big|x_{\pi(1)}\big|\big|_2 \leq \ldots \leq \big|\big|x_{\pi(n)}\big|\big|_2\)</span>.</p></li>
+\[\mu_c = \frac{1}{\sum_i c_i} \sum_{i=1}^n c_i x_i\]</div>
+</li>
+<li><p>Using the power method <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, compute the dominant eigenvector <span class="math notranslate nohighlight">\(v\)</span> and maximum eigenvalue <span class="math notranslate nohighlight">\(\lambda_{max}\)</span> of the empirical covariance matrix:</p>
+<div class="math notranslate nohighlight">
+\[\Sigma_c = \frac{1}{\sum_i c_i} \sum_{i=1}^n c_i (x_i - \mu_c)(x_i - \mu_c)^\top\]</div>
+</li>
+<li><p>For each vector, compute the projection squared:</p>
+<div class="math notranslate nohighlight">
+\[\tau_i = ((x_i - \mu_c)^\top v)^2\]</div>
+</li>
+<li><p>Downweight outliers:</p>
+<div class="math notranslate nohighlight">
+\[c_i \leftarrow c_i \cdot \left(1 - \frac{\tau_i}{\max_j \tau_j}\right)\]</div>
+</li>
 </ul>
+</dd>
+</dl>
+</li>
+<li><p>Return the empirical mean <span class="math notranslate nohighlight">\(\mu_c\)</span> corresponding to the smallest maximum eigenvalue <span class="math notranslate nohighlight">\(\lambda_{max}\)</span> encountered.</p></li>
+</ol>
+<p>This algorithm does not assume any upper bound on the spectral norm of the covariance matrix
+and is especially suited to settings with high-dimensional or heterogeneously distributed data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>
+<dd class="field-odd"><p><strong>f</strong> (<em>int</em>) – Upper bound on the number of Byzantine vectors.</p>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>list of torch.Tensor or torch.Tensor</em>) – A list of vectors or a 2D tensor of shape (n, d), where each row is a d-dimensional client update.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output will be the same as the input.</p>
+<dd class="field-even"><p><em>torch.Tensor</em> – A d-dimensional PyTorch tensor representing the robust aggregated update.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">byzfl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">ARC</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">byzfl</span><span class="o">.</span><span class="n">CAF</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using numpy arrays</p>
@@ -477,9 +499,7 @@
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>              <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([[1.        , 2.        , 3.        ],</span>
-<span class="go">        [4.        , 5.        , 6.        ],</span>
-<span class="go">        [4.41004009, 5.04004582, 5.67005155]])</span>
+<span class="go">array([4. 5. 6.])</span>
 </pre></div>
 </div>
 <p>Using torch tensors</p>
@@ -488,9 +508,7 @@
 <span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
 <span class="gp">&gt;&gt;&gt; </span>                  <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([[1.0000, 2.0000, 3.0000],</span>
-<span class="go">        [4.0000, 5.0000, 6.0000],</span>
-<span class="go">        [4.4100, 5.0400, 5.6701]])</span>
+<span class="go">tensor([4., 5., 6.])</span>
 </pre></div>
 </div>
 <p>Using list of numpy arrays</p>
@@ -499,28 +517,27 @@
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([[1.        , 2.        , 3.        ],</span>
-<span class="go">        [4.        , 5.        , 6.        ],</span>
-<span class="go">        [4.41004009, 5.04004582, 5.67005155]])</span>
+<span class="go">array([4., 5., 6.])</span>
 </pre></div>
 </div>
 <p>Using list of torch tensors</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of  torch.tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]),</span>  <span class="c1"># list of torch.tensor</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>     <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">])]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">tensor([[1.0000, 2.0000, 3.0000],</span>
-<span class="go">        [4.0000, 5.0000, 6.0000],</span>
-<span class="go">        [4.4100, 5.0400, 5.6701]])</span>
+<span class="go">tensor([4., 5., 6.])</span>
 </pre></div>
 </div>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id2" role="doc-footnote">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Youssef Allouah, Rachid Guerraoui, Nirupam Gupta, Ahmed Jellouli, Geovani Rizk, and John Stephan. 2024.
-The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning. arXiv:2405.14432 [cs.LG] https://arxiv.org/abs/2405.14432.</p>
+<p>Allouah, Y., Guerraoui, R., and Stephan, J. Towards Trustworthy Federated Learning with Untrusted Participants. ICML, 2025.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Golub, G. H., &amp; Van Loan, C. F. (2013). Matrix Computations (4th ed.). Johns Hopkins University Press.</p>
 </aside>
 </aside>
 </section>
@@ -539,20 +556,20 @@ The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning.
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="clipping.html"
+       href="meamed.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Static Clipping</p>
+        <p class="prev-next-title">Meamed</p>
       </div>
     </a>
     <a class="right-next"
-       href="../../attacks/index.html"
+       href="nnm.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Attacks</p>
+        <p class="prev-next-title">Nearest Neighbor Mixing (NNM)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -575,7 +592,7 @@ The Vital Role of Gradient Clipping in Byzantine-Resilient Distributed Learning.
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.ARC"><code class="docutils literal notranslate"><span class="pre">ARC</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#byzfl.CAF"><code class="docutils literal notranslate"><span class="pre">CAF</span></code></a></li>
 </ul>
   </nav></div>
 

@@ -395,11 +395,12 @@
                 <article class="bd-article">
                   
   <h1>Source code for byzfl.fed_framework.model_base_interface</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+
 <span class="kn">import</span> <span class="nn">byzfl.fed_framework.models</span> <span class="k">as</span> <span class="nn">models</span>
 <span class="kn">from</span> <span class="nn">byzfl.utils.conversion</span> <span class="kn">import</span> <span class="n">flatten_dict</span><span class="p">,</span> <span class="n">unflatten_dict</span><span class="p">,</span> <span class="n">unflatten_generator</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">collections</span>
 
 <div class="viewcode-block" id="ModelBaseInterface">
 <a class="viewcode-back" href="../../../fed_framework/classes/model_base_interface.html#byzfl.ModelBaseInterface">[docs]</a>
@@ -412,7 +413,15 @@
         <span class="c1"># Initialize model</span>
         <span class="n">model_name</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
         <span class="c1"># Initialize optimizer. If set to None, it means that the Client does not need this information </span>
         <span class="n">optimizer_name</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;optimizer_name&quot;</span><span class="p">]</span>
