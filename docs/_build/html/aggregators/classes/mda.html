@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Minimum-Diameter Averaging &#8212; ByzFL</title>
+    <title>Minimum Diameter Averaging (MDA) &#8212; ByzFL</title>
   
   
   
@@ -365,10 +365,11 @@
 <li class="toctree-l1"><a class="reference internal" href="krum.html">Krum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi_krum.html">Multi-Krum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centered_clipping.html">Centered Clipping</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Minimum-Diameter Averaging</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Minimum Diameter Averaging (MDA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monna.html">MoNNA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meamed.html">Meamed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="caf.html">Covariance-bound Agnostic Filter (CAF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smea.html">Smallest Maximum Eigenvalue Averaging (SMEA)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Pre-aggregators</span></p>
 <ul class="nav bd-sidenav">
@@ -414,7 +415,7 @@
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Aggregators</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Minimum-Diameter Averaging</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Minimum Diameter Averaging (MDA)</span></li>
   </ul>
 </nav>
 </div>
@@ -431,14 +432,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="minimum-diameter-averaging">
-<span id="mda-label"></span><h1>Minimum-Diameter Averaging<a class="headerlink" href="#minimum-diameter-averaging" title="Link to this heading">#</a></h1>
+  <section id="minimum-diameter-averaging-mda">
+<span id="mda-label"></span><h1>Minimum Diameter Averaging (MDA)<a class="headerlink" href="#minimum-diameter-averaging-mda" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.MDA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">MDA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#MDA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.MDA" title="Link to this definition">#</a></dt>
 <dd><section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Apply the Minimum-Diameter Averaging aggregator <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<p>Apply the Minimum Diameter Averaging aggregator <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{MDA}_{f} \ (x_1, \dots, x_n) = \frac{1}{n-f} \sum_{i\in S^\star} x_i\]</div>
 <p>where</p>

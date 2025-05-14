@@ -25,6 +25,7 @@ Explore the available aggregation methods below:
    classes/monna
    classes/meamed
    classes/caf
+   classes/smea
 
 .. toctree::
    :caption: Pre-aggregators

@@ -1,7 +1,7 @@
 import itertools
 import numpy as np
 import torch
-from byzfl.utils.misc import check_vectors_type, distance_tool, shape, ones_vector
+from byzfl.utils.misc import check_vectors_type, distance_tool, shape, ones_vector, random_tool
 
 class Average(object):
 
@@ -793,7 +793,7 @@ class MDA(object):
     Description
     -----------
 
-    Apply the Minimum-Diameter Averaging aggregator [1]_:
+    Apply the Minimum Diameter Averaging aggregator [1]_:
 
     .. math::
 
@@ -1199,8 +1199,8 @@ class CAF(object):
 
     Initialization parameters
     --------------------------
-    f : int
-        Upper bound on the number of Byzantine vectors.
+    f : int, optional
+        Number of faulty vectors. Set to 0 by default.
 
     Calling the instance
     --------------------
@@ -1208,13 +1208,13 @@ class CAF(object):
     Input parameters
     ----------------
 
-    vectors: list of torch.Tensor or torch.Tensor
-        A list of vectors or a 2D tensor of shape (n, d), where each row is a d-dimensional client update.
-
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
     Returns
     -------
-    :torch.Tensor
-        A d-dimensional PyTorch tensor representing the robust aggregated update.
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
 
     Examples
     --------
@@ -1264,7 +1264,7 @@ class CAF(object):
     .. [2] Golub, G. H., & Van Loan, C. F. (2013). Matrix Computations (4th ed.). Johns Hopkins University Press.
 
     """
-    def __init__(self, f):
+    def __init__(self, f=0):
         if not isinstance(f, int) or f < 0:
             raise ValueError("f must be a non-negative integer")
         self.f = f
@@ -1326,3 +1326,159 @@ class CAF(object):
 
         # Return the empirical mean with smallest max_eigen_val encountered
         return best_mu_c
+
+
+class SMEA(object):
+    r"""
+    Description
+    -----------
+
+    Implements the **Smallest Maximum Eigenvalue Averaging (SMEA)** rule [1]_, a robust aggregation
+    method that selects the subset of client vectors whose covariance has the lowest maximum
+    eigenvalue, then returns their average.
+
+    Formally, given a set of input vectors :math:`x_1, \dots, x_n \in \mathbb{R}^d` and an integer 
+    :math:`f` representing the number of potential Byzantine vectors, the algorithm proceeds as follows:
+
+    1. Enumerate all subsets :math:`S \subset [n]` of size :math:`n - f`.
+    2. For each subset :math:`S`, compute its empirical mean:
+
+       .. math::
+          \mu_S = \frac{1}{|S|} \sum_{i \in S} x_i
+
+    3. Compute the empirical covariance matrix:
+
+       .. math::
+          \Sigma_S = \frac{1}{|S|} \sum_{i \in S} (x_i - \mu_S)(x_i - \mu_S)^\top
+
+    4. Using the power method [2]_, compute the maximum eigenvalue :math:`\lambda_{\max}(\Sigma_S)` of each subset’s covariance.
+    5. Select the subset :math:`S^\star` that minimizes the maximum eigenvalue:
+
+       .. math::
+          S^\star = \arg\min_{S: |S|=n-f} \lambda_{\max}(\Sigma_S)
+
+    6. Return the empirical mean of the optimal subset :math:`S^\star`:
+
+       .. math::
+          \text{SMEA}(x_1, \dots, x_n) = \frac{1}{|S^\star|} \sum_{i \in S^\star} x_i
+
+    While computationally expensive due to its combinatorial nature, SMEA provides state-of-the-art robustness 
+    guarantees [1]_. This method is thus particularly well-suited to federated settings where the number of clients is not too large.
+
+    Initialization parameters
+    --------------------------
+    f : int, optional
+        Number of faulty vectors. Set to 0 by default.
+
+    Calling the instance
+    --------------------
+
+    Input parameters
+    ----------------
+
+    vectors: numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor
+        A set of vectors, matrix or tensors.
+        
+    Returns
+    -------
+    :numpy.ndarray or torch.Tensor
+        The data type of the output will be the same as the input.
+
+    Examples
+    --------
+    >>> import byzfl
+    >>> agg = byzfl.SMEA(1)
+
+    Using numpy arrays
+
+    >>> import numpy as np
+    >>> x = np.array([[1., 2., 3.],       # np.ndarray
+    >>>               [4., 5., 6.], 
+    >>>               [7., 8., 9.]])
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
+
+    Using torch tensors
+
+    >>> import torch
+    >>> x = torch.tensor([[1., 2., 3.],   # torch.tensor 
+    >>>                   [4., 5., 6.], 
+    >>>                   [7., 8., 9.]])
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
+
+    Using list of numpy arrays
+
+    >>> import numpy as np
+    >>> x = [np.array([1., 2., 3.]),      # list of np.ndarray  
+    >>>      np.array([4., 5., 6.]), 
+    >>>      np.array([7., 8., 9.])]
+    >>> agg(x)
+    array([2.5, 3.5, 4.5])
+
+    Using list of torch tensors
+
+    >>> import torch
+    >>> x = [torch.tensor([1., 2., 3.]),  # list of torch.tensor 
+    >>>      torch.tensor([4., 5., 6.]), 
+    >>>      torch.tensor([7., 8., 9.])]
+    >>> agg(x)
+    tensor([2.5000, 3.5000, 4.5000])
+
+    References
+    ----------
+    .. [1] Y Allouah, R Guerraoui, N Gupta, R Pinot, J Stephan. On the Privacy-Robustness-Utility Trilemma in Distributed Learning. ICML, 2023.
+    .. [2] Golub, G. H., & Van Loan, C. F. (2013). Matrix Computations (4th ed.). Johns Hopkins University Press.
+    """
+
+    def __init__(self, f=0):
+        if not isinstance(f, int) or f < 0:
+            raise ValueError("f must be a non-negative integer")
+        self.f = f
+
+    def __call__(self, vectors):
+
+        tools, vectors = check_vectors_type(vectors)
+        n, dimension = shape(tools, vectors)
+
+        if self.f * 2 >= n:
+            raise ValueError(f"Too many Byzantine clients (2f >= n). Got f={self.f}, n={n}")
+
+        def compute_dominant_eigenvector(diffs, dimension, max_iters=1):
+            if tools == np:
+                vector = np.random.randn(dimension)
+            else:
+                vector = torch.randn(dimension, device=diffs.device)
+            vector = vector / tools.linalg.norm(vector)
+
+            eigenvalue = None
+            for _ in range(max_iters):
+                dot_products = tools.matmul(diffs, vector)
+                weighted_sum = tools.sum(diffs * dot_products[:, None], axis=0)
+                next_vector = weighted_sum / tools.linalg.norm(weighted_sum)
+                next_eigenvalue = tools.dot(next_vector, weighted_sum)
+
+                vector = next_vector
+                eigenvalue = next_eigenvalue
+
+            return eigenvalue, next_vector
+
+        def compute_min_subset(vectors, dimension, n, nb_byz):
+            min_eigenvalue = float('inf')
+            min_subset = None
+
+            for subset in itertools.combinations(range(n), n - nb_byz):
+                subset_grads = vectors[tools.asarray(subset)]
+
+                avg = tools.mean(subset_grads, axis=0)
+                diffs = subset_grads - avg
+                max_eigen_val, _ = compute_dominant_eigenvector(diffs, dimension)
+
+                if max_eigen_val < min_eigenvalue:
+                    min_eigenvalue = max_eigen_val
+                    min_subset = subset
+
+            return min_subset
+
+        selected_subset = compute_min_subset(vectors, dimension, n, self.f)
+        return vectors[tools.asarray(selected_subset)].mean(axis=0)

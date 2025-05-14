@@ -60,7 +60,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Nearest Neighbor Mixing (NNM)" href="nnm.html" />
+    <link rel="next" title="Smallest Maximum Eigenvalue Averaging (SMEA)" href="smea.html" />
     <link rel="prev" title="Meamed" href="meamed.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -365,10 +365,11 @@
 <li class="toctree-l1"><a class="reference internal" href="krum.html">Krum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi_krum.html">Multi-Krum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centered_clipping.html">Centered Clipping</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mda.html">Minimum-Diameter Averaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mda.html">Minimum Diameter Averaging (MDA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monna.html">MoNNA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meamed.html">Meamed</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Covariance-bound Agnostic Filter (CAF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smea.html">Smallest Maximum Eigenvalue Averaging (SMEA)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Pre-aggregators</span></p>
 <ul class="nav bd-sidenav">
@@ -435,7 +436,7 @@
 <span id="caf-label"></span><h1>Covariance-bound Agnostic Filter (CAF)<a class="headerlink" href="#covariance-bound-agnostic-filter-caf" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="byzfl.CAF">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">CAF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#CAF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.CAF" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">byzfl.</span></span><span class="sig-name descname"><span class="pre">CAF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/byzfl/aggregators/aggregators.html#CAF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#byzfl.CAF" title="Link to this definition">#</a></dt>
 <dd><section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>Implements the <strong>Covariance-bound Agnostic Filter</strong> (CAF) <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, a robust aggregator
@@ -476,16 +477,16 @@ the algorithm proceeds as follows:</p>
 and is especially suited to settings with high-dimensional or heterogeneously distributed data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Initialization parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>f</strong> (<em>int</em>) – Upper bound on the number of Byzantine vectors.</p>
+<dd class="field-odd"><p><strong>f</strong> (<em>int, optional</em>) – Number of faulty vectors. Set to 0 by default.</p>
 </dd>
 </dl>
 <p class="rubric">Calling the instance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Input parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vectors</strong> (<em>list of torch.Tensor or torch.Tensor</em>) – A list of vectors or a 2D tensor of shape (n, d), where each row is a d-dimensional client update.</p>
+<dd class="field-odd"><p><strong>vectors</strong> (<em>numpy.ndarray, torch.Tensor, list of numpy.ndarray or list of torch.Tensor</em>) – A set of vectors, matrix or tensors.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>torch.Tensor</em> – A d-dimensional PyTorch tensor representing the robust aggregated update.</p>
+<dd class="field-even"><p><em>numpy.ndarray or torch.Tensor</em> – The data type of the output will be the same as the input.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -565,11 +566,11 @@ and is especially suited to settings with high-dimensional or heterogeneously di
       </div>
     </a>
     <a class="right-next"
-       href="nnm.html"
+       href="smea.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Nearest Neighbor Mixing (NNM)</p>
+        <p class="prev-next-title">Smallest Maximum Eigenvalue Averaging (SMEA)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
