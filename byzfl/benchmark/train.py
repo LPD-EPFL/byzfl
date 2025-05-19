@@ -57,8 +57,8 @@ def start_training(params):
         ],
         "attack_name": params_manager.get_attack_name(),
         "learning_rate": params_manager.get_server_learning_rate(),
-        "momentum": params_manager.get_honest_nodes_momentum(),
-        "weight_decay": params_manager.get_server_weight_decay(),
+        "momentum": params_manager.get_honest_clients_momentum(),
+        "weight_decay": params_manager.get_honest_clients_weight_decay(),
     })
 
     file_manager.save_config_dict(params_manager.get_data())
@@ -69,7 +69,7 @@ def start_training(params):
     nb_honest_clients = params_manager.get_nb_honest_clients()
     nb_byz_clients = params_manager.get_f()
     nb_training_steps = params_manager.get_nb_steps()
-    batch_size = params_manager.get_honest_nodes_batch_size()
+    batch_size = params_manager.get_honest_clients_batch_size()
 
     dd_seed = params_manager.get_data_distribution_seed()
     training_seed = params_manager.get_training_seed()
@@ -137,12 +137,12 @@ def start_training(params):
             "optimizer_name": params_manager.get_server_optimizer_name(),
             "learning_rate": params_manager.get_server_learning_rate(),
             "loss_name": params_manager.get_loss_name(),
-            "weight_decay": params_manager.get_server_weight_decay(),
+            "weight_decay": params_manager.get_honest_clients_weight_decay(),
             "milestones": params_manager.get_server_milestones(),
             "learning_rate_decay": params_manager.get_server_learning_rate_decay(),
             "LabelFlipping": "LabelFlipping" == params_manager.get_attack_name(),
             "training_dataloader": client_dataloaders[i],
-            "momentum": params_manager.get_honest_nodes_momentum(),
+            "momentum": params_manager.get_honest_clients_momentum(),
             "nb_labels": params_manager.get_nb_labels(),
         }) for i in range(nb_honest_clients)
     ]
@@ -155,7 +155,7 @@ def start_training(params):
         "test_loader": test_loader,
         "optimizer_name": params_manager.get_server_optimizer_name(),
         "learning_rate": params_manager.get_server_learning_rate(),
-        "weight_decay": params_manager.get_server_weight_decay(),
+        "weight_decay": params_manager.get_honest_clients_weight_decay(),
         "milestones": params_manager.get_server_milestones(),
         "learning_rate_decay": params_manager.get_server_learning_rate_decay(),
         "aggregator_info": params_manager.get_aggregator_info(),

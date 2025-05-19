@@ -163,10 +163,10 @@ class ParamsManager(object):
                 "learning_rate_decay": self.get_server_learning_rate_decay(),
                 "milestones": self.get_server_milestones()
             },
-            "honest_nodes": {
-                "momentum": self.get_honest_nodes_momentum(),
-                "weight_decay": self.get_server_weight_decay(),
-                "batch_size": self.get_honest_nodes_batch_size()
+            "honest_clients": {
+                "momentum": self.get_honest_clients_momentum(),
+                "weight_decay": self.get_honest_clients_weight_decay(),
+                "batch_size": self.get_honest_clients_batch_size()
             },
             "attack": self.get_attack_info(),
             "evaluation_and_results": {
@@ -376,21 +376,21 @@ class ParamsManager(object):
     # ----------------------------------------------------------------------
     #  Honest Nodes
     # ----------------------------------------------------------------------
-    def get_honest_nodes_momentum(self):
+    def get_honest_clients_momentum(self):
         default = 0.9
-        path = ["honest_nodes", "momentum"]
+        path = ["honest_clients", "momentum"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
     
-    def get_server_weight_decay(self):
+    def get_honest_clients_weight_decay(self):
         default = 1e-4
-        path = ["honest_nodes", "weight_decay"]
+        path = ["honest_clients", "weight_decay"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_honest_nodes_batch_size(self):
+    def get_honest_clients_batch_size(self):
         default = 32
-        path = ["honest_nodes", "batch_size"]
+        path = ["honest_clients", "batch_size"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 

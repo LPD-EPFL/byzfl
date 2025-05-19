@@ -62,7 +62,7 @@ default_config = {
         "learning_rate_decay": 1.0,
         "milestones": []
     },
-    "honest_nodes": {
+    "honest_clients": {
         "momentum": 0.9,
         "weight_decay": 0.0001,
         "batch_size": 25
@@ -275,8 +275,8 @@ def eliminate_experiments_done(dict_list):
             f"{'_'.join(pre_aggregation_names)}_"
             f"{setting['attack']['name']}_"
             f"lr_{setting['server']['learning_rate']}_"
-            f"mom_{setting['honest_nodes']['momentum']}_"
-            f"wd_{setting['honest_nodes']['weight_decay']}"
+            f"mom_{setting['honest_clients']['momentum']}_"
+            f"wd_{setting['honest_clients']['weight_decay']}"
         )
 
         if folder_name in folders:

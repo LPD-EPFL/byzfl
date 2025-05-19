@@ -69,8 +69,8 @@ def find_best_hyperparameters(path_to_results):
     dataset_name = data["model"]["dataset_name"]
 
     # <-------------- Honest Nodes Config ------------->
-    momentum_list = data["honest_nodes"]["momentum"]
-    wd_list = data["honest_nodes"]["weight_decay"]
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
@@ -276,8 +276,8 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         dataset_name = data["model"]["dataset_name"]
 
         # <-------------- Honest Nodes Config ------------->
-        momentum_list = data["honest_nodes"]["momentum"]
-        wd_list = data["honest_nodes"]["weight_decay"]
+        momentum_list = data["honest_clients"]["momentum"]
+        wd_list = data["honest_clients"]["weight_decay"]
 
         # <-------------- Aggregators Config ------------->
         aggregators = data["aggregator"]
@@ -448,8 +448,8 @@ def heat_map_loss(path_to_results, path_to_plot):
     dataset_name = data["model"]["dataset_name"]
 
     # <-------------- Honest Nodes Config ------------->
-    momentum_list = data["honest_nodes"]["momentum"]
-    wd_list = data["honest_nodes"]["weight_decay"]
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
@@ -638,8 +638,8 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     dataset_name = data["model"]["dataset_name"]
 
     # <-------------- Honest Nodes Config ------------->
-    momentum_list = data["honest_nodes"]["momentum"]
-    wd_list = data["honest_nodes"]["weight_decay"]
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
@@ -820,8 +820,8 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     dataset_name = data["model"]["dataset_name"]
 
     # <-------------- Honest Nodes Config ------------->
-    momentum_list = data["honest_nodes"]["momentum"]
-    wd_list = data["honest_nodes"]["weight_decay"]
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
 
     # <-------------- Aggregators Config ------------->
     aggregators = data["aggregator"]
