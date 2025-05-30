@@ -50,7 +50,7 @@ class Server(ModelBaseInterface):
         """
         return self.robust_aggregator.aggregate_vectors(vectors)
 
-    def update_model(self, gradients):
+    def update_model_with_gradients(self, gradients):
         """
         Description
         -----------
@@ -65,6 +65,20 @@ class Server(ModelBaseInterface):
         aggregate_gradient = self.aggregate(gradients)
         self.set_gradients(aggregate_gradient)
         self._step()
+    
+    def update_model_with_weights(self, weights):
+        """
+        Description
+        -----------
+        Updates the global model by aggregating the provided weights
+
+        Parameters
+        ----------
+        weights : list
+            A list of weights to aggregate and apply to the global model.
+        """
+        aggregate_weights = self.aggregate(weights)
+        self.set_parameters(aggregate_weights)
 
     def _step(self):
         """

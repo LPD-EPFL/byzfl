@@ -19,31 +19,30 @@ class TestBenchmark:
                     "training_seed": 0,
                     "nb_training_seeds": 1,
                     "nb_honest_clients": 10,
-                    "f": [
-                        1
-                    ],
-                    "tolerated_f": [
-                        1
-                    ],
-                    "filter_non_matching_f_tolerated_f": True,
-                    "set_honest_clients_as_clients": False,
+                    "f": 1,
                     "size_train_set": 0.8,
                     "data_distribution_seed": 0,
                     "nb_data_distribution_seeds": 1,
                     "data_distribution": [
                         {
                             "name": "gamma_similarity_niid",
-                            "distribution_parameter": [
-                                0.0
-                            ]
+                            "distribution_parameter": 0.0
                         }
-                    ]
+                    ],
+                    "training_algorithm": {
+                        "name": "DSGD",
+                        "parameters": {}
+                    },
+                    "nb_steps": 800,
                 },
                 "model": {
                     "name": "cnn_mnist",
                     "dataset_name": "mnist",
                     "nb_labels": 10,
-                    "loss": "NLLLoss"
+                    "loss": "NLLLoss",
+                    "learning_rate": 0.1,
+                    "learning_rate_decay": 1.0,
+                    "milestones": []
                 },
                 "aggregator": [
                     {
@@ -64,14 +63,7 @@ class TestBenchmark:
                         "parameters": {}
                     }
                 ],
-                "server": {
-                    "learning_rate": 0.1,
-                    "nb_steps": 800,
-                    "batch_size_evaluation": 100,
-                    "learning_rate_decay": 1.0,
-                    "milestones": []
-                },
-                "honest_nodes": {
+                "honest_clients": {
                     "momentum": 0.9,
                     "weight_decay": 0.0001,
                     "batch_size": 25
@@ -84,9 +76,9 @@ class TestBenchmark:
                 ],
                 "evaluation_and_results": {
                     "evaluation_delta": 50,
+                    "batch_size_evaluation": 128,
                     "evaluate_on_test": True,
-                    "store_training_accuracy": True,
-                    "store_training_loss": True,
+                    "store_per_client_metrics": True,
                     "store_models": False,
                     "data_folder": "./data",
                     "results_directory": "./results"
@@ -104,8 +96,8 @@ class TestBenchmark:
             assert os.path.exists(base_path), "Experiment folder not created"
 
             # Define expected folder and files
-            accuracy_dir = os.path.join(experiment_path, "accuracy_tr_seed_0_dd_seed_0")
-            loss_dir = os.path.join(experiment_path, "loss_tr_seed_0_dd_seed_0")
+            accuracy_dir = os.path.join(experiment_path, "train_accuracy_tr_seed_0_dd_seed_0")
+            loss_dir = os.path.join(experiment_path, "train_loss_tr_seed_0_dd_seed_0")
 
             for i in range(10):
                 acc_file = os.path.join(accuracy_dir, f"accuracy_client_{i}.txt")

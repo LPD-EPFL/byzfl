@@ -78,7 +78,7 @@ class FileManager:
         Save a loss array for a specific client and seed values.
         """
         loss_dir = os.path.join(
-            self.files_path, f"loss_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
+            self.files_path, f"train_loss_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
         )
         os.makedirs(loss_dir, exist_ok=True)
 
@@ -91,7 +91,7 @@ class FileManager:
         """
         acc_dir = os.path.join(
             self.files_path,
-            f"accuracy_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
+            f"train_accuracy_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
         )
         os.makedirs(acc_dir, exist_ok=True)
 
@@ -141,28 +141,25 @@ class ParamsManager(object):
                 "nb_honest_clients": self.get_nb_honest_clients(),
                 "f": self.get_f(),
                 "tolerated_f": self.get_tolerated_f(),
-                "filter_non_matching_f_tolerated_f": self.get_filter_non_matching_f_tolerated_f(),
                 "set_honest_clients_as_clients": self.get_set_honest_clients_as_clients(),
                 "size_train_set": self.get_size_train_set(),
                 "data_distribution_seed": self.get_data_distribution_seed(),
                 "nb_data_distribution_seeds": self.get_nb_data_distribution_seeds(),
-                "data_distribution": self.get_data_distribution()
+                "data_distribution": self.get_data_distribution(),
+                "training_algorithm": self.get_training_algorithm(),
+                "nb_steps": self.get_nb_steps()
             },
             "model": {
                 "name": self.get_model_name(),
                 "dataset_name": self.get_dataset_name(),
                 "nb_labels": self.get_nb_labels(),
-                "loss": self.get_loss_name()
+                "loss": self.get_loss_name(),
+                "learning_rate": self.get_learning_rate(),
+                "learning_rate_decay": self.get_learning_rate_decay(),
+                "milestones": self.get_milestones()
             },
             "aggregator": self.get_aggregator_info(),
             "pre_aggregators": self.get_preaggregators(),
-            "server": {
-                "learning_rate": self.get_server_learning_rate(),
-                "nb_steps": self.get_nb_steps(),
-                "batch_size_evaluation": self.get_server_batch_size_evaluation(),
-                "learning_rate_decay": self.get_server_learning_rate_decay(),
-                "milestones": self.get_server_milestones()
-            },
             "honest_clients": {
                 "momentum": self.get_honest_clients_momentum(),
                 "weight_decay": self.get_honest_clients_weight_decay(),
@@ -171,9 +168,9 @@ class ParamsManager(object):
             "attack": self.get_attack_info(),
             "evaluation_and_results": {
                 "evaluation_delta": self.get_evaluation_delta(),
+                "batch_size_evaluation": self.get_batch_size_evaluation(),
                 "evaluate_on_test": self.get_evaluate_on_test(),
-                "store_training_accuracy": self.get_store_training_accuracy(),
-                "store_training_loss": self.get_store_training_loss(),
+                "store_per_client_metrics": self.get_store_per_client_metrics(),
                 "store_models": self.get_store_models(),
                 "data_folder": self.get_data_folder(),
                 "results_directory": self.get_results_directory()
@@ -226,12 +223,6 @@ class ParamsManager(object):
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
-    def get_filter_non_matching_f_tolerated_f(self):
-        default = True
-        path = ["benchmark_config", "filter_non_matching_f_tolerated_f"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
     def get_set_honest_clients_as_clients(self):
         default = False
         path = ["benchmark_config", "set_honest_clients_as_clients"]
@@ -239,7 +230,7 @@ class ParamsManager(object):
         return self._parameter_to_use(default, read)
 
     def get_size_train_set(self):
-        default = 1.0
+        default = 0.8
         path = ["benchmark_config", "size_train_set"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
@@ -276,6 +267,33 @@ class ParamsManager(object):
         path = ["benchmark_config", "data_distribution", "distribution_parameter"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
+    
+    def get_training_algorithm(self):
+        default = {
+            "name": "DSGD",
+            "parameters": {}
+        }
+        path = ["benchmark_config", "training_algorithm"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_training_algorithm_name(self):
+        default = "DSGD"
+        path = ["benchmark_config", "training_algorithm", "name"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_training_algorithm_parameters(self):
+        default = {}
+        path = ["benchmark_config", "training_algorithm", "parameters"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+
+    def get_nb_steps(self):
+        default = 1000
+        path = ["benchmark_config", "nb_steps"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
 
     # ----------------------------------------------------------------------
     #  Model
@@ -301,6 +319,30 @@ class ParamsManager(object):
     def get_loss_name(self):
         default = "NLLLoss"
         path = ["model", "loss"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+    
+    def get_optimizer_name(self):
+        default = "SGD"
+        path = ["model", "optimizer_name"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+
+    def get_learning_rate(self):
+        default = 0.1
+        path = ["server", "learning_rate"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+
+    def get_learning_rate_decay(self):
+        default = 1.0
+        path = ["model", "learning_rate_decay"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
+
+    def get_milestones(self):
+        default = []
+        path = ["model", "milestones"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
@@ -331,45 +373,6 @@ class ParamsManager(object):
     def get_preaggregators(self):
         default = []
         path = ["pre_aggregators"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    # ----------------------------------------------------------------------
-    #  Server Accessors
-    # ----------------------------------------------------------------------
-    def get_server_optimizer_name(self):
-        default = "SGD"
-        path = ["server", "optimizer_name"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_server_learning_rate(self):
-        default = 0.1
-        path = ["server", "learning_rate"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_nb_steps(self):
-        default = 1000
-        path = ["server", "nb_steps"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_server_batch_size_evaluation(self):
-        default = 128
-        path = ["server", "batch_size_evaluation"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_server_learning_rate_decay(self):
-        default = 1.0
-        path = ["server", "learning_rate_decay"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_server_milestones(self):
-        default = []
-        path = ["server", "milestones"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
@@ -424,22 +427,22 @@ class ParamsManager(object):
         path = ["evaluation_and_results", "evaluation_delta"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
+    
+    def get_batch_size_evaluation(self):
+        default = 128
+        path = ["evaluation_and_results", "batch_size_evaluation"]
+        read = self._read_object(path)
+        return self._parameter_to_use(default, read)
 
     def get_evaluate_on_test(self):
         default = True
         path = ["evaluation_and_results", "evaluate_on_test"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
-
-    def get_store_training_accuracy(self):
+    
+    def get_store_per_client_metrics(self):
         default = True
-        path = ["evaluation_and_results", "store_training_accuracy"]
-        read = self._read_object(path)
-        return self._parameter_to_use(default, read)
-
-    def get_store_training_loss(self):
-        default = True
-        path = ["evaluation_and_results", "store_training_loss"]
+        path = ["evaluation_and_results", "store_per_client_metrics"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 

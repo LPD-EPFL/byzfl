@@ -68,7 +68,7 @@ class DataDistributor:
             if not isinstance(params["distribution_parameter"], float):
                 raise TypeError("distribution_parameter must be a float")
             if self.data_dist == "gamma_similarity_niid" and not (0.0 <= params["distribution_parameter"] <= 1.0):
-                raise ValueError("distribution_parameter for gamma_similarity_niid must be between 0 and 1")
+                raise ValueError("distribution_parameter for gamma_similarity_niid must be between 0.0 and 1.0")
             self.distribution_parameter = params["distribution_parameter"]
         else:
             self.distribution_parameter = None

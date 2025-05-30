@@ -78,7 +78,7 @@ class TestInnerProductManipulationAttack:
         result = self.attack(x)
         np.testing.assert_array_equal(result.numpy(), self.expected_torch.numpy())
 
-"""
+
 class TestOptimalInnerProductManipulationAttack:
 
     def setup_method(self):
@@ -86,8 +86,8 @@ class TestOptimalInnerProductManipulationAttack:
         pre_agg_list = [byzfl.NNM(f=1), byzfl.Clipping()]
         self.attack = byzfl.Optimal_InnerProductManipulation(agg, pre_agg_list=pre_agg_list, f=1)
 
-        self.expected_np = np.array([-2.98949673, -3.73687091, -4.48424509])
-        self.expected_torch = torch.tensor([-2.9895, -3.7369, -4.4842])
+        self.expected_np = np.array([-2.74877907, -3.43597384, -4.1231686 ])
+        self.expected_torch = torch.tensor([-2.748779 , -3.435974 , -4.1231685])
 
     def test_numpy_array(self):
         x = np.array([[1., 2., 3.],
@@ -116,7 +116,7 @@ class TestOptimalInnerProductManipulationAttack:
              torch.tensor([7., 8., 9.])]
         result = self.attack(x)
         np.testing.assert_allclose(result.numpy(), self.expected_torch.numpy(), rtol=1e-4, atol=1e-4)
-"""
+
 
 class TestALittleIsEnoughAttack:
 
@@ -153,7 +153,7 @@ class TestALittleIsEnoughAttack:
         result = self.attack(x)
         np.testing.assert_allclose(result.numpy(), self.expected_torch.numpy(), rtol=1e-4)
 
-"""
+
 class TestOptimalALittleIsEnoughAttack:
 
     def setup_method(self):
@@ -161,8 +161,8 @@ class TestOptimalALittleIsEnoughAttack:
         pre_agg_list = [byzfl.NNM(f=1), byzfl.Clipping()]
         self.attack = byzfl.Optimal_ALittleIsEnough(agg, pre_agg_list=pre_agg_list, f=1)
 
-        self.expected_np = np.array([6.0615843, 7.0615843, 8.0615843])
-        self.expected_torch = torch.tensor([6.0616, 7.0616, 8.0616])
+        self.expected_np = np.array([12.91985116, 13.91985116, 14.91985116])
+        self.expected_torch = torch.tensor([12.919851, 13.919851, 14.919851])
 
     def test_numpy_array(self):
         x = np.array([[1., 2., 3.],
@@ -191,7 +191,7 @@ class TestOptimalALittleIsEnoughAttack:
              torch.tensor([7., 8., 9.], dtype=torch.float32)]
         result = self.attack(x)
         np.testing.assert_allclose(result.numpy(), self.expected_torch.numpy(), rtol=1e-4, atol=1e-4)
-"""
+
 
 class TestMimicAttack:
 

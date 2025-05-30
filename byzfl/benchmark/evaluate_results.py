@@ -50,16 +50,13 @@ def find_best_hyperparameters(path_to_results):
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
-    nb_declared = data["benchmark_config"]["tolerated_f"]
-    declared_equal_real = data["benchmark_config"]["filter_non_matching_f_tolerated_f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
     set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
 
-    # <-------------- Server Config ------------->
-    nb_steps = data["server"]["nb_steps"]
-    lr_list = data["server"]["learning_rate"]
 
     # <-------------- Evaluation and Results ------------->
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -67,6 +64,7 @@ def find_best_hyperparameters(path_to_results):
     # <-------------- Model Config ------------->
     model_name = data["model"]["name"]
     dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_clients"]["momentum"]
@@ -101,11 +99,11 @@ def find_best_hyperparameters(path_to_results):
     # Main nested loops to explore configurations
     for nb_honest in nb_honest_clients:
         for nb_byzantine in nb_byz:
-            nb_declared_list = nb_declared.copy()
-
-            if declared_equal_real:
+            
+            if nb_declared[0] is None:
                 nb_declared_list = [nb_byzantine]
             else:
+                nb_declared_list = nb_declared.copy()
                 nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
 
             for nb_decl in nb_declared_list:
@@ -235,7 +233,7 @@ colors = [(0, 0.4470, 0.7410), (0.8500, 0.3250, 0.0980), (0.4660, 0.6740, 0.1880
 tab_sign = ['-', '--', '-.', ':', 'solid']
 markers = ['^','s', '<', 'o', '*']
 
-def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=colors, tab_sign=tab_sign, markers=markers):
+def test_accuracy_curve(path_to_results, path_to_plot, colors=colors, tab_sign=tab_sign, markers=markers):
         
         try:
             with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
@@ -257,16 +255,13 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
         nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
         nb_byz = data["benchmark_config"]["f"]
-        nb_declared = data["benchmark_config"]["tolerated_f"]
-        declared_equal_real = data["benchmark_config"]["filter_non_matching_f_tolerated_f"]
+        nb_declared = data["benchmark_config"].get("tolerated_f", None)
         data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
         nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
         data_distributions = data["benchmark_config"]["data_distribution"]
         set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+        nb_steps = data["benchmark_config"]["nb_steps"]
 
-        # <-------------- Server Config ------------->
-        nb_steps = data["server"]["nb_steps"]
-        lr_list = data["server"]["learning_rate"]
 
         # <-------------- Evaluation and Results ------------->
         evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -274,6 +269,7 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         # <-------------- Model Config ------------->
         model_name = data["model"]["name"]
         dataset_name = data["model"]["dataset_name"]
+        lr_list = data["model"]["learning_rate"]
 
         # <-------------- Honest Nodes Config ------------->
         momentum_list = data["honest_clients"]["momentum"]
@@ -307,11 +303,10 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
         for nb_honest in nb_honest_clients:
             for nb_byzantine in nb_byz:
 
-                nb_declared_list = nb_declared.copy()
-
-                if declared_equal_real:
+                if nb_declared[0] is None:
                     nb_declared_list = [nb_byzantine]
                 else:
+                    nb_declared_list = nb_declared.copy()
                     nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
                 
                 for nb_decl in nb_declared_list:
@@ -403,12 +398,12 @@ def plot_accuracy_fix_agg_best_setting(path_to_results, path_to_plot, colors=col
                                         f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_"
                                         f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_lr_{lr}_mom_{momentum}_wd_{wd}"
                                     )
-
+                                    
                                     plt.savefig(path_to_plot+"/"+plot_name+'_plot.pdf')
                                     plt.close()
 
 
-def heat_map_loss(path_to_results, path_to_plot):
+def loss_heatmap(path_to_results, path_to_plot):
     """
     Creates a heatmap where the axis are the number of 
     byzantine nodes and the distribution parameter.
@@ -434,18 +429,21 @@ def heat_map_loss(path_to_results, path_to_plot):
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
     set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
 
-    # <-------------- Server Config ------------->
-    nb_steps = data["server"]["nb_steps"]
-    lr_list = data["server"]["learning_rate"]
+
+    # <-------------- Evaluation and Results ------------->
+    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
     # <-------------- Model Config ------------->
     model_name = data["model"]["name"]
     dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_clients"]["momentum"]
@@ -461,6 +459,7 @@ def heat_map_loss(path_to_results, path_to_plot):
     # Ensure certain configurations are always lists
     nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
 
@@ -472,6 +471,12 @@ def heat_map_loss(path_to_results, path_to_plot):
     lr_list = ensure_list(lr_list)
     momentum_list = ensure_list(momentum_list)
     wd_list = ensure_list(wd_list)
+
+    if nb_declared[0] is None:
+        declared_equal_real = True
+        nb_declared = [nb_byz[-1]]
+    else:
+        declared_equal_real = False
 
     for pre_agg in pre_aggregators:
 
@@ -485,117 +490,127 @@ def heat_map_loss(path_to_results, path_to_plot):
                 distribution_parameter_list = data_dist["distribution_parameter"]
                 distribution_parameter_list = ensure_list(distribution_parameter_list)
 
-                heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
-
                 for nb_honest in nb_honest_clients:
-                    for y, nb_byzantine in enumerate(nb_byz):
 
-                        if set_honest_clients_as_clients:
-                            nb_nodes = nb_honest
-                            nb_honest = nb_nodes - nb_byzantine
-                        else:
-                            nb_nodes = nb_honest + nb_byzantine
+                    for nb_decl in nb_declared:
+                        actual_nb_byz = [item for item in nb_byz if item <= nb_decl]
+                        heat_map_table = np.zeros((len(distribution_parameter_list), len(actual_nb_byz)))
 
-                        for x, dist_param in enumerate(distribution_parameter_list):
+                        for y, nb_byzantine in enumerate(actual_nb_byz):
 
-                            hyper_file_name = (
-                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_byzantine}_"
-                                f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_{pre_agg_names}_{agg['name']}.txt"
-                            )
+                            if declared_equal_real:
+                                nb_decl = nb_byzantine
 
-                            
-                            full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
-
-                            if os.path.exists(full_path):
-                                hyperparameters = np.loadtxt(full_path)
-                                lr = hyperparameters[0]
-                                momentum = hyperparameters[1]
-                                wd = hyperparameters[2]
+                            if set_honest_clients_as_clients:
+                                nb_nodes = nb_honest
+                                nb_honest = nb_nodes - nb_byzantine
                             else:
-                                lr = lr_list[0]
-                                momentum = momentum_list[0]
-                                wd = wd_list[0]
+                                nb_nodes = nb_honest + nb_byzantine
 
-                            
-                            lowest_loss = 0
-                            for attack in attacks:
+                            for x, dist_param in enumerate(distribution_parameter_list):
 
-                                config_file_name = (
-                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_byzantine}_"
-                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
-                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_"
-                                    f"{custom_dict_to_str(attack['name'])}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                hyper_file_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_{pre_agg_names}_{agg['name']}.txt"
                                 )
 
-                                try:
-                                    with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
-                                        data = json.load(file)
-                                except Exception as e:
-                                    print("ERROR: "+ str(e))
+                                
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
 
-                                nb_steps = data["server"]["nb_steps"]
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
 
-                                losses = np.zeros(
-                                    (
-                                        nb_data_distribution_seeds,
-                                        nb_training_seeds,
-                                        nb_honest,
-                                        nb_steps
+                                
+                                lowest_loss = 0
+                                for attack in attacks:
+
+                                    config_file_name = (
+                                        f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                        f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
+                                        f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_"
+                                        f"{custom_dict_to_str(attack['name'])}_lr_{lr}_mom_{momentum}_wd_{wd}"
                                     )
-                                )
 
-                                for run_dd in range(nb_data_distribution_seeds):
-                                    for run in range(nb_training_seeds):
-                                        for worker_i in range(nb_honest):
-                                            losses[run_dd][run][worker_i] = genfromtxt(
+                                    try:
+                                        with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
+                                            data = json.load(file)
+                                    except Exception as e:
+                                        print("ERROR: "+ str(e))
+
+                                    nb_steps = data["benchmark_config"]["nb_steps"]
+
+                                    losses = np.zeros(
+                                        (
+                                            nb_data_distribution_seeds,
+                                            nb_training_seeds,
+                                            nb_steps
+                                        )
+                                    )
+
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            losses[run_dd][run] = genfromtxt(
                                                 f"{path_to_results}/{config_file_name}/"
-                                                f"loss_tr_seed_{run + training_seed}_"
-                                                f"dd_seed_{run_dd + data_distribution_seed}"
-                                                f"/loss_client_{worker_i}.txt",
+                                                f"train_loss_tr_seed_{run + training_seed}_"
+                                                f"dd_seed_{run_dd + data_distribution_seed}.txt",
                                                 delimiter=','
                                             )
 
-                                losses = losses.reshape(
-                                    nb_data_distribution_seeds * nb_training_seeds,
-                                    nb_honest,
-                                    nb_steps
-                                )
+                                    losses = losses.reshape(
+                                        nb_data_distribution_seeds * nb_training_seeds,
+                                        nb_steps
+                                    )
 
-                                losses = np.mean(losses, axis=1)
-                                losses = np.mean(losses, axis=0)
+                                    losses = np.mean(losses, axis=0)
+
+                                    temp_lowest_loss = np.min(losses)
+
+                                    if temp_lowest_loss > lowest_loss:
+                                        lowest_loss = temp_lowest_loss
+                                    
+                                heat_map_table[len(heat_map_table)-1-x][y] = lowest_loss
+
+                        if declared_equal_real:
+                            end_file_name = "tolerated_f_equal_real.pdf"
+                        else:
+                            end_file_name = f"tolerated_f_{nb_decl}.pdf"
+
+                        file_name = (
+                            f"train_loss_{dataset_name}_"
+                            f"{model_name}_"
+                            f"{custom_dict_to_str(data_dist['name'])}_"
+                            f"{pre_agg_names}_"
+                            f"{agg['name']}_"
+                            f"nb_honest_clients_{nb_honest}_"
+                            + end_file_name
+                        )
+
+                    
+                        column_names = [str(dist_param) for dist_param in distribution_parameter_list]
+                        row_names = [str(nb_byzantine) for nb_byzantine in actual_nb_byz]
+                        column_names.reverse()
+
+                        try:
+                            os.makedirs(path_to_plot, exist_ok=True)
+                        except OSError as error:
+                            print(f"Error creating directory: {error}")
+
+                        sns.heatmap(heat_map_table, xticklabels=row_names, yticklabels=column_names, cmap=sns.cm.rocket_r, annot=True)
+                        plt.xlabel("Number of Byzantine clients")
+                        plt.ylabel("Data heterogeneity level")
+                        plt.tight_layout()
+                        plt.savefig(path_to_plot +"/"+ file_name)
+                        plt.close()
 
 
-                                temp_lowest_loss = np.min(losses)
-
-                                if temp_lowest_loss > lowest_loss:
-                                    lowest_loss = temp_lowest_loss
-                                
-                            heat_map_table[len(heat_map_table)-1-x][y] = lowest_loss
-                
-                file_name = (
-                    f"loss_{dataset_name}_"
-                    f"{model_name}_"
-                    f"{custom_dict_to_str(data_dist['name'])}_"
-                    f"{pre_agg_names}_"
-                    f"{agg['name']}.pdf"
-                )
-
-                
-                column_names = [str(dist_param) for dist_param in distribution_parameter_list]
-                row_names = [str(nb_byzantine) for nb_byzantine in nb_byz]
-                column_names.reverse()
-
-                try:
-                    os.makedirs(path_to_plot, exist_ok=True)
-                except OSError as error:
-                    print(f"Error creating directory: {error}")
-
-                sns.heatmap(heat_map_table, xticklabels=row_names, yticklabels=column_names, cmap=sns.cm.rocket_r, annot=True)
-                plt.savefig(path_to_plot +"/"+ file_name)
-                plt.close()
-
-
-def heat_map_test_accuracy(path_to_results, path_to_plot):
+def test_heatmap(path_to_results, path_to_plot):
     """
     Creates a heatmap where the axis are the number of 
     byzantine nodes and the distribution parameter.
@@ -621,14 +636,13 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
     set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
 
-    # <-------------- Server Config ------------->
-    nb_steps = data["server"]["nb_steps"]
-    lr_list = data["server"]["learning_rate"]
 
     # <-------------- Evaluation and Results ------------->
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -636,6 +650,7 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     # <-------------- Model Config ------------->
     model_name = data["model"]["name"]
     dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_clients"]["momentum"]
@@ -651,6 +666,7 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     # Ensure certain configurations are always lists
     nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
 
@@ -662,6 +678,12 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
     lr_list = ensure_list(lr_list)
     momentum_list = ensure_list(momentum_list)
     wd_list = ensure_list(wd_list)
+
+    if nb_declared[0] is None:
+        declared_equal_real = True
+        nb_declared = [nb_byz[-1]]
+    else:
+        declared_equal_real = False
 
     for pre_agg in pre_aggregators:
 
@@ -675,111 +697,127 @@ def heat_map_test_accuracy(path_to_results, path_to_plot):
                 distribution_parameter_list = data_dist["distribution_parameter"]
                 distribution_parameter_list = ensure_list(distribution_parameter_list)
 
-                heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
-
                 for nb_honest in nb_honest_clients:
-                    for y, nb_byzantine in enumerate(nb_byz):
 
-                        if set_honest_clients_as_clients:
-                            nb_nodes = nb_honest
-                            nb_honest = nb_nodes - nb_byzantine
-                        else:
-                            nb_nodes = nb_honest + nb_byzantine
+                    for nb_decl in nb_declared:
+                        actual_nb_byz = [item for item in nb_byz if item <= nb_decl]
+                        heat_map_table = np.zeros((len(distribution_parameter_list), len(actual_nb_byz)))
 
-                        for x, dist_param in enumerate(distribution_parameter_list):
+                        for y, nb_byzantine in enumerate(actual_nb_byz):
 
-                            hyper_file_name = (
-                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_byzantine}_"
-                                f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_{pre_agg_names}_{agg['name']}.txt"
-                            )
+                            if declared_equal_real:
+                                nb_decl = nb_byzantine
 
-                            full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
-
-                            if os.path.exists(full_path):
-                                hyperparameters = np.loadtxt(full_path)
-                                lr = hyperparameters[0]
-                                momentum = hyperparameters[1]
-                                wd = hyperparameters[2]
+                            if set_honest_clients_as_clients:
+                                nb_nodes = nb_honest
+                                nb_honest = nb_nodes - nb_byzantine
                             else:
-                                lr = lr_list[0]
-                                momentum = momentum_list[0]
-                                wd = wd_list[0]
+                                nb_nodes = nb_honest + nb_byzantine
 
-                            
-                            worst_accuracy = np.inf
-                            for attack in attacks:
+                            for x, dist_param in enumerate(distribution_parameter_list):
 
-                                config_file_name = (
-                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_byzantine}_"
-                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
-                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_"
-                                    f"{custom_dict_to_str(attack['name'])}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                hyper_file_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_{pre_agg_names}_{agg['name']}.txt"
                                 )
 
-                                try:
-                                    with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
-                                        data = json.load(file)
-                                except Exception as e:
-                                    print("ERROR: "+ str(e))
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
 
-                                nb_steps = data["server"]["nb_steps"]
-                                nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
 
-                                tab_acc = np.zeros(
-                                    (
-                                        nb_data_distribution_seeds,
-                                        nb_training_seeds,
+                                
+                                worst_accuracy = np.inf
+                                for attack in attacks:
+
+                                    config_file_name = (
+                                        f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                        f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
+                                        f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_"
+                                        f"{custom_dict_to_str(attack['name'])}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                    )
+
+                                    try:
+                                        with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
+                                            data = json.load(file)
+                                    except Exception as e:
+                                        print("ERROR: "+ str(e))
+
+                                    nb_steps = data["benchmark_config"]["nb_steps"]
+                                    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+                                    tab_acc = np.zeros(
+                                        (
+                                            nb_data_distribution_seeds,
+                                            nb_training_seeds,
+                                            nb_accuracies
+                                        )
+                                    )
+
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            tab_acc[run_dd][run] = genfromtxt(
+                                                f"{path_to_results}/{config_file_name}/"
+                                                f"test_accuracy_tr_seed_{run + training_seed}_"
+                                                f"dd_seed_{run_dd + data_distribution_seed}.txt",
+                                                delimiter=','
+                                            )
+
+                                    tab_acc = tab_acc.reshape(
+                                        nb_data_distribution_seeds * nb_training_seeds,
                                         nb_accuracies
                                     )
-                                )
 
-                                for run_dd in range(nb_data_distribution_seeds):
-                                    for run in range(nb_training_seeds):
-                                        tab_acc[run_dd][run] = genfromtxt(
-                                            f"{path_to_results}/{config_file_name}/"
-                                            f"test_accuracy_tr_seed_{run + training_seed}_"
-                                            f"dd_seed_{run_dd + data_distribution_seed}.txt",
-                                            delimiter=','
-                                        )
+                                    tab_acc = tab_acc.mean(axis=0)
 
-                                tab_acc = tab_acc.reshape(
-                                    nb_data_distribution_seeds * nb_training_seeds,
-                                    nb_accuracies
-                                )
+                                    accuracy = np.max(tab_acc)
 
-                                tab_acc = tab_acc.mean(axis=0)
+                                    if accuracy < worst_accuracy:
+                                        worst_accuracy = accuracy
+                                    
+                                heat_map_table[len(heat_map_table)-1-x][y] = worst_accuracy
+                    
+                        if declared_equal_real:
+                            end_file_name = "tolerated_f_equal_real.pdf"
+                        else:
+                            end_file_name = f"tolerated_f_{nb_decl}.pdf"
 
-                                accuracy = np.max(tab_acc)
+                        file_name = (
+                            f"test_{dataset_name}_"
+                            f"{model_name}_"
+                            f"{custom_dict_to_str(data_dist['name'])}_"
+                            f"{pre_agg_names}_"
+                            f"{agg['name']}_"
+                            f"nb_honest_clients_{nb_honest}_"
+                            + end_file_name
+                        )
 
-                                if accuracy < worst_accuracy:
-                                    worst_accuracy = accuracy
-                                
-                            heat_map_table[len(heat_map_table)-1-x][y] = worst_accuracy
-                
-                file_name = (
-                    f"test_{dataset_name}_"
-                    f"{model_name}_"
-                    f"{custom_dict_to_str(data_dist['name'])}_"
-                    f"{pre_agg_names}_"
-                    f"{agg['name']}.pdf"
-                )
+                    
+                        column_names = [str(dist_param) for dist_param in distribution_parameter_list]
+                        row_names = [str(nb_byzantine) for nb_byzantine in actual_nb_byz]
+                        column_names.reverse()
 
-                
-                column_names = [str(dist_param) for dist_param in distribution_parameter_list]
-                row_names = [str(nb_byzantine) for nb_byzantine in nb_byz]
-                column_names.reverse()
+                        try:
+                            os.makedirs(path_to_plot, exist_ok=True)
+                        except OSError as error:
+                            print(f"Error creating directory: {error}")
 
-                try:
-                    os.makedirs(path_to_plot, exist_ok=True)
-                except OSError as error:
-                    print(f"Error creating directory: {error}")
-
-                sns.heatmap(heat_map_table, xticklabels=row_names, yticklabels=column_names, annot=True)
-                plt.savefig(path_to_plot +"/"+ file_name)
-                plt.close()
+                        sns.heatmap(heat_map_table, xticklabels=row_names, yticklabels=column_names, annot=True)
+                        plt.xlabel("Number of Byzantine clients")
+                        plt.ylabel("Data heterogeneity level")
+                        plt.tight_layout()
+                        plt.savefig(path_to_plot +"/"+ file_name)
+                        plt.close()
 
 
-def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
+def aggregated_test_heatmap(path_to_results, path_to_plot):
     """
     Heatmap with the aggregated info of all aggregators, 
     for every region in the heatmap, it shows the aggregation 
@@ -803,14 +841,13 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
     nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
     nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
     data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
     nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
     data_distributions = data["benchmark_config"]["data_distribution"]
     set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
 
-    # <-------------- Server Config ------------->
-    nb_steps = data["server"]["nb_steps"]
-    lr_list = data["server"]["learning_rate"]
 
     # <-------------- Evaluation and Results ------------->
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
@@ -818,6 +855,7 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     # <-------------- Model Config ------------->
     model_name = data["model"]["name"]
     dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
 
     # <-------------- Honest Nodes Config ------------->
     momentum_list = data["honest_clients"]["momentum"]
@@ -833,6 +871,7 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     # Ensure certain configurations are always lists
     nb_honest_clients = ensure_list(nb_honest_clients)
     nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
     data_distributions = ensure_list(data_distributions)
     aggregators = ensure_list(aggregators)
 
@@ -844,120 +883,143 @@ def aggregated_heat_map_test_accuracy(path_to_results, path_to_plot):
     lr_list = ensure_list(lr_list)
     momentum_list = ensure_list(momentum_list)
     wd_list = ensure_list(wd_list)
+
+    if nb_declared[0] is None:
+        declared_equal_real = True
+        nb_declared = [nb_byz[-1]]
+    else:
+        declared_equal_real = False
     
     for pre_agg in pre_aggregators:
 
-        pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
-        pre_agg_names = "_".join(pre_agg_list_names)
-        data_distributions[0]["distribution_parameter"] = ensure_list(data_distributions[0]["distribution_parameter"])
-        heat_map_cube = np.zeros((len(aggregators), len(data_distributions[0]["distribution_parameter"]), len(nb_byz)))
+        for nb_honest in nb_honest_clients:
 
-        for z, agg in enumerate(aggregators):
+            for nb_decl in nb_declared:
+                actual_nb_byz = [item for item in nb_byz if item <= nb_decl]
+                pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
+                pre_agg_names = "_".join(pre_agg_list_names)
 
-            for data_dist in data_distributions:
+                for data_dist in data_distributions:
 
-                distribution_parameter_list = data_dist["distribution_parameter"]
-                heat_map_table = np.zeros((len(distribution_parameter_list), len(nb_byz)))
+                    data_dist["distribution_parameter"] = ensure_list(data_dist["distribution_parameter"])
+                    distribution_parameter_list = data_dist["distribution_parameter"]
+                    heat_map_cube = np.zeros((len(aggregators), len(distribution_parameter_list), len(actual_nb_byz)))
 
-                for nb_honest in nb_honest_clients:
+                    for z, agg in enumerate(aggregators):
 
-                    for y, nb_byzantine in enumerate(nb_byz):
+                        heat_map_table = np.zeros((len(distribution_parameter_list), len(actual_nb_byz)))
 
-                        if set_honest_clients_as_clients:
-                            nb_nodes = nb_honest
-                            nb_honest = nb_nodes - nb_byzantine
-                        else:
-                            nb_nodes = nb_honest + nb_byzantine
+                        for y, nb_byzantine in enumerate(actual_nb_byz):
 
-                        for x, dist_param in enumerate(distribution_parameter_list):
+                            if declared_equal_real:
+                                nb_decl = nb_byzantine
 
-                            hyper_file_name = (
-                                f"{dataset_name}_"
-                                f"{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_byzantine}_"
-                                f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
-                                f"{pre_agg_names}_{agg['name']}.txt"
-                            )
-
-                            
-                            full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
-
-                            if os.path.exists(full_path):
-                                hyperparameters = np.loadtxt(full_path)
-                                lr = hyperparameters[0]
-                                momentum = hyperparameters[1]
-                                wd = hyperparameters[2]
+                            if set_honest_clients_as_clients:
+                                nb_nodes = nb_honest
+                                nb_honest = nb_nodes - nb_byzantine
                             else:
-                                lr = lr_list[0]
-                                momentum = momentum_list[0]
-                                wd = wd_list[0]
+                                nb_nodes = nb_honest + nb_byzantine
 
-                            
-                            worst_accuracy = np.inf
-                            for attack in attacks:
-                                config_file_name = (
+                            for x, dist_param in enumerate(distribution_parameter_list):
+
+                                hyper_file_name = (
                                     f"{dataset_name}_"
-                                    f"{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_byzantine}_"
+                                    f"{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
                                     f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
-                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_"
-                                    f"{custom_dict_to_str(attack['name'])}_"
-                                    f"lr_{lr}_"
-                                    f"mom_{momentum}_"
-                                    f"wd_{wd}"
+                                    f"{pre_agg_names}_{agg['name']}.txt"
                                 )
 
-                                try:
-                                    with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
-                                        data = json.load(file)
-                                except Exception as e:
-                                    print("ERROR: "+ str(e))
+                                
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
 
-                                nb_steps = data["server"]["nb_steps"]
-                                nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
 
-                                tab_acc = np.zeros(
-                                    (
-                                        nb_data_distribution_seeds,
-                                        nb_training_seeds,
+                                
+                                worst_accuracy = np.inf
+                                for attack in attacks:
+                                    config_file_name = (
+                                        f"{dataset_name}_"
+                                        f"{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                        f"{custom_dict_to_str(data_dist['name'])}_{dist_param}_"
+                                        f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_"
+                                        f"{custom_dict_to_str(attack['name'])}_"
+                                        f"lr_{lr}_"
+                                        f"mom_{momentum}_"
+                                        f"wd_{wd}"
+                                    )
+
+                                    try:
+                                        with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
+                                            data = json.load(file)
+                                    except Exception as e:
+                                        print("ERROR: "+ str(e))
+
+                                    nb_steps = data["benchmark_config"]["nb_steps"]
+                                    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+                                    tab_acc = np.zeros(
+                                        (
+                                            nb_data_distribution_seeds,
+                                            nb_training_seeds,
+                                            nb_accuracies
+                                        )
+                                    )
+
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            tab_acc[run_dd][run] = genfromtxt(
+                                                f"{path_to_results}/{config_file_name}/"
+                                                f"test_accuracy_tr_seed_{run + training_seed}_"
+                                                f"dd_seed_{run_dd + data_distribution_seed}.txt",
+                                                delimiter=','
+                                            )
+
+                                    tab_acc = tab_acc.reshape(
+                                        nb_data_distribution_seeds * nb_training_seeds,
                                         nb_accuracies
                                     )
-                                )
+                                    
+                                    tab_acc = tab_acc.mean(axis=0)
+                                    accuracy = np.max(tab_acc)
 
-                                for run_dd in range(nb_data_distribution_seeds):
-                                    for run in range(nb_training_seeds):
-                                        tab_acc[run_dd][run] = genfromtxt(
-                                            f"{path_to_results}/{config_file_name}/"
-                                            f"test_accuracy_tr_seed_{run + training_seed}_"
-                                            f"dd_seed_{run_dd + data_distribution_seed}.txt",
-                                            delimiter=','
-                                        )
+                                    if accuracy < worst_accuracy:
+                                        worst_accuracy = accuracy
+                                    
+                                heat_map_table[len(heat_map_table)-1-x][y] = worst_accuracy
 
-                                tab_acc = tab_acc.reshape(
-                                    nb_data_distribution_seeds * nb_training_seeds,
-                                    nb_accuracies
-                                )
-                                
-                                tab_acc = tab_acc.mean(axis=0)
-                                accuracy = np.max(tab_acc)
+                        heat_map_cube[z] = heat_map_table
+                    
 
-                                if accuracy < worst_accuracy:
-                                    worst_accuracy = accuracy
-                                
-                            heat_map_table[len(heat_map_table)-1-x][y] = worst_accuracy
+                    if declared_equal_real:
+                        end_file_name = "tolerated_f_equal_real.pdf"
+                    else:
+                        end_file_name = f"tolerated_f_{nb_decl}.pdf"
 
-                heat_map_cube[z] = heat_map_table
-                
-            file_name = (
-                f"best_test_{dataset_name}_"
-                f"{model_name}_"
-                f"{custom_dict_to_str(data_dist['name'])}_"
-                f"{pre_agg_names}.pdf"
-            )
-            
-            column_names = [str(dist_param) for dist_param in distribution_parameter_list]
-            row_names = [str(nb_byzantine) for nb_byzantine in nb_byz]
-            column_names.reverse()
+                    file_name = (
+                        f"best_test_{dataset_name}_"
+                        f"{model_name}_"
+                        f"{custom_dict_to_str(data_dist['name'])}_"
+                        f"{pre_agg_names}_"
+                        f"nb_honest_clients_{nb_honest}_"
+                        + end_file_name
+                    )
+                    
+                    column_names = [str(dist_param) for dist_param in distribution_parameter_list]
+                    row_names = [str(nb_byzantine) for nb_byzantine in actual_nb_byz]
+                    column_names.reverse()
 
-            heat_map_table = np.max(heat_map_cube, axis=0)
-            sns.heatmap(heat_map_table, xticklabels=row_names, yticklabels=column_names, annot=True)
-            plt.savefig(path_to_plot +"/"+ file_name)
-            plt.close()
+                    heat_map_table = np.max(heat_map_cube, axis=0)
+                    sns.heatmap(heat_map_table, xticklabels=row_names, yticklabels=column_names, annot=True)
+                    plt.xlabel("Number of Byzantine clients")
+                    plt.ylabel("Data heterogeneity level")
+                    plt.tight_layout()
+                    plt.savefig(path_to_plot +"/"+ file_name)
+                    plt.close()

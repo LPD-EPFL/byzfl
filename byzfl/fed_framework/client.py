@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 from byzfl.fed_framework import ModelBaseInterface
 from byzfl.utils.conversion import flatten_dict
@@ -48,6 +49,7 @@ class Client(ModelBaseInterface):
         )
         self.training_dataloader = params["training_dataloader"]
         self.train_iterator = iter(self.training_dataloader)
+        self.store_per_client_metrics = params["store_per_client_metrics"]
         self.loss_list = list()
         self.train_acc_list = list()
 
@@ -90,8 +92,12 @@ class Client(ModelBaseInterface):
             self.gradient_LF = self.get_dict_gradients()
             self.model.train()
 
-        train_loss_value = self._backward_pass(inputs, targets, train_acc=True)
-        self.loss_list.append(train_loss_value)
+        train_loss_value = self._backward_pass(inputs, targets, train_acc=self.store_per_client_metrics)
+
+        if self.store_per_client_metrics:
+            self.loss_list.append(train_loss_value)
+
+        return train_loss_value
 
     def _backward_pass(self, inputs, targets, train_acc=False):
         """
@@ -131,6 +137,43 @@ class Client(ModelBaseInterface):
             self.train_acc_list.append(acc)
 
         return loss_value
+    
+    def compute_model_update(self, num_rounds):
+        """
+        Description
+        -----------
+        Executes multiple rounds of training updates on the model. For each round,
+        it samples a batch of training data, performs a backward pass to compute
+        gradients, and updates the model parameters. Optionally logs training loss
+        and accuracy.
+
+        Parameters
+        ----------
+        num_rounds : int
+            The number of training iterations to perform. Each iteration includes
+            sampling a batch, computing the loss and gradients, and updating the model.
+
+        Returns
+        -------
+        float
+            The mean loss across all training rounds.
+        """
+
+        losses = np.zeros((num_rounds))
+        for i in range(num_rounds):
+            inputs, targets = self._sample_train_batch()
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
+            
+            self.optimizer.zero_grad()
+            train_loss_value = self._backward_pass(inputs, targets, train_acc=self.store_per_client_metrics)
+            losses[i] = train_loss_value
+            self.optimizer.step()
+
+            if self.store_per_client_metrics:
+                self.loss_list.append(train_loss_value)
+
+        return losses.mean()
+            
 
     def get_flat_flipped_gradients(self):
         """

@@ -8,15 +8,16 @@ from byzfl.benchmark.evaluate_results import find_best_hyperparameters
 
 default_config = {
     "benchmark_config": {
+        "training_algorithm": {
+            "name": "DSGD",
+            "parameters": {}
+        },
+        "nb_steps": 800,
         "device": "cuda",
         "training_seed": 0,
         "nb_training_seeds": 3,
         "nb_honest_clients": 10,
         "f": [1, 2, 3, 4],
-        "tolerated_f": [1, 2, 3, 4],
-        "filter_non_matching_f_tolerated_f": True,
-        "set_honest_clients_as_clients": False,
-        "size_train_set": 0.8,
         "data_distribution_seed": 0,
         "nb_data_distribution_seeds": 1,
         "data_distribution": [
@@ -24,13 +25,16 @@ default_config = {
                 "name": "gamma_similarity_niid",
                 "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
             }
-        ]
+        ],
     },
     "model": {
         "name": "cnn_mnist",
         "dataset_name": "mnist",
         "nb_labels": 10,
-        "loss": "NLLLoss"
+        "loss": "NLLLoss",
+        "learning_rate": 0.1,
+        "learning_rate_decay": 1.0,
+        "milestones": []
     },
     "aggregator": [
         {
@@ -55,13 +59,6 @@ default_config = {
             "parameters": {}
         }
     ],
-    "server": {
-        "learning_rate": 0.1,
-        "nb_steps": 800,
-        "batch_size_evaluation": 100,
-        "learning_rate_decay": 1.0,
-        "milestones": []
-    },
     "honest_clients": {
         "momentum": 0.9,
         "weight_decay": 0.0001,
@@ -83,9 +80,9 @@ default_config = {
     ],
     "evaluation_and_results": {
         "evaluation_delta": 50,
+        "batch_size_evaluation": 128,
         "evaluate_on_test": True,
-        "store_training_accuracy": True,
-        "store_training_loss": True,
+        "store_per_client_metrics": True,
         "store_models": False,
         "data_folder": "./data",
         "results_directory": "./results"
@@ -260,6 +257,7 @@ def eliminate_experiments_done(dict_list):
 
     new_dict_list = []
     for setting in dict_list:
+
         pre_aggregation_names = [
             agg['name'] for agg in setting["pre_aggregators"]
         ]
@@ -274,7 +272,7 @@ def eliminate_experiments_done(dict_list):
             f"{setting['aggregator']['name']}_"
             f"{'_'.join(pre_aggregation_names)}_"
             f"{setting['attack']['name']}_"
-            f"lr_{setting['server']['learning_rate']}_"
+            f"lr_{setting['model']['learning_rate']}_"
             f"mom_{setting['honest_clients']['momentum']}_"
             f"wd_{setting['honest_clients']['weight_decay']}"
         )
@@ -370,10 +368,9 @@ def remove_real_greater_declared(dict_list):
     return new_dict_list
 
 
-def remove_real_not_equal_declared(dict_list):
+def set_tolerated_f_equal_to_real_f(dict_list):
     """
-    Filter out configurations where the real number of Byzantine workers
-    is not equal to the declared number.
+    Set the 'tolerated_f' parameter equal to 'f' for each configuration.
 
     Parameters
     ----------
@@ -383,14 +380,12 @@ def remove_real_not_equal_declared(dict_list):
     Returns
     -------
     list of dict
-        The filtered list where tolerated_f == f.
+        The modified list with 'tolerated_f' set to 'f'.
     """
     new_dict_list = []
     for setting in dict_list:
-        real_byz = setting["benchmark_config"]["f"]
-        declared_byz = setting["benchmark_config"]["tolerated_f"]
-        if declared_byz == real_byz:
-            new_dict_list.append(setting)
+        setting["benchmark_config"]["tolerated_f"] = setting["benchmark_config"]["f"]
+        new_dict_list.append(setting)
     return new_dict_list
 
 def set_declared_as_aggregation_parameter(dict_list):
@@ -441,6 +436,9 @@ def ensure_key_parameters(dict_list):
     for setting in dict_list:
         if "parameters" not in setting["aggregator"].keys():
             setting["aggregator"]["parameters"] = {}
+        
+        if "pre_aggregators" not in setting.keys():
+            setting["pre_aggregators"] = []
 
         for pre_agg in setting["pre_aggregators"]:
             if "parameters" not in pre_agg.keys():
@@ -448,6 +446,32 @@ def ensure_key_parameters(dict_list):
         
         if "parameters" not in setting["attack"].keys():
             setting["attack"]["parameters"] = {}
+        
+        if "training_algorithm" not in setting["benchmark_config"].keys():
+            setting["benchmark_config"]["training_algorithm"] = {
+                "name": "DSGD",
+                "parameters": {}
+            }
+        
+        if setting["benchmark_config"]["training_algorithm"]["name"] == "FedAvg":
+            ta_params =  setting["benchmark_config"]["training_algorithm"].get("parameters", {})
+
+            # Check for 'proportion_selected_clients'
+            if "proportion_selected_clients" not in ta_params:
+                raise ValueError("Missing 'proportion_selected_clients' in training algorithm parameters for FedAvg")
+
+            proportion_selected_clients = ta_params["proportion_selected_clients"]
+            if proportion_selected_clients <= 0 or proportion_selected_clients > 1:
+                raise ValueError(f"Proportion of selected clients must be in (0, 1], but got {proportion_selected_clients}")
+
+            # Check for 'local_steps_per_client'
+            if "local_steps_per_client" not in ta_params:
+                raise ValueError("Missing 'local_steps_per_client' in training algorithm parameters for FedAvg")
+
+            local_steps_per_client = ta_params["local_steps_per_client"]
+            if not isinstance(local_steps_per_client, int) or local_steps_per_client <= 0:
+                raise ValueError(f"Number of training rounds per step must be a positive integer, but got {local_steps_per_client}")
+
                 
     return dict_list
 
@@ -456,12 +480,6 @@ def ensure_optional_config_parameters(data):
 
     if "nb_honest_clients" not in data["benchmark_config"].keys():
         data["benchmark_config"]["nb_honest_clients"] = 10
-
-    if "tolerated_f" not in data["benchmark_config"].keys():
-        data["benchmark_config"]["tolerated_f"] = data["benchmark_config"]["f"]
-    
-    if "filter_non_matching_f_tolerated_f" not in data["benchmark_config"].keys():
-        data["benchmark_config"]["filter_non_matching_f_tolerated_f"] = True
 
     if "set_honest_clients_as_clients" not in data["benchmark_config"].keys():
         data["benchmark_config"]["set_honest_clients_as_clients"] = False
@@ -482,7 +500,7 @@ def ensure_optional_config_parameters(data):
         data["evaluation_and_results"]["results_directory"] = "./results"
 
     if "size_train_set" not in data["benchmark_config"].keys():
-        data["benchmark_config"]["size_train_set"] = 1.0
+        data["benchmark_config"]["size_train_set"] = 0.8
 
     return data
 
@@ -525,16 +543,15 @@ def run_benchmark(nb_jobs=1):
     restriction_list = ["pre_aggregators", "milestones"]
     dict_list = generate_all_combinations(data, restriction_list)
 
-    # Filter combinations based on f vs. tolerated f
-    if data["benchmark_config"]["filter_non_matching_f_tolerated_f"]:
-        dict_list = remove_real_not_equal_declared(dict_list)
-    else:
-        dict_list = remove_real_greater_declared(dict_list)
-
-
     # Ensure that the key parameters are present in the dictionaries
     # even if they are not in the config file
     dict_list = ensure_key_parameters(dict_list)
+
+    # Filter combinations based on f vs. tolerated f
+    if "tolerated_f" not in data["benchmark_config"]:
+        dict_list = set_tolerated_f_equal_to_real_f(dict_list)
+    else:
+        dict_list = remove_real_greater_declared(dict_list)
 
     # Set declared parameters in the dictionaries where necessary
     dict_list = set_declared_as_aggregation_parameter(dict_list)

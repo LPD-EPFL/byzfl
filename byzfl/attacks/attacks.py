@@ -1,7 +1,7 @@
 import numpy as np
 
 from byzfl.utils.misc import check_vectors_type, random_tool
-from byzfl.aggregators import Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed, Clipping, NNM, ARC, Bucketing
+from byzfl.aggregators import Average, Clipping
 
 class SignFlipping:
     
@@ -285,7 +285,7 @@ class Optimal_InnerProductManipulation:
     >>>               [4., 5., 6.], 
     >>>               [7., 8., 9.]])
     >>> attack(x)
-    array([-2.98949673 -3.73687091 -4.48424509])
+    array([-2.74877907, -3.43597384, -4.1231686 ])
             
     Using torch tensors
         
@@ -294,7 +294,7 @@ class Optimal_InnerProductManipulation:
     >>>                   [4., 5., 6.], 
     >>>                   [7., 8., 9.]])
     >>> attack(x)
-    tensor([-2.9895, -3.7369, -4.4842])
+    tensor([-2.748779 , -3.435974 , -4.1231685])
 
     Using list of numpy arrays
 
@@ -303,7 +303,7 @@ class Optimal_InnerProductManipulation:
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
     >>> attack(x)
-    array([-2.98949673 -3.73687091 -4.48424509])
+    array([-2.74877907, -3.43597384, -4.1231686 ])
 
     Using list of torch tensors
         
@@ -312,7 +312,7 @@ class Optimal_InnerProductManipulation:
     >>>      torch.tensor([4., 5., 6.]), 
     >>>      torch.tensor([7., 8., 9.])]
     >>> attack(x)
-    tensor([-2.9895, -3.7369, -4.4842])
+    tensor([-2.748779 , -3.435974 , -4.1231685])
 
     References
     ----------
@@ -331,16 +331,7 @@ class Optimal_InnerProductManipulation:
 
     def __init__(self, agg=Average(), pre_agg_list=[Clipping()], f=1, evals=20, start=0.0, delta=10.0, ratio=0.8):
 
-        # List of valid aggregator classes
-        valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
-        if not any(isinstance(agg, valid_agg) for valid_agg in valid_agg_classes):
-            raise TypeError("agg must be a valid aggregator.")
         self.agg = agg
-
-        # List of valid pre-aggregator classes
-        valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
-        if not isinstance(pre_agg_list, list) or not all(any(isinstance(pre_agg, valid_pre_agg) for valid_pre_agg in valid_pre_agg_classes) for pre_agg in pre_agg_list):
-            raise TypeError("valid_pre_agg_classes must be a list valid pre-aggregators.")
         self.pre_agg_list = pre_agg_list
 
         if not isinstance(f, int) or f < 0:
@@ -664,7 +655,7 @@ class Optimal_ALittleIsEnough:
     >>>               [4., 5., 6.], 
     >>>               [7., 8., 9.]])
     >>> attack(x)
-    array([6.0615843 7.0615843 8.0615843])
+    array([12.91985116, 13.91985116, 14.91985116])
             
     Using torch tensors
         
@@ -673,7 +664,7 @@ class Optimal_ALittleIsEnough:
     >>>                   [4., 5., 6.], 
     >>>                   [7., 8., 9.]])
     >>> attack(x)
-    tensor([6.0616, 7.0616, 8.0616])
+    tensor([12.919851, 13.919851, 14.919851])
 
     Using list of numpy arrays
 
@@ -682,7 +673,7 @@ class Optimal_ALittleIsEnough:
     >>>      np.array([4., 5., 6.]), 
     >>>      np.array([7., 8., 9.])]
     >>> attack(x)
-    array([6.0615843 7.0615843 8.0615843])
+    array([12.91985116, 13.91985116, 14.91985116])
 
     Using list of torch tensors
         
@@ -691,7 +682,7 @@ class Optimal_ALittleIsEnough:
     >>>      torch.tensor([4., 5., 6.]), 
     >>>      torch.tensor([7., 8., 9.])]
     >>> attack(x)
-    tensor([6.0616, 7.0616, 8.0616])
+    tensor([12.919851, 13.919851, 14.919851])
 
     References
     ----------
@@ -708,16 +699,7 @@ class Optimal_ALittleIsEnough:
 
     def __init__(self, agg=Average(), pre_agg_list=[Clipping()], f=1, evals=20, start=0.0, delta=10.0, ratio=0.8):
 
-        # List of valid aggregator classes
-        valid_agg_classes = (Average, Median, TrMean, GeometricMedian, Krum, MultiKrum, CenteredClipping, MDA, MoNNA, Meamed)
-        if not any(isinstance(agg, valid_agg) for valid_agg in valid_agg_classes):
-            raise TypeError("agg must be a valid aggregator.")
         self.agg = agg
-
-        # List of valid pre-aggregator classes
-        valid_pre_agg_classes = (NNM, Bucketing, Clipping, ARC)
-        if not isinstance(pre_agg_list, list) or not all(any(isinstance(pre_agg, valid_pre_agg) for valid_pre_agg in valid_pre_agg_classes) for pre_agg in pre_agg_list):
-            raise TypeError("valid_pre_agg_classes must be a list valid pre-aggregators.")
         self.pre_agg_list = pre_agg_list
 
         if not isinstance(f, int) or f < 0:
