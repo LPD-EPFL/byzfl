@@ -330,7 +330,7 @@ class ParamsManager(object):
 
     def get_learning_rate(self):
         default = 0.1
-        path = ["server", "learning_rate"]
+        path = ["model", "learning_rate"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
 
