@@ -61,7 +61,11 @@ Below is a sample of a `config.json` file, testing the strength of state-of-the-
 ```json
 {
     "benchmark_config": {
-        "device": "cuda",
+        "training_algorithm": {
+            "name": "DSGD",
+            "parameters": {}
+        },
+        "nb_steps": 800,
         "training_seed": 0,
         "nb_training_seeds": 3,
         "nb_honest_clients": 10,
@@ -73,13 +77,16 @@ Below is a sample of a `config.json` file, testing the strength of state-of-the-
                 "name": "gamma_similarity_niid",
                 "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
             }
-        ]
+        ],
     },
     "model": {
         "name": "cnn_mnist",
         "dataset_name": "mnist",
         "nb_labels": 10,
-        "loss": "NLLLoss"
+        "loss": "NLLLoss",
+        "learning_rate": 0.1,
+        "learning_rate_decay": 1.0,
+        "milestones": []
     },
     "aggregator": [
         {
@@ -104,14 +111,7 @@ Below is a sample of a `config.json` file, testing the strength of state-of-the-
             "parameters": {}
         }
     ],
-    "server": {
-        "learning_rate": 0.1,
-        "nb_steps": 800,
-        "batch_size_evaluation": 100,
-        "learning_rate_decay": 1.0,
-        "milestones": []
-    },
-    "honest_nodes": {
+    "honest_clients": {
         "momentum": 0.9,
         "weight_decay": 0.0001,
         "batch_size": 25
@@ -132,8 +132,7 @@ Below is a sample of a `config.json` file, testing the strength of state-of-the-
     ],
     "evaluation_and_results": {
         "evaluation_delta": 50,
-        "store_training_accuracy": true,
-        "store_training_loss": true,
+        "store_per_client_metrics": true,
         "store_models": false,
         "results_directory": "./results"
     }
@@ -165,6 +164,29 @@ The FL Benchmark allows users to configure a wide range of parameters, enabling 
 > - Not all variables support lists. Using a list for an unsupported parameter may overwrite previous results.  
 > - The `f` parameter must not be explicitly provided to (pre-)aggregators or attacks that require it in their parameters, as it is already determined based on the values of the main `f` parameter in ``config.json``.
 
+### Supported Federated Learning Algorithms
+
+ByzFL supports two main federated learning algorithms Federated Averaging (FedAvg) and Distributed Stochastic Gradient Descent (DSGD).
+
+- **FedAvg**: A foundational algorithm in federated learning that performs local training on each client for multiple epochs and then averages the resulting model updates on the server. It is communication-efficient and widely used in practice.
+- **DSGD**: A distributed variant of stochastic gradient descent where clients compute local gradients (often using mini-batches) and send them to the server for aggregation at each iteration. Unlike FedAvg, DSGD operates at the level of gradients rather than model weights and is often used as a base for analyzing the theoretical robustness of gradient-based robust aggregators in adversarial settings.
+
+To choose your desired algorithm, specify the `benchmark_config` in the `config.json` file:
+
+```json
+    "training_algorithm": {
+        "name": "FedAvg",
+        "parameters": {
+            "proportion_selected_clients": 0.6,
+            "local_steps_per_client": 5
+        }
+    }
+
+    "training_algorithm": {
+        "name": "DSGD",
+        "parameters": {}
+    }
+```
 ---
 
 ## Launching the Benchmark
@@ -197,12 +219,12 @@ Displays **test accuracy trends over time** for each aggregator across different
 
 
 ```python
-from byzfl.benchmark.evaluate_results import plot_accuracy_fix_agg_best_setting
+from byzfl.benchmark.evaluate_results import test_accuracy_curve
 
 path_training_results = "./results"
 path_to_plot = "./plot"
 
-plot_accuracy_fix_agg_best_setting(
+test_accuracy_curve(
     path_training_results, 
     path_to_plot
 )
@@ -228,12 +250,12 @@ Heatmaps summarize performance across multiple configurations.
 #### Heatmap of training losses
 
 ```python
-from byzfl.benchmark.evaluate_results import heat_map_loss
+from byzfl.benchmark.evaluate_results import loss_heatmap
 
 path_training_results = "./results"
 path_to_plot = "./plot"
 
-heat_map_loss(path_training_results, path_to_plot)
+loss_heatmap(path_training_results, path_to_plot)
 ```
 
 - **Geometric Median (Loss)**
@@ -247,12 +269,12 @@ heat_map_loss(path_training_results, path_to_plot)
 #### Heatmap of test accuracies
 
 ```python
-from byzfl.benchmark.evaluate_results import heat_map_test_accuracy
+from byzfl.benchmark.evaluate_results import test_heatmap
 
 path_training_results = "./results"
 path_to_plot = "./plot"
 
-heat_map_test_accuracy(path_training_results, path_to_plot)
+test_heatmap(path_training_results, path_to_plot)
 ```
 
 - **Geometric Median (Test Accuracy)**
@@ -269,12 +291,12 @@ heat_map_test_accuracy(path_training_results, path_to_plot)
 This plot consolidates all (pre-)aggregators, showing **the best-performing method per scenario (cell)**.
 
 ```python
-from byzfl.benchmark.evaluate_results import aggregated_heat_map_test_accuracy
+from byzfl.benchmark.evaluate_results import aggregated_test_heatmap
 
 path_training_results = "./results"
 path_to_plot = "./plot"
 
-aggregated_heat_map_test_accuracy(
+aggregated_test_heatmap(
     path_training_results,
     path_to_plot
 )
