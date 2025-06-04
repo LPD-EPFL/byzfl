@@ -101,6 +101,22 @@ Aggregated result: [2.5 3.5 4.5]
 
 For detailed information on each component, refer to the [ByzFL documentation](https://byzfl.epfl.ch/).
 
+## Citation
+
+If you use **ByzFL** in your research, please cite:
+
+```bibtex
+@misc{gonzález2025byzflresearchframeworkrobust,
+  title     = {ByzFL: Research Framework for Robust Federated Learning},
+  author    = {Marc González and Rachid Guerraoui and Rafael Pinot and Geovani Rizk and John Stephan and François Taïani},
+  year      = {2025},
+  eprint    = {2505.24802},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url       = {https://arxiv.org/abs/2505.24802}
+}
+```
+
 ## License
 
 This module is part of the ByzFL library, licensed under the [MIT License](https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt).
