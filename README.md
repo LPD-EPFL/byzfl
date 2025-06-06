@@ -265,6 +265,22 @@ Explore the key components of ByzFL:
 
 ---
 
+## Citation
+
+If you use **ByzFL** in your research, please cite:
+
+```bibtex
+@misc{gonzález2025byzflresearchframeworkrobust,
+  title     = {ByzFL: Research Framework for Robust Federated Learning},
+  author    = {Marc González and Rachid Guerraoui and Rafael Pinot and Geovani Rizk and John Stephan and François Taïani},
+  year      = {2025},
+  eprint    = {2505.24802},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url       = {https://arxiv.org/abs/2505.24802}
+}
+```
+
 ## License
 
 ByzFL is open-source and distributed under the [MIT License](https://github.com/LPD-EPFL/byzfl/blob/main/LICENSE.txt).
