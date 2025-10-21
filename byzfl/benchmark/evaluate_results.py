@@ -1026,45 +1026,861 @@ def aggregated_test_heatmap(path_to_results, path_to_plot):
                     plt.close()
 
 
-def plot_honest_gradients_scattering(params, path_to_plot, training_seed, data_dist_seed):
-    manager = FileManager(params)
-    honest_gradients_scattering = manager.load_honest_scattering(training_seed, data_dist_seed)
+def plot_honest_gradients_scattering(path_to_results, path_to_plot):
+    """
+    Plots the honest gradient scatterings $\xi$ for different configurations.
+    """
+    try:
+        with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(f"ERROR reading config.json: {e}")
+        return
+    
+    try:
+        os.makedirs(path_to_plot, exist_ok=True)
+    except OSError as error:
+        print(f"Error creating directory: {error}")
+    
+    path_to_hyperparameters = path_to_results + "/best_hyperparameters"
+    
 
-    # Faire les représentations et les sauvegarder au bon endroit
-    pass
-
-
-def plot_poisonned_gradients_scattering(params, path_to_plot, training_seed, data_dist_seed):
-    manager = FileManager(params)
-    poisonned_gradients_scattering = manager.load_byzantine_scattering(training_seed, data_dist_seed)
-
-    # Faire les représentations et les sauvegarder au bon endroit
-    pass
-
-
-def plot_maximum_regular_feature_mean(params, path_to_plot, training_seed, data_dist_seed):
-    manager = FileManager(params)
-    maximum_regular_feature_mean = manager.load_mean_feature_norm(training_seed, data_dist_seed)
-
-    # Faire les représentations et les sauvegarder au bon endroit
-    pass
-
-
-def plot_workers_feature_variance(params, path_to_plot, training_seed, data_dist_seed, nb_honest_workers):
-    manager = FileManager(params)
-    workers_feature_variance = {}
-    for i in range(nb_honest_workers):
-        workers_feature_variance[i] = manager.load_feature_variance(training_seed, data_dist_seed, i)
-
-    # Faire les représentations et les sauvegarder au bon endroit
-    pass
+    # <-------------- Benchmark Config ------------->
+    training_seed = data["benchmark_config"]["training_seed"]
+    nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
+    nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
+    data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
+    nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
+    data_distributions = data["benchmark_config"]["data_distribution"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
 
 
-def mean_SGD_convergence_rate():
-    # Je ne vois pas comment calculer le sigma du papier
-    pass
+    # <-------------- Evaluation and Results ------------->
+    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
+
+    # <-------------- Model Config ------------->
+    model_name = data["model"]["name"]
+    dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
+
+    # <-------------- Honest Nodes Config ------------->
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
+
+    # <-------------- Aggregators Config ------------->
+    aggregators = data["aggregator"]
+    pre_aggregators = data["pre_aggregators"]
+
+    # <-------------- Attacks Config ------------->
+    attacks = data["attack"]
+
+    # Ensure certain configurations are always lists
+    nb_honest_clients = ensure_list(nb_honest_clients)
+    nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
+    data_distributions = ensure_list(data_distributions)
+    aggregators = ensure_list(aggregators)
+
+    # Pre-aggregators can be multiple or single dict; unify them
+    if not pre_aggregators or isinstance(pre_aggregators[0], dict):
+        pre_aggregators = [pre_aggregators]
+
+    attacks = ensure_list(attacks)
+    lr_list = ensure_list(lr_list)
+    momentum_list = ensure_list(momentum_list)
+    wd_list = ensure_list(wd_list)
+
+    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+    for nb_honest in nb_honest_clients:
+        for nb_byzantine in nb_byz:
+
+            if nb_declared[0] is None:
+                nb_declared_list = [nb_byzantine]
+            else:
+                nb_declared_list = nb_declared.copy()
+                nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
+            
+            for nb_decl in nb_declared_list:
+
+                if set_honest_clients_as_clients:
+                    nb_nodes = nb_honest
+                else:
+                    nb_nodes = nb_honest + nb_byzantine
+                
+                for data_dist in data_distributions:
+                    dist_parameter_list = data_dist["distribution_parameter"]
+                    dist_parameter_list = ensure_list(dist_parameter_list)
+                    for dist_parameter in dist_parameter_list:
+                        for pre_agg in pre_aggregators:
+                            pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
+                            pre_agg_names = "_".join(pre_agg_list_names)
+                            for agg in aggregators:
+
+                                hyper_file_name = (
+                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_{pre_agg_names}_{agg['name']}.txt"
+                                )
+
+
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
+
+                                tab_acc = np.zeros((
+                                    len(attacks), 
+                                    nb_data_distribution_seeds,
+                                    nb_training_seeds,
+                                    nb_accuracies
+                                ))
+
+                                for i, attack in enumerate(attacks):
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            file_name = (
+                                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_"
+                                                f"d_{nb_decl}_{custom_dict_to_str(data_dist['name'])}_"
+                                                f"{dist_parameter}_{custom_dict_to_str(agg['name'])}_"
+                                                f"{pre_agg_names}_{custom_dict_to_str(attack['name'])}_"
+                                                f"lr_{lr}_mom_{momentum}_wd_{wd}"
+                                            )
+                                            acc_path = os.path.join(
+                                                path_to_results,
+                                                file_name,
+                                                f"honest_scattering_tr_seed_{training_seed}_dd_seed_{data_distribution_seed}",
+                                                f"honest_gradients_scattering.txt"
+                                            )
+                                            tab_acc[i, run_dd, run] = genfromtxt(acc_path, delimiter=',')
+
+                                tab_acc = tab_acc.reshape(
+                                    len(attacks),
+                                    nb_data_distribution_seeds * nb_training_seeds,
+                                    nb_accuracies
+                                )
+                                
+                                err = np.zeros((len(attacks), nb_accuracies))
+                                for i in range(len(err)):
+                                    err[i] = (1.96*np.std(tab_acc[i], axis = 0))/math.sqrt(nb_training_seeds*nb_data_distribution_seeds)
+                                
+                                plt.rcParams.update({'font.size': 12})
+
+                                
+                                for i, attack in enumerate(attacks):
+                                    attack = attack["name"]
+                                    plt.plot(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0), label = attack, color = colors[i], linestyle = tab_sign[i], marker = markers[i], markevery = 1)
+                                    plt.fill_between(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0) - err[i], np.mean(tab_acc[i], axis = 0) + err[i], alpha = 0.25)
+
+                                plt.xlabel('Round')
+                                plt.ylabel(r"$\xi$")
+                                plt.grid()
+                                plt.legend()
+
+                                plot_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_"
+                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                )
+                                
+                                plt.savefig(path_to_plot+"/"+plot_name+'_plot.pdf')
+                                plt.close()
+
+
+def plot_poisonned_gradients_scattering(path_to_results, path_to_plot):
+    """
+    Plots the poisonned gradient scatterings A for different configurations.
+    """
+    try:
+        with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(f"ERROR reading config.json: {e}")
+        return
+    
+    try:
+        os.makedirs(path_to_plot, exist_ok=True)
+    except OSError as error:
+        print(f"Error creating directory: {error}")
+    
+    path_to_hyperparameters = path_to_results + "/best_hyperparameters"
+    
+
+    # <-------------- Benchmark Config ------------->
+    training_seed = data["benchmark_config"]["training_seed"]
+    nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
+    nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
+    data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
+    nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
+    data_distributions = data["benchmark_config"]["data_distribution"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
+
+
+    # <-------------- Evaluation and Results ------------->
+    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
+
+    # <-------------- Model Config ------------->
+    model_name = data["model"]["name"]
+    dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
+
+    # <-------------- Honest Nodes Config ------------->
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
+
+    # <-------------- Aggregators Config ------------->
+    aggregators = data["aggregator"]
+    pre_aggregators = data["pre_aggregators"]
+
+    # <-------------- Attacks Config ------------->
+    attacks = data["attack"]
+
+    # Ensure certain configurations are always lists
+    nb_honest_clients = ensure_list(nb_honest_clients)
+    nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
+    data_distributions = ensure_list(data_distributions)
+    aggregators = ensure_list(aggregators)
+
+    # Pre-aggregators can be multiple or single dict; unify them
+    if not pre_aggregators or isinstance(pre_aggregators[0], dict):
+        pre_aggregators = [pre_aggregators]
+
+    attacks = ensure_list(attacks)
+    lr_list = ensure_list(lr_list)
+    momentum_list = ensure_list(momentum_list)
+    wd_list = ensure_list(wd_list)
+
+    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+    for nb_honest in nb_honest_clients:
+        for nb_byzantine in nb_byz:
+
+            if nb_declared[0] is None:
+                nb_declared_list = [nb_byzantine]
+            else:
+                nb_declared_list = nb_declared.copy()
+                nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
+            
+            for nb_decl in nb_declared_list:
+
+                if set_honest_clients_as_clients:
+                    nb_nodes = nb_honest
+                else:
+                    nb_nodes = nb_honest + nb_byzantine
+                
+                for data_dist in data_distributions:
+                    dist_parameter_list = data_dist["distribution_parameter"]
+                    dist_parameter_list = ensure_list(dist_parameter_list)
+                    for dist_parameter in dist_parameter_list:
+                        for pre_agg in pre_aggregators:
+                            pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
+                            pre_agg_names = "_".join(pre_agg_list_names)
+                            for agg in aggregators:
+
+                                hyper_file_name = (
+                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_{pre_agg_names}_{agg['name']}.txt"
+                                )
+
+
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
+
+                                tab_acc = np.zeros((
+                                    len(attacks), 
+                                    nb_data_distribution_seeds,
+                                    nb_training_seeds,
+                                    nb_accuracies
+                                ))
+
+                                for i, attack in enumerate(attacks):
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            file_name = (
+                                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_"
+                                                f"d_{nb_decl}_{custom_dict_to_str(data_dist['name'])}_"
+                                                f"{dist_parameter}_{custom_dict_to_str(agg['name'])}_"
+                                                f"{pre_agg_names}_{custom_dict_to_str(attack['name'])}_"
+                                                f"lr_{lr}_mom_{momentum}_wd_{wd}"
+                                            )
+                                            acc_path = os.path.join(
+                                                path_to_results,
+                                                file_name,
+                                                f"poisonned_scattering_tr_seed_{training_seed}_dd_seed_{data_distribution_seed}",
+                                                f"poisonned_gradients_scattering.txt"
+                                            )
+                                            tab_acc[i, run_dd, run] = genfromtxt(acc_path, delimiter=',')
+
+                                tab_acc = tab_acc.reshape(
+                                    len(attacks),
+                                    nb_data_distribution_seeds * nb_training_seeds,
+                                    nb_accuracies
+                                )
+                                
+                                err = np.zeros((len(attacks), nb_accuracies))
+                                for i in range(len(err)):
+                                    err[i] = (1.96*np.std(tab_acc[i], axis = 0))/math.sqrt(nb_training_seeds*nb_data_distribution_seeds)
+                                
+                                plt.rcParams.update({'font.size': 12})
+
+                                
+                                for i, attack in enumerate(attacks):
+                                    attack = attack["name"]
+                                    plt.plot(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0), label = attack, color = colors[i], linestyle = tab_sign[i], marker = markers[i], markevery = 1)
+                                    plt.fill_between(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0) - err[i], np.mean(tab_acc[i], axis = 0) + err[i], alpha = 0.25)
+
+                                plt.xlabel('Round')
+                                plt.ylabel(r"A")
+                                plt.grid()
+                                plt.legend()
+
+                                plot_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_"
+                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                )
+                                
+                                plt.savefig(path_to_plot+"/"+plot_name+'_plot.pdf')
+                                plt.close()
+
+
+def plot_maximum_regular_feature_mean(path_to_results, path_to_plot):
+    """
+    Plots the poisonned gradient scatterings for different configurations.
+    """
+    try:
+        with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(f"ERROR reading config.json: {e}")
+        return
+    
+    try:
+        os.makedirs(path_to_plot, exist_ok=True)
+    except OSError as error:
+        print(f"Error creating directory: {error}")
+    
+    path_to_hyperparameters = path_to_results + "/best_hyperparameters"
+    
+
+    # <-------------- Benchmark Config ------------->
+    training_seed = data["benchmark_config"]["training_seed"]
+    nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
+    nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
+    data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
+    nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
+    data_distributions = data["benchmark_config"]["data_distribution"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
+
+
+    # <-------------- Evaluation and Results ------------->
+    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
+
+    # <-------------- Model Config ------------->
+    model_name = data["model"]["name"]
+    dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
+
+    # <-------------- Honest Nodes Config ------------->
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
+
+    # <-------------- Aggregators Config ------------->
+    aggregators = data["aggregator"]
+    pre_aggregators = data["pre_aggregators"]
+
+    # <-------------- Attacks Config ------------->
+    attacks = data["attack"]
+
+    # Ensure certain configurations are always lists
+    nb_honest_clients = ensure_list(nb_honest_clients)
+    nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
+    data_distributions = ensure_list(data_distributions)
+    aggregators = ensure_list(aggregators)
+
+    # Pre-aggregators can be multiple or single dict; unify them
+    if not pre_aggregators or isinstance(pre_aggregators[0], dict):
+        pre_aggregators = [pre_aggregators]
+
+    attacks = ensure_list(attacks)
+    lr_list = ensure_list(lr_list)
+    momentum_list = ensure_list(momentum_list)
+    wd_list = ensure_list(wd_list)
+
+    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+    for nb_honest in nb_honest_clients:
+        for nb_byzantine in nb_byz:
+
+            if nb_declared[0] is None:
+                nb_declared_list = [nb_byzantine]
+            else:
+                nb_declared_list = nb_declared.copy()
+                nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
+            
+            for nb_decl in nb_declared_list:
+
+                if set_honest_clients_as_clients:
+                    nb_nodes = nb_honest
+                else:
+                    nb_nodes = nb_honest + nb_byzantine
+                
+                for data_dist in data_distributions:
+                    dist_parameter_list = data_dist["distribution_parameter"]
+                    dist_parameter_list = ensure_list(dist_parameter_list)
+                    for dist_parameter in dist_parameter_list:
+                        for pre_agg in pre_aggregators:
+                            pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
+                            pre_agg_names = "_".join(pre_agg_list_names)
+                            for agg in aggregators:
+
+                                hyper_file_name = (
+                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_{pre_agg_names}_{agg['name']}.txt"
+                                )
+
+
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
+
+                                tab_acc = np.zeros((
+                                    len(attacks), 
+                                    nb_data_distribution_seeds,
+                                    nb_training_seeds,
+                                    nb_accuracies
+                                ))
+
+                                for i, attack in enumerate(attacks):
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            file_name = (
+                                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_"
+                                                f"d_{nb_decl}_{custom_dict_to_str(data_dist['name'])}_"
+                                                f"{dist_parameter}_{custom_dict_to_str(agg['name'])}_"
+                                                f"{pre_agg_names}_{custom_dict_to_str(attack['name'])}_"
+                                                f"lr_{lr}_mom_{momentum}_wd_{wd}"
+                                            )
+                                            acc_path = os.path.join(
+                                                path_to_results,
+                                                file_name,
+                                                f"feature_norm_tr_seed_{training_seed}_dd_seed_{data_distribution_seed}",
+                                                f"honest_gradients_scattering.txt"
+                                            )
+                                            tab_acc[i, run_dd, run] = genfromtxt(acc_path, delimiter=',')
+
+                                tab_acc = tab_acc.reshape(
+                                    len(attacks),
+                                    nb_data_distribution_seeds * nb_training_seeds,
+                                    nb_accuracies
+                                )
+                                
+                                err = np.zeros((len(attacks), nb_accuracies))
+                                for i in range(len(err)):
+                                    err[i] = (1.96*np.std(tab_acc[i], axis = 0))/math.sqrt(nb_training_seeds*nb_data_distribution_seeds)
+                                
+                                plt.rcParams.update({'font.size': 12})
+
+                                
+                                for i, attack in enumerate(attacks):
+                                    attack = attack["name"]
+                                    plt.plot(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0), label = attack, color = colors[i], linestyle = tab_sign[i], marker = markers[i], markevery = 1)
+                                    plt.fill_between(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0) - err[i], np.mean(tab_acc[i], axis = 0) + err[i], alpha = 0.25)
+
+                                plt.xlabel('Round')
+                                plt.ylabel(r"$max_{\omega \in R}\frac{1}{J}\lVert \sum_{k=0}^J a_{(\omega, k)} \rVert$")
+                                plt.grid()
+                                plt.legend()
+
+                                plot_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_"
+                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                )
+                                
+                                plt.savefig(path_to_plot+"/"+plot_name+'_plot.pdf')
+                                plt.close()
+
+
+def plot_workers_feature_variance(path_to_results, path_to_plot):
+    """
+    Plots each worker's feature variance for different configurations.
+    """
+    try:
+        with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(f"ERROR reading config.json: {e}")
+        return
+    
+    try:
+        os.makedirs(path_to_plot, exist_ok=True)
+    except OSError as error:
+        print(f"Error creating directory: {error}")
+    
+    path_to_hyperparameters = path_to_results + "/best_hyperparameters"
+    
+
+    # <-------------- Benchmark Config ------------->
+    training_seed = data["benchmark_config"]["training_seed"]
+    nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
+    nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
+    data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
+    nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
+    data_distributions = data["benchmark_config"]["data_distribution"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
+
+
+    # <-------------- Evaluation and Results ------------->
+    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
+
+    # <-------------- Model Config ------------->
+    model_name = data["model"]["name"]
+    dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
+
+    # <-------------- Honest Nodes Config ------------->
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
+
+    # <-------------- Aggregators Config ------------->
+    aggregators = data["aggregator"]
+    pre_aggregators = data["pre_aggregators"]
+
+    # <-------------- Attacks Config ------------->
+    attacks = data["attack"]
+
+    # Ensure certain configurations are always lists
+    nb_honest_clients = ensure_list(nb_honest_clients)
+    nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
+    data_distributions = ensure_list(data_distributions)
+    aggregators = ensure_list(aggregators)
+
+    # Pre-aggregators can be multiple or single dict; unify them
+    if not pre_aggregators or isinstance(pre_aggregators[0], dict):
+        pre_aggregators = [pre_aggregators]
+
+    attacks = ensure_list(attacks)
+    lr_list = ensure_list(lr_list)
+    momentum_list = ensure_list(momentum_list)
+    wd_list = ensure_list(wd_list)
+
+    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+    for nb_honest in nb_honest_clients:
+        for nb_byzantine in nb_byz:
+
+            if nb_declared[0] is None:
+                nb_declared_list = [nb_byzantine]
+            else:
+                nb_declared_list = nb_declared.copy()
+                nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
+            
+            for nb_decl in nb_declared_list:
+
+                if set_honest_clients_as_clients:
+                    nb_nodes = nb_honest
+                else:
+                    nb_nodes = nb_honest + nb_byzantine
+                
+                for data_dist in data_distributions:
+                    dist_parameter_list = data_dist["distribution_parameter"]
+                    dist_parameter_list = ensure_list(dist_parameter_list)
+                    for dist_parameter in dist_parameter_list:
+                        for pre_agg in pre_aggregators:
+                            pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
+                            pre_agg_names = "_".join(pre_agg_list_names)
+                            for agg in aggregators:
+
+                                hyper_file_name = (
+                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_{pre_agg_names}_{agg['name']}.txt"
+                                )
+
+
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
+
+                                tab_acc = np.zeros((
+                                    len(attacks), 
+                                    nb_nodes,
+                                    nb_data_distribution_seeds,
+                                    nb_training_seeds,
+                                    nb_accuracies
+                                ))
+
+                                for i, attack in enumerate(attacks):
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            for client_id in range(nb_nodes):
+                                                file_name = (
+                                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_"
+                                                    f"d_{nb_decl}_{custom_dict_to_str(data_dist['name'])}_"
+                                                    f"{dist_parameter}_{custom_dict_to_str(agg['name'])}_"
+                                                    f"{pre_agg_names}_{custom_dict_to_str(attack['name'])}_"
+                                                    f"lr_{lr}_mom_{momentum}_wd_{wd}"
+                                                )
+                                                acc_path = os.path.join(
+                                                    path_to_results,
+                                                    file_name,
+                                                    f"feature_variance_tr_seed_{training_seed}_dd_seed_{data_distribution_seed}",
+                                                    f"feature_variance_client_{client_id}.txt"
+                                                )
+                                                tab_acc[i, run_dd, run, client_id] = genfromtxt(acc_path, delimiter=',')
+
+                                tab_acc = tab_acc.reshape(
+                                    len(attacks),
+                                    nb_data_distribution_seeds * nb_training_seeds,
+                                    nb_accuracies,
+                                    nb_nodes
+                                )
+                                
+                                # a discuter (liste de listes)
+                                err = np.zeros((len(attacks), nb_accuracies))
+                                for i in range(len(err)):
+                                    err[i] = (1.96*np.std(tab_acc[i], axis = 0))/math.sqrt(nb_training_seeds*nb_data_distribution_seeds)
+                                
+                                plt.rcParams.update({'font.size': 12})
+
+                                
+                                for i, attack in enumerate(attacks):
+                                    attack = attack["name"]
+                                    plt.plot(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0), label = attack, color = colors[i], linestyle = tab_sign[i], marker = markers[i], markevery = 1)
+                                    plt.fill_between(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0) - err[i], np.mean(tab_acc[i], axis = 0) + err[i], alpha = 0.25)
+
+                                plt.xlabel('Round')
+                                plt.ylabel(r"$max_{\omega \in R}\frac{1}{J}\lVert \sum_{k=0}^J a_{(\omega, k)} \rVert$")
+                                plt.grid()
+                                plt.legend()
+
+                                plot_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_"
+                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                )
+                                
+                                plt.savefig(path_to_plot+"/"+plot_name+'_plot.pdf')
+                                plt.close()
+
+
+def gradient_estimator_variance(path_to_results, path_to_plot):
+    """
+    Plots the poisonned gradient scatterings for different configurations.
+    """
+
+    try:
+        with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(f"ERROR reading config.json: {e}")
+        return
+    
+    try:
+        os.makedirs(path_to_plot, exist_ok=True)
+    except OSError as error:
+        print(f"Error creating directory: {error}")
+    
+    path_to_hyperparameters = path_to_results + "/best_hyperparameters"
+    
+
+    # <-------------- Benchmark Config ------------->
+    training_seed = data["benchmark_config"]["training_seed"]
+    nb_training_seeds = data["benchmark_config"]["nb_training_seeds"]
+    nb_honest_clients = data["benchmark_config"]["nb_honest_clients"]
+    nb_byz = data["benchmark_config"]["f"]
+    nb_declared = data["benchmark_config"].get("tolerated_f", None)
+    data_distribution_seed = data["benchmark_config"]["data_distribution_seed"]
+    nb_data_distribution_seeds = data["benchmark_config"]["nb_data_distribution_seeds"]
+    data_distributions = data["benchmark_config"]["data_distribution"]
+    set_honest_clients_as_clients = data["benchmark_config"]["set_honest_clients_as_clients"]
+    nb_steps = data["benchmark_config"]["nb_steps"]
+
+
+    # <-------------- Evaluation and Results ------------->
+    evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
+
+    # <-------------- Model Config ------------->
+    model_name = data["model"]["name"]
+    dataset_name = data["model"]["dataset_name"]
+    lr_list = data["model"]["learning_rate"]
+
+    # <-------------- Honest Nodes Config ------------->
+    momentum_list = data["honest_clients"]["momentum"]
+    wd_list = data["honest_clients"]["weight_decay"]
+
+    # <-------------- Aggregators Config ------------->
+    aggregators = data["aggregator"]
+    pre_aggregators = data["pre_aggregators"]
+
+    # <-------------- Attacks Config ------------->
+    attacks = data["attack"]
+
+    # Ensure certain configurations are always lists
+    nb_honest_clients = ensure_list(nb_honest_clients)
+    nb_byz = ensure_list(nb_byz)
+    nb_declared = ensure_list(nb_declared)
+    data_distributions = ensure_list(data_distributions)
+    aggregators = ensure_list(aggregators)
+
+    # Pre-aggregators can be multiple or single dict; unify them
+    if not pre_aggregators or isinstance(pre_aggregators[0], dict):
+        pre_aggregators = [pre_aggregators]
+
+    attacks = ensure_list(attacks)
+    lr_list = ensure_list(lr_list)
+    momentum_list = ensure_list(momentum_list)
+    wd_list = ensure_list(wd_list)
+
+    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
+
+    for nb_honest in nb_honest_clients:
+        for nb_byzantine in nb_byz:
+
+            if nb_declared[0] is None:
+                nb_declared_list = [nb_byzantine]
+            else:
+                nb_declared_list = nb_declared.copy()
+                nb_declared_list = [item for item in nb_declared_list if item >= nb_byzantine]
+            
+            for nb_decl in nb_declared_list:
+
+                if set_honest_clients_as_clients:
+                    nb_nodes = nb_honest
+                else:
+                    nb_nodes = nb_honest + nb_byzantine
+                
+                for data_dist in data_distributions:
+                    dist_parameter_list = data_dist["distribution_parameter"]
+                    dist_parameter_list = ensure_list(dist_parameter_list)
+                    for dist_parameter in dist_parameter_list:
+                        for pre_agg in pre_aggregators:
+                            pre_agg_list_names = [one_pre_agg['name'] for one_pre_agg in pre_agg]
+                            pre_agg_names = "_".join(pre_agg_list_names)
+                            for agg in aggregators:
+
+                                hyper_file_name = (
+                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_{pre_agg_names}_{agg['name']}.txt"
+                                )
+
+
+                                full_path = os.path.join(path_to_hyperparameters, "hyperparameters", hyper_file_name)
+
+                                if os.path.exists(full_path):
+                                    hyperparameters = np.loadtxt(full_path)
+                                    lr = hyperparameters[0]
+                                    momentum = hyperparameters[1]
+                                    wd = hyperparameters[2]
+                                else:
+                                    lr = lr_list[0]
+                                    momentum = momentum_list[0]
+                                    wd = wd_list[0]
+
+                                tab_acc = np.zeros((
+                                    len(attacks), 
+                                    nb_data_distribution_seeds,
+                                    nb_training_seeds,
+                                    nb_accuracies
+                                ))
+
+                                for i, attack in enumerate(attacks):
+                                    for run_dd in range(nb_data_distribution_seeds):
+                                        for run in range(nb_training_seeds):
+                                            file_name = (
+                                                f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_"
+                                                f"d_{nb_decl}_{custom_dict_to_str(data_dist['name'])}_"
+                                                f"{dist_parameter}_{custom_dict_to_str(agg['name'])}_"
+                                                f"{pre_agg_names}_{custom_dict_to_str(attack['name'])}_"
+                                                f"lr_{lr}_mom_{momentum}_wd_{wd}"
+                                            )
+                                            acc_path = os.path.join(
+                                                path_to_results,
+                                                file_name,
+                                                f"maximal_gradient_variance_tr_seed_{training_seed}_dd_seed_{data_distribution_seed}",
+                                                f"maximal_gradient_estimator_variance.txt"
+                                            )
+                                            tab_acc[i, run_dd, run] = genfromtxt(acc_path, delimiter=',')
+
+                                tab_acc = tab_acc.reshape(
+                                    len(attacks),
+                                    nb_data_distribution_seeds * nb_training_seeds,
+                                    nb_accuracies
+                                )
+                                
+                                err = np.zeros((len(attacks), nb_accuracies))
+                                for i in range(len(err)):
+                                    err[i] = (1.96*np.std(tab_acc[i], axis = 0))/math.sqrt(nb_training_seeds*nb_data_distribution_seeds)
+                                
+                                plt.rcParams.update({'font.size': 12})
+
+                                
+                                for i, attack in enumerate(attacks):
+                                    attack = attack["name"]
+                                    plt.plot(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0), label = attack, color = colors[i], linestyle = tab_sign[i], marker = markers[i], markevery = 1)
+                                    plt.fill_between(np.arange(nb_accuracies)*evaluation_delta, np.mean(tab_acc[i], axis = 0) - err[i], np.mean(tab_acc[i], axis = 0) + err[i], alpha = 0.25)
+
+                                plt.xlabel('Round')
+                                plt.ylabel(r"$\sigma^2$")
+                                plt.grid()
+                                plt.legend()
+
+                                plot_name = (
+                                    f"{dataset_name}_{model_name}_n_{nb_nodes}_f_{nb_byzantine}_d_{nb_decl}_"
+                                    f"{custom_dict_to_str(data_dist['name'])}_{dist_parameter}_"
+                                    f"{custom_dict_to_str(agg['name'])}_{pre_agg_names}_lr_{lr}_mom_{momentum}_wd_{wd}"
+                                )
+                                
+                                plt.savefig(path_to_plot+"/"+plot_name+'_plot.pdf')
+                                plt.close()
 
 
 def rho_SGD_convergence_rate():
-    # Je ne vois pas comment calculer le sigma du papier
+    # laquelle :)
     pass

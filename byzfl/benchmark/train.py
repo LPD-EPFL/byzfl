@@ -196,7 +196,7 @@ def start_training(params):
     train_loss_list = np.zeros((nb_training_steps))
 
     honest_scattering_list = np.zeros((nb_training_steps))
-    byzantine_scattering_list = np.zeros((nb_training_steps))
+    poisonned_scattering_list = np.zeros((nb_training_steps))
     feature_mean = np.zeros((nb_training_steps))
     feature_variance = {i:np.zeros((nb_training_steps)) for i in range(len(honest_clients))}
     gradient_variance = np.zeros((nb_training_steps))
@@ -311,7 +311,7 @@ def start_training(params):
                 dist = torch.norm(byz_vector[i] - gradient)
                 if dist > max_dist:
                     max_dist = dist
-            byzantine_scattering_list[training_step] = max_dist
+            poisonned_scattering_list[training_step] = max_dist
 
             # Save features norm mean
             feature_mean[training_step] = mean_feature.max()
@@ -424,8 +424,8 @@ def start_training(params):
         data_dist_seed=dd_seed
     )
 
-    file_manager.save_byzantine_scattering(
-        byzantine_scattering_list=byzantine_scattering_list,
+    file_manager.save_poisonned_scattering(
+        poisonned_scattering_list=poisonned_scattering_list,
         training_seed=training_seed,
         data_dist_seed=dd_seed
     )
