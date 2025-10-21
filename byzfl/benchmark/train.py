@@ -199,6 +199,7 @@ def start_training(params):
     byzantine_scattering_list = np.zeros((nb_training_steps))
     feature_mean = np.zeros((nb_training_steps))
     feature_variance = {i:np.zeros((nb_training_steps)) for i in range(len(honest_clients))}
+    gradient_variance = np.zeros((nb_training_steps))
 
     start_time = time.time()
 
@@ -263,11 +264,15 @@ def start_training(params):
 
             train_loss_per_client = np.zeros((nb_honest_clients))
             mean_feature = np.zeros((nb_honest_clients))
+            gradient_variances = np.zeros((nb_honest_clients))
 
 
             # Honest Clients Compute Gradients
             for i, client in enumerate(honest_clients):
-                train_loss_per_client[i], mean_feature[i], feature_variance[i][training_step] = client.compute_gradients()
+                train_loss_per_client[i], 
+                mean_feature[i], 
+                feature_variance[i][training_step], 
+                gradient_variances[i] = client.compute_gradients()
             
             train_loss_list[training_step] = train_loss_per_client.mean()
             
@@ -310,6 +315,7 @@ def start_training(params):
 
             # Save features norm mean
             feature_mean[training_step] = mean_feature.max()
+            gradient_variance[training_step] = gradient_variances.max()
 
 
         elif training_algorithm_name == "FedAvg":
@@ -425,7 +431,13 @@ def start_training(params):
     )
 
     file_manager.save_mean_feature_norm(
-        feature_mean=mean_feature,
+        feature_mean=feature_mean,
+        training_seed=training_seed,
+        data_dist_seed=dd_seed
+    )
+
+    file_manager.save_gradient_variance(
+        gradient_variance=gradient_variance,
         training_seed=training_seed,
         data_dist_seed=dd_seed
     )

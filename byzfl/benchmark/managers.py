@@ -137,6 +137,19 @@ class FileManager:
         file_path = os.path.join(acc_dir, f"honest_gradients_scattering.txt")
         np.savetxt(file_path, feature_mean, fmt="%.4f", delimiter=",")
 
+    def save_gradients_variance(self, gradients_variance, training_seed, data_dist_seed):
+        """
+        Save maximum mean feature norm through clients and epochs for a specific and seed value.
+        """
+        acc_dir = os.path.join(
+            self.files_path,
+            f"maximal_gradient_variance_tr_seed_{training_seed}_dd_seed_{data_dist_seed}"
+        )
+        os.makedirs(acc_dir, exist_ok=True)
+
+        file_path = os.path.join(acc_dir, f"honest_gradients_scattering.txt")
+        np.savetxt(file_path, gradients_variance, fmt="%.4f", delimiter=",")
+
     def save_feature_variance(self, feature_variance, training_seed, data_dist_seed, client_id):
         """
         Save a feature variance array for a specific client and seed values.
