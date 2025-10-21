@@ -139,7 +139,7 @@ class FileManager:
 
     def save_gradients_variance(self, gradients_variance, training_seed, data_dist_seed):
         """
-        Save maximum mean feature norm through clients and epochs for a specific and seed value.
+        Save maximal gradient variance norm through clients and epochs for a specific and seed value.
         """
         acc_dir = os.path.join(
             self.files_path,

@@ -436,7 +436,7 @@ def start_training(params):
         data_dist_seed=dd_seed
     )
 
-    file_manager.save_gradient_variance(
+    file_manager.save_gradients_variance(
         gradient_variance=gradient_variance,
         training_seed=training_seed,
         data_dist_seed=dd_seed
