@@ -146,8 +146,13 @@ class PoisoningClient(Client):
             if param_name in params["parameters"]:
                 filtered_parameters[param_name] = params["parameters"][param_name]
 
+            # If something goes wrong
+            elif param_name == "p":
+                filtered_parameters[param_name] = self.p
+
         self.attack = self.attack(**filtered_parameters)
     
+    "@override"
     def _sample_train_batch(self):
         """
         Description
