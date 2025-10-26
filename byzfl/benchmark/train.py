@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 
 from byzfl import Client, Server, ByzantineClient, DataDistributor
-from byzfl.utils.misc import set_random_seed
+from byzfl.utils.misc import set_random_seed, max_distance_to_gradient
 from byzfl.benchmark.managers import ParamsManager, FileManager
 
 transforms_hflip = transforms.Compose([transforms.RandomHorizontalFlip(), transforms.ToTensor()])
@@ -297,21 +297,10 @@ def start_training(params):
             gradient = torch.stack(honest_gradients).mean(dim = 0)
 
             # Evaluate honest gradients scatterings
-            max_dist = 0
-            for i in range(len(honest_gradients)):
-                dist = torch.norm(honest_gradients[i] - gradient)
-                if dist > max_dist:
-                    max_dist = dist
-
-            honest_scattering_list[training_step] = max_dist
+            honest_scattering_list[training_step] = max_distance_to_gradient(honest_gradients, gradient)
 
             # Evaluate byzantine gradients scatterings
-            max_dist = 0
-            for i in range(len(nb_byz_clients)):
-                dist = torch.norm(byz_vector[i] - gradient)
-                if dist > max_dist:
-                    max_dist = dist
-            poisonned_scattering_list[training_step] = max_dist
+            poisonned_scattering_list[training_step] = max_distance_to_gradient(byz_vector, gradient)
 
             # Save features norm mean
             feature_mean[training_step] = mean_feature.max()

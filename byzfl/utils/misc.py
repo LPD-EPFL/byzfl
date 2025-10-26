@@ -53,6 +53,13 @@ def distance_tool(vectors):
         tools = torch_tools
     return tools
 
+def max_distance_to_gradient(gradients: torch.Tensor, gradient: torch.Tensor) -> torch.Tensor:
+    """
+    Compute the maximum distance between a set of gradients and a reference gradient.
+    """
+    distances = torch.norm(gradients - gradient.unsqueeze(0), dim=1)
+    return distances.max()
+
 
 def set_random_seed(seed: int):
     """

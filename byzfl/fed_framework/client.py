@@ -87,7 +87,7 @@ class Client(ModelBaseInterface):
         inputs, targets = inputs.to(self.device), targets.to(self.device)
 
         mean_norm = torch.norm(inputs.mean(dim = 0))
-        feature_variance = inputs.view(inputs.size(0), -1).var(unbiased=False)
+        feature_variance = torch.var(inputs, dim=0, unbiased = True).sum()
 
         if self.labelflipping:
             self.model.eval()
@@ -135,7 +135,7 @@ class Client(ModelBaseInterface):
             output = self.model(input.unsqueeze(0))  # Add batch dimension
             loss = self.criterion(output, target.unsqueeze(0))  # Add batch dimension
             loss.backward()
-            individual_gradients.append(torch.cat([param.grad.view(-1) for param in self.model.parameters() if param.grad is not None]))
+            individual_gradients.append(self.get_flat_gradients())
 
         outputs = self.model(inputs)
         loss = self.criterion(outputs, targets)
@@ -183,7 +183,7 @@ class Client(ModelBaseInterface):
             inputs, targets = inputs.to(self.device), targets.to(self.device)
             
             self.optimizer.zero_grad()
-            train_loss_value = self._backward_pass(inputs, targets, train_acc=self.store_per_client_metrics)
+            train_loss_value, _ = self._backward_pass(inputs, targets, train_acc=self.store_per_client_metrics)
             losses[i] = train_loss_value
             self.optimizer.step()
 
