@@ -189,20 +189,17 @@ class PoisoningClient(Client):
             raise ValueError("Inputs and targets lengths mismatch")
 
         inputs, targets = deepcopy((inputs, targets))
-        if self.no_attack:
+        if self.no_attack or self.attack == None or self.p == 0.0:
             return inputs, targets
-
-        n = len(inputs)
-        m = int(self.p * n)
-        poisoned_indices = np.random.choice(n, m, replace=False)
-
-        # Generate the poisoned samples by applying the attack
-        poisoned_inputs, poisoned_targets = self.attack(
-            self.model,
-            inputs[poisoned_indices],
-            targets[poisoned_indices],
-        )
-        inputs[poisoned_indices] = poisoned_inputs
-        targets[poisoned_indices] = poisoned_targets
-
-        return inputs, targets
+        
+        try:
+            poisoned_inputs, poisoned_targets = self.attack(
+                model=self.model,
+                inputs=inputs,
+                targets=targets,
+            )
+            return poisoned_inputs, poisoned_targets
+        except Exception as e:
+            raise NotImplementedError(
+                f"Attack {self.attack} not implemented in PoisoningClient"
+            ) from e

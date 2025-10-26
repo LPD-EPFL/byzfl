@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 from byzfl.utils.misc import check_vectors_type, random_tool
 from byzfl.aggregators import Average, Clipping
@@ -1121,11 +1122,35 @@ class Gaussian:
 # This behavior arises because the Label Flipping attack manipulates 
 # the labels of the data rather than directly altering the computed gradients. 
 # As a result, the attack occurs on the client side before the gradients are computed.
-class LabelFlipping(object): 
+class StaticLabelFlipping(object): 
+    """
+    Implementation of static label flipping from Peng & al.
+    """
 
-    def __init__(self):
-        pass        
+    def __init__(self, p):
+        self.p = p        
     
-    def __call__(self, vectors):
-        tools, vectors = check_vectors_type(vectors)
-        return tools.mean(vectors, axis=0)
+    def __call__(self, model, inputs, outputs):      
+        classes = list(set(outputs))
+        mapping = {}
+        for class_ in classes:
+            mapping[class_] = random.choice([c for c in classes if c !=class_])
+
+        flipped_outputs = [mapping[output] for output in outputs[:int(self.p*len(outputs))]] + outputs[int(self.p*len(outputs)):]
+
+        return inputs, flipped_outputs
+    
+
+class DynamicLabelFlipping(object):
+    """
+    Implementation of dynamic label flipping from Peng & al.
+    """
+
+    def __init__(self, p):
+        self.p = p
+
+    def __call__(self, model, inputs, outputs):
+        flipped_outputs = model(inputs).argmin(dim=1).cpu().numpy()
+        return inputs, flipped_outputs
+
+        
