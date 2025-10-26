@@ -228,7 +228,7 @@ class MLP_mnist(nn.Module):
         x = F.relu(x)
         x = self.hidden2(x)
         x = F.relu(x)
-        x = self.classification_layer(x)
+        x = F.log_softmax(self.classification_layer(x), dim=1)
         return x
    
     
@@ -263,7 +263,7 @@ class CNN_mnist(nn.Module):
         x = self.pool(F.relu(self.conv2(x)))
         x = x.view(-1, 32 * 8 * 8)
         x = F.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = F.log_softmax(self.fc2(x), dim=1)
         return x
     
 # ---------------------------------------------------------------------------- #
