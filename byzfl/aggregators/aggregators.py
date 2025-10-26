@@ -1,5 +1,6 @@
 import itertools
 import numpy as np
+import copy
 import torch
 from byzfl.utils.misc import check_vectors_type, distance_tool, shape, ones_vector, random_tool
 import sklearn.metrics.pairwise as smp
@@ -657,12 +658,12 @@ class MultiKrum(object):
 class Lfighter(object):
 
     r"""
-    Peng & al implementation of Lfighter (with a small change at the end to flatten the mean), change if needed
+    Official implementation of LFighter aggregator from : 
+    https://www.sciencedirect.com/science/article/pii/S0893608023006421?ref=pdf_download&fr=RR-2&rr=994c922159722a07
     """
-
-    def __init__(self):
-        pass
-
+    def __init__(self, num_classes = 10):
+        self.memory = np.zeros([num_classes])
+    
     def clusters_dissimilarity(self, clusters):
         n0 = len(clusters[0])
         n1 = len(clusters[1])
@@ -675,46 +676,101 @@ class Lfighter(object):
         ds1 = n1/m * (1 - np.mean(mincs1))
         return ds0, ds1
     
-    def __call__(self, vectors):
-        m = len(vectors)
-        dw = [[] for _ in range(m)]
+    # Get average weights
+    def average_weights(w, marks):
+        """
+        Returns the average of the weights.
+        """
+        w_avg = copy.deepcopy(w[0])
+        for key in w_avg.keys():
+            w_avg[key] = w_avg[key] * marks[0]
+        for key in w_avg.keys():
+            for i in range(1, len(w)):
+                w_avg[key] += w[i][key] * marks[i]
+            w_avg[key] = w_avg[key] *(1/sum(marks))
+        return w_avg
+
+    # Adapt to gradients ...
+    def aggregate(self, global_model, local_models, ptypes):
+
+        local_weights = [copy.deepcopy(model).state_dict() for model in local_models]
+        m = len(local_models)
         for i in range(m):
-            dw[i].append(vectors[i][-2].cpu().data.numpy())
+            local_models[i] = list(local_models[i].parameters())
+        global_model = list(global_model.parameters())
+        dw = [None for _ in range(m)]
+        db = [None for _ in range(m)]
+        for i in range(m):
+            dw[i]= global_model[-2].cpu().data.numpy() - \
+                local_models[i][-2].cpu().data.numpy() 
+            db[i]= global_model[-1].cpu().data.numpy() - \
+                local_models[i][-1].cpu().data.numpy()
         dw = np.asarray(dw)
-        dw = np.squeeze(dw)
-        norms = np.linalg.norm(dw, axis=-1)
-        memory = np.sum(norms, axis=0)
-        max_two_freq_classes = memory.argsort()[-2:]
-        # print('Potential source and target classes:', max_two_freq_classes)
+        db = np.asarray(db)
+
+        "If one class or two classes classification model"
+        if len(db[0]) <= 2:
+            data = []
+            for i in range(m):
+                data.append(dw[i].reshape(-1))
+        
+            kmeans = KMeans(n_clusters=2, random_state=0).fit(data)
+            labels = kmeans.labels_
+
+            clusters = {0:[], 1:[]}
+            for i, l in enumerate(labels):
+                clusters[l].append(data[i])
+
+            good_cl = 0
+            cs0, cs1 = self.clusters_dissimilarity(clusters)
+            if cs0 < cs1:
+                good_cl = 1
+
+            # print('Cluster 0 weighted variance', cs0)
+            # print('Cluster 1 weighted variance', cs1)
+            # print('Potential good cluster is:', good_cl)
+            scores = np.ones([m])
+            for i, l in enumerate(labels):
+                # print(ptypes[i], 'Cluster:', l)
+                if l != good_cl:
+                    scores[i] = 0
+                
+            global_weights = self.average_weights(local_weights, scores)
+            return global_weights
+
+        "For multiclassification models"
+        norms = np.linalg.norm(dw, axis = -1) 
+        self.memory = np.sum(norms, axis = 0)
+        self.memory +=np.sum(abs(db), axis = 0)
+        max_two_freq_classes = self.memory.argsort()[-2:]
+        print('Potential source and target classes:', max_two_freq_classes)
         data = []
         for i in range(m):
             data.append(dw[i][max_two_freq_classes].reshape(-1))
 
-        kmeans = KMeans(n_clusters=2, random_state=0, n_init='auto').fit(data)
+        kmeans = KMeans(n_clusters=2, random_state=0).fit(data)
         labels = kmeans.labels_
 
-        clusters = {0:[], 1: []}
+        clusters = {0:[], 1:[]}
         for i, l in enumerate(labels):
-            clusters[l].append(data[i])
+          clusters[l].append(data[i])
 
         good_cl = 0
         cs0, cs1 = self.clusters_dissimilarity(clusters)
         if cs0 < cs1:
             good_cl = 1
-        
-        remain_worker_grad = []
+
+        # print('Cluster 0 weighted variance', cs0)
+        # print('Cluster 1 weighted variance', cs1)
+        # print('Potential good cluster is:', good_cl)
+        scores = np.ones([m])
         for i, l in enumerate(labels):
-            if l == good_cl:
-                remain_worker_grad.append(vectors[i])
-        
-        mean = [torch.zeros_like(para, requires_grad=False) for para in vectors[0]]
-        for grad in remain_worker_grad:
-            for i, g in enumerate(grad):
-                mean[i].add_(g, alpha=1 / len(remain_worker_grad))
-
-        mean_flat = torch.cat([p.view(-1) for p in mean])
-
-        return mean_flat
+            # print(ptypes[i], 'Cluster:', l)
+            if l != good_cl:
+                scores[i] = 0
+            
+        global_weights = self.verage_weights(local_weights, scores)
+        return global_weights
     
 
 class Faba(object):
