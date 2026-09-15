@@ -24,6 +24,23 @@ All these parameters should be passed in a dictionary that contains the followin
 - ``weight_decay`` (float): Weight decay regularization parameter.
 - ``milestones`` (list): List of epochs where the learning rate decay should be applied.
 - ``learning_rate_decay`` (float): Multiplicative factor for learning rate decay.
+- ``is_snn`` (bool, optional): A consistency assertion against the model class's declaration. Omitting it uses the class declaration; it does not force ANN behavior.
+- ``model_params`` (dict, optional): Constructor arguments for an SNN model. ANN models retain their original no-argument construction.
+
+Model Type
+----------
+A spiking model declares ``is_snn = True`` on its neural-network class. The
+shared ``is_snn_model(model_class)`` accessor reads this boolean declaration
+and returns ``False`` when the attribute is absent. Model names and output
+containers do not determine the model type. Existing ANN classes need no changes.
+
+The interface exposes the resolved value through its read-only ``is_snn``
+property. An explicitly supplied configuration flag must be a boolean and
+match the class declaration. Values such as the string ``"false"`` are rejected.
+
+SNN constructor parameters are passed through ``model_params``. In a benchmark
+configuration, time steps belong only in ``model.encoding.time_steps``; the
+training integration supplies them to the model constructor separately.
 
 Methods
 -------

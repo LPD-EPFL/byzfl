@@ -2,7 +2,7 @@ import collections
 
 import torch
 
-import byzfl.fed_framework.models as models
+from byzfl.utils.model_utils import get_model_class, is_snn_model
 from byzfl.utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
 
 class ModelBaseInterface(object):
@@ -15,9 +15,25 @@ class ModelBaseInterface(object):
         model_name = params["model_name"]
         self.device = params["device"]
 
-        model = getattr(models, model_name)()
+        # The model class is authoritative; configuration
+        # is_snn, when supplied, is a consistency check rather than an override.
+        model_class = get_model_class(model_name)
+        self._is_snn = is_snn_model(model_class)
+        if "is_snn" in params and params["is_snn"] != self.is_snn:
+            raise ValueError("Parameter 'is_snn' does not match the model class declaration.")
 
-        if self.device == "cuda" and torch.cuda.device_count() > 1:
+        # Preserve no-argument ANN construction for backward compatibility.
+        if self.is_snn:
+            model_params = params.get("model_params", {})
+            if not isinstance(model_params, dict):
+                raise TypeError("Parameter 'model_params' must be a dict.")
+            model = model_class(**model_params)
+        else:
+            model = model_class()
+
+        # SNN outputs have time on axis 0; DataParallel gathers on the batch axis
+        # it assumes is axis 0, so its default gathering is incompatible.
+        if self.device == "cuda" and torch.cuda.device_count() > 1 and not self.is_snn:
             self.model = torch.nn.DataParallel(model)
         else:
             self.model = model
@@ -47,6 +63,11 @@ class ModelBaseInterface(object):
             )
 
 
+    @property
+    def is_snn(self):
+        """Whether the underlying model class declares SNN behavior."""
+        return self._is_snn
+
     def _validate_params(self, params):
         """
         Validates the input parameters for correct types and values.
@@ -71,6 +92,8 @@ class ModelBaseInterface(object):
             raise TypeError("Parameter 'model_name' must be a string.")
         if not isinstance(params["device"], str):
             raise TypeError("Parameter 'device' must be a string.")
+        if "is_snn" in params and not isinstance(params["is_snn"], bool):
+            raise TypeError("Parameter 'is_snn' must be a bool.")
         if params["learning_rate"] is not None:
             if not isinstance(params["learning_rate"], float) or params["learning_rate"] <= 0:
                 raise ValueError("Parameter 'learning_rate' must be a positive float.")

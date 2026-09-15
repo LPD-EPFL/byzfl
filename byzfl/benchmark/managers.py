@@ -1,9 +1,12 @@
 import os
 import datetime
 import json
+from copy import deepcopy
 
 import numpy as np
 import torch
+
+from byzfl.utils.model_utils import get_model_class, is_snn_model
 
 
 class FileManager:
@@ -132,7 +135,7 @@ class ParamsManager(object):
         return obj
 
     def get_data(self):
-        return {
+        data = {
             "benchmark_config": {
                 "device": self.get_device(),
                 "training_seed": self.get_training_seed(),
@@ -176,6 +179,14 @@ class ParamsManager(object):
                 "results_directory": self.get_results_directory()
             }
         }
+        # Preserve ANN output keys and allow unexpanded ANN model lists.
+        if isinstance(self.get_model_name(), str) and self.is_snn():
+            resolved = self.resolve_model_config()
+            # Retain shared fields from the getters so their default
+            # handling is not overwritten by raw configuration values such as None.
+            for name in ("is_snn", "model_params", "encoding", "loss", "loss_params", "accuracy_name"):
+                data["model"][name] = resolved[name]
+        return data
 
     # ----------------------------------------------------------------------
     #  Benchmark Config
@@ -320,6 +331,9 @@ class ParamsManager(object):
         default = "NLLLoss"
         path = ["model", "loss"]
         read = self._read_object(path)
+        # Defer model-list resolution until after sweep expansion.
+        if read is None and isinstance(self.get_model_name(), str) and self.is_snn():
+            default = "ce_rate_loss"
         return self._parameter_to_use(default, read)
     
     def get_optimizer_name(self):
@@ -463,3 +477,126 @@ class ParamsManager(object):
         path = ["evaluation_and_results", "results_directory"]
         read = self._read_object(path)
         return self._parameter_to_use(default, read)
+
+    # ----------------------------------------------------------------------
+    #  SNN Properties
+    # ----------------------------------------------------------------------
+
+    def is_snn(self):
+        """Read the model declaration and check an optional configuration flag."""
+        is_snn = is_snn_model(get_model_class(self.get_model_name()))
+        model = self._read_object(["model"])
+        if isinstance(model, dict) and "is_snn" in model:
+            if not isinstance(model["is_snn"], bool):
+                raise TypeError("Configuration 'model.is_snn' must be a bool.")
+            if model["is_snn"] != is_snn:
+                raise ValueError("Configuration 'model.is_snn' does not match the model class declaration.")
+        return is_snn
+
+    def get_encoding_type(self):
+        """Get SNN encoding type (constant, rate, latency)."""
+        val = self._read_object(["model", "encoding", "type"])
+        return self._parameter_to_use("constant", val)
+
+    def get_time_steps(self):
+        """Get SNN time steps from the canonical encoding configuration."""
+        val = self._read_object(["model", "encoding", "time_steps"])
+        return self._parameter_to_use(25, val)
+
+    def get_encoding_params(self):
+        """Get SNN encoding params."""
+        val = self._read_object(["model", "encoding", "encoding_params"])
+        return self._parameter_to_use({}, val)
+
+    def get_model_params(self):
+        """Get SNN custom model params."""
+        val = self._read_object(["model", "model_params"])
+        return self._parameter_to_use({}, val)
+
+    def get_loss_params(self):
+        """Get SNN custom loss params."""
+        val = self._read_object(["model", "loss_params"])
+        return self._parameter_to_use({}, val)
+
+    def get_accuracy_name(self):
+        """Get SNN accuracy metric name."""
+        path = ["model", "accuracy_name"]
+        read = self._read_object(path)
+        if read is not None:
+            return read
+        # Input encoding does not determine the output metric.
+        if self.is_snn():
+            return "accuracy_rate"
+        return None
+
+    def _validate_snn_params(self):
+        """Validate one concrete SNN configuration without constructing a model."""
+        if not self.is_snn():
+            return
+        model = self._read_object(["model"]) or {}
+        known_fields = {
+            "name", "dataset_name", "nb_labels", "loss", "learning_rate",
+            "learning_rate_decay", "milestones", "optimizer_name", "is_snn",
+            "model_params", "encoding", "loss_params", "accuracy_name",
+            "time_steps", "encoding_type", "encoding_params",
+        }
+        unknown = set(model) - known_fields
+        if unknown:
+            raise ValueError(f"Unknown SNN model fields: {', '.join(sorted(unknown))}")
+        for name in ("model_params", "encoding", "loss_params"):
+            if model.get(name) is not None and not isinstance(model[name], dict):
+                raise TypeError(f"Configuration 'model.{name}' must be a dict.")
+
+        for name in ("time_steps", "encoding_type", "encoding_params"):
+            if name in model:
+                raise ValueError(f"Put '{name}' inside 'model.encoding', not directly in 'model'.")
+        if "time_steps" in self.get_model_params():
+            raise ValueError("Configure time_steps only in 'model.encoding.time_steps', not 'model.model_params'.")
+
+        encoding = model.get("encoding") or {}
+        unknown = set(encoding) - {"type", "time_steps", "encoding_params"}
+        if unknown:
+            raise ValueError(f"Unknown model.encoding fields: {', '.join(sorted(unknown))}")
+        encoding_type = self.get_encoding_type()
+        if not isinstance(encoding_type, str):
+            raise TypeError("Configuration 'model.encoding.type' must be a string; expand sweeps first.")
+        if encoding_type.lower() not in ("constant", "rate", "latency"):
+            raise ValueError(f"Unsupported SNN encoding: {encoding_type!r}")
+        time_steps = self.get_time_steps()
+        if isinstance(time_steps, bool) or not isinstance(time_steps, int) or time_steps <= 0:
+            raise ValueError("Configuration 'model.encoding.time_steps' must be a positive integer; expand sweeps first.")
+        if not isinstance(self.get_encoding_params(), dict):
+            raise TypeError("Configuration 'model.encoding.encoding_params' must be a dict.")
+        for name, value in (("loss", self.get_loss_name()), ("accuracy_name", self.get_accuracy_name())):
+            if not isinstance(value, str) or not value:
+                raise TypeError(f"Configuration 'model.{name}' must be a non-empty string; expand sweeps first.")
+
+    def resolve_model_config(self):
+        """Return a model configuration with its SNN settings resolved after expansion.
+
+        The serialized time_steps stays inside encoding. The training integration
+        passes that value to the model separately when preparing its constructor
+        arguments; it must not be duplicated in the input configuration.
+        """
+        model = self._read_object(["model"])
+        if model is None:
+            model = {}
+        if not isinstance(model, dict):
+            raise TypeError("Configuration 'model' must be a dict; expand sweeps first.")
+        is_snn = self.is_snn()
+        resolved = deepcopy(model)
+        resolved.update(name=self.get_model_name(), is_snn=is_snn)
+        if is_snn:
+            self._validate_snn_params()
+            resolved.update(
+                model_params=deepcopy(self.get_model_params()),
+                encoding={
+                    "type": self.get_encoding_type().lower(),
+                    "time_steps": self.get_time_steps(),
+                    "encoding_params": deepcopy(self.get_encoding_params()),
+                },
+                loss=self.get_loss_name(),
+                loss_params=deepcopy(self.get_loss_params()),
+                accuracy_name=self.get_accuracy_name(),
+            )
+        return resolved
