@@ -1,14 +1,29 @@
 .. _snn-training-label:
 
 Training and evaluating SNNs
-===========================
+============================
 
 ``Client`` and ``Server`` identify spiking models through their class declaration,
 not their name. Existing ANN parameters and computation remain unchanged.
 For available SNN architectures, see :ref:`models-label`.
 
+Requirements and supported data
+-------------------------------
+
+``snntorch`` is a required, unpinned dependency in ``requirements.txt``. Install
+the repository requirements before using either ANN or SNN models:
+
+.. code-block:: bash
+
+   pip install -r requirements.txt
+
+The built-in SNN benchmark path uses the existing benchmark's static-image dataset
+table and encodes static minibatches after data distribution.
+Event-camera datasets such as N-MNIST and event-stream preprocessing are outside
+the scope of this integration.
+
 Direct client and server parameters
-----------------------------------
+-----------------------------------
 
 In addition to their usual parameters, both classes accept these SNN fields:
 
@@ -39,6 +54,10 @@ independently because normalized spike times must not depend on other batch memb
 Do not also encode inside the dataset transform. See the encoding documentation for
 input normalization requirements.
 
+SNN execution uses one device. The framework does not wrap SNN models in
+``torch.nn.DataParallel`` because their outputs use ``(time, batch, classes)``
+while the default gather operation assumes that dimension zero is the batch.
+
 Built-in losses and accuracy
 ----------------------------
 
@@ -55,7 +74,7 @@ such as macro precision is not generally equal to an average of batch precisions
 An empty evaluation loader or invalid score raises an error instead of reporting zero.
 
 Custom losses and accuracy functions
------------------------------------
+------------------------------------
 
 Add an ``nn.Module`` class in ``byzfl/utils/snn_loss.py`` and select its class name
 with ``loss_name`` (``model.loss`` in benchmark configuration). No registry change
@@ -90,24 +109,11 @@ These custom examples are documentation only; they are not additional built-in m
 Benchmark configuration and results
 -----------------------------------
 
-Use the same benchmark configuration as for ANN models, replacing its ``model``
-section with SNN settings, for example:
+Use the same benchmark configuration as for ANN models. A complete configuration
+is available at ``docs/fed_framework/configs/snn_mnist.json``:
 
-.. code-block:: json
-
-   {
-     "name": "fc_snn",
-     "dataset_name": "mnist",
-     "nb_labels": 10,
-     "model_params": {"hidden_dim": 100, "beta": 0.95},
-     "encoding": {"type": "rate", "time_steps": 25, "encoding_params": {}},
-     "loss": "ce_rate_loss",
-     "loss_params": {},
-     "accuracy_name": "accuracy_rate",
-     "learning_rate": 0.1,
-     "learning_rate_decay": 1.0,
-     "milestones": []
-   }
+.. literalinclude:: ../configs/snn_mnist.json
+   :language: json
 
 The benchmark distributes static data before clients encode minibatches. It passes
 the same encoding and accuracy settings to every client and the server. Constant
@@ -127,3 +133,30 @@ Lists in SNN settings expand into independent configurations using the existing
 benchmark sweep mechanism. Result readers and plots evaluate each SNN configuration
 separately, retaining the existing learning-rate, momentum and weight-decay selection
 within each configuration. Resume checks use the same identifier as training.
+
+Copy this file to ``config.json`` in the working directory and launch the existing
+benchmark entry point:
+
+.. code-block:: python
+
+   from byzfl.benchmark import run_benchmark
+
+   if __name__ == "__main__":
+       run_benchmark(nb_jobs=1)
+
+``run_benchmark`` downloads the configured dataset when necessary. Change ``device``
+to ``"cuda"`` to use a CUDA device. The example uses one concrete value per field;
+lists create sweeps as described in :ref:`federated_learning-label`.
+
+Compatibility summary
+---------------------
+
+Existing ANN configuration keys, defaults, model construction, result directory
+names, and metric filenames retain their previous behavior. ANN configurations do
+not need ``is_snn``, ``model_params``, ``encoding``, ``loss_params``, or
+``accuracy_name``. For every model family, test heatmaps now report test accuracy
+according to :ref:`checkpoint selection <validation-selected-test-label>`.
+
+The three built-in SNN models support both DSGD and the benchmark's existing FedAvg
+path. FedAvg's existing restriction with ``LabelFlipping`` is shared by ANN and SNN
+runs. This integration does not change the aggregation or attack algorithms.

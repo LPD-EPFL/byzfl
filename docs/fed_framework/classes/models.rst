@@ -80,7 +80,7 @@ The following models use snnTorch leaky integrate-and-fire neurons and declare
 All models default to 10 output classes; set ``output_dim`` to change this.
 
 Inputs, outputs, and state
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Convolutional SNNs accept static images with shape ``(batch, channels, height,
 width)`` or encoded images with shape ``(batch, time, channels, height, width)``.
@@ -189,6 +189,40 @@ Unknown constructor arguments and surrogate parameters raise errors, so
 misspellings cannot silently change an experiment. ``threshold`` and
 ``learn_threshold`` are supported by ``cnn_mnist_snn`` and ``cnn_cifar_snn``.
 ``fc_snn`` uses the default neuron threshold.
+
+Adding a custom spiking model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add the model class to ``byzfl/fed_framework/models.py``. Model lookup uses the
+class name directly, so no registry or lookup function must be edited. A custom
+spiking model must:
+
+* inherit from ``torch.nn.Module``;
+* declare the class attribute ``is_snn = True``;
+* accept its configurable values as constructor keyword arguments;
+* accept ``time_steps`` when used through benchmark configuration; and
+* return ``(spikes, membrane)``, each shaped ``(time, batch, classes)``.
+
+For example, this declaration makes ``"MySpikingModel"`` a valid model name:
+
+.. code-block:: python
+
+   class MySpikingModel(torch.nn.Module):
+       is_snn = True
+
+       def __init__(self, time_steps=25, output_dim=10):
+           super().__init__()
+           self.time_steps = time_steps
+           # Define layers and spiking neurons here.
+
+       def forward(self, inputs):
+           # Return tensors shaped (time, batch, output_dim).
+           return spikes, membrane
+
+The class declaration is authoritative. An optional ``model.is_snn`` value in
+benchmark JSON only checks that declaration and cannot convert an ANN into an SNN.
+Classes without ``is_snn`` retain ANN behavior. Constructor misspellings raise an
+error instead of being ignored for SNN models.
 
 API Documentation
 ------------------

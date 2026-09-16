@@ -221,6 +221,11 @@ To execute the benchmark, simply run:
 Specifically, it evaluates various provided hyperparameters, such as **learning rates, client momentum, and weight decay**, and determines the configuration that achieves the **highest worst-case accuracy** on a validation set against the **strongest Byzantine attack** (i.e., the attack that minimizes the best achievable accuracy).
 This approach ensures that the selected hyperparameters maximize **robustness** while preventing overfitting to the test set.
 
+Reported test heatmaps use the validation-ranked checkpoint policy described in
+:ref:`checkpoint selection <validation-selected-test-label>`. Spiking benchmark configuration is documented
+in :ref:`snn-training-label`, with a complete MNIST example and the SNN-specific
+model, encoding, loss, and accuracy fields.
+
 
 Viewing Results
 -------------------
@@ -296,6 +301,8 @@ Heatmap of training losses
            :scale: 20%
            :align: center
 
+
+.. _validation-selected-test-label:
 
 Heatmap of test accuracies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

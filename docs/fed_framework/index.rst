@@ -13,6 +13,7 @@ Features
 - **Robust Aggregation**: Evaluate and compare aggregation strategies, incorporating pre-aggregation techniques such as :ref:`clipping-label` and :ref:`nnm-label` with robust aggregators like :ref:`trmean-label`.
 - **Byzantine Resilience**: Analyze the robustness of aggregation methods against malicious gradients introduced by Byzantine clients.
 - **Flexibility and Extensibility**: Easily adapt to different datasets, models, and attack strategies, enabling extensive research and experimentation.
+- **Spiking Neural Networks**: Train and benchmark built-in fully connected, MNIST convolutional, and CIFAR convolutional SNNs with configurable temporal encoding, surrogate gradients, losses, and accuracy functions. See :ref:`snn-training-label`.
 
 Purpose
 -------

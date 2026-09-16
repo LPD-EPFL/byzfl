@@ -1,6 +1,7 @@
 """Tests for SNN configuration validation and ANN compatibility."""
 
 from copy import deepcopy
+import json
 from pathlib import Path
 import sys
 
@@ -87,6 +88,20 @@ def test_ann_custom_loss_and_ignored_extra_fields_keep_existing_behavior():
     assert serialized["learning_rate"] == 0.05
     assert "encoding" not in serialized
     assert "model_params" not in serialized
+
+
+def test_documented_snn_benchmark_configuration_resolves():
+    path = Path(__file__).resolve().parents[1] / "docs/fed_framework/configs/snn_mnist.json"
+    config = json.loads(path.read_text(encoding="utf-8"))
+    combinations = generate_all_combinations(config, ["pre_aggregators", "milestones"])
+    assert len(combinations) == 1
+    resolved = ParamsManager(combinations[0]).resolve_model_config()
+    assert resolved["name"] == "fc_snn"
+    assert resolved["encoding"] == {
+        "type": "rate", "time_steps": 25, "encoding_params": {}
+    }
+    assert resolved["loss"] == "ce_rate_loss"
+    assert resolved["accuracy_name"] == "accuracy_rate"
 
 
 def test_serialized_snn_config_includes_resolved_values():
