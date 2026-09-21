@@ -15,9 +15,26 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from byzfl.benchmark.managers import ParamsManager, get_model_result_name
-from byzfl.benchmark.benchmark import eliminate_experiments_done
+from byzfl.benchmark.benchmark import (
+    _distribute_settings_across_gpus,
+    eliminate_experiments_done,
+)
 train = importlib.import_module("byzfl.benchmark.train")
 results = importlib.import_module("byzfl.benchmark.evaluate_results")
+
+
+def test_training_settings_are_distributed_round_robin(monkeypatch):
+    settings = [
+        {"benchmark_config": {"device": "cuda"}}
+        for _ in range(5)
+    ]
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(torch.cuda, "device_count", lambda: 2)
+
+    assert _distribute_settings_across_gpus(settings)
+    assert [setting["benchmark_config"]["device"] for setting in settings] == [
+        "cuda:0", "cuda:1", "cuda:0", "cuda:1", "cuda:0",
+    ]
 
 
 class TinyMNIST(torch.utils.data.Dataset):

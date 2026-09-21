@@ -212,6 +212,16 @@ To execute the benchmark, simply run:
         n = 1  # Number of trainings to run in parallel
         run_benchmark(n)
 
+Set ``distribute_gpus=True`` to assign independent trainings round-robin across
+all visible CUDA devices when ``benchmark_config.device`` is ``"cuda"``:
+
+.. code-block:: python
+
+    run_benchmark(nb_jobs=9, distribute_gpus=True)
+
+Each training remains on one GPU. The default is ``False``, preserving existing
+single-device and ANN behavior.
+
 
 - The benchmark automatically reads ``config.json`` and executes all specified experiments.  
 - Results are stored in the ``results_directory`` (default: ``./results``).  

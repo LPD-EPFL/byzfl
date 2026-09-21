@@ -140,11 +140,15 @@ benchmark entry point:
    from byzfl.benchmark import run_benchmark
 
    if __name__ == "__main__":
-       run_benchmark(nb_jobs=1)
+       run_benchmark(nb_jobs=9, distribute_gpus=True)
 
 ``run_benchmark`` downloads the configured dataset when necessary. Change ``device``
 to ``"cuda"`` to use a CUDA device. The example uses one concrete value per field;
 lists create sweeps as described in :ref:`federated_learning-label`.
+With ``distribute_gpus=True``, complete trainings are assigned round-robin across
+the visible CUDA devices. Each SNN training still uses one device, avoiding the
+incompatible ``DataParallel`` output gathering described above. Leave the option
+at its default ``False`` for the previous benchmark behavior.
 
 Compatibility summary
 ---------------------

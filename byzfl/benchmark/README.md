@@ -201,6 +201,16 @@ if __name__ == "__main__":  # Required for multiprocessing
     run_benchmark(n)
 ```
 
+Set `distribute_gpus=True` to assign independent trainings round-robin across
+all visible CUDA devices when `benchmark_config.device` is `"cuda"`:
+
+```python
+run_benchmark(nb_jobs=9, distribute_gpus=True)
+```
+
+Each training remains on one GPU. The default is `False`, preserving existing
+single-device and ANN behavior.
+
 - The benchmark automatically reads `config.json` and executes all specified experiments.  
 - Results are stored in the `results_directory` (default: `./results`).  
 - If no `config.json` file exists in your current directory, **a default template is generated** for customization. You can modify this file before re-running the benchmark.

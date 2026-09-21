@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 from multiprocessing import Pool, Value
 import os
 import copy
@@ -506,10 +507,26 @@ def ensure_optional_config_parameters(data):
     return data
 
 
-def run_benchmark(nb_jobs=1):
+def _distribute_settings_across_gpus(settings):
+    """Assign complete training settings to visible GPUs in round-robin order."""
+    import torch
+
+    if not torch.cuda.is_available():
+        return False
+    nb_gpus = torch.cuda.device_count()
+    if nb_gpus < 2:
+        return False
+    for index, setting in enumerate(settings):
+        setting["benchmark_config"]["device"] = f"cuda:{index % nb_gpus}"
+    print(f"Distributing trainings across {nb_gpus} GPUs...")
+    return True
+
+
+def run_benchmark(nb_jobs=1, distribute_gpus=False):
     """
     Run benchmark experiments in parallel, based on configurations defined
-    in 'config.json'.
+    in 'config.json'. When requested, complete trainings are assigned to all
+    visible GPUs in round-robin order.
     """
     # Attempt to load config.json or create one if not found
     try:
@@ -567,12 +584,27 @@ def run_benchmark(nb_jobs=1):
     # Remove already completed experiments
     dict_list = eliminate_experiments_done(dict_list)
 
+    device = data["benchmark_config"].get("device", "cpu")
+    if distribute_gpus and device == "cuda":
+        _distribute_settings_across_gpus(dict_list)
+
     print(f"Total trainings to do: {len(dict_list)}")
     print(f"Running {nb_jobs} trainings in parallel...")
 
-    counter = Value('i', 0)
-    with Pool(initializer=init_pool_processes, initargs=(counter,), processes=nb_jobs) as pool:
-        pool.map(run_training, dict_list)
+    if distribute_gpus:
+        context = multiprocessing.get_context("spawn")
+        counter = context.Value('i', 0)
+        with context.Pool(
+            initializer=init_pool_processes,
+            initargs=(counter,),
+            processes=nb_jobs,
+            maxtasksperchild=1,
+        ) as pool:
+            pool.map(run_training, dict_list, chunksize=1)
+    else:
+        counter = Value('i', 0)
+        with Pool(initializer=init_pool_processes, initargs=(counter,), processes=nb_jobs) as pool:
+            pool.map(run_training, dict_list)
 
     print("All trainings finished.")
 
