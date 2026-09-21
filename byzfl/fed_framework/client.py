@@ -3,6 +3,8 @@ import numpy as np
 
 from byzfl.fed_framework import ModelBaseInterface
 from byzfl.utils.conversion import flatten_dict
+from byzfl.utils.snn_accuracy import get_snn_accuracy, validate_accuracy
+from byzfl.utils.snn_loss import create_snn_loss
 
 class Client(ModelBaseInterface):
 
@@ -25,6 +27,7 @@ class Client(ModelBaseInterface):
         super().__init__({
             # Required parameters
             "model_name": params["model_name"],
+            **{key: params[key] for key in ("model_params", "is_snn", "encoding") if key in params},
             "device": params["device"],
             # Optional parameters
             "learning_rate": params.get("learning_rate", None),
@@ -35,7 +38,14 @@ class Client(ModelBaseInterface):
             "optimizer_params": params.get("optimizer_params", {}),
         })
 
-        self.criterion = getattr(torch.nn, params["loss_name"])()
+        if self.is_snn:
+            loss_params = params.get("loss_params", {})
+            if not isinstance(loss_params, dict):
+                raise TypeError("loss_params must be a dict.")
+            self.criterion = create_snn_loss(params["loss_name"], **loss_params).to(self.device)
+            self.accuracy_fn = get_snn_accuracy(params.get("accuracy_name", "accuracy_rate"))
+        else:
+            self.criterion = getattr(torch.nn, params["loss_name"])()
         self.gradient_LF = 0
         self.labelflipping = params["LabelFlipping"]
         self.nb_labels = params["nb_labels"]
@@ -84,6 +94,8 @@ class Client(ModelBaseInterface):
         """
         inputs, targets = self._sample_train_batch()
         inputs, targets = inputs.to(self.device), targets.to(self.device)
+        if self.is_snn:
+            inputs = self.encoder(inputs)
 
         if self.labelflipping:
             self.model.eval()
@@ -130,10 +142,14 @@ class Client(ModelBaseInterface):
 
         if train_acc:
             # Compute and store train accuracy
-            _, predicted = torch.max(outputs.data, 1)
-            total = targets.size(0)
-            correct = (predicted == targets).sum().item()
-            acc = correct / total
+            if self.is_snn:
+                with torch.no_grad():
+                    acc = validate_accuracy(self.accuracy_fn(outputs, targets))
+            else:
+                _, predicted = torch.max(outputs.data, 1)
+                total = targets.size(0)
+                correct = (predicted == targets).sum().item()
+                acc = correct / total
             self.train_acc_list.append(acc)
 
         return loss_value
@@ -163,6 +179,8 @@ class Client(ModelBaseInterface):
         for i in range(num_rounds):
             inputs, targets = self._sample_train_batch()
             inputs, targets = inputs.to(self.device), targets.to(self.device)
+            if self.is_snn:
+                inputs = self.encoder(inputs)
             
             self.optimizer.zero_grad()
             train_loss_value = self._backward_pass(inputs, targets, train_acc=self.store_per_client_metrics)

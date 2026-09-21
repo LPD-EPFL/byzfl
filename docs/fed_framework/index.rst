@@ -38,3 +38,5 @@ By leveraging this framework, researchers can gain valuable insights into the pe
    classes/server
    classes/data_distributor
    classes/models
+   classes/encoding
+   classes/snn_training

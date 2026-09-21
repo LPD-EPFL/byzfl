@@ -2,6 +2,7 @@ import collections
 
 import torch
 
+from byzfl.fed_framework.encoding import TemporalEncoder
 from byzfl.utils.model_utils import get_model_class, is_snn_model
 from byzfl.utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
 
@@ -27,7 +28,24 @@ class ModelBaseInterface(object):
             model_params = params.get("model_params", {})
             if not isinstance(model_params, dict):
                 raise TypeError("Parameter 'model_params' must be a dict.")
+            model_params = dict(model_params)
+            encoding = params.get("encoding", {})
+            if not isinstance(encoding, dict):
+                raise TypeError("Parameter 'encoding' must be a dict.")
+            unknown = set(encoding) - {"type", "time_steps", "encoding_params"}
+            if unknown:
+                raise ValueError(f"Unknown encoding parameters: {sorted(unknown)}")
+            if "time_steps" in encoding:
+                if ("time_steps" in model_params
+                        and model_params["time_steps"] != encoding["time_steps"]):
+                    raise ValueError("Model and encoding time_steps must agree.")
+                model_params["time_steps"] = encoding["time_steps"]
             model = model_class(**model_params)
+            self.encoder = TemporalEncoder(
+                time_steps=encoding.get("time_steps", getattr(model, "time_steps", 25)),
+                encoding_type=encoding.get("type", "constant"),
+                encoding_params=encoding.get("encoding_params"),
+            )
         else:
             model = model_class()
 

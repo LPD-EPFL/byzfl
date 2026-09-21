@@ -128,3 +128,8 @@ Compute gradients for the local dataset:
    :undoc-members:
    :no-inherited-members:
    :show-inheritance:
+Spiking models
+--------------
+
+For SNN parameters, encoding, and custom losses or accuracy functions, see
+:ref:`snn-training-label`.
