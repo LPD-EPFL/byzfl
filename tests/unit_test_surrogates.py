@@ -8,30 +8,24 @@ import torch
 from snntorch import surrogate
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from byzfl.fed_framework.surrogates import get_spike_grad
-from byzfl.fed_framework import models, surrogates
+from byzfl.fed_framework.surrogates import CUSTOM_SURROGATES, get_spike_grad
+from byzfl.fed_framework import models
 from byzfl.benchmark.managers import ParamsManager
 
 
-class MyCustomSurrogate(torch.autograd.Function):
-    @staticmethod
-    def forward(ctx, input_, scale=1.0):
-        ctx.save_for_backward(input_)
-        ctx.scale = scale
-        return (input_ > 0).float()
+def my_custom_surrogate(scale=1.0):
+    def custom_gradient(input_, grad_input, spikes):
+        return grad_input * scale / (1 + input_.square())
 
-    @staticmethod
-    def backward(ctx, grad_output):
-        (input_,) = ctx.saved_tensors
-        return grad_output * ctx.scale / (1 + input_.square()), None
+    return surrogate.custom_surrogate(custom_gradient)
 
 
 @pytest.fixture
-def custom_class(monkeypatch):
-    monkeypatch.setattr(surrogates, "MyCustomSurrogate", MyCustomSurrogate, raising=False)
+def custom_factory(monkeypatch):
+    monkeypatch.setitem(CUSTOM_SURROGATES, "MyCustomSurrogate", my_custom_surrogate)
 
 
-def test_custom_class_is_discovered_and_uses_configured_derivative(custom_class):
+def test_custom_factory_is_discovered_and_uses_configured_derivative(custom_factory):
     config = ParamsManager({"model": {
         "name": "fc_snn", "model_params": {
             "surrogate_gradient": "MyCustomSurrogate", "surrogate_params": {"scale": 0.5},
@@ -44,48 +38,37 @@ def test_custom_class_is_discovered_and_uses_configured_derivative(custom_class)
     torch.testing.assert_close(values.grad, torch.tensor([0.1, 1.0, 0.3]))
 
     torch.manual_seed(17)
-    model = models.fc_snn(input_dim=3, hidden_dim=4, output_dim=2, time_steps=2, **config)
-    inputs = torch.randn(2, 3, requires_grad=True)
+    model = models.fc_snn(input_dim=3, hidden_dim=4, output_dim=2, **config)
+    inputs = torch.randn(2, 2, 3, requires_grad=True)
     model(inputs)[1].square().sum().backward()
     assert torch.isfinite(inputs.grad).all() and inputs.grad.abs().sum() > 0
     assert model.fc1.weight.grad.abs().sum() > 0
 
 
-def test_removing_custom_class_leaves_no_registration(monkeypatch, custom_class):
+def test_removing_custom_factory_leaves_no_registration(monkeypatch, custom_factory):
     assert callable(get_spike_grad("MyCustomSurrogate", None))
     with monkeypatch.context() as context:
-        context.delattr(surrogates, "MyCustomSurrogate")
+        context.delitem(CUSTOM_SURROGATES, "MyCustomSurrogate")
         with pytest.raises(ValueError, match="Unknown surrogate"):
             get_spike_grad("MyCustomSurrogate", {})
     assert callable(get_spike_grad("MyCustomSurrogate", None))
 
 
 def test_custom_name_cannot_shadow_snntorch(monkeypatch):
-    monkeypatch.setattr(surrogates, "atan", MyCustomSurrogate, raising=False)
+    monkeypatch.setitem(CUSTOM_SURROGATES, "atan", my_custom_surrogate)
     with pytest.raises(ValueError, match="conflicts"):
         get_spike_grad("atan", {})
 
 
-def test_custom_constructor_rejects_misspelled_parameter(custom_class):
+def test_custom_factory_rejects_misspelled_parameter(custom_factory):
     with pytest.raises(TypeError, match="unexpected keyword argument"):
         get_spike_grad("MyCustomSurrogate", {"scle": 0.5})
 
 
-def test_custom_autograd_defaults_are_passed_to_apply(custom_class):
+def test_custom_factory_defaults_are_used(custom_factory):
     values = torch.tensor([-1., 0., 1.], requires_grad=True)
     get_spike_grad("MyCustomSurrogate", None)(values).sum().backward()
     torch.testing.assert_close(values.grad, torch.tensor([0.5, 1., 0.5]))
-
-
-def test_autograd_keyword_only_parameters_are_not_silently_ignored(monkeypatch):
-    class KeywordOnlySurrogate(torch.autograd.Function):
-        @staticmethod
-        def forward(ctx, input_, *, scale=1.0):
-            return input_
-
-    monkeypatch.setattr(surrogates, "KeywordOnlySurrogate", KeywordOnlySurrogate, raising=False)
-    with pytest.raises(TypeError, match="positional arguments"):
-        get_spike_grad("KeywordOnlySurrogate", {"scale": 0.5})
 
 
 def test_custom_callable_class_remains_supported(monkeypatch):
@@ -94,16 +77,16 @@ def test_custom_callable_class_remains_supported(monkeypatch):
             self.scale = scale
 
         def __call__(self, input_):
-            return MyCustomSurrogate.apply(input_, self.scale)
+            return my_custom_surrogate(self.scale)(input_)
 
-    monkeypatch.setattr(surrogates, "CallableSurrogate", CallableSurrogate, raising=False)
+    monkeypatch.setitem(CUSTOM_SURROGATES, "CallableSurrogate", CallableSurrogate)
     values = torch.tensor([0.], requires_grad=True)
     get_spike_grad("CallableSurrogate", {"scale": 0.5})(values).sum().backward()
     torch.testing.assert_close(values.grad, torch.tensor([0.5]))
 
 
 def test_custom_factory_must_return_callable(monkeypatch):
-    monkeypatch.setattr(surrogates, "InvalidSurrogate", lambda: None, raising=False)
+    monkeypatch.setitem(CUSTOM_SURROGATES, "InvalidSurrogate", lambda: None)
     with pytest.raises(TypeError, match="must return a callable"):
         get_spike_grad("InvalidSurrogate", {})
 

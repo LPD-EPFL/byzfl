@@ -576,9 +576,8 @@ class ParamsManager(object):
     def resolve_model_config(self):
         """Return a model configuration with its SNN settings resolved after expansion.
 
-        The serialized time_steps stays inside encoding. The training integration
-        passes that value to the model separately when preparing its constructor
-        arguments; it must not be duplicated in the input configuration.
+        The time_steps setting belongs to the encoder. Models infer the sequence
+        length from their temporal inputs.
         """
         model = self._read_object(["model"])
         if model is None:

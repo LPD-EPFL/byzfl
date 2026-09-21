@@ -17,8 +17,8 @@ training, validation, and test data.
 
 The modes are:
 
-* ``constant``: return the input unchanged. The model repeats it lazily over
-  its configured time steps, avoiding a materialized temporal copy.
+* ``constant``: add the time dimension using an expanded view, sharing the
+  static input across time without copying its data.
 * ``rate``: call ``snntorch.spikegen.rate`` with the configured parameters.
   A fresh spike sample is drawn on each call; reproducibility depends on the
   PyTorch random seed and call order.

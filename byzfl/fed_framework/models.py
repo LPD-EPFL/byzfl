@@ -443,31 +443,12 @@ class ResNet152(nn.Module):
         return self.model(x)
 
 
-def _validate_time_steps(time_steps):
-    if isinstance(time_steps, bool) or not isinstance(time_steps, int) or time_steps <= 0:
-        raise ValueError("time_steps must be a positive integer.")
-    return time_steps
-
-
-def expand_temporal_dimension(model, x):
-    """
-    Repeat static inputs across time on their current device without copying.
-
-    Static inputs have shape (batch, features) or (batch, channels, height,
-    width). Temporal inputs have shape (batch, time, features) or (batch,
-    time, channels, height, width) and retain their supplied sequence length.
-    """
-    if x.dim() == 4:
-        time_steps = model.time_steps
-        x = x.unsqueeze(1).expand(-1, time_steps, -1, -1, -1)
-    elif x.dim() == 2:
-        time_steps = model.time_steps
-        x = x.unsqueeze(1).expand(-1, time_steps, -1)
+def _validate_temporal_input(x):
+    """Require an explicit batch and time dimension for SNN inputs."""
     if x.dim() not in (3, 5):
-        raise ValueError("SNN inputs must be batched static or temporal vectors or images.")
+        raise ValueError("SNN inputs must be temporal vectors or images; encode static inputs first.")
     if x.size(0) == 0 or x.size(1) == 0:
         raise ValueError("SNN inputs must contain at least one sample and one time step.")
-    return x
 
 
 class fc_snn(nn.Module):
@@ -485,8 +466,7 @@ class fc_snn(nn.Module):
     spike records and membrane potential records of the output layer,
     each of shape ``(time_steps, batch_size, output_dim)``.
 
-    Static vectors or images are repeated across ``time_steps``. Encoded
-    inputs retain their supplied time dimension.
+    Inputs must already include a time dimension supplied by TemporalEncoder.
 
     Parameters:
     -----------
@@ -517,9 +497,8 @@ class fc_snn(nn.Module):
     is_snn = True
 
     def __init__(self, input_dim=784, hidden_dim=100, output_dim=10,
-                 beta=0.95, surrogate_gradient="atan", time_steps=25, surrogate_params=None):
+                 beta=0.95, surrogate_gradient="atan", surrogate_params=None):
         super().__init__()
-        self.time_steps = _validate_time_steps(time_steps)
 
         # Resolve the surrogate gradient before constructing the neuron layers.
         spike_grad = get_spike_grad(surrogate_gradient, surrogate_params)
@@ -545,7 +524,7 @@ class fc_snn(nn.Module):
             ``(spk_rec, mem_rec)`` where each has shape
             ``(time_steps, batch_size, output_dim)``.
         """
-        x = expand_temporal_dimension(self, x)
+        _validate_temporal_input(x)
 
         # Initialize membrane potentials
         mem1 = self.lif1.init_leaky()
@@ -589,9 +568,8 @@ class cnn_mnist_snn(nn.Module):
 
     def __init__(self, in_channels=1, input_height=28, input_width=28, output_dim=10,
                  beta=0.95, surrogate_gradient="atan", threshold=1.0, learn_threshold=False,
-                 time_steps=25, surrogate_params=None):
+                 surrogate_params=None):
         super().__init__()
-        self.time_steps = _validate_time_steps(time_steps)
 
         spike_grad = get_spike_grad(surrogate_gradient, surrogate_params)
 
@@ -620,7 +598,7 @@ class cnn_mnist_snn(nn.Module):
         self.lif4 = snn.Leaky(beta=beta, spike_grad=spike_grad, threshold=threshold, learn_threshold=learn_threshold)
 
     def forward(self, x):
-        x = expand_temporal_dimension(self, x)
+        _validate_temporal_input(x)
 
         # Initialize membrane potentials
         mem1 = self.lif1.init_leaky()
@@ -670,9 +648,8 @@ class cnn_cifar_snn(nn.Module):
 
     def __init__(self, in_channels=3, input_height=32, input_width=32, output_dim=10,
                  beta=0.95, surrogate_gradient="atan", threshold=1.0, learn_threshold=False,
-                 time_steps=25, surrogate_params=None):
+                 surrogate_params=None):
         super().__init__()
-        self.time_steps = _validate_time_steps(time_steps)
 
         spike_grad = get_spike_grad(surrogate_gradient, surrogate_params)
 
@@ -705,7 +682,7 @@ class cnn_cifar_snn(nn.Module):
         self.lif6 = snn.Leaky(beta=beta, spike_grad=spike_grad, threshold=threshold, learn_threshold=learn_threshold)
 
     def forward(self, x):
-        x = expand_temporal_dimension(self, x)
+        _validate_temporal_input(x)
 
         # Initialize membrane potentials
         mem1 = self.lif1.init_leaky()

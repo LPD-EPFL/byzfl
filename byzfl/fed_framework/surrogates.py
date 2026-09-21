@@ -1,15 +1,9 @@
-"""Lookup of built-in and user-defined surrogate gradients by name.
+"""Lookup of built-in and user-defined surrogate-gradient factories."""
 
-Add custom torch.autograd.Function subclasses, callable classes, or factories
-directly to this module and select their names in the configuration.
-No registration is required.
-"""
-
-import inspect
-import sys
-
-import torch
 from snntorch import surrogate
+
+
+CUSTOM_SURROGATES = {}
 
 
 def get_spike_grad(surrogate_gradient, surrogate_params):
@@ -19,25 +13,15 @@ def get_spike_grad(surrogate_gradient, surrogate_params):
     params = surrogate_params if surrogate_params is not None else {}
     if not isinstance(params, dict):
         raise TypeError("surrogate_params must be a dict or None.")
-    factory = getattr(surrogate, surrogate_gradient, None)
-    custom_factory = getattr(sys.modules[__name__], surrogate_gradient, None)
-    # The lookup helper itself is not a surrogate factory.
-    if custom_factory is get_spike_grad:
-        custom_factory = None
-    if factory is not None and custom_factory is not None:
+
+    custom_factory = CUSTOM_SURROGATES.get(surrogate_gradient)
+    snntorch_factory = getattr(surrogate, surrogate_gradient, None)
+    if custom_factory is not None and snntorch_factory is not None:
         raise ValueError(f"Custom surrogate {surrogate_gradient!r} conflicts with a snnTorch name.")
-    if custom_factory is not None:
-        factory = custom_factory
+    factory = custom_factory if custom_factory is not None else snntorch_factory
     if not callable(factory):
         raise ValueError(f"Unknown surrogate gradient: {surrogate_gradient!r}")
-    if isinstance(factory, type) and issubclass(factory, torch.autograd.Function):
-        # Autograd Function.apply takes positional arguments, not keywords.
-        arguments = inspect.signature(factory.forward).bind(None, None, **params)
-        arguments.apply_defaults()
-        if arguments.kwargs:
-            raise TypeError("Surrogate forward parameters must accept positional arguments.")
-        forward_params = arguments.args[2:]  # Exclude ctx and the input tensor.
-        return lambda input_: factory.apply(input_, *forward_params)
+
     spike_grad = factory(**params)
     if not callable(spike_grad):
         raise TypeError(f"Surrogate factory {surrogate_gradient!r} must return a callable.")

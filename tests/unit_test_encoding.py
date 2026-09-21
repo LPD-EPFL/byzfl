@@ -37,7 +37,10 @@ def test_batch_encoding_matches_snntorch_without_changing_input(shape, encoding,
 def test_constant_preserves_normalized_data_and_random_state():
     batch = torch.tensor([[-2., 0.5, 3.]])
     state = torch.random.get_rng_state().clone()
-    assert TemporalEncoder(3, "constant")(batch) is batch
+    encoded = TemporalEncoder(3, "constant")(batch)
+    assert encoded.shape == (1, 3, 3)
+    assert encoded.data_ptr() == batch.data_ptr()
+    torch.testing.assert_close(encoded, batch.unsqueeze(1).repeat(1, 3, 1))
     assert torch.equal(state, torch.random.get_rng_state())
 
 

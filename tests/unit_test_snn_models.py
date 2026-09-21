@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import byzfl
 from byzfl.benchmark.managers import ParamsManager
 from byzfl.fed_framework import models
+from byzfl.fed_framework.encoding import TemporalEncoder
 from byzfl.fed_framework.model_base_interface import ModelBaseInterface
 from byzfl.utils.model_utils import get_model_class
 
@@ -48,7 +49,7 @@ def test_model_outputs_gradients_and_state_reset(name, shape):
     model_class = get_model_class(name)
     assert getattr(byzfl, name) is model_class
     assert model_class.is_snn is True
-    model = model_class(output_dim=4, time_steps=3)
+    model = model_class(output_dim=4)
     sequence = torch.randn(2, 3, *shape, requires_grad=True)
     original = sequence.detach().clone()
     output = model(sequence)
@@ -80,11 +81,11 @@ def test_model_outputs_gradients_and_state_reset(name, shape):
 
 
 @pytest.mark.parametrize("name,shape", MODEL_CASES)
-def test_static_input_matches_explicit_repetition(name, shape):
-    model = get_model_class(name)(time_steps=2)
+def test_constant_encoding_matches_explicit_repetition(name, shape):
+    model = get_model_class(name)()
     static = torch.randn(2, *shape)
     with torch.no_grad():
-        static_output = model(static)
+        static_output = model(TemporalEncoder(2)(static))
         temporal_output = model(static.unsqueeze(1).expand(-1, 2, -1, -1, -1))
         shorter_output = model(static.unsqueeze(1))
     for expected, actual in zip(static_output, temporal_output):
@@ -92,11 +93,11 @@ def test_static_input_matches_explicit_repetition(name, shape):
     assert shorter_output[0].shape == (1, 2, 10)
 
 
-def test_fc_model_accepts_static_and_temporal_vectors():
-    model = models.fc_snn(input_dim=5, hidden_dim=8, output_dim=3, time_steps=4)
+def test_fc_model_accepts_encoded_vectors():
+    model = models.fc_snn(input_dim=5, hidden_dim=8, output_dim=3)
     static = torch.randn(2, 5)
     with torch.no_grad():
-        actual = model(static)
+        actual = model(TemporalEncoder(4)(static))
         expected = model(static.unsqueeze(1).expand(-1, 4, -1))
     assert actual[0].shape == (4, 2, 3)
     for left, right in zip(actual, expected):
@@ -109,14 +110,7 @@ def test_constructor_rejects_unknown_parameters(name, shape):
         get_model_class(name)(surrogate_param={"alpha": 2.0})
 
 
-@pytest.mark.parametrize("name,shape", MODEL_CASES)
-@pytest.mark.parametrize("time_steps", [0, -1, True, 1.5, "2"])
-def test_constructor_rejects_invalid_time_steps(name, shape, time_steps):
-    with pytest.raises(ValueError, match="positive integer"):
-        get_model_class(name)(time_steps=time_steps)
-
-
-@pytest.mark.parametrize("shape", [(5,), (2, 1, 1, 1, 1, 1), (0, 2, 5), (2, 0, 5)])
+@pytest.mark.parametrize("shape", [(2, 5), (2, 1, 28, 28), (5,), (2, 1, 1, 1, 1, 1), (0, 2, 5), (2, 0, 5)])
 def test_invalid_or_empty_input_is_rejected(shape):
     model = models.fc_snn(input_dim=5, hidden_dim=8)
     with pytest.raises(ValueError, match="SNN inputs"):
@@ -130,19 +124,19 @@ def test_model_interface_and_configuration_use_real_snn_metadata():
     }}).resolve_model_config()
     interface = ModelBaseInterface(dict(
         model_name=configuration["name"], is_snn=configuration["is_snn"],
-        model_params={**configuration["model_params"], "time_steps": configuration["encoding"]["time_steps"]},
+        model_params=configuration["model_params"], encoding=configuration["encoding"],
         device="cpu", optimizer_name=None, learning_rate=None, weight_decay=None,
         milestones=None, learning_rate_decay=None,
     ))
     assert interface.is_snn
-    assert interface.model(torch.randn(2, 5))[0].shape == (2, 2, 3)
+    assert interface.model(interface.encoder(torch.randn(2, 5)))[0].shape == (2, 2, 3)
 
 
 @pytest.mark.parametrize("name", ["cnn_mnist_snn", "cnn_cifar_snn"])
 def test_learnable_thresholds_receive_gradients(name):
     shape = dict(MODEL_CASES)[name]
-    model = get_model_class(name)(time_steps=2, threshold=0.5, learn_threshold=True)
-    model(torch.randn(2, *shape))[1].square().mean().backward()
+    model = get_model_class(name)(threshold=0.5, learn_threshold=True)
+    model(torch.randn(2, 2, *shape))[1].square().mean().backward()
     thresholds = [p for key, p in model.named_parameters() if key.endswith("threshold")]
     assert thresholds
     assert all(p.grad is not None and torch.isfinite(p.grad).all() for p in thresholds)

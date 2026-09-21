@@ -30,7 +30,7 @@ def params(**extra):
 def test_training_and_evaluation(encoding):
     p = params(encoding=dict(type=encoding, time_steps=3))
     client, server = Client(p), Server(p)
-    assert client.model.time_steps == client.encoder.time_steps == 3
+    assert client.encoder.time_steps == 3
     assert torch.isfinite(torch.tensor(client.compute_gradients()))
     assert torch.isfinite(client.get_flat_gradients()).all()
     assert 0 <= client.get_train_accuracy()[0] <= 1
@@ -105,10 +105,10 @@ def test_empty_evaluation_rejected():
         server._compute_accuracy(empty)
 
 
-def test_conflicting_duration_rejected():
+def test_model_duration_rejected():
     p = params()
     p["model_params"]["time_steps"] = 7
-    with pytest.raises(ValueError, match="must agree"):
+    with pytest.raises(ValueError, match="only in encoding"):
         Client(p)
 
 
@@ -139,3 +139,30 @@ def test_ann_client_matches_original_loss_gradients_and_rng():
     server = Server(p)
     server.set_model_state(client.get_dict_parameters())
     assert server.compute_test_accuracy() == pytest.approx(expected_accuracy)
+
+
+@pytest.mark.parametrize("encoding", ["constant", "rate", "latency"])
+def test_custom_model_needs_no_duration_or_expansion(monkeypatch, encoding):
+    from byzfl.fed_framework import models
+
+    class TemporalToy(torch.nn.Module):
+        is_snn = True
+
+        def __init__(self):
+            super().__init__()
+            self.linear = torch.nn.Linear(4, 2)
+
+        def forward(self, inputs):
+            assert inputs.ndim == 3 and inputs.shape[1] == 3
+            membrane = self.linear(inputs).movedim(0, 1)
+            return membrane.sigmoid(), membrane
+
+    monkeypatch.setattr(models, "TemporalToy", TemporalToy, raising=False)
+    p = params(model_name="TemporalToy", model_params={},
+               encoding=dict(type=encoding, time_steps=3))
+    client, server = Client(p), Server(p)
+    assert torch.isfinite(torch.tensor(client.compute_gradients()))
+    assert torch.isfinite(torch.tensor(client.compute_model_update(1)))
+    server.set_model_state(client.get_dict_parameters())
+    assert 0 <= server.compute_validation_accuracy() <= 1
+    assert 0 <= server.compute_test_accuracy() <= 1

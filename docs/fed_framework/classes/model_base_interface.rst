@@ -26,7 +26,7 @@ All these parameters should be passed in a dictionary that contains the followin
 - ``learning_rate_decay`` (float): Multiplicative factor for learning rate decay.
 - ``is_snn`` (bool, optional): A consistency assertion against the model class's declaration. Omitting it uses the class declaration; it does not force ANN behavior.
 - ``model_params`` (dict, optional): Constructor arguments for an SNN model. ANN models retain their original no-argument construction.
-- ``encoding`` (dict, optional): SNN encoding settings with ``type``, ``time_steps``, and ``encoding_params``. The default is constant encoding with the model's duration.
+- ``encoding`` (dict, optional): SNN encoding settings with ``type``, ``time_steps``, and ``encoding_params``. The default is constant encoding with 25 time steps.
 
 Model Type
 ----------

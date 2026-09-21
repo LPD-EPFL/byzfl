@@ -82,17 +82,15 @@ All models default to 10 output classes; set ``output_dim`` to change this.
 Inputs, outputs, and state
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Convolutional SNNs accept static images with shape ``(batch, channels, height,
-width)`` or encoded images with shape ``(batch, time, channels, height, width)``.
-``fc_snn`` also accepts static vectors ``(batch, features)`` and encoded vectors
-``(batch, time, features)``.
+Convolutional SNNs accept encoded images with shape
+``(batch, time, channels, height, width)``. ``fc_snn`` also accepts encoded
+vectors with shape ``(batch, time, features)``.
 
-Static inputs are repeated without copying over the constructor's
-``time_steps`` (default: 25). Already encoded inputs retain their supplied
-sequence length. This repetition does not perform rate or latency encoding.
-In benchmark configuration, specify time steps only in
-``model.encoding.time_steps``; the constructor argument is the internal way
-to supply that value to the model.
+Use ``TemporalEncoder`` to encode static inputs before calling a model directly.
+All encoding modes provide an explicit time dimension. Constant encoding uses
+an expanded view without copying the input across time. Models derive sequence
+length from their input and do not accept a ``time_steps`` constructor argument.
+In benchmark configuration, specify duration in ``model.encoding.time_steps``.
 
 Every forward pass returns ``(spikes, membrane)``, with both tensors shaped
 ``(time, batch, output_dim)``. Both remain available for custom loss functions,
@@ -103,14 +101,15 @@ states, so unrelated batches do not share membrane history.
 
    import torch
    from byzfl import cnn_mnist_snn
+   from byzfl.fed_framework.encoding import TemporalEncoder
 
    model = cnn_mnist_snn(
-       time_steps=10,
        beta=0.95,
        surrogate_gradient="atan",
        surrogate_params={"alpha": 1.2},
    )
-   spikes, membrane = model(torch.rand(2, 1, 28, 28))
+   encoder = TemporalEncoder(time_steps=10, encoding_type="constant")
+   spikes, membrane = model(encoder(torch.rand(2, 1, 28, 28)))
    assert spikes.shape == membrane.shape == (10, 2, 10)
 
 Surrogate gradients
@@ -131,29 +130,27 @@ defaults.
 Adding a custom surrogate
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Add a ``torch.autograd.Function`` subclass directly to
-   ``byzfl/fed_framework/surrogates.py``, alongside ``get_spike_grad``. Define
-   the spike operation in ``forward`` and its surrogate derivative in
-   ``backward``. Copy and adapt this example:
+1. Add a factory to ``byzfl/fed_framework/surrogates.py``. The factory accepts
+   the configurable parameters and returns a callable produced by snnTorch's
+   ``custom_surrogate`` helper:
 
 .. code-block:: python
 
-   import torch
+   from snntorch import surrogate
 
-   class MyCustomSurrogate(torch.autograd.Function):
-       @staticmethod
-       def forward(ctx, input_, scale=1.0):
-           ctx.save_for_backward(input_)
-           ctx.scale = scale
-           return (input_ > 0).float()
+   def my_custom_surrogate(scale=1.0):
+       def custom_gradient(input_, grad_input, spikes):
+           return grad_input * scale / (1 + input_.square())
 
-       @staticmethod
-       def backward(ctx, grad_output):
-           (input_,) = ctx.saved_tensors
-           return grad_output * ctx.scale / (1 + input_.square()), None
+       return surrogate.custom_surrogate(custom_gradient)
 
-2. Select the exact class name under ``model.model_params`` in your existing
-   configuration:
+2. Add the configuration name and factory to ``CUSTOM_SURROGATES``:
+
+.. code-block:: python
+
+   CUSTOM_SURROGATES["MyCustomSurrogate"] = my_custom_surrogate
+
+3. Select that name under ``model.model_params`` in your existing configuration:
 
 .. code-block:: json
 
@@ -166,24 +163,12 @@ Adding a custom surrogate
        }
    }
 
-3. Start a new run. No changes to ``get_spike_grad`` or registration are needed.
-
-The lookup finds the class by name in the same module, just as model lookup
-finds a class in ``models.py``. For an autograd Function, it binds
-``surrogate_params`` to ``forward(ctx, input_, ...)`` and creates the callable
-that invokes ``.apply(input_, ...)``. Parameters following ``ctx`` and
-``input_`` must accept positional arguments; keyword-only parameters are not
-supported by ``.apply``. Omitted values use the defaults declared in
-``forward``. Return one gradient per input from ``backward``, using ``None``
-for configuration parameters that are not differentiated.
-
-Factories returning a callable and ordinary callable classes are also
-supported; their constructors receive ``surrogate_params`` as keyword arguments.
-Custom names must be distinct from snnTorch names; collisions raise an error.
-Removing a custom class or factory makes its name unavailable in subsequent
-runs, without leaving a separate registration entry to remove.
-``MyCustomSurrogate`` is a documentation example, not a built-in surrogate;
-add the class before selecting its name.
+``get_spike_grad`` checks ``CUSTOM_SURROGATES`` and then the factories provided
+by ``snntorch.surrogate``. Both use the same interface: ``surrogate_params`` are
+passed to the factory as keyword arguments, and the factory must return a
+callable that accepts the neuron input. Custom names must be distinct from
+snnTorch names; collisions raise an error. ``MyCustomSurrogate`` is a
+documentation example and is not registered by default.
 
 Unknown constructor arguments and surrogate parameters raise errors, so
 misspellings cannot silently change an experiment. ``threshold`` and
@@ -200,7 +185,7 @@ spiking model must:
 * inherit from ``torch.nn.Module``;
 * declare the class attribute ``is_snn = True``;
 * accept its configurable values as constructor keyword arguments;
-* accept ``time_steps`` when used through benchmark configuration; and
+* accept temporal inputs and derive sequence length from ``inputs.size(1)``; and
 * return ``(spikes, membrane)``, each shaped ``(time, batch, classes)``.
 
 For example, this declaration makes ``"MySpikingModel"`` a valid model name:
@@ -210,9 +195,8 @@ For example, this declaration makes ``"MySpikingModel"`` a valid model name:
    class MySpikingModel(torch.nn.Module):
        is_snn = True
 
-       def __init__(self, time_steps=25, output_dim=10):
+       def __init__(self, output_dim=10):
            super().__init__()
-           self.time_steps = time_steps
            # Define layers and spiking neurons here.
 
        def forward(self, inputs):

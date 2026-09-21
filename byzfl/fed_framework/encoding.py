@@ -9,8 +9,7 @@ from snntorch import spikegen
 class TemporalEncoder:
     """Encode a batch of vectors or images, keeping the batch dimension first.
 
-    Constant encoding leaves the input unchanged; the SNN repeats it lazily.
-    Rate and latency encoding produce (batch, time, ...) tensors on the input
+    All encoding modes produce (batch, time, ...) tensors on the input
     device. Inputs to these spike generators are clamped to [0, 1].
     """
 
@@ -47,15 +46,31 @@ class TemporalEncoder:
         if batch.numel() == 0 or not torch.isfinite(batch).all():
             raise ValueError("Encoding inputs must be non-empty and finite.")
         if self.encoding_type == "constant":
-            return batch
-        generator = getattr(spikegen, self.encoding_type)
+            # Share storage across time instead of copying the static input.
+            batch_with_time_axis = batch.unsqueeze(dim=1)
+            temporal_shape = (
+                batch.shape[0],
+                self.time_steps,
+                *batch.shape[1:],
+            )
+            return batch_with_time_axis.expand(*temporal_shape)
+
         clamped = batch.clamp(0.0, 1.0)
         if self.encoding_type == "latency":
             # Normalize each sample independently of the other batch members.
             return torch.stack([
-                generator(sample, num_steps=self.time_steps, **self.encoding_params)
+                spikegen.latency(
+                    sample, num_steps=self.time_steps, **self.encoding_params
+                )
                 for sample in clamped
             ])
-        spikes = generator(clamped, num_steps=self.time_steps, **self.encoding_params)
-        # snnTorch places time first; the SNN models expect batch first.
-        return spikes.movedim(0, 1)
+
+        if self.encoding_type == "rate":
+            spikes = spikegen.rate(
+                clamped, num_steps=self.time_steps, **self.encoding_params
+            )
+            # snnTorch places time first; the SNN models expect batch first.
+            return spikes.movedim(0, 1)
+
+        # The constructor validates the encoding type, so this cannot be reached.
+        raise RuntimeError(f"Unsupported encoding type: {self.encoding_type!r}")

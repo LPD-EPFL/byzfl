@@ -98,7 +98,7 @@ def test_distribution_then_encoding_and_snn_backward(dataset_info, encoding):
     assert sorted(assigned) == sorted(train.indices)
     assert not set(assigned).intersection(val.dataset.indices)
     encoder = TemporalEncoder(5, encoding, {"normalize": True} if encoding == "latency" else {})
-    model = fc_snn(input_dim=4, hidden_dim=5, output_dim=2, time_steps=5)
+    model = fc_snn(input_dim=4, hidden_dim=5, output_dim=2)
     for loader in [*loaders, val, test]:
         batch, labels = next(iter(loader))
         assert batch.shape == (2, 1, 2, 2)

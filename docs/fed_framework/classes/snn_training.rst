@@ -40,11 +40,9 @@ In addition to their usual parameters, both classes accept these SNN fields:
    client_loss_params = {"loss_name": "ce_rate_loss", "loss_params": {}}
 
 ``is_snn`` is optional; when supplied it must be a boolean matching the class.
-The encoding defaults to ``constant``. Its duration is passed to the model
-constructor; conflicting explicit constructor and encoding durations are rejected.
-When encoding duration is omitted, the model's ``time_steps`` is used (25 for
-built-in models). Custom models used with an explicit encoding duration must
-accept the ``time_steps`` constructor argument.
+The encoding defaults to ``constant`` with 25 time steps. Every encoding mode
+produces an explicit time dimension. Duration belongs only to the encoder;
+models derive it from their input and need no duration constructor argument.
 
 Data loaders provide static floating-point images or vectors. Encoding runs after
 moving each batch to the model's device, during both training and evaluation.

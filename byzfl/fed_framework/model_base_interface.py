@@ -35,22 +35,19 @@ class ModelBaseInterface(object):
             unknown = set(encoding) - {"type", "time_steps", "encoding_params"}
             if unknown:
                 raise ValueError(f"Unknown encoding parameters: {sorted(unknown)}")
-            if "time_steps" in encoding:
-                if ("time_steps" in model_params
-                        and model_params["time_steps"] != encoding["time_steps"]):
-                    raise ValueError("Model and encoding time_steps must agree.")
-                model_params["time_steps"] = encoding["time_steps"]
+            if "time_steps" in model_params:
+                raise ValueError("Configure time_steps only in encoding, not model_params.")
             model = model_class(**model_params)
             self.encoder = TemporalEncoder(
-                time_steps=encoding.get("time_steps", getattr(model, "time_steps", 25)),
+                time_steps=encoding.get("time_steps", 25),
                 encoding_type=encoding.get("type", "constant"),
                 encoding_params=encoding.get("encoding_params"),
             )
         else:
             model = model_class()
 
-        # SNN outputs have time on axis 0; DataParallel gathers on the batch axis
-        # it assumes is axis 0, so its default gathering is incompatible.
+        # DataParallel splits and gathers on dimension 0. SNN inputs are batch-first,
+        # but outputs are time-first, so SNN models currently run on one device.
         if self.device == "cuda" and torch.cuda.device_count() > 1 and not self.is_snn:
             self.model = torch.nn.DataParallel(model)
         else:
