@@ -3,6 +3,7 @@ from multiprocessing import Pool, Value
 import os
 import copy
 
+from byzfl.benchmark.managers import get_model_result_name
 from byzfl.benchmark.train import start_training
 from byzfl.benchmark.evaluate_results import find_best_hyperparameters
 
@@ -263,7 +264,7 @@ def eliminate_experiments_done(dict_list):
         ]
         folder_name = (
             f"{setting['model']['dataset_name']}_"
-            f"{setting['model']['name']}_"
+            f"{get_model_result_name(setting)}_"
             f"n_{setting['benchmark_config']['nb_workers']}_"
             f"f_{setting['benchmark_config']['f']}_"
             f"d_{setting['benchmark_config']['tolerated_f']}_"

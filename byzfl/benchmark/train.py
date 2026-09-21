@@ -7,7 +7,8 @@ from torchvision import datasets, transforms
 
 from byzfl import Client, Server, ByzantineClient, DataDistributor
 from byzfl.utils.misc import set_random_seed
-from byzfl.benchmark.managers import ParamsManager, FileManager
+from byzfl.benchmark.managers import ParamsManager, FileManager, get_model_result_name
+from byzfl.benchmark.data import load_snn_data
 
 transforms_hflip = transforms.Compose([transforms.RandomHorizontalFlip(), transforms.ToTensor()])
 transforms_mnist = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
@@ -35,12 +36,18 @@ dict_datasets = {
 
 def start_training(params):
     params_manager = ParamsManager(params)
+    model_config = params_manager.resolve_model_config()
+    snn_params = {}
+    if model_config["is_snn"]:
+        snn_params = {key: model_config[key] for key in (
+            "is_snn", "model_params", "encoding", "loss_params", "accuracy_name"
+        )}
 
     # <----------------- File Manager  ----------------->
     file_manager = FileManager({
         "result_path": params_manager.get_results_directory(),
         "dataset_name": params_manager.get_dataset_name(),
-        "model_name": params_manager.get_model_name(),
+        "model_name": get_model_result_name(params),
         "nb_workers": params_manager.get_nb_workers(),
         "nb_byz": params_manager.get_f(),
         "declared_nb_byz": params_manager.get_tolerated_f(),
@@ -77,47 +84,52 @@ def start_training(params):
 
     # Data Preparation
     key_dataset_name = params_manager.get_dataset_name()
-    dataset_name = dict_datasets[key_dataset_name][0]
-    dataset = getattr(datasets, dataset_name)(
-            root = params_manager.get_data_folder(), 
-            train = True, 
-            download = True,
-            transform = None
-    )
-    dataset.targets = Tensor(dataset.targets).long()
-
-    train_size = int(params_manager.get_size_train_set() * len(dataset))
-    val_size = len(dataset) - train_size
-
-    # Split Train set into Train and Validation
-    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-
-    # Apply transformations to each dataset
-    train_dataset.dataset.transform = dict_datasets[key_dataset_name][1]
-    val_dataset.dataset.transform = dict_datasets[key_dataset_name][2]
-
-    # Prepare Validation and Test data
-    if len(val_dataset) > 0:
-        val_loader = DataLoader(
-            val_dataset, 
-            batch_size=params_manager.get_batch_size_evaluation(), 
-            shuffle=False
+    if model_config["is_snn"]:
+        train_dataset, val_loader, test_loader = load_snn_data(
+            params_manager, dict_datasets[key_dataset_name]
         )
     else:
-        val_loader = None
-    
-    test_dataset = getattr(datasets, dataset_name)(
+        dataset_name = dict_datasets[key_dataset_name][0]
+        dataset = getattr(datasets, dataset_name)(
                 root = params_manager.get_data_folder(),
-                train=False, 
-                download=True,
-                transform=dict_datasets[key_dataset_name][2]
-    )
+                train = True,
+                download = True,
+                transform = None
+        )
+        dataset.targets = Tensor(dataset.targets).long()
 
-    test_loader = DataLoader(
-        test_dataset, 
-        batch_size=params_manager.get_batch_size_evaluation(), 
-        shuffle=False
-    )
+        train_size = int(params_manager.get_size_train_set() * len(dataset))
+        val_size = len(dataset) - train_size
+
+        # Split Train set into Train and Validation
+        train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+
+        # Apply transformations to each dataset
+        train_dataset.dataset.transform = dict_datasets[key_dataset_name][1]
+        val_dataset.dataset.transform = dict_datasets[key_dataset_name][2]
+
+        # Prepare Validation and Test data
+        if len(val_dataset) > 0:
+            val_loader = DataLoader(
+                val_dataset,
+                batch_size=params_manager.get_batch_size_evaluation(),
+                shuffle=False
+            )
+        else:
+            val_loader = None
+
+        test_dataset = getattr(datasets, dataset_name)(
+                    root = params_manager.get_data_folder(),
+                    train=False,
+                    download=True,
+                    transform=dict_datasets[key_dataset_name][2]
+        )
+
+        test_loader = DataLoader(
+            test_dataset,
+            batch_size=params_manager.get_batch_size_evaluation(),
+            shuffle=False
+        )
 
     # Distribute data among clients using non-IID Dirichlet distribution
     data_distributor = DataDistributor({
@@ -132,6 +144,7 @@ def start_training(params):
     # Initialize Honest Clients
     honest_clients = [
         Client({
+            **snn_params,
             "model_name": params_manager.get_model_name(),
             "device": params_manager.get_device(),
             "optimizer_name": params_manager.get_optimizer_name(),
@@ -150,6 +163,7 @@ def start_training(params):
 
     # Server Setup, Use SGD Optimizer
     server = Server({
+        **snn_params,
         "model_name": params_manager.get_model_name(),
         "device": params_manager.get_device(),
         "validation_loader": val_loader,

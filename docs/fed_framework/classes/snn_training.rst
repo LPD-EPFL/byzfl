@@ -86,3 +86,44 @@ Add a function in ``byzfl/utils/snn_accuracy.py`` and select its name with
 
 Use distinct names from the built-in losses, adapters, and lookup helpers.
 These custom examples are documentation only; they are not additional built-in metrics.
+
+Benchmark configuration and results
+-----------------------------------
+
+Use the same benchmark configuration as for ANN models, replacing its ``model``
+section with SNN settings, for example:
+
+.. code-block:: json
+
+   {
+     "name": "fc_snn",
+     "dataset_name": "mnist",
+     "nb_labels": 10,
+     "model_params": {"hidden_dim": 100, "beta": 0.95},
+     "encoding": {"type": "rate", "time_steps": 25, "encoding_params": {}},
+     "loss": "ce_rate_loss",
+     "loss_params": {},
+     "accuracy_name": "accuracy_rate",
+     "learning_rate": 0.1,
+     "learning_rate_decay": 1.0,
+     "milestones": []
+   }
+
+The benchmark distributes static data before clients encode minibatches. It passes
+the same encoding and accuracy settings to every client and the server. Constant
+encoding keeps the dataset normalization; rate and latency encoding omit it.
+
+SNN result names include ``<model_name>_<surrogate>_T<time_steps>_<identifier>``,
+for example ``fc_snn_atan_T25_<identifier>``. An omitted surrogate uses the model
+constructor's default name, or ``default`` if no such parameter is declared.
+The identifier is the
+first 16 hexadecimal characters of a SHA-256 digest of the resolved model name,
+constructor parameters, encoding, loss name and parameters, and accuracy selection. JSON
+key ordering does not affect it. The full resolved settings remain in each run's
+``config.json``; seed-specific filenames keep the existing format. ANN directory
+names and file formats remain unchanged.
+
+Lists in SNN settings expand into independent configurations using the existing
+benchmark sweep mechanism. Result readers and plots evaluate each SNN configuration
+separately, retaining the existing learning-rate, momentum and weight-decay selection
+within each configuration. Resume checks use the same identifier as training.

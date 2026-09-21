@@ -1,6 +1,8 @@
 import os
 import datetime
 import json
+import hashlib
+import inspect
 from copy import deepcopy
 
 import numpy as np
@@ -600,3 +602,25 @@ class ParamsManager(object):
                 accuracy_name=self.get_accuracy_name(),
             )
         return resolved
+
+
+def get_model_result_name(params):
+    """Keep ANN paths unchanged and distinguish concrete SNN configurations."""
+    manager = ParamsManager(params)
+    if not manager.is_snn():
+        return manager.get_model_name()
+    model = manager.resolve_model_config()
+    identity = {key: model[key] for key in (
+        "name", "model_params", "encoding", "loss", "loss_params", "accuracy_name"
+    )}
+    serialized = json.dumps(identity, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    digest = hashlib.sha256(serialized.encode("utf-8")).hexdigest()[:16]
+    surrogate = model["model_params"].get("surrogate_gradient")
+    if surrogate is None:
+        parameter = inspect.signature(get_model_class(model["name"])).parameters.get("surrogate_gradient")
+        surrogate = parameter.default if parameter is not None else "default"
+        if surrogate is inspect.Parameter.empty:
+            surrogate = "default"
+    # Keep custom surrogate names safe as a single path component.
+    surrogate = "".join(char if char.isalnum() or char in "_-" else "_" for char in str(surrogate))
+    return f"{model['name']}_{surrogate}_T{model['encoding']['time_steps']}_{digest}"
