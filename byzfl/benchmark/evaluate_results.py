@@ -26,6 +26,49 @@ def ensure_list(value):
     return value
 
 
+def _test_accuracy_at_best_validation(
+    path_to_results, config_file_name, nb_data_distribution_seeds,
+    nb_training_seeds, training_seed, data_distribution_seed,
+    evaluation_delta
+):
+    """Return mean test accuracy at the checkpoint with highest mean validation."""
+    experiment_path = os.path.join(path_to_results, config_file_name)
+    with open(os.path.join(experiment_path, 'config.json'), 'r') as file:
+        config = json.load(file)
+
+    nb_steps = config["benchmark_config"]["nb_steps"]
+    nb_accuracies = int(1 + math.ceil(nb_steps / evaluation_delta))
+    shape = (nb_data_distribution_seeds, nb_training_seeds, nb_accuracies)
+    validation_curves = np.empty(shape)
+    test_curves = np.empty(shape)
+
+    for run_dd in range(nb_data_distribution_seeds):
+        for run in range(nb_training_seeds):
+            seed_suffix = (f"tr_seed_{run + training_seed}"
+                           f"_dd_seed_{run_dd + data_distribution_seed}.txt")
+            validation_curves[run_dd, run] = genfromtxt(
+                os.path.join(experiment_path, f"val_accuracy_{seed_suffix}"),
+                delimiter=','
+            )
+            test_curves[run_dd, run] = genfromtxt(
+                os.path.join(experiment_path, f"test_accuracy_{seed_suffix}"),
+                delimiter=','
+            )
+
+    mean_validation_accuracy = validation_curves.mean(axis=(0, 1))
+    mean_test_accuracy = test_curves.mean(axis=(0, 1))
+    if not np.all(np.isfinite(mean_validation_accuracy)):
+        raise ValueError(f"Validation accuracy is unavailable for {experiment_path}")
+
+    best_validation_index = np.argmax(mean_validation_accuracy)
+    selected_test_accuracy = mean_test_accuracy[best_validation_index]
+    if not np.isfinite(selected_test_accuracy):
+        raise ValueError(
+            f"Test accuracy at the best validation step is unavailable for {experiment_path}"
+        )
+    return selected_test_accuracy
+
+
 def find_best_hyperparameters(path_to_results):
     """
     Find the best hyperparameters (learning rate, momentum, weight decay) 
@@ -614,8 +657,9 @@ def test_heatmap(path_to_results, path_to_plot):
     """
     Creates a heatmap where the axis are the number of 
     byzantine nodes and the distribution parameter.
-    Each number is the mean of the best accuracy reached 
-    by the model across seeds, using a specific aggregation.
+    Each number is the worst-attack test accuracy for a specific aggregation,
+    selected at the best validation round after averaging across the configured
+    seeds.
     """
     try:
         with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
@@ -744,40 +788,12 @@ def test_heatmap(path_to_results, path_to_plot):
                                         f"{custom_dict_to_str(attack['name'])}_lr_{lr}_mom_{momentum}_wd_{wd}"
                                     )
 
-                                    try:
-                                        with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
-                                            data = json.load(file)
-                                    except Exception as e:
-                                        print("ERROR: "+ str(e))
-
-                                    nb_steps = data["benchmark_config"]["nb_steps"]
-                                    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
-
-                                    tab_acc = np.zeros(
-                                        (
-                                            nb_data_distribution_seeds,
-                                            nb_training_seeds,
-                                            nb_accuracies
-                                        )
+                                    accuracy = _test_accuracy_at_best_validation(
+                                        path_to_results, config_file_name,
+                                        nb_data_distribution_seeds, nb_training_seeds,
+                                        training_seed, data_distribution_seed,
+                                        evaluation_delta
                                     )
-
-                                    for run_dd in range(nb_data_distribution_seeds):
-                                        for run in range(nb_training_seeds):
-                                            tab_acc[run_dd][run] = genfromtxt(
-                                                f"{path_to_results}/{config_file_name}/"
-                                                f"test_accuracy_tr_seed_{run + training_seed}_"
-                                                f"dd_seed_{run_dd + data_distribution_seed}.txt",
-                                                delimiter=','
-                                            )
-
-                                    tab_acc = tab_acc.reshape(
-                                        nb_data_distribution_seeds * nb_training_seeds,
-                                        nb_accuracies
-                                    )
-
-                                    tab_acc = tab_acc.mean(axis=0)
-
-                                    accuracy = np.max(tab_acc)
 
                                     if accuracy < worst_accuracy:
                                         worst_accuracy = accuracy
@@ -821,7 +837,7 @@ def aggregated_test_heatmap(path_to_results, path_to_plot):
     """
     Heatmap with the aggregated info of all aggregators, 
     for every region in the heatmap, it shows the aggregation 
-    with the best accuracy.
+    with the best worst-attack validation-selected test accuracy.
     """
     try:
         with open(path_to_results+'/config.json', 'r') as file:
@@ -956,39 +972,12 @@ def aggregated_test_heatmap(path_to_results, path_to_plot):
                                         f"wd_{wd}"
                                     )
 
-                                    try:
-                                        with open(path_to_results+ "/" + config_file_name +'/config.json', 'r') as file:
-                                            data = json.load(file)
-                                    except Exception as e:
-                                        print("ERROR: "+ str(e))
-
-                                    nb_steps = data["benchmark_config"]["nb_steps"]
-                                    nb_accuracies = int(1+math.ceil(nb_steps/evaluation_delta))
-
-                                    tab_acc = np.zeros(
-                                        (
-                                            nb_data_distribution_seeds,
-                                            nb_training_seeds,
-                                            nb_accuracies
-                                        )
+                                    accuracy = _test_accuracy_at_best_validation(
+                                        path_to_results, config_file_name,
+                                        nb_data_distribution_seeds, nb_training_seeds,
+                                        training_seed, data_distribution_seed,
+                                        evaluation_delta
                                     )
-
-                                    for run_dd in range(nb_data_distribution_seeds):
-                                        for run in range(nb_training_seeds):
-                                            tab_acc[run_dd][run] = genfromtxt(
-                                                f"{path_to_results}/{config_file_name}/"
-                                                f"test_accuracy_tr_seed_{run + training_seed}_"
-                                                f"dd_seed_{run_dd + data_distribution_seed}.txt",
-                                                delimiter=','
-                                            )
-
-                                    tab_acc = tab_acc.reshape(
-                                        nb_data_distribution_seeds * nb_training_seeds,
-                                        nb_accuracies
-                                    )
-                                    
-                                    tab_acc = tab_acc.mean(axis=0)
-                                    accuracy = np.max(tab_acc)
 
                                     if accuracy < worst_accuracy:
                                         worst_accuracy = accuracy

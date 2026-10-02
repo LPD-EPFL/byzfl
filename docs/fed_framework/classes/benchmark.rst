@@ -300,6 +300,12 @@ Heatmap of training losses
 Heatmap of test accuracies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Validation and test curves are first averaged across all configured training
+and data-distribution seeds. The heatmaps report test accuracy at the checkpoint
+with the highest mean validation accuracy; they do not select the maximum test
+accuracy. Ties select the earliest checkpoint. Missing or invalid result files
+raise an error, and another checkpoint is not selected.
+
 .. code-block:: python
 
     from byzfl.benchmark.evaluate_results import test_heatmap
