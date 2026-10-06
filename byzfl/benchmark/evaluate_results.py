@@ -1,11 +1,46 @@
 import math
 import json
 import os
+from copy import deepcopy
+from functools import wraps
+
+from byzfl.benchmark.managers import get_model_result_name
+from byzfl.utils.model_utils import get_model_class, is_snn_model
 
 import numpy as np
 from numpy import genfromtxt
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+
+
+def _for_each_snn_model(function):
+    """Evaluate each concrete SNN configuration separately within a sweep."""
+    @wraps(function)
+    def evaluate(path_to_results, *args, **kwargs):
+        try:
+            with open(os.path.join(path_to_results, "config.json")) as file:
+                data = json.load(file)
+        except (OSError, ValueError):
+            return function(path_to_results, *args, **kwargs)
+        model = data.get("model", {})
+        names = model.get("name", "cnn_mnist")
+        names = names if isinstance(names, list) else [names]
+        if not any(is_snn_model(get_model_class(name)) for name in names):
+            return function(path_to_results, *args, **kwargs)
+        # Import at call time: benchmark imports these result readers.
+        from byzfl.benchmark.benchmark import generate_all_combinations
+        fields = ("name", "is_snn", "model_params", "encoding", "loss", "loss_params", "accuracy_name")
+        varying = {key: model[key] for key in fields if key in model}
+        seen = set()
+        for variant in generate_all_combinations(varying, []):
+            config = deepcopy(data)
+            config["model"].update(variant)
+            result_name = get_model_result_name(config)
+            if result_name not in seen:
+                seen.add(result_name)
+                function(path_to_results, *args, _config=config, **kwargs)
+    return evaluate
 
 
 def custom_dict_to_str(dictionary):
@@ -69,7 +104,8 @@ def _test_accuracy_at_best_validation(
     return selected_test_accuracy
 
 
-def find_best_hyperparameters(path_to_results):
+@_for_each_snn_model
+def find_best_hyperparameters(path_to_results, *, _config=None):
     """
     Find the best hyperparameters (learning rate, momentum, weight decay) 
     that maximize the minimum accuracy across different attacks.
@@ -81,7 +117,7 @@ def find_best_hyperparameters(path_to_results):
     """
     try:
         with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
-            data = json.load(file)
+            data = json.load(file) if _config is None else _config
     except Exception as e:
         print(f"ERROR reading config.json: {e}")
         return
@@ -105,7 +141,7 @@ def find_best_hyperparameters(path_to_results):
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
     # <-------------- Model Config ------------->
-    model_name = data["model"]["name"]
+    model_name = get_model_result_name(data)
     dataset_name = data["model"]["dataset_name"]
     lr_list = data["model"]["learning_rate"]
 
@@ -276,11 +312,12 @@ colors = [(0, 0.4470, 0.7410), (0.8500, 0.3250, 0.0980), (0.4660, 0.6740, 0.1880
 tab_sign = ['-', '--', '-.', ':', 'solid']
 markers = ['^','s', '<', 'o', '*']
 
-def test_accuracy_curve(path_to_results, path_to_plot, colors=colors, tab_sign=tab_sign, markers=markers):
+@_for_each_snn_model
+def test_accuracy_curve(path_to_results, path_to_plot, colors=colors, tab_sign=tab_sign, markers=markers, *, _config=None):
         
         try:
             with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
-                data = json.load(file)
+                data = json.load(file) if _config is None else _config
         except Exception as e:
             print(f"ERROR reading config.json: {e}")
             return
@@ -310,7 +347,7 @@ def test_accuracy_curve(path_to_results, path_to_plot, colors=colors, tab_sign=t
         evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
         # <-------------- Model Config ------------->
-        model_name = data["model"]["name"]
+        model_name = get_model_result_name(data)
         dataset_name = data["model"]["dataset_name"]
         lr_list = data["model"]["learning_rate"]
 
@@ -446,7 +483,8 @@ def test_accuracy_curve(path_to_results, path_to_plot, colors=colors, tab_sign=t
                                     plt.close()
 
 
-def loss_heatmap(path_to_results, path_to_plot):
+@_for_each_snn_model
+def loss_heatmap(path_to_results, path_to_plot, *, _config=None):
     """
     Creates a heatmap where the axis are the number of 
     byzantine nodes and the distribution parameter.
@@ -455,7 +493,7 @@ def loss_heatmap(path_to_results, path_to_plot):
     """
     try:
         with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
-            data = json.load(file)
+            data = json.load(file) if _config is None else _config
     except Exception as e:
         print(f"ERROR reading config.json: {e}")
         return
@@ -484,7 +522,7 @@ def loss_heatmap(path_to_results, path_to_plot):
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
     # <-------------- Model Config ------------->
-    model_name = data["model"]["name"]
+    model_name = get_model_result_name(data)
     dataset_name = data["model"]["dataset_name"]
     lr_list = data["model"]["learning_rate"]
 
@@ -653,7 +691,8 @@ def loss_heatmap(path_to_results, path_to_plot):
                         plt.close()
 
 
-def test_heatmap(path_to_results, path_to_plot):
+@_for_each_snn_model
+def test_heatmap(path_to_results, path_to_plot, *, _config=None):
     """
     Creates a heatmap where the axis are the number of 
     byzantine nodes and the distribution parameter.
@@ -663,7 +702,7 @@ def test_heatmap(path_to_results, path_to_plot):
     """
     try:
         with open(os.path.join(path_to_results, 'config.json'), 'r') as file:
-            data = json.load(file)
+            data = json.load(file) if _config is None else _config
     except Exception as e:
         print(f"ERROR reading config.json: {e}")
         return
@@ -692,7 +731,7 @@ def test_heatmap(path_to_results, path_to_plot):
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
     # <-------------- Model Config ------------->
-    model_name = data["model"]["name"]
+    model_name = get_model_result_name(data)
     dataset_name = data["model"]["dataset_name"]
     lr_list = data["model"]["learning_rate"]
 
@@ -833,7 +872,8 @@ def test_heatmap(path_to_results, path_to_plot):
                         plt.close()
 
 
-def aggregated_test_heatmap(path_to_results, path_to_plot):
+@_for_each_snn_model
+def aggregated_test_heatmap(path_to_results, path_to_plot, *, _config=None):
     """
     Heatmap with the aggregated info of all aggregators, 
     for every region in the heatmap, it shows the aggregation 
@@ -841,7 +881,7 @@ def aggregated_test_heatmap(path_to_results, path_to_plot):
     """
     try:
         with open(path_to_results+'/config.json', 'r') as file:
-            data = json.load(file)
+            data = json.load(file) if _config is None else _config
     except Exception as e:
         print("ERROR: "+ str(e))
 
@@ -869,7 +909,7 @@ def aggregated_test_heatmap(path_to_results, path_to_plot):
     evaluation_delta = data["evaluation_and_results"]["evaluation_delta"]
 
     # <-------------- Model Config ------------->
-    model_name = data["model"]["name"]
+    model_name = get_model_result_name(data)
     dataset_name = data["model"]["dataset_name"]
     lr_list = data["model"]["learning_rate"]
 

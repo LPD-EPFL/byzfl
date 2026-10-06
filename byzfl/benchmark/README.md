@@ -77,7 +77,7 @@ Below is a sample of a `config.json` file, testing the strength of state-of-the-
                 "name": "gamma_similarity_niid",
                 "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
             }
-        ],
+        ]
     },
     "model": {
         "name": "cnn_mnist",
@@ -200,6 +200,16 @@ if __name__ == "__main__":  # Required for multiprocessing
     n = 1  # Number of trainings to run in parallel
     run_benchmark(n)
 ```
+
+Set `distribute_gpus=True` to assign independent trainings round-robin across
+all visible CUDA devices when `benchmark_config.device` is `"cuda"`:
+
+```python
+run_benchmark(nb_jobs=9, distribute_gpus=True)
+```
+
+Each training remains on one GPU. The default is `False`, preserving existing
+single-device and ANN behavior.
 
 - The benchmark automatically reads `config.json` and executes all specified experiments.  
 - Results are stored in the `results_directory` (default: `./results`).  

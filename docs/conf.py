@@ -9,7 +9,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 project = 'ByzFL'
 copyright = '2024, EPFL'
@@ -39,6 +39,10 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 autosummary_generate=True
+
+# Keep automatic labels unique across pages and out of repeated API subsections.
+autosectionlabel_prefix_document = True
+autosectionlabel_maxdepth = 2
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -77,6 +81,7 @@ html_js_files = ["custom-icon.js"]
 html_favicon = "_static/favicon.ico"
 
 napoleon_custom_sections = [
+	("Methods", "rubric_style"),
 	("Initialization parameters", "params_style"),
 	("Input parameters", "params_style"), 
 	("Calling the instance", "rubric_style"),

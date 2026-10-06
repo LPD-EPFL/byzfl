@@ -2,6 +2,7 @@ numpy==1.26.4
 matplotlib==3.8.3
 scipy==1.12.0
 seaborn==0.13.2
+snntorch
 
 --extra-index-url https://download.pytorch.org/whl/cu121
 

@@ -1,6 +1,7 @@
 import torch
 
 from byzfl.fed_framework import ModelBaseInterface, RobustAggregator
+from byzfl.utils.snn_accuracy import get_snn_accuracy, validate_accuracy
 
 class Server(ModelBaseInterface):
     
@@ -15,6 +16,7 @@ class Server(ModelBaseInterface):
         super().__init__({
             "device": params["device"],
             "model_name": params["model_name"],
+            **{key: params[key] for key in ("model_params", "is_snn", "encoding") if key in params},
             "optimizer_name": params["optimizer_name"],
             "optimizer_params": params.get("optimizer_params", {}),
             "learning_rate": params["learning_rate"],
@@ -29,6 +31,9 @@ class Server(ModelBaseInterface):
         if self.validation_loader is not None:
             if not isinstance(params["validation_loader"], torch.utils.data.DataLoader):
                 raise TypeError(f"'validation_loader' must be a DataLoader, but got {type(params['validation_loader']).__name__}")
+
+        if self.is_snn:
+            self.accuracy_fn = get_snn_accuracy(params.get("accuracy_name", "accuracy_rate"))
 
         self.model.eval()
 
@@ -108,6 +113,8 @@ class Server(ModelBaseInterface):
             The accuracy of the model on the provided dataset, as a value
             between 0 and 1.
         """
+        if self.is_snn:
+            return self._compute_snn_accuracy(data_loader)
         total = 0
         correct = 0
         for inputs, targets in data_loader:
@@ -117,6 +124,21 @@ class Server(ModelBaseInterface):
             total += targets.size(0)
             correct += (predicted == targets).sum().item()
         return correct / total
+
+    @torch.no_grad()
+    def _compute_snn_accuracy(self, data_loader):
+        total = 0
+        weighted_accuracy = 0.0
+        for inputs, targets in data_loader:
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
+            outputs = self.model(self.encoder(inputs))
+            accuracy = validate_accuracy(self.accuracy_fn(outputs, targets))
+            batch_size = targets.size(0)
+            total += batch_size
+            weighted_accuracy += accuracy * batch_size
+        if total == 0:
+            raise ValueError("Cannot compute SNN accuracy on an empty data loader.")
+        return weighted_accuracy / total
 
     def compute_validation_accuracy(self):
         """

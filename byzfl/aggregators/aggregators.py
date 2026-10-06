@@ -171,7 +171,7 @@ class Median(object):
     >>> agg(x)
     tensor([4., 5., 6.])
 
-     References
+    References
     ----------
 
     .. [1] Dong Yin, Yudong Chen, Ramchandran Kannan, and Peter Bartlett. Byzantine-robust distributed

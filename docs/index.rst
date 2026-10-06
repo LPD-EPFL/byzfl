@@ -16,11 +16,14 @@
 .. raw:: html
 
    <div style="visibility: hidden;height:1px;">
+
 ByzFL Documentation
 ===================
+
 .. raw:: html
 
    </div>
+
 Welcome to the official documentation of ByzFL, developed by 
 `DCL <http://dcl.epfl.ch>`_ from `EPFL <http://epfl.ch>`_ and
 `WIDE <https://team.inria.fr/wide/>`_ from 
@@ -37,6 +40,7 @@ Key Features
 1. **Robust Aggregators and Pre-Aggregators**: Implement state-of-the-art aggregation strategies, such as :ref:`trmean-label`, alongside pre-aggregation techniques like :ref:`clipping-label` and :ref:`nnm-label`, to ensure resilience against Byzantine participants in federated learning workflows.
 2. **Byzantine Attacks**: Simulate a wide range of adversarial attack scenarios, including :ref:`ipm-label` and :ref:`alie-label`, to rigorously test the robustness of federated learning systems under malicious conditions.
 3. **Comprehensive Federated Learning Pipelines**: Seamlessly integrate key components — such as :ref:`client-label`, :ref:`server-label`, :ref:`byzantine-client-label`, and :ref:`data-dist-label` — to train, simulate, and benchmark robust aggregation schemes. The framework supports various datasets, models, and custom configurations, enabling researchers to replicate real-world distributed learning setups with heterogeneity and adversarial threats.
+4. **Spiking Neural Network Benchmarking**: Train and evaluate configurable SNN models with constant, rate, or latency encoding while using the same federated benchmark workflow. See :ref:`snn-training-label`.
 
 
 Installation

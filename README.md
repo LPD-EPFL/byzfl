@@ -18,6 +18,8 @@ ByzFL is a **Python library for robust Federated Learning**. It is fully compati
     - Provides an end-to-end simulation environment for federated learning, integrating clients (honest and Byzantine), a central server, and robust aggregation mechanisms.
 4. **Federated Learning Benchmarking**:
     - Provides a systematic and automated evaluation framework to test federated learning algorithms under adversarial conditions, ensuring robust performance across various configurations. This framework supports benchmarking the robustness of various aggregation strategies against adversarial attacks in a distributed learning setup.
+5. **Spiking Neural Networks**:
+    - Supports built-in fully connected, MNIST convolutional, and CIFAR convolutional SNNs with configurable temporal encoding, surrogate gradients, losses, and accuracy functions.
 
 The exact implementations of these modules (`aggregators`, `attacks`, `benchmark`, and `fed_framework`) can be found in the `byzfl/` directory.
 
@@ -32,6 +34,10 @@ pip install byzfl
 ```
 
 After installation, the library is ready to use.
+
+The SNN integration uses `snntorch`, which is listed as a mandatory dependency.
+For a complete SNN benchmark configuration and extension instructions, see
+[`Training and evaluating SNNs`](docs/fed_framework/classes/snn_training.rst).
 
 ---
 

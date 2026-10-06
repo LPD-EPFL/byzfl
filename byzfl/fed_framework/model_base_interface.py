@@ -2,7 +2,8 @@ import collections
 
 import torch
 
-import byzfl.fed_framework.models as models
+from byzfl.fed_framework.encoding import TemporalEncoder
+from byzfl.utils.model_utils import get_model_class, is_snn_model
 from byzfl.utils.conversion import flatten_dict, unflatten_dict, unflatten_generator
 
 class ModelBaseInterface(object):
@@ -15,9 +16,39 @@ class ModelBaseInterface(object):
         model_name = params["model_name"]
         self.device = params["device"]
 
-        model = getattr(models, model_name)()
+        # The model class is authoritative; configuration
+        # is_snn, when supplied, is a consistency check rather than an override.
+        model_class = get_model_class(model_name)
+        self._is_snn = is_snn_model(model_class)
+        if "is_snn" in params and params["is_snn"] != self.is_snn:
+            raise ValueError("Parameter 'is_snn' does not match the model class declaration.")
 
-        if self.device == "cuda" and torch.cuda.device_count() > 1:
+        # Preserve no-argument ANN construction for backward compatibility.
+        if self.is_snn:
+            model_params = params.get("model_params", {})
+            if not isinstance(model_params, dict):
+                raise TypeError("Parameter 'model_params' must be a dict.")
+            model_params = dict(model_params)
+            encoding = params.get("encoding", {})
+            if not isinstance(encoding, dict):
+                raise TypeError("Parameter 'encoding' must be a dict.")
+            unknown = set(encoding) - {"type", "time_steps", "encoding_params"}
+            if unknown:
+                raise ValueError(f"Unknown encoding parameters: {sorted(unknown)}")
+            if "time_steps" in model_params:
+                raise ValueError("Configure time_steps only in encoding, not model_params.")
+            model = model_class(**model_params)
+            self.encoder = TemporalEncoder(
+                time_steps=encoding.get("time_steps", 25),
+                encoding_type=encoding.get("type", "constant"),
+                encoding_params=encoding.get("encoding_params"),
+            )
+        else:
+            model = model_class()
+
+        # DataParallel splits and gathers on dimension 0. SNN inputs are batch-first,
+        # but outputs are time-first, so SNN models currently run on one device.
+        if self.device == "cuda" and torch.cuda.device_count() > 1 and not self.is_snn:
             self.model = torch.nn.DataParallel(model)
         else:
             self.model = model
@@ -47,6 +78,11 @@ class ModelBaseInterface(object):
             )
 
 
+    @property
+    def is_snn(self):
+        """Whether the underlying model class declares SNN behavior."""
+        return self._is_snn
+
     def _validate_params(self, params):
         """
         Validates the input parameters for correct types and values.
@@ -71,6 +107,8 @@ class ModelBaseInterface(object):
             raise TypeError("Parameter 'model_name' must be a string.")
         if not isinstance(params["device"], str):
             raise TypeError("Parameter 'device' must be a string.")
+        if "is_snn" in params and not isinstance(params["is_snn"], bool):
+            raise TypeError("Parameter 'is_snn' must be a bool.")
         if params["learning_rate"] is not None:
             if not isinstance(params["learning_rate"], float) or params["learning_rate"] <= 0:
                 raise ValueError("Parameter 'learning_rate' must be a positive float.")
@@ -93,6 +131,10 @@ class ModelBaseInterface(object):
         list
             Flat list of model parameters.
         """
+        if self.is_snn:
+            # Fixed neuron buffers (beta, threshold, reset mode, etc.) are
+            # configuration, not weights to aggregate or attack in FedAvg.
+            return flatten_dict(dict(self.model.named_parameters()))
         return flatten_dict(self.model.state_dict())
 
     def get_flat_gradients(self):
@@ -140,7 +182,11 @@ class ModelBaseInterface(object):
         flat_vector : list
             Flat list of parameters to set.
         """
-        new_dict = unflatten_dict(self.model.state_dict(), flat_vector)
+        if self.is_snn:
+            new_dict = self.model.state_dict()
+            new_dict.update(unflatten_generator(self.model.named_parameters(), flat_vector))
+        else:
+            new_dict = unflatten_dict(self.model.state_dict(), flat_vector)
         self.model.load_state_dict(new_dict)
 
     def set_gradients(self, flat_vector):
