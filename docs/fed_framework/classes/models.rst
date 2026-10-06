@@ -38,7 +38,7 @@ Using `ResNet18` for CIFAR-10:
 
 .. code-block:: python
 
-   from models import ResNet18
+   from byzfl import ResNet18
    model = ResNet18(num_classes=10)
    print(model)
 
@@ -46,7 +46,7 @@ Using `fc_mnist` for MNIST:
 
 .. code-block:: python
 
-   from models import fc_mnist
+   from byzfl import fc_mnist
    model = fc_mnist()
    print(model)
 

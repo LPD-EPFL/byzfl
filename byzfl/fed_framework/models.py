@@ -455,8 +455,6 @@ class fc_snn(nn.Module):
     """
     Fully Connected Spiking Neural Network.
 
-    Description:
-    ------------
     A configurable fully connected spiking neural network designed for
     temporal classification tasks. This model accepts temporal
     inputs of shape ``(batch_size, time_steps, ...)``, where each time
@@ -468,8 +466,8 @@ class fc_snn(nn.Module):
 
     Inputs must already include a time dimension supplied by TemporalEncoder.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     input_dim : int
         Dimensionality of the flattened input at each time step
         (default is 784 for 28x28 images).
@@ -483,9 +481,11 @@ class fc_snn(nn.Module):
     surrogate_gradient : str
         Name of the surrogate gradient function from
         ``snntorch.surrogate`` (default is ``"atan"``).
+    surrogate_params : dict, optional
+        Keyword arguments passed to the selected surrogate factory.
 
-    Examples:
-    ---------
+    Examples
+    --------
     >>> model = fc_snn(input_dim=784, hidden_dim=100, output_dim=10,
     ...               beta=0.95, surrogate_gradient="atan")
     >>> x = torch.randn(16, 25, 1, 28, 28)  # Batch of 16, 25 time steps
@@ -553,8 +553,6 @@ class cnn_mnist_snn(nn.Module):
     """
     Spiking CNN matching the cnn_mnist architecture.
 
-    Description:
-    ------------
     A spiking convolutional neural network with 2 convolutional layers (20 and 50 filters)
     and 2 fully connected layers (500, num_classes) matching the cnn_mnist setup.
     LIF neurons are used for all spiking layers.
@@ -598,6 +596,18 @@ class cnn_mnist_snn(nn.Module):
         self.lif4 = snn.Leaky(beta=beta, spike_grad=spike_grad, threshold=threshold, learn_threshold=learn_threshold)
 
     def forward(self, x):
+        """Process encoded images and return time-first spike and membrane records.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Encoded images shaped ``(batch, time, channels, height, width)``.
+
+        Returns
+        -------
+        tuple of torch.Tensor
+            Spikes and membrane potentials, each shaped ``(time, batch, output_dim)``.
+        """
         _validate_temporal_input(x)
 
         # Initialize membrane potentials
@@ -682,6 +692,18 @@ class cnn_cifar_snn(nn.Module):
         self.lif6 = snn.Leaky(beta=beta, spike_grad=spike_grad, threshold=threshold, learn_threshold=learn_threshold)
 
     def forward(self, x):
+        """Process encoded images and return time-first spike and membrane records.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            Encoded images shaped ``(batch, time, channels, height, width)``.
+
+        Returns
+        -------
+        tuple of torch.Tensor
+            Spikes and membrane potentials, each shaped ``(time, batch, output_dim)``.
+        """
         _validate_temporal_input(x)
 
         # Initialize membrane potentials

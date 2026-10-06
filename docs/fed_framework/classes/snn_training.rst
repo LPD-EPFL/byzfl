@@ -160,5 +160,7 @@ not need ``is_snn``, ``model_params``, ``encoding``, ``loss_params``, or
 according to :ref:`checkpoint selection <validation-selected-test-label>`.
 
 The three built-in SNN models support both DSGD and the benchmark's existing FedAvg
-path. FedAvg's existing restriction with ``LabelFlipping`` is shared by ANN and SNN
+path. SNN FedAvg aggregates trainable parameters, including learnable thresholds,
+while preserving fixed neuron buffers such as decay rates and reset modes.
+FedAvg's existing restriction with ``LabelFlipping`` is shared by ANN and SNN
 runs. This integration does not change the aggregation or attack algorithms.

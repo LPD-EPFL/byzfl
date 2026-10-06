@@ -77,7 +77,7 @@ Below is a sample of a `config.json` file, testing the strength of state-of-the-
                 "name": "gamma_similarity_niid",
                 "distribution_parameter": [1.0, 0.66, 0.33, 0.0]
             }
-        ],
+        ]
     },
     "model": {
         "name": "cnn_mnist",

@@ -53,6 +53,24 @@ def test_label_flipping_encodes_only_once():
     assert torch.isfinite(client.get_flat_flipped_gradients()).all()
 
 
+@pytest.mark.parametrize("model_name,model_params", [
+    ("fc_snn", {"input_dim": 4, "hidden_dim": 6, "output_dim": 2}),
+    ("cnn_mnist_snn", {"output_dim": 2}),
+    ("cnn_cifar_snn", {"output_dim": 2, "learn_threshold": True}),
+])
+def test_fedavg_aggregates_trainable_weights_and_preserves_neuron_buffers(model_name, model_params):
+    server = Server(params(model_name=model_name, model_params=model_params))
+    buffers = {name: value.clone() for name, value in server.model.named_buffers()}
+    original_weights = torch.cat([p.detach().flatten() for p in server.model.parameters()])
+    torch.testing.assert_close(server.get_flat_parameters(), original_weights)
+
+    # A Byzantine weight vector must not alter fixed neuron configuration.
+    server.update_model_with_weights([original_weights, -original_weights])
+    torch.testing.assert_close(server.get_flat_parameters(), torch.zeros_like(original_weights))
+    for name, value in server.model.named_buffers():
+        torch.testing.assert_close(value, buffers[name], rtol=0, atol=0)
+
+
 @pytest.mark.parametrize("name,index", list(snn_loss.SNN_LOSS_REGISTRY.items()))
 def test_builtin_loss_selects_expected_tensor(name, index):
     spikes = torch.zeros(3, 2, 2, requires_grad=True)

@@ -65,9 +65,15 @@ def config(tmp_path, encoding="constant"):
 
 
 @pytest.mark.parametrize("encoding", ["constant", "rate", "latency"])
-def test_offline_training_round_trip(tmp_path, monkeypatch, encoding):
+@pytest.mark.parametrize("algorithm", ["DSGD", "FedAvg"])
+def test_offline_training_round_trip(tmp_path, monkeypatch, encoding, algorithm):
     monkeypatch.setattr(train.datasets, "MNIST", TinyMNIST)
     p = config(tmp_path, encoding)
+    p["benchmark_config"]["training_algorithm"] = {
+        "name": algorithm,
+        "parameters": ({"proportion_selected_clients": 1.0, "local_steps_per_client": 2}
+                       if algorithm == "FedAvg" else {}),
+    }
     train.start_training(deepcopy(p))
     folders = [x for x in tmp_path.iterdir() if x.is_dir()]
     assert len(folders) == 1

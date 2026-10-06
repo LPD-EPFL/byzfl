@@ -41,7 +41,8 @@ match the class declaration. Values such as the string ``"false"`` are rejected.
 
 SNN constructor parameters are passed through ``model_params``. In a benchmark
 configuration, time steps belong only in ``model.encoding.time_steps``; the
-training integration supplies them to the model constructor separately.
+training integration supplies them to ``TemporalEncoder``. Models derive the
+sequence length from their temporal inputs.
 
 Methods
 -------

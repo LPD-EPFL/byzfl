@@ -131,6 +131,10 @@ class ModelBaseInterface(object):
         list
             Flat list of model parameters.
         """
+        if self.is_snn:
+            # Fixed neuron buffers (beta, threshold, reset mode, etc.) are
+            # configuration, not weights to aggregate or attack in FedAvg.
+            return flatten_dict(dict(self.model.named_parameters()))
         return flatten_dict(self.model.state_dict())
 
     def get_flat_gradients(self):
@@ -178,7 +182,11 @@ class ModelBaseInterface(object):
         flat_vector : list
             Flat list of parameters to set.
         """
-        new_dict = unflatten_dict(self.model.state_dict(), flat_vector)
+        if self.is_snn:
+            new_dict = self.model.state_dict()
+            new_dict.update(unflatten_generator(self.model.named_parameters(), flat_vector))
+        else:
+            new_dict = unflatten_dict(self.model.state_dict(), flat_vector)
         self.model.load_state_dict(new_dict)
 
     def set_gradients(self, flat_vector):

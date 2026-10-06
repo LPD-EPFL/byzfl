@@ -128,6 +128,7 @@ Compute gradients for the local dataset:
    :undoc-members:
    :no-inherited-members:
    :show-inheritance:
+
 Spiking models
 --------------
 
